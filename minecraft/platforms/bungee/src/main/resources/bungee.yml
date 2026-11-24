@@ -1,0 +1,12 @@
+name: ${plugin.name}
+main: ${project.groupId}.minecraft.bungee.BungeePlugin
+version: ${plugin.version}
+author: '${plugin.author}'
+description: ${plugin.description}
+website: ${plugin.url}
+softDepends:
+  - packetevents
+  - LiteBans
+  - LibertyBans
+  - BanManager
+  - BanSystem

@@ -1,0 +1,19 @@
+package gg.modl.backend.appeal.dto.request;
+
+import gg.modl.backend.infrastructure.validation.RequestValidationLimits;
+import jakarta.validation.constraints.NotBlank;
+import jakarta.validation.constraints.Size;
+import org.jspecify.annotations.Nullable;
+import java.util.List;
+
+public record AddAppealReplyRequest(
+    @NotBlank
+    @Size(max = RequestValidationLimits.APPEAL_REPLY_NAME_MAX_LENGTH)
+    String name,
+    @NotBlank
+    @Size(max = RequestValidationLimits.APPEAL_REPLY_CONTENT_MAX_LENGTH)
+    String content,
+    @Nullable @Size(max = RequestValidationLimits.APPEAL_REPLY_ACTION_MAX_LENGTH) String action,
+    @Nullable @Size(max = RequestValidationLimits.APPEAL_ATTACHMENTS_MAX_ENTRIES) List<Object> attachments
+) {
+}

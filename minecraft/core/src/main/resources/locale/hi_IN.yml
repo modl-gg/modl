@@ -1,0 +1,1495 @@
+# modl in-game messages, hi_IN. Colors, placeholders and overrides: https://github.com/modl-gg/modl/wiki/Placeholders
+
+messages:
+  cannot_report_self: "&cआप खुद को रिपोर्ट नहीं कर सकते।"
+  player_not_online: "&cवह खिलाड़ी ऑनलाइन नहीं है।"
+  submitting: "&e{type} भेजा जा रहा है..."
+  creating: "&e{type} बनाया जा रहा है..."
+  success: "&a{type} भेजा गया।"
+  created: "&a{type} बनाया गया।"
+  ticket_id: "&7टिकट ID: &f{ticketId}"
+  view_ticket: "&7अपना टिकट देखें: &b{url}"
+  complete_form: "&7अपना {type} पूरा करें: &b{url}"
+  form_title_note: "&7भेजने से पहले आप फ़ॉर्म में '&f{title}&7' शीर्षक बदल सकते हैं।"
+  failed_submit: "&c{type} भेजने में विफल: {error}"
+  failed_create: "&c{type} बनाने में विफल: {error}"
+  try_again: "&cकृपया बाद में फिर कोशिश करें या सीधे स्टाफ से संपर्क करें।"
+  unknown_error: "अज्ञात त्रुटि"
+  no_details: "कोई अतिरिक्त जानकारी नहीं दी गई"
+  no_chat_logs_available: "&c{player} के पास रिपोर्ट करने के लिए कोई हाल का चैट संदेश नहीं है।"
+  view_ticket_label: "अपना टिकट देखें"
+  complete_form_label: "अपना {type} पूरा करें"
+  click_to_view: "[देखने के लिए क्लिक करें]"
+  click_to_view_hover: "टिकट {ticketId} देखने के लिए क्लिक करें"
+  console_ticket_url: "&6{message}: &b{url}"
+  claiming_ticket: "&eटिकट &f{ticketId}&e आपके अकाउंट से लिंक किया जा रहा है..."
+  ticket_claimed_success: "&aटिकट &f{ticketId}&a आपके अकाउंट से लिंक हो गया।"
+  ticket_claim_failed: "&cटिकट लिंक करने में विफल: {error}"
+  ticket_cooldown: "&cइस प्रकार का दूसरा टिकट खोलने से पहले आपको {seconds}s इंतज़ार करना होगा।"
+  report_gui_title: "&f{player} की रिपोर्ट करें"
+  report_skull_chat_log:
+    - "&b{player} की रिपोर्ट करें"
+    - "&7चैट लॉग जोड़ें?"
+  report_skull_details:
+    - "&b{player} की रिपोर्ट करें"
+    - "&7और जानकारी जोड़ें?"
+  report_skull_confirm:
+    - "&b{player} की रिपोर्ट करें"
+    - "&7रिपोर्ट की पुष्टि करें?"
+  report_skull_replay:
+    - "&b{player} की रिपोर्ट करें"
+    - "&7रीप्ले जोड़ें?"
+  report_skull_evidence:
+    - "&b{player} की रिपोर्ट करें"
+    - "&7चैट लॉग या रीप्ले जोड़ें?"
+  report_attach_chat: "&aचैट लॉग जोड़ें"
+  report_attach_chat_lore: []
+  report_skip_chat: "&cचैट लॉग छोड़ें"
+  report_skip_chat_lore: []
+  report_chat_attached: "&aचैट लॉग जोड़ा जाएगा"
+  report_chat_click_to_attach: "&7चैट लॉग जोड़ने के लिए क्लिक करें"
+  report_capture_replay: "&aरीप्ले कैप्चर करें"
+  report_capture_replay_lore: []
+  report_replay_attached: "&aरीप्ले कैप्चर किया जाएगा"
+  report_replay_not_attached: "&cरीप्ले कैप्चर नहीं किया जाएगा"
+  report_skip_replay: "&cछोड़ें"
+  report_skip_replay_lore: []
+  report_continue: "&aआगे बढ़ें"
+  report_continue_lore: []
+  report_add_details: "&aजानकारी जोड़ें"
+  report_add_details_lore: []
+  report_skip_details: "&cजानकारी छोड़ें"
+  report_skip_details_lore: []
+  report_confirm: "&aरिपोर्ट की पुष्टि करें"
+  report_cancel: "&cरिपोर्ट रद्द करें"
+  report_cancel_lore: []
+  report_summary_reason: "&7कारण: &f{reason}"
+  report_summary_details: "&7जानकारी: &f{details}"
+  report_summary_chat_log: "&7चैट लॉग: &fजोड़ा गया"
+  report_summary_replay: "&7रीप्ले: &aकैप्चर किया जाएगा"
+  report_attach_replay: "&eरीप्ले जोड़ें"
+  report_close: "&cबंद करें"
+  report_close_lore: []
+  report_details_prompt: "{player} के खिलाफ़ अपनी रिपोर्ट के लिए अतिरिक्त जानकारी दर्ज करें:"
+  report_submitted: "&aरिपोर्ट भेज दी गई।"
+  # Ticket kinds shown as {type} in ticket messages: "name" starts a sentence, "inline" appears mid-sentence
+  ticket_types:
+    report:
+      name: "रिपोर्ट"
+      inline: "रिपोर्ट"
+    chat_report:
+      name: "चैट रिपोर्ट"
+      inline: "चैट रिपोर्ट"
+    support:
+      name: "सपोर्ट अनुरोध"
+      inline: "सपोर्ट अनुरोध"
+    bug:
+      name: "बग रिपोर्ट"
+      inline: "बग रिपोर्ट"
+    application:
+      name: "स्टाफ आवेदन"
+      inline: "स्टाफ आवेदन"
+
+general:
+  players_only: "&cयह कमांड केवल खिलाड़ी ही इस्तेमाल कर सकते हैं।"
+  local_console_only: "&cयह कमांड इसी सर्वर के कंसोल में चलाएँ।"
+  no_permission: "&cआपके पास यह कमांड इस्तेमाल करने की अनुमति नहीं है।"
+  no_permission_punishment: "&cआपके पास '{type}' सज़ाएँ देने की अनुमति नहीं है।"
+  no_permission_reload: "&cआपके पास सज़ा डेटा रीलोड करने की अनुमति नहीं है।"
+  invalid_syntax: "&cगलत कमांड सिंटैक्स। कृपया कमांड का सही उपयोग देखें।"
+  gui_requires_player: "&cयह कमांड एक GUI खोलता है और इसे केवल खिलाड़ी ही चला सकता है। टेक्स्ट आउटपुट के लिए &f-p &cइस्तेमाल करें।"
+  gui_unavailable: "&cइस प्रॉक्सी पर GUI मेन्यू उपलब्ध नहीं हैं।"
+
+  unknown: "अज्ञात"
+  staff: "स्टाफ"
+  answer_yes: "हाँ"
+  answer_no: "नहीं"
+  not_available: "उपलब्ध नहीं"
+  never: "कभी नहीं"
+  permanent: "स्थायी"
+  loading: "लोड हो रहा है..."
+  no_reason: "कोई कारण नहीं"
+  console: "कंसोल"
+  player_not_found: "&cखिलाड़ी नहीं मिला।"
+  punishment_error: "&cसज़ा बनाने में त्रुटि: {error}"
+  punishment_types_not_loaded: "&cसज़ा के प्रकार लोड नहीं हुए। &f/modl reload&c आज़माएँ या किसी एडमिन से संपर्क करें।"
+  invalid_punishment_type: "&cअमान्य सज़ा प्रकार। उपलब्ध प्रकार: {types}"
+  invalid_duration: "&cअमान्य अवधि फ़ॉर्मेट। उदाहरण: 1d, 2h, 30m, 1w"
+  cannot_punish_self: "&cआप खुद को सज़ा नहीं दे सकते।"
+  target_immune: "&cआप {target} को सज़ा नहीं दे सकते क्योंकि उनके पास इम्युनिटी है।"
+
+  punishment_issued: "&a&f{target}&a पर {type} जारी किया गया।"
+  punishment_issued_duration: "&a&f{target}&a पर {type} जारी किया गया ({duration})।"
+
+  reloading: "&eरीलोड हो रहा है..."
+  reload_success: "&aरीलोड पूरा हुआ।"
+  reload_error: "&cरीलोड करने में त्रुटि: {error}"
+
+command_errors:
+  unknown_command: "&cअज्ञात कमांड: &f{input}"
+  unknown_command_suggestions: "&cअज्ञात कमांड: &f{input}&c। क्या आपका मतलब &f{suggestions}&c था?"
+  unknown_subcommand: "&f/{input}&c से कोई कमांड मेल नहीं खाती। क्या आपका मतलब यह था:"
+  suggestion: "&7- &f/{command}"
+  expected_literal: "&f{expected}&c अपेक्षित था, लेकिन &f'{input}'&c मिला।"
+  missing_argument: "&cआर्ग्युमेंट &f{parameter}&c नहीं दिया गया। उपयोग: &f/{usage}"
+  too_many_arguments: "&cबहुत ज़्यादा आर्ग्युमेंट। अनपेक्षित इनपुट: &f{input}"
+  invalid_choice: "&cगलत विकल्प: &f{input}&c। उपलब्ध विकल्पों में से कोई एक दर्ज करें।"
+  value_not_allowed: "&cगलत मान: &f{input}&c। मान्य मान: &f{allowed}"
+  invalid_boolean: "&ftrue&c या &ffalse&c अपेक्षित था, लेकिन &f{input}&c मिला।"
+  invalid_number: "&cगलत संख्या: &f{input}"
+  invalid_integer: "&cगलत पूर्णांक: &f{input}"
+  invalid_uuid: "&cगलत UUID: &f{input}"
+  number_too_small: "&cमान &f{value}&c बहुत छोटा है। न्यूनतम मान &f{minimum}&c है।"
+  number_too_large: "&cमान &f{value}&c बहुत बड़ा है। अधिकतम मान &f{maximum}&c है।"
+  text_too_short: "&cटेक्स्ट बहुत छोटा है। न्यूनतम अक्षर संख्या: &f{minimum}"
+  text_too_long: "&cटेक्स्ट बहुत लंबा है। अधिकतम अक्षर संख्या: &f{maximum}"
+  too_few_values: "&cबहुत कम मान दिए गए। न्यूनतम संख्या &f{minimum}&c है।"
+  too_many_values: "&cबहुत ज़्यादा मान दिए गए। अधिकतम संख्या &f{maximum}&c है।"
+  invalid_escape: "&cगलत एस्केप अक्षर। बैकस्लैश लिखने के लिए &f\\\\&c का इस्तेमाल करें।"
+  unclosed_quote: "&cउद्धरण चिह्न बंद नहीं है। खोले गए हर उद्धरण चिह्न को बंद करें।"
+  expected_space: "&cआर्ग्युमेंट के बीच स्पेस रखें।"
+  unknown_flag: "&cअज्ञात विकल्प: &f{input}"
+  unknown_short_flag: "&cअज्ञात छोटा विकल्प: &f{input}"
+  invalid_help_page: "&cगलत सहायता पेज: &f{page}&c। आखिरी पेज &f{pages}&c है।"
+  cooldown: "&cइस कमांड को दोबारा इस्तेमाल करने से पहले आपको &f{time}&c इंतज़ार करना होगा।"
+  failed: "&cयह कमांड विफल रही। त्रुटि सर्वर कंसोल में दर्ज कर दी गई है।"
+  console_only: "&cयह कमांड केवल कंसोल से इस्तेमाल की जा सकती है।"
+  invalid_player: "&cगलत खिलाड़ी: &f{input}"
+  invalid_world: "&cगलत दुनिया: &f{input}"
+  missing_coordinate: "&cनिर्देशांक नहीं दिया गया: &f{axis}"
+  invalid_selector: "&cगलत एंटिटी सिलेक्टर: &f{input}"
+  selector_players_only: "&cसिलेक्टर &f{input}&c केवल खिलाड़ियों को चुन सकता है।"
+  selector_too_many: "&cसिलेक्टर को केवल एक एंटिटी चुननी चाहिए।"
+  selector_empty: "&cकोई एंटिटी नहीं मिली।"
+
+validation:
+  single_severity_error: "&cसिंगल-सिवियरिटी सज़ा प्रकार '{type}' पर सिवियरिटी सेट नहीं की जा सकती। इस सज़ा प्रकार में केवल एक ही सिवियरिटी स्तर है।"
+  permanent_skin_change_error: "&cस्किन बदलने तक स्थायी रहने वाले सज़ा प्रकार '{type}' पर सिवियरिटी सेट नहीं की जा सकती।"
+  permanent_username_change_error: "&cयूज़रनेम बदलने तक स्थायी रहने वाले सज़ा प्रकार '{type}' पर सिवियरिटी सेट नहीं की जा सकती।"
+  alt_blocking_not_supported: "&cसज़ा प्रकार '{type}' के लिए ऑल्ट-ब्लॉकिंग फ़्लैग समर्थित नहीं है।"
+  stat_wiping_not_supported: "&cसज़ा प्रकार '{type}' के लिए स्टैट-वाइपिंग फ़्लैग समर्थित नहीं है।"
+
+# Words substituted into punishment messages.
+punishment_words:
+  # {tense}, as in "You {tense} banned"
+  tense_default: "किए गए हैं"
+  tense_active: "हैं"
+  # {tense2}, as in "Your account {tense2} restricted"
+  tense2_default: "किया गया है"
+  tense2_active: "है"
+  # {temp}, as in "You have been {temp} banned"
+  temporarily: "अस्थायी रूप से"
+  permanently: "स्थायी रूप से"
+  # Expiry texts of timed punishments; {type} is type_ban, type_mute or type_punishment
+  will_expire: "\n&7इस {type} की समाप्ति &f{duration}&7 में होगी।"
+  duration_formatted: "\n&7इस {type} की समाप्ति {duration} में होगी"
+  mute_duration_formatted: " ({duration} के लिए)"
+  # {for_duration} on timed mutes; keep the leading space
+  for_duration: " ({duration} के लिए)"
+  type_ban: "बैन"
+  type_mute: "म्यूट"
+  type_punishment: "सज़ा"
+  # {duration} of permanent punishments; config.yml locale_config.duration_format.permanent overrides it when set
+  duration_permanent: "स्थायी"
+
+punishments:
+  public_notification:
+    ban_default: "&c{target} को बैन कर दिया गया है।"
+    mute_default: "&c{target} को म्यूट कर दिया गया है।"
+    kick_default: "&c{target} को किक कर दिया गया है।"
+    default: "&c{target} को सज़ा दी गई है।"
+  mute_fallback: "&cआप म्यूट हैं।"
+  player_notification:
+    ban_default: "&cआप बैन {tense} (#{id})।"
+    mute_default: "&cआप म्यूट {tense} (#{id})।"
+    kick_default: "&cआपको किक कर दिया गया है (#{id})।"
+    default: "&cआप दंडित {tense} (#{id})।"
+
+# punishment_types.ordinal_<n>: public_notification is broadcast, player_notification lines go to the punished player.
+# Types without an entry use the punishments section. Placeholders: https://github.com/modl-gg/modl/wiki/Placeholders#punishment-messages
+punishment_types:
+  ordinal_0: # Kick
+    public_notification: "&c{target} को किक कर दिया गया है।"
+    player_notification:
+      - "&c&lआपको सर्वर से किक कर दिया गया।"
+      - "&f{reason} &7(#{id})"
+
+  ordinal_1: # Manual Mute
+    public_notification: "&c{target} को म्यूट कर दिया गया है।"
+    player_notification:
+      - ""
+      - "&cआप {temp} म्यूट {tense}{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{reason}"
+      - ""
+
+  ordinal_2: # Manual Ban
+    public_notification: "&c{target} को बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआप {temp} बैन {tense}, कारण:"
+      - ""
+      - "&f{reason}"
+      - "&7{will_expire}"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें।"
+
+  ordinal_3: # Security Ban
+    public_notification: "&c{target} को बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lसुरक्षा कारणों से आपका अकाउंट प्रतिबंधित {tense2}।"
+      - "&fआपके अकाउंट पर संदिग्ध गतिविधि पाई गई है। कृपया अपना अकाउंट सुरक्षित करें और {appeal_url} पर ID #{id} के साथ अपील खोलें।"
+
+  ordinal_4: # Linked Ban
+    public_notification: "&c{target} को बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआपका अकाउंट एक बैन किए गए अकाउंट से लिंक {tense2}।"
+      - ""
+      - "&fऑल्ट अकाउंट का इस्तेमाल करके बैन से बचना या अपना अकाउंट साझा करना पूरी तरह प्रतिबंधित है।"
+      - ""
+      - "&7लिंक किया गया बैन खत्म होते ही यह बैन अपने आप हटा दिया जाएगा।"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें"
+
+  ordinal_5: # Blacklist
+    public_notification: "&c{target} को ब्लैकलिस्ट कर दिया गया है।"
+    player_notification:
+      - "&cआप ब्लैकलिस्ट {tense}"
+      - "&7ID: #{id}"
+
+  ordinal_6: # Chat Abuse
+    public_notification: "&c{target} को चैट के दुरुपयोग के लिए म्यूट कर दिया गया है।"
+    player_notification:
+      - ""
+      - "&cआप {temp} म्यूट {tense}{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+  ordinal_7: # Anti-Social
+    public_notification: "&c{target} को असामाजिक व्यवहार के लिए म्यूट कर दिया गया है।"
+    player_notification:
+      - ""
+      - "&cआप {temp} म्यूट {tense}{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+
+  ordinal_8: # Targeting
+    public_notification: "&c{target} को टारगेटिंग के लिए बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआप {temp} बैन {tense}, कारण:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें।"
+
+  ordinal_9: # Bad Content
+    public_notification: "&c{target} को अनुचित कंटेंट के लिए बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआप {temp} बैन {tense}, कारण:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें।"
+
+  ordinal_10: # Bad Username
+    public_notification: "&c{target} को बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआपके Minecraft यूज़रनेम की वजह से आप बैन {tense}।"
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7यूज़रनेम बदलते ही यह बैन अपने आप हट जाएगा।"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें"
+
+  ordinal_11: # Bad Skin
+    public_notification: "&c{target} को बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआपकी Minecraft स्किन की वजह से आप बैन {tense}।"
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7स्किन बदलते ही यह बैन अपने आप हट जाएगा।"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें"
+
+  ordinal_12: # Team Abuse
+    public_notification: "&c{target} को टीम के दुरुपयोग के लिए बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआप {temp} बैन {tense}, कारण:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें।"
+
+  ordinal_13: # Game Abuse
+    public_notification: "&c{target} को गेम के दुरुपयोग के लिए बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआप {temp} बैन {tense}, कारण:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें।"
+
+  ordinal_14: # Cheating
+    public_notification: "&c{target} को चीटिंग के लिए बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआप {temp} बैन {tense}, कारण:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें।"
+
+  ordinal_15: # Game Trading
+    public_notification: "&c{target} को गेम ट्रेडिंग के लिए बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआप {temp} बैन {tense}, कारण:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें।"
+
+  ordinal_16: # Account Abuse
+    public_notification: "&c{target} को अकाउंट के दुरुपयोग के लिए बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआप {temp} बैन {tense}, कारण:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें।"
+
+  ordinal_17: # Systems Abuse
+    public_notification: "&c{target} को सिस्टम के दुरुपयोग के लिए बैन कर दिया गया है।"
+    player_notification:
+      - "&c&lआप {temp} बैन {tense}, कारण:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7क्या यह गलती है? {appeal_url} पर ID #{id} के साथ अपील करें।"
+
+notification:
+  ticket_reply: "&6[टिकट] &f{message}"
+  ticket_reply_with_link: "&6[टिकट] &f{message} &b[देखने के लिए क्लिक करें]"
+  ticket_click_action: "&7टिकट {ticketId} देखने के लिए क्लिक करें"
+  ticket_prefix: "[टिकट] "
+
+iammuted:
+  only_players: "&cयह कमांड केवल खिलाड़ी ही इस्तेमाल कर सकते हैं।"
+  not_muted: "&cआप यह कमांड केवल तभी इस्तेमाल कर सकते हैं जब आप म्यूट हों।"
+  player_not_online: "&cवह खिलाड़ी ऑनलाइन नहीं है।"
+  cannot_message_self: "&cआप यह मैसेज खुद को नहीं भेज सकते।"
+  cooldown_message: "&cइस कमांड को दोबारा इस्तेमाल करने से पहले आपको {minutes} मिनट और {seconds} सेकंड इंतज़ार करना होगा।"
+  notification_to_target: "&6[म्यूट खिलाड़ी] &f{sender} &7इस समय म्यूट है और चैट में जवाब नहीं दे सकता।"
+  success_message: "&aआपका म्यूट स्टेटस &f{target}&a को बता दिया गया है।"
+
+standing:
+  error: "&cआपकी स्टैंडिंग लोड करने में विफल। कृपया बाद में फिर कोशिश करें।"
+  cooldown: "&cइस कमांड को दोबारा इस्तेमाल करने से पहले कृपया {seconds}s इंतज़ार करें।"
+
+player_lookup:
+  error: "&cखिलाड़ी खोजने में त्रुटि: {error}"
+  uuid: "&7UUID: &f{uuid}"
+  currently_banned: "&7अभी बैन: {status}"
+  currently_muted: "&7अभी म्यूट: {status}"
+  staff_notes_label: "&7स्टाफ नोट्स:"
+  staff_note_format: "  &8• &f{text} &7- {issuer}"
+  no_staff_notes: "  &8कोई स्टाफ नोट नहीं"
+  total_punishments: "&7कुल सज़ाएँ: &f{count}"
+  linked_accounts_label: "&7लिंक्ड अकाउंट:"
+  linked_account_format: "  &8• &f{username}{status}"
+  linked_account_more: "  &8... और {count} अन्य"
+  no_linked_accounts: "  &8कोई लिंक्ड अकाउंट नहीं"
+  total_tickets: "&7कुल टिकट: &f{count}"
+  profile_fallback: "&6प्रोफ़ाइल: &b{url}"
+
+  status:
+    banned_and_muted: " &c(अभी बैन और म्यूट)"
+    banned: " &c(अभी बैन)"
+    muted: " &e(अभी म्यूट)"
+    no_punishments: " &7(कोई सक्रिय सज़ा नहीं)"
+
+print:
+  inspect:
+    header: ""
+    uuid: "&f{player} की जानकारी &7({uuid})"
+    currently_banned: "&eबैन: {status}"
+    currently_muted: "&eम्यूट: {status}"
+    notes_label: "&eस्टाफ नोट्स:"
+    note_entry: "&6{ordinal}. &f{text} &e{issuer} द्वारा"
+    no_notes: "&7कोई स्टाफ नोट नहीं"
+    total_punishments: "&eकुल सज़ाएँ: &f{count}"
+    linked_accounts_label: "&eलिंक्ड अकाउंट:"
+    linked_account_entry: "&6{ordinal}. &e{username} ({status}&e)"
+    linked_account_more: "&e... और {count} अन्य"
+    no_linked_accounts: "&7कोई लिंक्ड अकाउंट नहीं"
+    total_tickets: "&eकुल टिकट: &f{count}"
+    profile_fallback: "&eप्रोफ़ाइल: &b{url}"
+    web_profile_link: "वेब प्रोफ़ाइल देखें"
+    web_profile_hover: "{player} की प्रोफ़ाइल देखने के लिए क्लिक करें"
+    footer: ""
+
+  punishment_detail:
+    not_found: "&cसज़ा #{id} नहीं मिली।"
+    header: " "
+    type: "&eप्रकार: &f{type}"
+    player: "&eखिलाड़ी: &f{player}"
+    issuer: "&eजारी करने वाला: &f{issuer}"
+    date: "&eतारीख़: &f{date}"
+    status: "&eस्थिति: {status}"
+    duration: "&eअवधि: &f{duration}"
+    reason: "&eकारण: &f{reason}"
+    evidence: "&eसबूत: &f{count} फ़ाइल"
+    notes: "&eनोट्स: &f{count}"
+    modifications: "&eबदलाव: &f{count}"
+    status_active: "सक्रिय"
+    status_pardoned: "माफ़ की गई"
+    status_rolled_back: "वापस ली गई"
+    status_inactive: "निष्क्रिय"
+    footer: " "
+
+  history:
+    header: ""
+    entry_kick: "&6{ordinal}. &7#{id} &e{date} &f{type} &e{issuer} द्वारा, कारण &f{reason}"
+    entry_active: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &e{issuer} द्वारा, कारण &f{reason} &7({expiry} में समाप्त)"
+    entry_permanent: "&6{ordinal}. &c#{id} &e{date} &f{type} (स्थायी) &e{issuer} द्वारा, कारण &f{reason}"
+    entry_unstarted: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &e{issuer} द्वारा, कारण &f{reason} &7(अभी शुरू नहीं हुई)"
+    entry_expired: "&6{ordinal}. &7#{id} &e{date} &f{type} ({duration}) &e{issuer} द्वारा, कारण &f{reason} &7({expired_ago} पहले समाप्त)"
+    entry_pardoned: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &e{issuer} द्वारा, कारण &f{reason} &7({pardoned_ago} पहले माफ़)"
+    entry_rolled_back: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &e{issuer} द्वारा, कारण &f{reason} &7({rolled_back_ago} पहले वापस ली गई)"
+    total: "&eपेज {page}/{total_pages} (कुल {count})"
+    empty: "&7खिलाड़ी को कभी सज़ा नहीं मिली।"
+    footer: ""
+
+  notes:
+    header: ""
+    entry: "&6{ordinal}. &e{date} {author}: &f{content}"
+    warning_badge: "&c&l[चेतावनी]&r&f "
+    total: "&eपेज {page}/{total_pages} (कुल {count})"
+    empty: "&7कोई स्टाफ नोट नहीं मिला।"
+    footer: ""
+
+  alts:
+    header: ""
+    entry: "&6{ordinal}. {color}{username} &e({status}&e)"
+    status_banned: "&cबैन"
+    status_muted: "&eम्यूट"
+    status_banned_and_muted: "&cबैन और म्यूट"
+    status_clean: "&aसाफ़"
+    total: "&eपेज {page}/{total_pages} (कुल {count})"
+    total_truncated: "&eपेज {page}/{total_pages} (सबसे हाल के {count})"
+    empty: "&7कोई लिंक्ड अकाउंट नहीं मिला।"
+    footer: ""
+
+  reports:
+    header: ""
+    entry: "&6{ordinal}. &e#{id} {date} ({status}&e) &f{type} रिपोर्ट &e{reporter} द्वारा"
+    entry_content: " &f{content}"
+    status_open: "खुली"
+    status_closed: "बंद"
+    total: "&eपेज {page}/{total_pages} (कुल {count})"
+    empty: "&7कोई रिपोर्ट नहीं मिली।"
+    footer: ""
+
+  staff_list:
+    header: ""
+    entry: "&6 - &e{player} ({in-game-name}) &7[{role}] &f{server}&e पर{v}"
+    vanish: " &7[V]"
+    empty: "&7कोई स्टाफ सदस्य ऑनलाइन नहीं है।"
+    total: "&eपेज {page}/{total_pages} (कुल {count})"
+
+punishment_commands:
+  invalid_severity: "&cअमान्य सिवियरिटी। मान्य सिवियरिटी: lenient, regular, severe"
+  warning_message: "&c{username} को {punishment_type} किया गया है।"
+
+api_errors:
+  panel_unavailable: "&cअभी पैनल तक नहीं पहुँचा जा सकता; थोड़ी देर में फिर कोशिश करें।"
+  connection_failed: "&cपैनल से कनेक्शन विफल। कृपया कुछ देर बाद फिर कोशिश करें।"
+  startup_failed: "&cइस सर्वर का मॉडरेशन सिस्टम अभी नहीं चल रहा है। कृपया बाद में फिर से प्रयास करें।"
+  version_mismatch: "&cइस सर्वर का मॉडरेशन सिस्टम अपडेट हो रहा है। कृपया बाद में फिर से प्रयास करें।"
+  database_moving: "&cइस सर्वर का मॉडरेशन सिस्टम नए डेटाबेस पर जा रहा है। कृपया बाद में फिर से प्रयास करें।"
+  packetevents_required: "&cजब तक PacketEvents {version} या उससे नया संस्करण इंस्टॉल नहीं होता, यह सर्वर खिलाड़ियों को स्वीकार नहीं कर सकता।"
+  ban_check_failed: "&cबैन स्थिति की पुष्टि नहीं हो सकी। सुरक्षा के लिए लॉगिन अस्थायी रूप से रोका गया है।"
+  invalid_name: "&cआपका खिलाड़ी नाम इस सर्वर पर मान्य नहीं है। नाम में केवल अक्षर, अंक और अंडरस्कोर हो सकते हैं (अधिकतम 16 अक्षर)।"
+  login_check_skipped: "&cआपके लॉगिन को इस सर्वर के बैन से जाँचा नहीं जा सका। कृपया सर्वर स्टाफ से संपर्क करें।"
+  shortening_needs_pardon: "&cकिसी दंड को जल्दी समाप्त करने के लिए उसकी अवधि बदलने और उसे माफ़ करने, दोनों की अनुमति चाहिए।"
+
+pardon:
+  success_id: "&aसज़ा &e#{id}&a माफ़ कर दी गई।"
+  success_player: "&a{player} के {count} {type} माफ़ कर दिए गए।"
+  already_pardoned_id: "&7सज़ा &e#{id}&7 पहले से निष्क्रिय है या माफ़ की जा चुकी है।"
+  no_active_punishment: "&7{player} के पास माफ़ करने के लिए कोई सक्रिय {type} नहीं है।"
+  error: "&cमाफ़ करने में विफल: {error}"
+  error_player: "&c{player} का {type} माफ़ करने में विफल: {error}"
+  error_wrong_type_ban: "&cसज़ा &e#{id}&c एक बैन नहीं है। किसी भी प्रकार की सज़ा माफ़ करने के लिए &e/pardon {id}&c इस्तेमाल करें।"
+  error_wrong_type_mute: "&cसज़ा &e#{id}&c एक म्यूट नहीं है। किसी भी प्रकार की सज़ा माफ़ करने के लिए &e/pardon {id}&c इस्तेमाल करें।"
+  staff_notification_id: "&7&o[{issuer}: सज़ा #{id}&7&o माफ़ की]"
+  staff_notification_player: "&7&o[{issuer}: {player} का {type}&7&o माफ़ किया]"
+
+warn:
+  player_message: "&c&lआपको {issuer} से चेतावनी मिली है।\n&fकारण: &7{reason}"
+  success: "&a&f{target}&a को चेतावनी दी गई, कारण: &7{reason}"
+  staff_notification: "&7&o[{issuer}: {target} को {reason} के लिए चेतावनी दी&7&o]"
+  error: "&cचेतावनी बनाने में विफल: {error}"
+
+menus:
+  common:
+    action_failed: "&cयह काम नहीं हुआ; थोड़ी देर में फिर कोशिश करें।"
+    saved_but_incomplete: "&eबदलाव सहेज लिया गया, पर मेन्यू अपडेट नहीं हो सका। जाँचने के लिए इसे फिर से खोलें।"
+    back: "&cवापस"
+    back_lore: []
+    previous_page: "&eपिछला पेज"
+    next_page: "&eअगला पेज"
+    filter: "&6फ़िल्टर"
+    sort: "&6सॉर्ट"
+    filter_by_type: "&7प्रकार के अनुसार फ़िल्टर करें:"
+    sort_by: "&7इसके अनुसार सॉर्ट करें:"
+    option_selected: "&a▸ {option}"
+    option_unselected: "&7  {option}"
+    cycle_filters: "&eफ़िल्टर बदलने के लिए क्लिक करें"
+    cycle_sort: "&eसॉर्ट बदलने के लिए क्लिक करें"
+    # {status} is status_open or status_closed, {items} is items_reports or items_tickets
+    status_showing: "&7प्रदर्शित: &a{status} {items}"
+    status_click_toggle: "&eकेवल {status} {items} दिखाने के लिए क्लिक करें"
+    status_right_click_toggle: "&eकेवल {status} {items} दिखाने के लिए राइट-क्लिक करें"
+    click_to_toggle: "&eटॉगल करने के लिए क्लिक करें"
+    status_open: "ओपन"
+    status_closed: "बंद"
+    items_reports: "रिपोर्ट"
+    items_tickets: "टिकट"
+    report_filters:
+      all: "सभी"
+      gameplay: "गेमप्ले"
+      chat: "चैट"
+    report_status_open: "&aखुली"
+    report_status_closed: "&cबंद"
+    enabled: "&aचालू"
+    disabled: "&cबंद"
+    no_permission: "&cअनुमति नहीं"
+    no_permission_modify: "&cबदलने की अनुमति नहीं"
+    load_profile_failed: "&cखिलाड़ी प्रोफ़ाइल लोड करने में विफल"
+    load_profile_error: "&cखिलाड़ी प्रोफ़ाइल लोड करने में विफल: {error}"
+    no_reported_player: "&cजांच नहीं हो सकती: इस रिपोर्ट में कोई खिलाड़ी UUID नहीं है।"
+    dismissing_report: "&eरिपोर्ट खारिज की जा रही है..."
+    report_dismissed: "&aरिपोर्ट खारिज कर दी गई।"
+    dismiss_report_failed: "&cरिपोर्ट खारिज करने में विफल: {error}"
+    ticket_link_label: "टिकट #{id}: "
+    open_in_browser: "ब्राउज़र में खोलने के लिए क्लिक करें"
+    presence: "{time}"
+    presence_on_server: "{server} पर {time}"
+
+  titles:
+    inspect: "जांच: {player}"
+    notes: "नोट्स: {player}"
+    alts: "ऑल्ट: {player}"
+    history: "इतिहास: {player}"
+    reports: "रिपोर्ट: {player}"
+    punish: "सज़ा दें: {player}"
+    punish_type: "सज़ा दें: {type}"
+    modify_punishment: "सज़ा बदलें"
+    link_reports: "रिपोर्ट लिंक करें: {player}"
+    linked_tickets: "लिंक्ड टिकट"
+    staff_panel: "स्टाफ पैनल"
+    online_players: "ऑनलाइन खिलाड़ी"
+    staff_reports: "रिपोर्ट"
+    recent_punishments: "हाल की सज़ाएँ"
+    support_tickets: "सपोर्ट टिकट"
+    staff_members: "स्टाफ सदस्य"
+    manage_staff: "स्टाफ प्रबंधन"
+    edit_roles: "भूमिकाएँ संपादित करें"
+    edit_role: "संपादित करें: {role}"
+
+  # Staff menu tab bar (compact_lore is used in compact headers)
+  staff_tabs:
+    online_players:
+      name: "&6ऑनलाइन खिलाड़ी"
+      lore: []
+      compact_lore: []
+    reports:
+      name: "&6रिपोर्ट"
+      lore: []
+      compact_lore: []
+    punishments:
+      name: "&6हाल की सज़ाएँ"
+      lore: []
+      compact_lore: []
+    tickets:
+      name: "&6सपोर्ट टिकट"
+      lore: []
+      compact_lore: []
+    panel:
+      name: "&6पैनल पर जाएँ"
+      lore: []
+      compact_lore: []
+    settings:
+      name: "&6सेटिंग्स"
+      lore: []
+      compact_lore: []
+    panel_link_label: "स्टाफ पैनल: "
+
+  inspect_tabs:
+    notes:
+      name: "&6नोट्स"
+      lore:
+        - "&7स्टाफ नोट्स ({count})"
+      compact_lore:
+        - "&7स्टाफ नोट्स ({count})"
+    alts:
+      name: "&6ऑल्ट"
+      lore: []
+      compact_lore: []
+    history:
+      name: "&6इतिहास"
+      lore:
+        - "&7सज़ाएँ ({count})"
+      compact_lore:
+        - "&7सज़ाएँ ({count})"
+    reports:
+      name: "&6रिपोर्ट"
+      lore: []
+      compact_lore: []
+    punish:
+      name: "&cसज़ा दें"
+      lore: []
+      compact_lore: []
+  player_head:
+    title: "&6{player_name} की जानकारी"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7पहला लॉगिन: &f{first_login}"
+      - "&7ऑनलाइन: {is_online} ({presence})"
+      - "&7प्लेटाइम: &f{playtime}"
+      - "&7असली IP लॉग: &f{real_ip_logged}"
+      - "&7क्षेत्र: &f{location}"
+      - "&7बैन: &f{is_banned}"
+      - "&7म्यूट: &f{is_muted}"
+      - ""
+      - "&e{player_name} को टारगेट करने के लिए लेफ्ट-क्लिक करें"
+
+  history_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7सर्वर: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&eइस सज़ा को बदलने के लिए क्लिक करें"
+    status_active: "&7{expiry} में समाप्त होगी"
+    status_inactive: "&7{expired} पहले समाप्त हुई"
+    status_pardoned: "&7{pardoned} पहले माफ़ की गई"
+    status_rolled_back: "&7{rolled_back} पहले वापस ली गई"
+    status_permanent: "&7कभी समाप्त नहीं होगी"
+    status_unstarted: "&7सज़ा अभी शुरू नहीं हुई"
+    note_format: "&e{note_date} {note_issuer}&f: {note}"
+
+  recent_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7खिलाड़ी: &f{player}"
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7सर्वर: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&eइस सज़ा को बदलने के लिए क्लिक करें"
+
+  note_item:
+    title: "&e{date} {author}"
+    lore:
+      - "&f{content}"
+      - "&f "
+      - "&eनोट चैट में देखने के लिए क्लिक करें"
+
+  report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7रिपोर्ट करने वाला &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eखिलाड़ी की जांच के लिए लेफ्ट-क्लिक करें"
+      - "&eरिपोर्ट खारिज करने के लिए राइट-क्लिक करें"
+
+  alt_item:
+    title: "{color}{player_name}"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7ऑनलाइन: {is_online} ({presence})"
+      - "&7असली IP लॉग: {real_ip}"
+      - "&7पहला लॉगिन: &f{first_login}"
+      - "&7{punishments}"
+      - "&f "
+      - "&e{player_name} की जांच के लिए क्लिक करें"
+    punishment_line_active_true:
+      - "&7सक्रिय सज़ाएँ ({active_count}): &f"
+      - "{active_punishment_list}"
+    punishment_line_active_false:
+      - "&7सक्रिय सज़ाएँ: &f0"
+      - "&7निष्क्रिय सज़ाएँ: &f{inactive_count}"
+    active_punishment_format: "&7- &e#{punishment_id} {punishment_date}: {punishment_type} ({punishment_remaining})"
+
+  empty:
+    history: "कोई सज़ा इतिहास नहीं"
+    notes: "कोई स्टाफ नोट नहीं"
+    reports: "कोई रिपोर्ट दर्ज नहीं"
+    alts: "कोई लिंक्ड अकाउंट नहीं"
+    tickets: "कोई टिकट नहीं"
+    staff_reports: "कोई रिपोर्ट नहीं"
+    punishments: "कोई सज़ा नहीं"
+    linked_tickets: "कोई लिंक्ड टिकट नहीं"
+    online_players: "कोई खिलाड़ी ऑनलाइन नहीं"
+    staff_members: "कोई स्टाफ सदस्य नहीं"
+    staff_online: "कोई स्टाफ ऑनलाइन नहीं"
+    staff_offline: "कोई स्टाफ ऑफ़लाइन नहीं"
+    roles: "कोई भूमिका नहीं"
+    permissions: "कोई अनुमति नहीं"
+
+  ticket_item:
+    title: "&6टिकट #{id}"
+    lore:
+      - "&7खिलाड़ी: &f{player}"
+      - "&7शीर्षक: &f{title}"
+      - "&7बनाया गया: &f{date}"
+      - "&7स्थिति: {status}"
+      - "&f "
+      - "&eपैनल में खोलने के लिए क्लिक करें"
+    no_title: "कोई शीर्षक नहीं"
+
+  staff_report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&c{reported}&7 की रिपोर्ट &a{reporter} &7({type}) ने की"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eखिलाड़ी की जांच के लिए लेफ्ट-क्लिक करें"
+      - "&eरिपोर्ट खारिज करने के लिए राइट-क्लिक करें"
+  linked_ticket_item:
+    no_subject: "कोई विषय नहीं"
+    click_to_view: "&eपैनल में देखने के लिए क्लिक करें"
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7{title}"
+      - "&f "
+      - "{content}"
+  link_report_item_unselected:
+    title: "&e{date} {id}"
+    lore:
+      - "&7रिपोर्ट करने वाला &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eचुनने के लिए क्लिक करें"
+  link_report_item_selected:
+    title: "&a{date} {id}"
+    lore:
+      - "&7रिपोर्ट करने वाला &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eचयन हटाने के लिए क्लिक करें"
+
+  staff_members:
+    title: "&e{panel_name}"
+    lore:
+      - "&7भूमिका: &f{role}"
+      - "&7Minecraft: &f{minecraft_username}"
+      - ""
+      - "&7ऑनलाइन: {is_online} ({presence})"
+      - "&7प्लेटाइम: &f{playtime}"
+      - "&7जारी की गई सज़ाएँ: &f{punishments_count}"
+    not_linked: "लिंक नहीं है"
+    filters:
+      online: "ऑनलाइन"
+      offline: "ऑफ़लाइन"
+      all: "सभी"
+
+  notes:
+    created: "&aनोट बनाया गया।"
+    create_failed: "&cनोट बनाने में विफल: {error}"
+    cancelled: "&7नोट बनाना रद्द किया गया।"
+    create: "&aनोट बनाएँ"
+    create_lore: []
+    prompt: "{player} के लिए नोट की सामग्री दर्ज करें:"
+    chat_label: "नोट: "
+  modify_punishment:
+    no_changes: "&7लिंक्ड टिकट में कोई बदलाव नहीं।"
+    tickets_updated: "&aलिंक्ड टिकट अपडेट हो गए।"
+    tickets_update_error: "&cलिंक्ड टिकट अपडेट करने में विफल: {error}"
+    current_state: "&7वर्तमान: {state}"
+    add_note:
+      name: "&eनोट जोड़ें"
+      name_locked: "&7नोट जोड़ें"
+      lore: []
+      prompt: "इस सज़ा में जोड़ने के लिए नोट दर्ज करें:"
+      added: "&aनोट जोड़ा गया।"
+      failed: "&cनोट जोड़ने में विफल: {error}"
+      cancelled: "&7नोट रद्द किया गया।"
+    evidence:
+      name: "&bसबूत"
+      name_locked: "&7सबूत"
+      none: "&8(कोई सबूत नहीं जोड़ा गया)"
+      header: "&7मौजूदा सबूत ({count}):"
+      entry: "&f- {evidence}"
+      more: "&8... और {count} अन्य"
+      left_click_add: "&eसबूत जोड़ने के लिए लेफ्ट-क्लिक करें"
+      right_click_view: "&eचैट में देखने के लिए राइट-क्लिक करें"
+      no_evidence: "&7इस सज़ा के साथ कोई सबूत नहीं जोड़ा गया है।"
+      chat_header: "&6सज़ा #{id} के सबूत:"
+      chat_entry: "&f{index}. {evidence}"
+      chat_added_by: "&7   {uploader} द्वारा {date} को जोड़ा गया"
+      prompt: "सबूत का URL दर्ज करें:"
+      added: "&aसबूत जोड़ा गया।"
+      failed: "&cसबूत जोड़ने में विफल: {error}"
+      cancelled: "&7सबूत जोड़ना रद्द किया गया।"
+    pardon:
+      name: "&aसज़ा माफ़ करें"
+      name_locked: "&7सज़ा माफ़ करें"
+      lore:
+        - "&7सज़ा हटाएँ और उससे जुड़े"
+        - "&7पॉइंट्स साफ़ करें"
+      success: "&aसज़ा माफ़ कर दी गई।"
+      already_inactive: "&7सज़ा पहले से निष्क्रिय है या माफ़ की जा चुकी है।"
+      failed: "&cसज़ा माफ़ करने में विफल: {error}"
+    duration:
+      name: "&6अवधि बदलें"
+      name_locked: "&7अवधि बदलें"
+      current: "&7वर्तमान: &f{duration}"
+      # {permanent_keyword} is the literal word players type for a permanent duration; keep it as is
+      prompt: "नई अवधि दर्ज करें (जैसे 30d, 2h, 30m, 1d2h30m, या स्थायी के लिए '{permanent_keyword}'):"
+      invalid: "&cअमान्य अवधि फ़ॉर्मेट। उदाहरण: 30d, 2h, 30m, 1d2h30m"
+      changed: "&aअवधि बदल दी गई।"
+      failed: "&cअवधि बदलने में विफल: {error}"
+      lengthen_only: "&7आप इस दंड को केवल बढ़ा सकते हैं: इसे घटाने के लिए माफ़ करने की अनुमति चाहिए।"
+      needs_pardon: "&cइस दंड को घटाने के लिए माफ़ करने की अनुमति चाहिए।"
+      cancelled: "&7अवधि बदलना रद्द किया गया।"
+    linked_tickets:
+      name: "&6लिंक्ड टिकट"
+      none: "&8(कोई लिंक्ड टिकट नहीं)"
+      header: "&7लिंक्ड टिकट ({count}):"
+      entry: "&f- {ticket}"
+      more: "&8... और {count} अन्य"
+      left_click_view: "&eटिकट देखने के लिए लेफ्ट-क्लिक करें"
+      right_click_link: "&eरिपोर्ट लिंक करने के लिए राइट-क्लिक करें"
+    stat_wipe:
+      name: "&6स्टैट-वाइप टॉगल करें"
+      name_locked: "&7स्टैट-वाइप टॉगल करें"
+      enable_lore: "&7इस बैन के लिए स्टैट-वाइपिंग चालू करें"
+      disable_lore: "&7इस बैन के लिए स्टैट-वाइपिंग बंद करें"
+      enabled: "&aस्टैट-वाइप चालू किया गया।"
+      disabled: "&aस्टैट-वाइप बंद किया गया।"
+      failed: "&cस्टैट-वाइप टॉगल करने में विफल: {error}"
+    alt_block:
+      name: "&6ऑल्ट-ब्लॉकिंग टॉगल करें"
+      name_locked: "&7ऑल्ट-ब्लॉकिंग टॉगल करें"
+      enable_lore: "&7इस बैन के लिए ऑल्ट-ब्लॉकिंग चालू करें"
+      disable_lore: "&7इस बैन के लिए ऑल्ट-ब्लॉकिंग बंद करें"
+      enabled: "&aऑल्ट-ब्लॉकिंग चालू की गई।"
+      disabled: "&aऑल्ट-ब्लॉकिंग बंद की गई।"
+      failed: "&cऑल्ट-ब्लॉकिंग टॉगल करने में विफल: {error}"
+
+  online_players:
+    title: "&6{player_name}"
+    lore:
+      - "&7सेशन: &f{session_duration}"
+      - "&7कुल प्लेटाइम: &f{total_playtime}"
+      - ""
+      - "&7रिपोर्ट ({report_count}):"
+      - "{report-list}"
+      - ""
+      - "&eजांच के लिए लेफ्ट-क्लिक करें"
+      - "&eटारगेट करने के लिए राइट-क्लिक करें"
+    report_entry: " &6- &e{date} {reporter}: &f{details}"
+    reports_more: " &e... और {count} अन्य"
+    sorts:
+      least_playtime: "सबसे कम प्लेटाइम"
+      recent_gameplay_reports: "हाल की गेमप्ले रिपोर्ट"
+      longest_session: "सबसे लंबा सेशन"
+
+  settings:
+    title: "सेटिंग्स"
+    information:
+      name: "&6जानकारी"
+      username: "&7यूज़रनेम: &f{username}"
+      role: "&7भूमिका: &f{role}"
+      role_admin: "Super Admin"
+      role_staff: "स्टाफ"
+      permissions_header: "&7अनुमतियाँ:"
+      permission_modify_settings: "&a  ✓ &7सेटिंग्स बदलें"
+      permission_manage_staff: "&a  ✓ &7स्टाफ प्रबंधित करें"
+    staff_list:
+      name: "&6स्टाफ सूची"
+      lore: []
+    manage_staff:
+      name: "&6स्टाफ प्रबंधन"
+      lore: []
+    edit_roles:
+      name: "&6भूमिकाएँ संपादित करें"
+      lore: []
+    reload:
+      name: "&cmodl रीलोड करें"
+      lore:
+        - "&7कॉन्फ़िगरेशन और भाषा फ़ाइलें रीलोड करें"
+
+  punish:
+    no_types: "&cकोई सज़ा प्रकार नहीं"
+    no_types_lore:
+      - "&7API से सज़ा के प्रकार"
+      - "&7लोड करने में विफल"
+    click_to_issue: "&eसज़ा जारी करने के लिए क्लिक करें"
+    click_to_select_severity: "&eसिवियरिटी चुनने के लिए क्लिक करें"
+    no_permission_lore:
+      - "&cअनुमति नहीं"
+    type_not_found: "&cसज़ा प्रकार नहीं मिला"
+    ordinal: "&7क्रमांक: {ordinal}"
+
+  # Punishment severity menu. {state} is menus.common.enabled or menus.common.disabled
+  punish_severity:
+    severities:
+      lenient:
+        title: "&aनरम"
+      regular:
+        title: "&eसामान्य"
+      aggravated:
+        title: "&cगंभीर"
+    issue_punishment: "&eसज़ा जारी करें"
+    preview_duration: "&7सज़ा: &f{duration}"
+    preview_duration_permanent: "&7सज़ा: &f{duration} &c(स्थायी)"
+    preview_type: "&7प्रकार: &f{type}"
+    preview_points: "&7पॉइंट्स: &e+{points}"
+    offender_level: "&7अपराधी स्तर: {current}&7 → {next}"
+    restricted_until_username:
+      - "&eखिलाड़ी तब तक प्रतिबंधित रहेगा जब तक"
+      - "&eवह अपना यूज़रनेम नहीं बदलता"
+    restricted_until_skin:
+      - "&eखिलाड़ी तब तक प्रतिबंधित रहेगा जब तक"
+      - "&eवह अपनी स्किन नहीं बदलता"
+    click_to_issue: "&eसज़ा जारी करने के लिए क्लिक करें"
+    click_to_issue_silent: "&eसाइलेंट सज़ा जारी करने के लिए क्लिक करें"
+    single_click_to_issue: "&aसज़ा जारी करने के लिए क्लिक करें"
+    single_click_to_issue_silent: "&aसाइलेंट सज़ा जारी करने के लिए क्लिक करें"
+    link_reports: "&6रिपोर्ट लिंक करें"
+    link_reports_selected: "&6रिपोर्ट लिंक करें&a ({count})"
+    select_reports: "&eरिपोर्ट चुनने के लिए क्लिक करें"
+    linked_reports_header: "&aलिंक्ड रिपोर्ट:"
+    linked_report_entry: "&7  - &f{id}"
+    modify_selection: "&eचयन बदलने के लिए क्लिक करें"
+    silent_mode: "&6साइलेंट मोड: {state}"
+    silent_on: "&aसज़ा साइलेंट रहेगी"
+    silent_off: "&7सज़ा सार्वजनिक रहेगी"
+    alt_blocking: "&6ऑल्ट-ब्लॉकिंग: {state}"
+    alt_blocking_on: "&aऑल्ट अकाउंट ब्लॉक किए जाएँगे"
+    alt_blocking_off: "&7ऑल्ट अकाउंट अब भी जुड़ सकते हैं"
+    stat_wipe: "&6स्टैट-वाइप: {state}"
+    stat_wipe_on: "&aआँकड़े मिटा दिए जाएँगे"
+    stat_wipe_off: "&7आँकड़े सुरक्षित रहेंगे"
+    reason_prompt: "{player} के लिए सज़ा का कारण दर्ज करें:"
+    reports_resolved: "&aहल की गई लिंक्ड रिपोर्ट: {count}"
+    reports_not_resolved: "&cहल नहीं हो सकीं लिंक्ड रिपोर्ट ({count}): {reports}"
+    reports_resolve_error: "&cकारण: {error}"
+    issue_failed: "&cसज़ा जारी करने में विफल: {error}"
+    cancelled: "&7सज़ा रद्द की गई।"
+
+  staff_list:
+    no_permission_lore:
+      - "&7आपके पास स्टाफ सदस्यों को"
+      - "&7प्रबंधित करने की अनुमति नहीं है"
+    role: "&7भूमिका: &f{role}"
+    super_admin_locked: "&cसुपर एडमिन को बदला नहीं जा सकता"
+    self_locked: "&cआप अपनी खुद की भूमिका नहीं बदल सकते"
+    rank_locked:
+      - "&cआप समान या ऊँची रैंक वाले"
+      - "&cस्टाफ को नहीं बदल सकते"
+    roles_header: "&7भूमिकाएँ:"
+    role_current: "&a  &l{role} &r&7(वर्तमान)"
+    role_selected: "&a  {role} &7(चयनित)"
+    role_option: "&7  {role}"
+    cycle_roles: "&eभूमिकाएँ बदलने के लिए राइट-क्लिक करें"
+    apply_role: "&eचुनी गई भूमिका लागू करने के लिए लेफ्ट-क्लिक करें"
+    no_roles: "&cकोई भूमिका उपलब्ध नहीं।"
+    role_chosen: "&eचुनी गई भूमिका: &a{role}&7 (लागू करने के लिए लेफ्ट-क्लिक करें)"
+    already_current: "&7यह पहले से {player} की वर्तमान भूमिका है।"
+    applying: "&e{player} को भूमिका &a{role}&e दी जा रही है..."
+    updated: "&aभूमिका अपडेट हो गई।"
+    update_failed: "&cभूमिका अपडेट करने में विफल: {error}"
+
+  roles:
+    no_permission_lore:
+      - "&7आपके पास भूमिकाएँ संपादित"
+      - "&7करने की अनुमति नहीं है"
+    permission_count: "&7अनुमतियाँ: &f{count}"
+    click_to_edit: "&eअनुमतियाँ संपादित करने के लिए क्लिक करें"
+    cannot_edit_own: "&cआप अपनी खुद की भूमिका संपादित नहीं कर सकते।"
+
+  role_permissions:
+    apply_changes: "&aबदलाव लागू करें"
+    apply_changes_lore: "&eअनुमतियों के बदलाव सेव करने के लिए क्लिक करें"
+    no_changes: "&7कोई बदलाव नहीं"
+    no_changes_lore: "&8अनुमतियाँ टॉगल करें, फिर सेव करने के लिए क्लिक करें"
+    no_permission_lore:
+      - "&7आपके पास भूमिका अनुमतियाँ"
+      - "&7संपादित करने की अनुमति नहीं है"
+    auto_granted: "&8पैरेंट से अपने आप मिली"
+    nothing_to_save: "&7सेव करने के लिए कोई बदलाव नहीं।"
+    saving: "&e{role} के लिए अनुमतियाँ सेव की जा रही हैं..."
+    saved: "&aअनुमतियाँ सेव हो गईं।"
+    save_failed: "&cसेव करने में विफल: {error}"
+
+  link_reports:
+    apply: "&aचयन लागू करें"
+    apply_lore:
+      - "&7चयन सेव करें और वापस जाएँ"
+      - ""
+      - "&eचयनित रिपोर्ट: {count}"
+    select_all: "&aसभी चुनें"
+    select_all_lore:
+      - "&7अभी फ़िल्टर की गई सभी रिपोर्ट टॉगल करें"
+
+  punishment_kind:
+    kick: "किक"
+    ban: "बैन"
+    mute: "म्यूट"
+    details: " &f({details})"
+
+  # Chat input prompts opened from menus. {cancel} is the literal word that cancels the prompt; keep it as is
+  chat_input:
+    prompt: "&6&l» &e{prompt}"
+    hint: "&7चैट में अपना जवाब लिखें, या रद्द करने के लिए &c{cancel} &7लिखें।"
+    timed_out: "&cइनपुट प्रॉम्प्ट का समय समाप्त हो गया। कृपया फिर कोशिश करें।"
+
+# Set usage to "" to hide a command from the help list.
+help:
+  header: "&a&lmodl &av{version} &f- &eकमांड सूची"
+  entry: "&f/{command} &7- {description}"
+  footer: "&eपेज {page}/{total_pages}। अगले पेज के लिए &a/modl help {next_page}&e इस्तेमाल करें।"
+  no_more_pages: "&7और पेज नहीं हैं।"
+  version_header: "&a&lmodl&a v{version}&f - &eमॉडरेशन और सहायता प्रबंधन प्रणाली"
+  version_footer: "&7GNU AGPLv3 मुक्त सॉफ़्टवेयर। कमांड की जानकारी के लिए /modl help का उपयोग करें।"
+  player_commands:
+    iammuted:
+      usage: "iammuted <खिलाड़ी>"
+      description: "किसी को बताएँ कि आप म्यूट हैं"
+    standing:
+      usage: "standing"
+      description: "अपनी सज़ा स्टैंडिंग देखें"
+    report:
+      usage: "report <खिलाड़ी>"
+      description: "किसी खिलाड़ी की रिपोर्ट करें"
+    chatreport:
+      usage: "chatreport <खिलाड़ी>"
+      description: "किसी खिलाड़ी की चैट की रिपोर्ट करें"
+    claimticket:
+      usage: "claimticket <id> <कुंजी>"
+      description: "टिकट को अपने अकाउंट से लिंक करें"
+    apply:
+      usage: "apply"
+      description: "स्टाफ पद के लिए आवेदन करें"
+    bugreport:
+      usage: "bugreport"
+      description: "बग की रिपोर्ट करें"
+    support:
+      usage: "support"
+      description: "सपोर्ट टिकट खोलें"
+    link:
+      usage: "modl link <कोड>"
+      description: "अपना Minecraft अकाउंट पैनल से लिंक करें"
+    panel:
+      usage: "modl panel"
+      description: "एक बार इस्तेमाल होने वाला पैनल लॉगिन लिंक पाएँ"
+  staff_commands:
+    staffmenu:
+      usage: "staffmenu"
+      description: "स्टाफ मेन्यू खोलें"
+    inspect:
+      usage: "inspect <खिलाड़ी> [-p]"
+      description: "खिलाड़ी जांच मेन्यू खोलें (-p टेक्स्ट के लिए)"
+    history:
+      usage: "history <खिलाड़ी> [-p [पेज]]"
+      description: "खिलाड़ी का इतिहास खोलें (-p टेक्स्ट के लिए)"
+    notes:
+      usage: "notes <खिलाड़ी> [-p [पेज]]"
+      description: "खिलाड़ी के नोट्स खोलें (-p टेक्स्ट के लिए)"
+    alts:
+      usage: "alts <खिलाड़ी> [-p [पेज]]"
+      description: "खिलाड़ी के ऑल्ट अकाउंट खोलें (-p टेक्स्ट के लिए)"
+    reports:
+      usage: "reports [खिलाड़ी] [-p [पेज]]"
+      description: "रिपोर्ट मेन्यू खोलें (-p टेक्स्ट के लिए)"
+    punish:
+      usage: "punish <खिलाड़ी> [प्रकार] [कारण]"
+      description: "सज़ा जारी करें"
+    ban:
+      usage: "ban <खिलाड़ी> [अवधि] [कारण]"
+      description: "खिलाड़ी को बैन करें"
+    mute:
+      usage: "mute <खिलाड़ी> [अवधि] [कारण]"
+      description: "खिलाड़ी को म्यूट करें"
+    kick:
+      usage: "kick <खिलाड़ी> [कारण]"
+      description: "खिलाड़ी को किक करें"
+    blacklist:
+      usage: "blacklist <खिलाड़ी> [कारण]"
+      description: "खिलाड़ी को ब्लैकलिस्ट करें"
+    pardon:
+      usage: "pardon <खिलाड़ी>"
+      description: "सभी सक्रिय और प्रतीक्षारत सज़ाएँ माफ़ करें"
+    unban:
+      usage: "unban <खिलाड़ी>"
+      description: "सभी सक्रिय और प्रतीक्षारत बैन माफ़ करें"
+    unmute:
+      usage: "unmute <खिलाड़ी>"
+      description: "सभी सक्रिय और प्रतीक्षारत म्यूट माफ़ करें"
+    replay:
+      usage: "replay <status|capture> [खिलाड़ी]"
+      description: "रीप्ले रिकॉर्डिंग मैनेज करें"
+    modl_reload:
+      usage: "modl reload"
+      description: "कॉन्फ़िगरेशन रीलोड करें"
+    modl_import:
+      usage: "modl import"
+      description: "LiteBans से आयात करें (केवल कंसोल)"
+    modl_status:
+      usage: "modl status"
+      description: "सुरक्षित रूप से साझा करने योग्य सपोर्ट रिपोर्ट दिखाएँ (केवल कंसोल)"
+
+stat_wipe:
+  kick_message: "&cकृपया थोड़ी देर में दोबारा लॉगिन करें। हाल ही में समाप्त हुए बैन के कारण आपके आँकड़े रीसेट किए जा रहे हैं।"
+
+staff_chat:
+  enabled: "&eस्टाफ चैट &aचालू&e। मैसेज डिफ़ॉल्ट रूप से स्टाफ चैट में जाएँगे।"
+  disabled: "&eस्टाफ चैट &cबंद&e। मैसेज डिफ़ॉल्ट रूप से लोकल चैट में जाएँगे।"
+  feature_disabled: "&cइस सर्वर पर स्टाफ चैट चालू नहीं है।"
+  already_normal: "&cआप पहले से लोकल चैट मोड में हैं।"
+  mode_lost: "&cआप अब स्टाफ चैट का उपयोग नहीं कर सकते, इसलिए आप लोकल चैट में वापस आ गए हैं। आपका मैसेज नहीं भेजा गया।"
+  format: "&b[STAFF] &e{panel-name}&f: {message}"
+  local_chat_enabled: "&eस्टाफ चैट &cबंद&e। मैसेज डिफ़ॉल्ट रूप से लोकल चैट में जाएँगे।"
+
+chat_management:
+  chat_toggled_on: "&7&o[{staff}: चैट चालू की]"
+  chat_toggled_off: "&7&o[{staff}: चैट बंद की]"
+  chat_disabled: "&cचैट इस समय बंद है।"
+  chat_cleared: "&7&o[{staff}: चैट साफ़ की]"
+  slow_mode_enabled: "&7&o[{staff}: चैट {seconds}s धीमी की]"
+  slow_mode_disabled: "&7&o[{staff}: स्लो मोड बंद किया]"
+  slow_mode_wait: "&cदोबारा चैट करने से पहले कृपया {seconds} सेकंड इंतज़ार करें।"
+  invalid_seconds: "&cकृपया सेकंड की मान्य संख्या दर्ज करें।"
+  usage_toggle: "&fउपयोग: &a/chat &ftoggle"
+  usage_clear: "&fउपयोग: &a/chat &fclear"
+  usage_slow: "&fउपयोग: &a/chat &fslow <सेकंड|off>"
+  help:
+    header: "&eचैट कमांड:"
+    staff: "&f/chat staff &7- स्टाफ चैट मोड टॉगल करें"
+    toggle: "&f/chat toggle &7- पब्लिक चैट चालू/बंद करें"
+    clear: "&f/chat clear [संख्या] &7- चैट साफ़ करें"
+    slow: "&f/chat slow <सेकंड|off> &7- स्लो मोड सेट/बंद करें"
+
+staff_notifications:
+  join: "&7&o[{staff}: जुड़े]"
+  verified: "&7&o[{staff}: सत्यापित]"
+  leave: "&7&o[{staff}: चले गए]"
+  switch: "&7&o[{staff}: {server} से जुड़े]"
+  generic: "&7&o[{message}]"
+  click_to_target: "{player} को टारगेट करने के लिए क्लिक करें"
+
+staff_2fa:
+  not_verified: "&cस्टाफ कमांड इस्तेमाल करने से पहले आपको अपनी पहचान सत्यापित करनी होगी। &f/verify &cइस्तेमाल करें"
+  verify_prompt: "&aसत्यापित करने के लिए लिंक पर क्लिक करें: &f{url}"
+  verify_success: "&aपहचान सत्यापित हो गई।"
+  verify_error: "&cसत्यापन लिंक बनाने में विफल। कृपया फिर कोशिश करें।"
+  auto_verified: "&aविश्वसनीय IP से अपने आप सत्यापित।"
+
+verify:
+  only_players: "&cयह कमांड केवल खिलाड़ी ही इस्तेमाल कर सकते हैं।"
+  disabled: "&cइस सर्वर पर स्टाफ 2FA चालू नहीं है।"
+  already_verified: "&aआप पहले से सत्यापित हैं।"
+  header: ""
+  instructions: "&aअपनी पहचान सत्यापित करने के लिए नीचे दिए लिंक पर क्लिक करें:"
+  click_here: "सत्यापित करने के लिए यहाँ क्लिक करें"
+  click_here_hover: "सत्यापन पेज खोलने के लिए क्लिक करें"
+  error: "&cसत्यापन लिंक बनाने में विफल। कृपया फिर कोशिश करें।"
+  footer: "&eयह लिंक जल्द ही समाप्त हो जाएगा।"
+
+panel_account:
+  link_success: "&aआपका Minecraft अकाउंट अब आपके पैनल अकाउंट से लिंक हो गया है।"
+  link_invalid_code: "&cयह कोड अमान्य है या इसकी समय-सीमा समाप्त हो गई है। पैनल में अकाउंट सेटिंग्स में जाकर नया कोड बनाएँ।"
+  link_already_linked: "&cयह Minecraft खाता पहले से किसी दूसरे पैनल खाते से जुड़ा है। पहले वहाँ से इसे अलग करें, फिर दोबारा प्रयास करें।"
+  link_error: "&cअभी आपका अकाउंट लिंक नहीं हो सका। कृपया कुछ देर बाद फिर कोशिश करें।"
+  login_offline_mode: "&cइन-गेम पैनल लॉगिन बंद है क्योंकि यह सर्वर खिलाड़ियों के अकाउंट सत्यापित नहीं करता।"
+  login_not_linked: "&cआपका Minecraft अकाउंट किसी पैनल अकाउंट से लिंक नहीं है। पैनल में अकाउंट सेटिंग्स में जाकर एक कोड बनाएँ, फिर &e/modl link <कोड>&c चलाएँ।"
+  login_not_online: "&cपैनल को आप अभी तक ऑनलाइन नहीं दिख रहे हैं। कृपया कुछ देर बाद फिर कोशिश करें।"
+  login_error: "&cअभी पैनल लॉगिन लिंक नहीं बनाया जा सका। कृपया कुछ देर बाद फिर कोशिश करें।"
+  login_link: "पैनल खोलें"
+  login_link_hover: "एक बार इस्तेमाल होने वाला लिंक, {minutes} मिनट में समाप्त हो जाएगा"
+  rate_limited: "&cआप यह बहुत बार कर रहे हैं। कृपया थोड़ा रुकें और फिर कोशिश करें।"
+
+maintenance:
+  enabled: "&7&o[{staff}: मेंटेनेंस चालू किया]"
+  disabled: "&7&o[{staff}: मेंटेनेंस बंद किया]"
+  already_enabled: "&cमेंटेनेंस मोड पहले से चालू है।"
+  already_disabled: "&cमेंटेनेंस मोड पहले से बंद है।"
+  status_enabled: "&eमेंटेनेंस मोड इस समय चालू है।"
+  status_disabled: "&eमेंटेनेंस मोड इस समय बंद है।"
+  login_denied: "&cसर्वर इस समय मेंटेनेंस में है। कृपया बाद में फिर कोशिश करें।"
+  kick_message: "&cसर्वर अब मेंटेनेंस मोड में है। कृपया बाद में फिर कोशिश करें।"
+  usage: "&fउपयोग: &a/maintenance&f <on|off>"
+
+freeze:
+  frozen_message: "&cआपको फ़्रीज़ कर दिया गया है। डिस्कनेक्ट न करें।"
+  staff_notification_freeze: "&7&o[{staff}: {player} को फ़्रीज़ किया]"
+  staff_notification_unfreeze: "&7&o[{staff}: {player} को अनफ़्रीज़ किया]"
+  unfrozen: "&aआपको अनफ़्रीज़ कर दिया गया है।"
+  logout_notification: "&c&l{player} फ़्रीज़ रहते हुए लॉग आउट हो गया।"
+  frozen_chat: "&b[FROZEN] &e{player}&f: {message}"
+  command_blocked: "&cफ़्रीज़ रहते हुए आप कमांड इस्तेमाल नहीं कर सकते।"
+  target_offline: "&c{player} इस सर्वर पर ऑनलाइन नहीं है, इसलिए उन्हें फ़्रीज़ नहीं किया जा सकता।"
+  not_enforced: "&e{player} फ़्रीज़ है, लेकिन उनका सर्वर अभी modl से जुड़ा नहीं है, इसलिए जुड़ने तक उनकी हलचल नहीं रुकेगी।"
+  limit_reached: "&cअभी बहुत सारे खिलाड़ी फ़्रीज़ हैं।"
+
+intercept_chat:
+  enabled: "&aनेटवर्क चैट इंटरसेप्शन चालू"
+  disabled: "&aनेटवर्क चैट इंटरसेप्शन बंद"
+  format: "&8[G-{server}] &e{player}&f: {message}"
+
+intercept:
+  message: "&8[Intercept] &f{player}: &7{message}"
+
+chat_logs:
+  header: ""
+  entry: "&7[{timestamp}] &8[{server}] &f{message}"
+  empty: "&7इस खिलाड़ी के लिए कोई चैट लॉग नहीं मिला।"
+  footer: "&eपेज {page}/{total_pages} (कुल {total})"
+  error: "&cचैट लॉग लाने में विफल।"
+  usage: "&fउपयोग: &a/chatlogs&f <खिलाड़ी>"
+
+command_logs:
+  header: ""
+  entry: "&7[{timestamp}] &e{player}&7: &f/{command}"
+  empty: "&7इस खिलाड़ी के लिए कोई कमांड लॉग नहीं मिला।"
+  footer: "&eपेज {page}/{total_pages} (कुल {total})"
+  error: "&cकमांड लॉग लाने में विफल।"
+  usage: "&fउपयोग: &a/commandlogs&f <खिलाड़ी>"
+
+staff_mode:
+  enabled: "&aस्टाफ मोड चालू"
+  disabled: "&aस्टाफ मोड बंद"
+  enabled_broadcast: "&7&o[{staff}: स्टाफ मोड चालू किया]"
+  disabled_broadcast: "&7&o[{staff}: स्टाफ मोड बंद किया]"
+  limit_reached: "&cअभी बहुत सारे स्टाफ सदस्य स्टाफ मोड में हैं।"
+
+vanish:
+  enabled: "&aअब आप वैनिश में हैं"
+  disabled: "&aअब आप वैनिश में नहीं हैं"
+  enabled_broadcast: "&7&o[{staff}: वैनिश हुए]"
+  disabled_broadcast: "&7&o[{staff}: अनवैनिश हुए]"
+
+target:
+  targeting: "&eअब &f{player} &eको टारगेट किया जा रहा है"
+  cleared: "&aटारगेट हटा दिया गया।"
+  usage: "&fउपयोग: &a/target&f <खिलाड़ी>"
+  connecting: "&f{player}&e को टारगेट करने के लिए &f{server} &eसे जोड़ा जा रहा है..."
+  cannot_target_self: "&cआप खुद को टारगेट नहीं कर सकते।"
+  not_online: "&cखिलाड़ी ऑनलाइन नहीं है।"
+  target_left: "&c{player} ने नेटवर्क छोड़ दिया। स्टाफ मोड पर वापस।"
+
+network:
+  action_unavailable: "&cयह कार्रवाई अभी उपलब्ध नहीं है।"
+
+replay:
+  usage:
+    - "&f/replay status [खिलाड़ी] &7- रिकॉर्डिंग स्थिति देखें"
+    - "&f/replay capture [खिलाड़ी] &7- रीप्ले कैप्चर और अपलोड करें"
+  not_available: "&cइस सर्वर पर रीप्ले रिकॉर्डिंग उपलब्ध नहीं है।"
+  status_recording: "&a{player} की रिकॉर्डिंग इस समय चल रही है"
+  status_not_recording: "&c{player} की रिकॉर्डिंग नहीं हो रही है"
+  no_server_connected: "&cरीप्ले कैप्चर करने के लिए कोई सर्वर जुड़ा नहीं है।"
+  no_active_recording: "&c{player} के लिए कोई सक्रिय रिकॉर्डिंग नहीं"
+  capturing: "&a{player} के लिए रीप्ले कैप्चर और अपलोड हो रहा है..."
+  capture_success: "&a{player} के लिए रीप्ले कैप्चर हुआ"
+  capture_link: "&b{url}"
+  capture_failed: "&c{player} के लिए रीप्ले कैप्चर करने में विफल"
+  click_to_view: "[रीप्ले देखने के लिए क्लिक करें]"
+  click_to_view_hover: "रीप्ले व्यूअर खोलें"
+  console_specify_player: "&cकंसोल से खिलाड़ी का नाम बताएँ।"
+
+standing_gui:
+  title: "&fआपकी स्टैंडिंग"
+  social_status:
+    title: "&eसोशल स्टैंडिंग: {status}"
+    description:
+      Low:
+        - "&7इस श्रेणी में सज़ाएँ हल्की रहती हैं।"
+      Medium:
+        - "&7इस श्रेणी में सज़ाएँ ज़्यादा सख़्त हैं।"
+      Habitual:
+        - "&7इस श्रेणी में सज़ाएँ बहुत सख़्त हैं।"
+  gameplay_status:
+    title: "&eगेमप्ले स्टैंडिंग: {status}"
+    description:
+      Low:
+        - "&7इस श्रेणी में सज़ाएँ हल्की रहती हैं।"
+      Medium:
+        - "&7इस श्रेणी में सज़ाएँ ज़्यादा सख़्त हैं।"
+      Habitual:
+        - "&7इस श्रेणी में सज़ाएँ बहुत सख़्त हैं।"
+  status_display:
+    Low: "&aकम"
+    Medium: "&6मध्यम"
+    Habitual: "&cआदतन"
+  punishment_item:
+    status_pardoned: "{duration} पहले माफ़"
+    status_rolled_back: "{duration} पहले वापस ली गई"
+    status_queued: "कतार में"
+    status_permanent: "स्थायी"
+    status_expires: "{duration} में समाप्त"
+    status_expired_ago: "{duration} पहले समाप्त"
+    status_expired: "समाप्त"
+    title: "&e#{id} {date}"
+    lore:
+      - "&7{duration} {type} ({status})"
+      - ""
+      - "&f{reason}"
+
+punishment_action:
+  unknown_action: "&cअज्ञात एक्शन: {action}"
+  enter_evidence_url: "&7सज़ा #{id} के लिए सबूत का URL दर्ज करें:"
+  no_url: "&cकोई URL नहीं दिया गया।"
+  evidence_linked: "&aसज़ा #{id} से सबूत लिंक कर दिया गया"
+  evidence_link_failed: "&cसबूत लिंक करने में विफल: {error}"
+  evidence_cancelled: "&7सबूत लिंक करना रद्द किया गया।"
+  generating_upload: "&7अपलोड लिंक बनाया जा रहा है..."
+  upload_failed: "&cअपलोड लिंक बनाने में विफल।"
+  upload_link: "सबूत अपलोड करने के लिए यहाँ क्लिक करें"
+  upload_link_hover: "आपके ब्राउज़र में खुलेगा"
+  buttons:
+    label: "सज़ा #{id}: "
+    modify: "[बदलें]"
+    modify_hover: "इस सज़ा को बदलने के लिए क्लिक करें"
+    link_evidence: "[सबूत लिंक करें]"
+    link_evidence_hover: "सबूत के रूप में URL लिंक करने के लिए क्लिक करें"
+    upload_evidence: "[सबूत अपलोड करें]"
+    upload_evidence_hover: "सबूत के रूप में फ़ाइलें अपलोड करने के लिए क्लिक करें"
+
+import:
+  usage: "उपयोग: /modl import <source>, फिर /modl import <source> confirm <widen|skip> <keep|standard>। साथ ही: /modl import status, /modl import cancel।"
+  detected: "यहाँ मिला: {detected}। समर्थित: {supported}।"
+  nothing_detected: "यहाँ किसी समर्थित प्लगइन का डेटा नहीं मिला। समर्थित: {supported}।"
+  unknown_source: "{source} समर्थित स्रोत नहीं है। समर्थित: {supported}।"
+  litebans_missing: "इस सर्वर पर LiteBans नहीं चल रहा है। इसे यहाँ (नेटवर्क में प्रॉक्सी पर) अपने LiteBans डेटाबेस से जोड़कर इंस्टॉल और चालू करें, रीस्टार्ट करें और यह फिर चलाएँ।"
+  source_missing: "इस सर्वर पर {source} का कोई डेटा नहीं मिला। इसे उस सर्वर पर चलाएँ जिस पर यह डेटा है (नेटवर्क में, वह प्रॉक्सी जिस पर modl चलता है)।"
+  source_locked: "{source} चल रहा है और अपनी डेटाबेस फ़ाइल खुली रखता है। उसकी jar हटाएँ (उसका फ़ोल्डर रखें), रीस्टार्ट करें और यह फिर चलाएँ।"
+  database_failed: "{source} का डेटा पढ़ा नहीं जा सका: {error}"
+  no_space: "{source} डेटाबेस की प्रति बनाने के लिए डिस्क में पर्याप्त खाली जगह नहीं है: {error}"
+  nothing_to_import: "{source} में आयात के लिए कोई खिलाड़ी या सज़ा नहीं है।"
+  nothing_left: "इन विकल्पों के साथ आयात के लिए कुछ नहीं बचा।"
+  setup_required: "पहले पैनल में modl का सेटअप पूरा करें।"
+  busy: "यहाँ जाँच या आयात पहले से चल रहा है। /modl import status देखें।"
+  already_running: "{server} ({address}) से शुरू किया गया आयात चल रहा है। /modl import status देखें या /modl import cancel से रोकें।"
+  ip_history_release_running: "पिछले आयात द्वारा रखा गया IP इतिहास अभी छोड़ा जा रहा है। बाद में फिर से प्रयास करें।"
+  storage_moving: "अपलोड की गई फ़ाइलें दूसरे स्टोरेज में ले जाई जा रही हैं। यह पूरा होने पर फिर से प्रयास करें।"
+  database_moving: "modl दूसरे डेटाबेस पर जा रहा है। यह पूरा होने पर फिर से प्रयास करें।"
+  confirm_first: "पहले /modl import {source_id} चलाएँ, फिर 60 सेकंड के भीतर पुष्टि करें।"
+  choices_required: "दोनों विकल्प ज़रूरी हैं: /modl import {source_id} confirm <widen|skip> <keep|standard>"
+  preview:
+    counts: "{source} में {players} खिलाड़ियों के {bans} बैन, {mutes} म्यूट, {warnings} चेतावनियाँ, {kicks} किक और {notes} नोट्स हैं।"
+    not_imported: "आयात नहीं होंगी: बिना खिलाड़ी खाते वाली {without_account} सज़ाएँ।"
+    scoped: "{ip_wide} IP-व्यापी और {server_scoped} सर्वर तक सीमित सज़ाएँ। widen: वे खाते पर हर सर्वर में लागू होंगी, और IP बैन उसके ऑल्ट खातों को भी रोकेंगे। skip: वे छोड़ दी जाएँगी।"
+    ip_history: "IP इतिहास की {old_entries} प्रविष्टियाँ (लगभग {old_megabytes} MB) {days} दिनों से पुरानी हैं। keep: आयातित IP इतिहास रहेगा। standard: {days} दिनों से पुराना IP इतिहास मिटाया जाएगा।"
+    ip_history_kept: "पिछला आयात पुराना IP इतिहास सुरक्षित रखता है। standard इसे समाप्त करके वह इतिहास मिटा देता है।"
+    backup: "पहले modl का बैकअप लें। रद्द करने पर भी आयात किया गया डेटा रहता है, और दोबारा चलाने पर केवल नया जुड़ता है।"
+    confirm: "शुरू करने के लिए 60 सेकंड के भीतर चलाएँ: /modl import {source_id} confirm <widen|skip> <keep|standard>"
+  started: "{source} आयात शुरू हुआ ({scoped_choice}, {history_choice})।"
+  exporting: "{source} पढ़ा जा रहा है: {total} में से {processed} खिलाड़ी।"
+  uploading: "निर्यात modl को भेजा जा रहा है।"
+  processing_started: "modl को निर्यात मिल गया और वह उसे आयात कर रहा है।"
+  completed: "{source} आयात पूरा: {processed} खिलाड़ी आयात, {skipped} छोड़े गए, {not_imported} सज़ाएँ शामिल नहीं।"
+  completed_partly: "{source} आयात समस्याओं के साथ पूरा: {processed} खिलाड़ी आयात, {failed} पढ़े नहीं जा सके, {skipped} छोड़े गए, {not_imported} सज़ाएँ शामिल नहीं। समस्याएँ ठीक करके फिर चलाएँ।"
+  cancelling: "आयात रोका जा रहा है।"
+  cancel_keeps_imported: "पहले से आयात किया गया डेटा बना रहेगा।"
+  nothing_to_cancel: "कोई आयात नहीं चल रहा है।"
+  job_gone: "modl सर्वर को अब इस आयात की जानकारी नहीं है।"
+  too_many_players: "एक आयात के लिए {source} में बहुत अधिक खिलाड़ी हैं (सीमा 1,000,000): {error}"
+  every_player_failed: "{source} से कोई खिलाड़ी नहीं पढ़ा जा सका: {error}"
+  file_failed: "निर्यात फ़ाइल लिखी नहीं जा सकी: {error}"
+  upload_blocked: "modl के आगे लगे रिवर्स प्रॉक्सी या CDN ने फ़ाइल को बहुत बड़ी बताकर अस्वीकार किया: {error}"
+  upload_failed: "निर्यात modl को नहीं भेजा जा सका: {error}"
+  unreachable: "modl से संपर्क नहीं हो सका: {error}"
+  request_failed: "आयात अनुरोध विफल हुआ: {error}"
+  status:
+    none: "अभी तक कोई आयात नहीं हुआ है।"
+    building_json: "{source} पढ़ा जा रहा है: {total} में से {processed} खिलाड़ी।"
+    uploading_json: "निर्यात भेजे जाने की प्रतीक्षा में है।"
+    receiving_file: "modl निर्यात प्राप्त कर रहा है।"
+    processing_data: "आयात जारी: {total} में से {processed} खिलाड़ी, {skipped} छोड़े गए।"
+    details: "{source} आयात {server} ({address}) से {scoped_choice} और {history_choice} के साथ शुरू हुआ।"
+  ended:
+    cancelled: "आयात रद्द कर दिया गया।"
+    timed_out: "आयात से जानकारी आनी बंद हुई और समय समाप्त हो गया। इसे फिर चलाएँ।"
+    interrupted: "रीस्टार्ट से आयात रुक गया। इसे फिर चलाएँ।"
+    export_failed: "{source} निर्यात विफल हुआ। इसे फिर चलाएँ।"
+    upload_failed: "निर्यात भेजना विफल हुआ। इसे फिर चलाएँ।"
+    file_too_large: "निर्यात आयात की सीमा से बड़ा है।"
+    invalid_file: "modl निर्यात नहीं पढ़ सका: {error}"
+    import_failed: "आयात विफल हुआ: {error}"
+
+server_features:
+  staff_mode:
+    random_teleport:
+      no_players: "&cटेलीपोर्ट करने के लिए कोई खिलाड़ी उपलब्ध नहीं है।"
+      teleported: "&a&f{player}&a के पास टेलीपोर्ट किया गया।"
+    teleport:
+      teleported: "&a&f{player}&f के पास टेलीपोर्ट किया गया।"
+      target_offline: "&cलक्ष्य अब ऑनलाइन नहीं है।"
+    custody:
+      not_saved: "&cस्टाफ मोड शुरू नहीं हुआ क्योंकि आपका सामान सुरक्षित रूप से सहेजा नहीं जा सका। आपके पास सब कुछ रहेगा। स्टाफ मोड बंद करें और सर्वर मालिक से कंसोल जाँचने को कहें।"
+      kept_changing: "&cस्टाफ मोड शुरू नहीं हुआ क्योंकि आपकी इन्वेंटरी लगातार बदल रही थी। आपके पास सब कुछ रहेगा। स्टाफ मोड बंद करें, स्थिर खड़े रहें और फिर से कोशिश करें।"
+      unresolved: "&cस्टाफ मोड शुरू नहीं हुआ क्योंकि आपके सामान का पिछला सेव अभी अधूरा है। सर्वर मालिक से कंसोल जाँचने को कहें, फिर दोबारा जुड़ें।"
+      held: "&cआपका सामान अभी लौटाया नहीं जा सका। modl उसे सुरक्षित रखता है, और लौटने तक आपके आइटम लॉक रहेंगे। सर्वर मालिक से कंसोल जाँचने को कहें।"
+      record_missing: "&cmodl को आपके स्टाफ मोड सत्र का कोई सहेजा हुआ सामान नहीं मिला। सर्वर मालिक से कंसोल जाँचने को कहें।"
+    unknown_player: "अज्ञात"
+    scoreboard:
+      vanish_on: "&aचालू"
+      vanish_off: "&cबंद"
+      vanished: "अदृश्य"
+      visible: "दृश्य"
+      frozen_yes: "&cहाँ"
+      frozen_no: "&aनहीं"
+      target_offline: "ऑफ़लाइन"
+      no_target: "कोई नहीं"
+      not_available: "उपलब्ध नहीं"
+    silent_container:
+      block_title: "&8देख रहे हैं: {container}"
+      inventory_title: "&8देख रहे हैं: {player} की इन्वेंटरी"
+  freeze:
+    frozen: "&c&lएक स्टाफ सदस्य ने आपको फ़्रीज़ कर दिया है। डिस्कनेक्ट न करें।"
+    unfrozen: "&aआपको अनफ़्रीज़ कर दिया गया है।"
+    chat: "&b[फ़्रीज़] &e{player}&f: {message}"
+    no_commands: "&cफ़्रीज़ रहते हुए आप कमांड का उपयोग नहीं कर सकते।"
+  command:
+    modlserver:
+      usage: "उपयोग: &a/modlserver reload"
+      no_permission: "&cआपको यह कमांड उपयोग करने की अनुमति नहीं है।"
+      reloading: "&emodl सर्वर फ़ीचर कॉन्फ़िगरेशन दोबारा लोड हो रहा है..."
+      reloaded: "&aसर्वर फ़ीचर कॉन्फ़िगरेशन दोबारा लोड हो गया।"
+      reload_failed: "&cइनमें त्रुटियों के साथ दोबारा लोड हुआ: &f{files}&c। विवरण के लिए कंसोल देखें।"
+      restart_required: "&eये सेटिंग्स केवल रीस्टार्ट के बाद लागू होंगी: &f{keys}"
+    proxycmd:
+      console_only: "&cयह कमांड केवल कंसोल से चलाया जा सकता है।"
+      usage: "उपयोग: &a/proxycmd &f<कमांड>"
+      not_connected: "&cप्रॉक्सी से कनेक्ट नहीं है। connection.yml में कनेक्शन सेटिंग्स जाँचें।"
+      sent: "&aप्रॉक्सी को भेजा गया: {command}"
+      refused: "&cप्रॉक्सी केवल modl कमांड चलाता है; {command} अस्वीकार किया गया।"
+      disabled: "&cइस सर्वर की कुंजी के लिए /proxycmd बंद है। मालिक इसे Panel > सेटिंग्स > सामान्य > Minecraft सर्वर में अनुमति दे सकता है; तब तक कमांड प्रॉक्सी कंसोल में चलाएँ।"
+      no_answer: "&cप्रॉक्सी ने समय पर जवाब नहीं दिया।"
+      rate_limited: "&cअभी बहुत अधिक प्रॉक्सी कमांड हैं; थोड़ी देर में फिर से कोशिश करें।"
+      invalid: "&cप्रॉक्सी {command} नहीं चला सका।"
+  network:
+    unavailable: "&cअभी प्रॉक्सी तक नहीं पहुँचा जा सकता; थोड़ी देर में फिर कोशिश करें।"
+
+support_status:
+  header: "==== modl स्थिति: अंतिम पंक्ति तक सब कुछ अपने सपोर्ट अनुरोध में कॉपी करें ===="
+  footer: "==== modl स्थिति समाप्त ===="
+  collecting: "modl स्थिति एकत्र की जा रही है..."
+  backend_unavailable: "modl अपने सर्वर से जुड़ा नहीं है, इसलिए केवल प्लगइन वाला भाग दिखाया गया है। ऊपर की कंसोल पंक्तियाँ कारण बताती हैं।"
+  backend_failed: "modl सर्वर ने उत्तर नहीं दिया, इसलिए केवल प्लगइन वाला भाग दिखाया गया है।"

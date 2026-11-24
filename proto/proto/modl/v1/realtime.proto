@@ -1,0 +1,566 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "modl/v1/common.proto";
+import "modl/v1/sync.proto";
+
+// Realtime transport messages for websocket-style delivery.
+//
+// Event IDs are only for duplicate suppression and idempotency. They are not
+// replay cursors. Clients recover missed state with HTTP refetch/sync flows.
+message RealtimeEnvelope {
+  // Unique transport event identifier for duplicate suppression only.
+  string event_id = 1;
+  uint32 protocol_version = 2;
+  google.protobuf.Timestamp timestamp = 3;
+  reserved 32, 59, 66;
+  reserved "migration_status_changed", "migration_task_hint", "migration_task_push";
+  oneof payload {
+    ClientHello client_hello = 10;
+    ServerHello server_hello = 11;
+    Heartbeat heartbeat = 12;
+    Ack ack = 13;
+    Error error = 14;
+    Subscribe subscribe = 15;
+    Unsubscribe unsubscribe = 16;
+    ReconnectAdvice reconnect_advice = 17;
+    TicketChangedEvent ticket_changed = 30;
+    AssignedTicketSubscriptionChangedEvent assigned_ticket_subscription_changed = 31;
+    PermissionInvalidatedEvent permission_invalidated = 50;
+    PunishmentTypeInvalidatedEvent punishment_type_invalidated = 51;
+    StaffNotificationEvent staff_notification = 52;
+    PresenceSnapshotEvent presence_snapshot = 53;
+    PresenceDeltaEvent presence_delta = 54;
+    PresenceInvalidatedEvent presence_invalidated = 55;
+    PunishmentNotificationEvent punishment_notification = 56;
+    PlayerNotificationEvent player_notification = 57;
+    StaffTwoFactorEvent staff_two_factor = 58;
+    PanelInvalidatedEvent panel_invalidated = 60;
+    PunishmentPushEvent punishment_push = 61;
+    PlayerNotificationPushEvent player_notification_push = 62;
+    StaffNotificationPushEvent staff_notification_push = 63;
+    StatWipePushEvent stat_wipe_push = 64;
+    Staff2faPushEvent staff_2fa_push = 65;
+    ActiveStaffPushEvent active_staff_push = 67;
+    SyncRequestedEvent sync_requested = 68;
+    ModerationStateEvent moderation_state = 70;
+    MemberActionRequest member_action = 71;
+    MemberActionResult member_action_result = 72;
+    ReplayCaptureRequest replay_capture_request = 73;
+    ReplayCaptureResult replay_capture_result = 74;
+    HostedPlayersEvent hosted_players = 75;
+    NetworkRosterEvent network_roster = 76;
+  }
+}
+
+message ClientHello {
+  ClientKind client_kind = 1;
+  uint32 protocol_version = 2;
+  optional string server_id = 3;
+  optional string server_name = 4;
+  optional string tenant_id = 5;
+  repeated Topic supported_topics = 6;
+  // Identifies this plugin process for hybrid presence. Backends use it to
+  // isolate ordering between multiple server instances for the same tenant.
+  optional string server_instance_id = 7;
+  optional string session_key = 8 [json_name = "sessionKey"];
+  ServerRole server_role = 9 [json_name = "serverRole"];
+  optional string plugin_version = 10 [
+    json_name = "pluginVersion",
+    (buf.validate.field).string.max_len = 64
+  ];
+}
+
+message ServerHello {
+  uint32 protocol_version = 1;
+  string connection_id = 2;
+  repeated Topic accepted_topics = 3;
+  optional string server_time = 4;
+}
+
+message Heartbeat {
+  uint64 sequence = 1;
+}
+
+message Ack {
+  AckKind kind = 1;
+  string event_id = 2;
+  optional string correlation_id = 3;
+  optional string detail = 4;
+}
+
+message Error {
+  ErrorCode code = 1;
+  string message = 2;
+  optional string correlation_id = 3;
+  optional google.protobuf.Struct details = 4;
+  optional string server_version = 5 [(buf.validate.field).string.max_len = 64];
+}
+
+message Subscribe {
+  repeated Topic topics = 1;
+}
+
+message Unsubscribe {
+  repeated Topic topics = 1;
+}
+
+message ReconnectAdvice {
+  ReconnectReason reason = 1;
+  ReconnectAction action = 2;
+  optional uint32 retry_after_ms = 3;
+  string message = 4;
+}
+
+message TicketChangedEvent {
+  string ticket_id = 1;
+  optional string change_kind = 2;
+  // Invalidation hint only; clients must refetch ticket state over HTTP.
+  optional string tenant_id = 3;
+}
+
+message AssignedTicketSubscriptionChangedEvent {
+  optional string staff_id = 1;
+  // Invalidation hint only; clients must refetch assigned-ticket state.
+  optional string tenant_id = 2;
+}
+
+// Generic panel cache-invalidation signal. Carries no domain data; the panel
+// refetches the affected resource over HTTP. resource selects which React Query
+// keys to invalidate; resource_id optionally narrows invalidation to one entity.
+message PanelInvalidatedEvent {
+  PanelResource resource = 1;
+  optional string resource_id = 2;
+  // Invalidation hint only; tenant is already implied by the subscription's
+  // server scope, included for client-side assertion/debugging.
+  optional string tenant_id = 3;
+}
+
+enum PanelResource {
+  PANEL_RESOURCE_UNSPECIFIED = 0;
+  PANEL_RESOURCE_PLAYERS = 1;
+  PANEL_RESOURCE_PUNISHMENTS = 2;
+  PANEL_RESOURCE_STAFF = 3;
+  PANEL_RESOURCE_ROLES = 4;
+  PANEL_RESOURCE_SETTINGS = 5;
+  PANEL_RESOURCE_PUNISHMENT_TYPES = 6;
+  PANEL_RESOURCE_KNOWLEDGEBASE = 7;
+  PANEL_RESOURCE_AUDIT = 8;
+  PANEL_RESOURCE_HOMEPAGE = 9;
+  PANEL_RESOURCE_APPEALS = 10;
+  PANEL_RESOURCE_TICKETS = 11;        // coarse ticket-list/count invalidation
+  PANEL_RESOURCE_DASHBOARD = 12;      // dashboard + analytics aggregates
+  PANEL_RESOURCE_NOTIFICATIONS = 13;  // staff in-panel notifications/subscriptions
+}
+
+message PermissionInvalidatedEvent {
+  optional string staff_id = 1;
+  optional string minecraft_uuid = 2;
+  optional string server_name = 3;
+}
+
+message PunishmentTypeInvalidatedEvent {
+  optional string punishment_type_id = 1;
+  optional string server_name = 2;
+}
+
+message StaffNotificationEvent {
+  string notification_id = 1;
+  string type = 2;
+  string message = 3;
+  optional google.protobuf.Struct data = 4;
+  optional int64 timestamp = 5;
+}
+
+// Snapshot payloads are advisory cache state. A snapshot re-baselines one
+// server instance; stale deltas for the same server_instance_id with an older
+// presence_sequence must be ignored. HTTP sync remains authoritative.
+message PresenceSnapshotEvent {
+  repeated PresenceEntry players = 1;
+  optional string server_name = 2;
+  string server_instance_id = 3;
+  uint64 snapshot_revision = 4;
+}
+
+// Delta payloads are best-effort acceleration between snapshots. Consumers must
+// ignore stale deltas for the same server_instance_id and recover missed state
+// from the next snapshot or HTTP sync.
+message PresenceDeltaEvent {
+  repeated PresenceEntry joined = 1;
+  repeated PresenceEntry updated = 2;
+  repeated string left_minecraft_uuids = 3;
+  optional string server_name = 4;
+  string server_instance_id = 5;
+  uint64 presence_sequence = 6;
+}
+
+message PresenceInvalidatedEvent {
+  optional string server_name = 1;
+  repeated string minecraft_uuids = 2;
+  optional string server_instance_id = 3;
+  optional uint64 presence_sequence = 4;
+}
+
+message PresenceEntry {
+  string minecraft_uuid = 1;
+  string username = 2;
+  optional string server_name = 3;
+  optional int64 seen_at = 4;
+}
+
+message PunishmentNotificationEvent {
+  string punishment_id = 1;
+  string minecraft_uuid = 2;
+  optional string username = 3;
+  optional string action = 4;
+  // Non-authoritative hint; plugins must confirm durable state through sync.
+  optional google.protobuf.Struct data = 5;
+}
+
+message PlayerNotificationEvent {
+  string notification_id = 1;
+  string minecraft_uuid = 2;
+  string message = 3;
+  optional string type = 4;
+  optional google.protobuf.Struct data = 5;
+}
+
+message StaffTwoFactorEvent {
+  string minecraft_uuid = 1;
+  optional string staff_id = 2;
+  optional bool session_valid = 3;
+  // Hint only; staff auth state remains authoritative in sync/HTTP state.
+  optional string reason = 4;
+}
+
+// --- Authoritative minecraft push events (replace the 2s poll) ---
+// Each wraps the exact sync.proto data message so the plugin applies the same
+// shape it would have received from the HTTP baseline sync.
+
+message PunishmentPushEvent {
+  // Newly issued / promoted / pardon-replacement punishments to enforce now.
+  repeated SyncPendingPunishment pending = 1;
+  // Punishments whose modifications (duration change, pardon, option toggle)
+  // changed and must be re-applied.
+  repeated SyncModifiedPunishment modified = 2;
+  optional string server_name = 3;
+}
+
+message PlayerNotificationPushEvent {
+  repeated SyncPlayerNotification notifications = 1;
+  optional string server_name = 2;
+}
+
+message StaffNotificationPushEvent {
+  repeated SyncStaffNotification notifications = 1;
+  optional string server_name = 2;
+}
+
+message StatWipePushEvent {
+  repeated SyncPendingStatWipe stat_wipes = 1;
+  optional string server_name = 2;
+}
+
+message Staff2faPushEvent {
+  repeated SyncStaff2faVerification verifications = 1;
+  optional string server_name = 2;
+}
+
+// Active-staff roster delta. Pushed when staff perms/roster change so the plugin
+// updates its in-memory staff list without a poll. Full roster on (re)baseline
+// comes from the HTTP sync; this carries incremental updates.
+message ActiveStaffPushEvent {
+  repeated SyncActiveStaffMember active_staff_members = 1;
+  optional string server_name = 2;
+}
+
+message SyncRequestedEvent {
+  SyncRequestReason reason = 1;
+}
+
+enum SyncRequestReason {
+  SYNC_REQUEST_REASON_UNSPECIFIED = 0;
+  SYNC_REQUEST_REASON_PANEL_URL_CHANGED = 1;
+  SYNC_REQUEST_REASON_PUSH_TOO_LARGE = 2;
+}
+
+// --- Network hub: cores (proxies, standalone servers) and members (servers behind a proxy) ---
+// The hub stamps every identity field from the sending session and ignores client values.
+
+message ModerationStateEvent {
+  string source_instance_id = 1 [
+    json_name = "sourceInstanceId",
+    (buf.validate.field).string.max_len = 64
+  ];
+  string epoch = 2 [(buf.validate.field).string = {min_len: 1, max_len: 32}];
+  uint64 revision = 3;
+  repeated FrozenPlayer frozen = 4 [(buf.validate.field).repeated.max_items = 256];
+  repeated StaffSession staff = 5 [(buf.validate.field).repeated.max_items = 256];
+  bool retired = 6;
+}
+
+message FrozenPlayer {
+  string minecraft_uuid = 1 [
+    json_name = "minecraftUuid",
+    (buf.validate.field).string.pattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  ];
+  string staff_uuid = 2 [
+    json_name = "staffUuid",
+    (buf.validate.field).string.pattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  ];
+  int64 frozen_at = 3 [json_name = "frozenAt"];
+}
+
+message StaffSession {
+  string minecraft_uuid = 1 [
+    json_name = "minecraftUuid",
+    (buf.validate.field).string.pattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  ];
+  bool staff_mode = 2 [json_name = "staffMode"];
+  bool vanished = 3;
+  optional string target_uuid = 4 [
+    json_name = "targetUuid",
+    (buf.validate.field).string.pattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  ];
+}
+
+enum MemberActionKind {
+  MEMBER_ACTION_KIND_UNSPECIFIED = 0;
+  MEMBER_ACTION_KIND_TOGGLE_FREEZE_TARGET = 1;
+  MEMBER_ACTION_KIND_TOGGLE_VANISH = 2;
+  MEMBER_ACTION_KIND_SELECT_TARGET = 3;
+  MEMBER_ACTION_KIND_CLEAR_TARGET = 4;
+  MEMBER_ACTION_KIND_OPEN_STAFF_MENU = 5;
+  MEMBER_ACTION_KIND_INSPECT_TARGET = 6;
+  MEMBER_ACTION_KIND_HACKREPORT_TARGET = 7;
+  MEMBER_ACTION_KIND_PROXY_COMMAND = 8;
+  MEMBER_ACTION_KIND_STAFF_MODE_REFUSED = 9;
+}
+
+message MemberActionRequest {
+  string request_id = 1 [
+    json_name = "requestId",
+    (buf.validate.field).string = {min_len: 1, max_len: 64}
+  ];
+  MemberActionKind kind = 2 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
+  optional string actor_uuid = 3 [
+    json_name = "actorUuid",
+    (buf.validate.field).string.pattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  ];
+  optional string target_uuid = 4 [
+    json_name = "targetUuid",
+    (buf.validate.field).string.pattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  ];
+  optional string command_line = 5 [
+    json_name = "commandLine",
+    (buf.validate.field).string = {min_len: 1, max_len: 256}
+  ];
+  string member_name = 6 [
+    json_name = "memberName",
+    (buf.validate.field).string.max_len = 64
+  ];
+  string member_instance_id = 7 [
+    json_name = "memberInstanceId",
+    (buf.validate.field).string.max_len = 64
+  ];
+  bool proxy_command_granted = 8 [json_name = "proxyCommandGranted"];
+}
+
+enum MemberActionStatus {
+  MEMBER_ACTION_STATUS_UNSPECIFIED = 0;
+  MEMBER_ACTION_STATUS_ACCEPTED = 1;
+  MEMBER_ACTION_STATUS_NO_CORE = 2;
+  MEMBER_ACTION_STATUS_RATE_LIMITED = 3;
+  MEMBER_ACTION_STATUS_INVALID = 4;
+  MEMBER_ACTION_STATUS_DENIED = 5;
+  MEMBER_ACTION_STATUS_NOT_PERMITTED = 6;
+}
+
+message MemberActionResult {
+  string request_id = 1 [
+    json_name = "requestId",
+    (buf.validate.field).string = {min_len: 1, max_len: 64}
+  ];
+  MemberActionStatus status = 2 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
+  optional string actor_uuid = 3 [
+    json_name = "actorUuid",
+    (buf.validate.field).string.pattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  ];
+}
+
+enum ReplayCaptureOutcome {
+  REPLAY_CAPTURE_OUTCOME_UNSPECIFIED = 0;
+  REPLAY_CAPTURE_OUTCOME_OK = 1;
+  REPLAY_CAPTURE_OUTCOME_NO_ACTIVE_RECORDING = 2;
+  REPLAY_CAPTURE_OUTCOME_NOT_HOSTED = 3;
+  REPLAY_CAPTURE_OUTCOME_NO_MEMBER = 4;
+  REPLAY_CAPTURE_OUTCOME_ERROR = 5;
+  REPLAY_CAPTURE_OUTCOME_TIMED_OUT = 6;
+  REPLAY_CAPTURE_OUTCOME_MEMBER_DISCONNECTED = 7;
+}
+
+message ReplayCaptureRequest {
+  string request_id = 1 [
+    json_name = "requestId",
+    (buf.validate.field).string = {min_len: 1, max_len: 64}
+  ];
+  string target_uuid = 2 [
+    json_name = "targetUuid",
+    (buf.validate.field).string.pattern = "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  ];
+  string target_name = 3 [
+    json_name = "targetName",
+    (buf.validate.field).string.pattern = "^([A-Za-z0-9_]{1,16}|[.*+][A-Za-z0-9_]{1,15})$"
+  ];
+  optional string expected_server = 4 [
+    json_name = "expectedServer",
+    (buf.validate.field).string = {min_len: 1, max_len: 64}
+  ];
+  string requester_instance_id = 5 [
+    json_name = "requesterInstanceId",
+    (buf.validate.field).string.max_len = 64
+  ];
+}
+
+message ReplayCaptureResult {
+  string request_id = 1 [
+    json_name = "requestId",
+    (buf.validate.field).string = {min_len: 1, max_len: 64}
+  ];
+  ReplayCaptureOutcome outcome = 2 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
+  optional string replay_id = 3 [
+    json_name = "replayId",
+    (buf.validate.field).string.pattern = "^[A-Za-z0-9_-]{1,64}$"
+  ];
+}
+
+message HostedPlayersEvent {
+  bool replace = 1;
+  repeated string joined_uuids = 2 [
+    json_name = "joinedUuids",
+    (buf.validate.field).repeated = {
+      max_items: 1000
+      items: {string: {pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"}}
+    }
+  ];
+  repeated string left_uuids = 3 [
+    json_name = "leftUuids",
+    (buf.validate.field).repeated = {
+      max_items: 1000
+      items: {string: {pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"}}
+    }
+  ];
+  uint64 sequence = 4;
+  int32 online_count = 5 [
+    json_name = "onlineCount",
+    (buf.validate.field).int32 = {gte: 0, lte: 100000}
+  ];
+}
+
+message NetworkRosterEvent {
+  repeated NetworkMember members = 1 [(buf.validate.field).repeated.max_items = 256];
+}
+
+message NetworkMember {
+  string instance_id = 1 [json_name = "instanceId"];
+  string name = 2;
+  ServerRole role = 3;
+  string plugin_version = 4 [json_name = "pluginVersion"];
+  int32 online_players = 5 [json_name = "onlinePlayers"];
+}
+
+enum ClientKind {
+  CLIENT_KIND_UNSPECIFIED = 0;
+  CLIENT_KIND_PANEL = 1;
+  CLIENT_KIND_BACKEND = 2;
+  CLIENT_KIND_MINECRAFT_PLUGIN = 3;
+}
+
+enum AckKind {
+  ACK_KIND_UNSPECIFIED = 0;
+  ACK_KIND_TRANSPORT = 1;
+  ACK_KIND_DOMAIN = 2;
+}
+
+enum ErrorCode {
+  ERROR_CODE_UNSPECIFIED = 0;
+  ERROR_CODE_UNSUPPORTED_PROTOCOL = 1;
+  ERROR_CODE_UNAUTHORIZED = 2;
+  ERROR_CODE_FORBIDDEN = 3;
+  ERROR_CODE_INVALID_MESSAGE = 4;
+  ERROR_CODE_RATE_LIMITED = 5;
+  ERROR_CODE_INTERNAL = 6;
+  ERROR_CODE_VERSION_MISMATCH = 7;
+}
+
+enum ReconnectReason {
+  RECONNECT_REASON_UNSPECIFIED = 0;
+  RECONNECT_REASON_SERVER_RESTART = 1;
+  RECONNECT_REASON_DEPLOYMENT = 2;
+  RECONNECT_REASON_BACKPRESSURE = 3;
+  RECONNECT_REASON_AUTH_EXPIRED = 4;
+  RECONNECT_REASON_PROTOCOL_UPGRADE = 5;
+}
+
+enum ReconnectAction {
+  RECONNECT_ACTION_UNSPECIFIED = 0;
+  RECONNECT_ACTION_RECONNECT = 1;
+  RECONNECT_ACTION_REAUTHENTICATE = 2;
+  RECONNECT_ACTION_RESYNC = 3;
+  RECONNECT_ACTION_STOP = 4;
+}
+
+enum RealtimeCloseCode {
+  REALTIME_CLOSE_CODE_UNSPECIFIED = 0;
+  REALTIME_CLOSE_CODE_DISABLED = 4000;
+  REALTIME_CLOSE_CODE_SLOW_CONSUMER = 4001;
+  REALTIME_CLOSE_CODE_OVERLOADED = 4002;
+  REALTIME_CLOSE_CODE_TRANSPORT_FAILURE = 4003;
+  REALTIME_CLOSE_CODE_HEARTBEAT_TIMEOUT = 4004;
+  REALTIME_CLOSE_CODE_HANDSHAKE_TIMEOUT = 4005;
+  REALTIME_CLOSE_CODE_DEPLOY_DRAIN = 4006;
+  REALTIME_CLOSE_CODE_RATE_LIMITED = 4007;
+  REALTIME_CLOSE_CODE_MALFORMED_FRAME = 4008;
+  REALTIME_CLOSE_CODE_FRAME_TOO_LARGE = 4009;
+  REALTIME_CLOSE_CODE_AUTHENTICATION_FAILED = 4010;
+  REALTIME_CLOSE_CODE_SESSION_ENDED = 4011;
+  REALTIME_CLOSE_CODE_UNSUPPORTED_PROTOCOL = 4012;
+  REALTIME_CLOSE_CODE_PROTOCOL_VIOLATION = 4013;
+  REALTIME_CLOSE_CODE_VERSION_MISMATCH = 4014;
+  REALTIME_CLOSE_CODE_SESSION_REPLACED = 4015;
+}
+
+enum Topic {
+  reserved 3, 17;
+  reserved "TOPIC_PANEL_MIGRATIONS", "TOPIC_MINECRAFT_MIGRATION_TASKS";
+  TOPIC_UNSPECIFIED = 0;
+  TOPIC_PANEL_TICKETS = 1;
+  TOPIC_PANEL_ASSIGNED_TICKETS = 2;
+  TOPIC_PANEL_PLAYERS = 4;
+  TOPIC_PANEL_PUNISHMENTS = 5;
+  TOPIC_PANEL_STAFF = 6;
+  TOPIC_PANEL_ROLES = 7;
+  TOPIC_PANEL_SETTINGS = 8;
+  TOPIC_PANEL_PUNISHMENT_TYPES = 9;
+  TOPIC_MINECRAFT_PERMISSIONS = 10;
+  TOPIC_MINECRAFT_PUNISHMENT_TYPES = 11;
+  TOPIC_MINECRAFT_STAFF_NOTIFICATIONS = 12;
+  TOPIC_MINECRAFT_PRESENCE = 13;
+  TOPIC_MINECRAFT_PUNISHMENTS = 14;
+  TOPIC_MINECRAFT_PLAYER_NOTIFICATIONS = 15;
+  TOPIC_MINECRAFT_STAFF_2FA = 16;
+  TOPIC_PANEL_KNOWLEDGEBASE = 18;
+  TOPIC_PANEL_AUDIT = 19;
+  TOPIC_PANEL_HOMEPAGE = 20;
+  TOPIC_PANEL_APPEALS = 21;
+  TOPIC_PANEL_DASHBOARD = 22;
+  TOPIC_PANEL_NOTIFICATIONS = 23;
+  TOPIC_MINECRAFT_STAT_WIPES = 24;
+  TOPIC_NETWORK_MODERATION = 25;
+  TOPIC_NETWORK_MEMBER_ACTIONS = 26;
+  TOPIC_NETWORK_REPLAY_CAPTURE = 27;
+  TOPIC_NETWORK_ROSTER = 28;
+}

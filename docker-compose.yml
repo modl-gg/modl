@@ -1,0 +1,30 @@
+x-logging: &default-logging
+  driver: json-file
+  options:
+    max-size: "10m"
+    max-file: "3"
+
+services:
+  modl:
+    image: ghcr.io/modl-gg/modl:${MODL_IMAGE_TAG:-3.0}
+    env_file:
+      - path: .env
+        required: false
+    environment:
+      MODL_DATA_DIR: /data
+      MODL_PORT: "8080"
+      MODL_BIND_ADDRESS: 0.0.0.0
+      TZ: ${TZ:-UTC}
+    ports:
+      - "${MODL_PORT:-8080}:8080"
+    extra_hosts:
+      - "host.docker.internal:host-gateway"
+    mem_limit: ${MODL_MEMORY_LIMIT:-0}
+    volumes:
+      - modl-data:/data
+    restart: unless-stopped
+    stop_grace_period: 30s
+    logging: *default-logging
+
+volumes:
+  modl-data:

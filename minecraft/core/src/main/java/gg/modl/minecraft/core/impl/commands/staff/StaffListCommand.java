@@ -1,0 +1,131 @@
+package gg.modl.minecraft.core.impl.commands.staff;
+
+import gg.modl.minecraft.core.connection.PanelUrl;
+import dev.simplix.cirrus.player.CirrusPlayerWrapper;
+import gg.modl.minecraft.api.AbstractPlayer;
+import gg.modl.minecraft.core.HttpClientHolder;
+import gg.modl.minecraft.core.Platform;
+import gg.modl.minecraft.core.cache.Cache;
+import gg.modl.minecraft.core.command.StaffOnly;
+import gg.modl.minecraft.core.impl.menus.staff.StaffMembersMenu;
+import gg.modl.minecraft.core.locale.LocaleManager;
+import gg.modl.minecraft.core.network.ModerationSessionService;
+import gg.modl.minecraft.core.util.CommandUtil;
+import gg.modl.minecraft.core.util.Futures;
+import gg.modl.minecraft.core.util.Pagination;
+import gg.modl.minecraft.core.staff.PermissionUtil;
+import gg.modl.minecraft.core.util.Permissions;
+import lombok.RequiredArgsConstructor;
+import lombok.Value;
+import org.jspecify.annotations.Nullable;
+import revxrsal.commands.annotation.Command;
+import revxrsal.commands.annotation.Description;
+import revxrsal.commands.annotation.Optional;
+import revxrsal.commands.command.CommandActor;
+
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
+import static gg.modl.minecraft.core.util.Java8Collections.mapOf;
+
+@RequiredArgsConstructor
+public class StaffListCommand {
+    private final Platform platform;
+    private final Cache cache;
+    private final LocaleManager localeManager;
+    private final ModerationSessionService moderation;
+    private final HttpClientHolder httpClientHolder;
+    private final PanelUrl panelUrl;
+
+    @Command("stafflist")
+    @Description("List all online staff members")
+    @StaffOnly
+    public void staffList(CommandActor actor, @Optional @Nullable String flag) {
+        int page = flag != null ? Pagination.parsePrintFlags(flag) : 0;
+        boolean printMode = page > 0;
+
+        if (CommandUtil.rendersAsText(actor, platform, printMode)) {
+            printStaffList(actor, Math.max(1, page));
+            return;
+        }
+
+        UUID viewerUuid = actor.uniqueId();
+        AbstractPlayer viewer = platform.getAbstractPlayer(viewerUuid, false);
+        String viewerName = viewer != null ? viewer.getName() : viewerUuid.toString();
+        boolean isAdmin = PermissionUtil.hasAnyPermission(actor, cache,
+                Permissions.SETTINGS_VIEW, Permissions.SETTINGS_MODIFY);
+
+        StaffMembersMenu menu = new StaffMembersMenu(
+                platform, httpClientHolder.getClient(), viewerUuid, viewerName, isAdmin, panelUrl, null);
+        Futures.whenComplete(menu.getDataFuture(), (unused, throwable) -> {
+            if (throwable != null) {
+                CommandUtil.handleException(actor, throwable, localeManager);
+                return;
+            }
+            platform.runOnMainThread(() -> {
+                CirrusPlayerWrapper player = platform.getPlayerWrapper(viewerUuid);
+                if (player != null) menu.display(player);
+            });
+        }, platform.getLogger());
+    }
+
+    private static final int ENTRIES_PER_PAGE = 8;
+
+    private void printStaffList(CommandActor actor, int page) {
+        List<StaffEntry> staffEntries = collectOnlineStaff();
+
+        actor.reply(localeManager.getMessage("print.staff_list.header", mapOf(
+                "count", String.valueOf(staffEntries.size())
+        )));
+
+        if (staffEntries.isEmpty()) {
+            actor.reply(localeManager.getMessage("print.staff_list.empty"));
+            return;
+        }
+
+        PaginatedChatPrinter.printPageWithTotal(actor, localeManager, staffEntries, ENTRIES_PER_PAGE, page,
+                "print.staff_list.total", (index, ordinal) -> {
+                    StaffEntry entry = staffEntries.get(index);
+                    String vanishTag = entry.isVanished() ? localeManager.getMessage("print.staff_list.vanish") : "";
+                    actor.reply(localeManager.getMessage("print.staff_list.entry", mapOf(
+                            "role", entry.getRole(),
+                            "player", entry.getDisplayName(),
+                            "in-game-name", entry.getInGameName(),
+                            "server", entry.getServer(),
+                            "v", vanishTag
+                    )));
+                });
+    }
+
+    private List<StaffEntry> collectOnlineStaff() {
+        List<StaffEntry> entries = new ArrayList<>();
+        for (UUID uuid : cache.getRegistry().getOnlinePlayers()) {
+            if (!PermissionUtil.isStaff(uuid, cache)) continue;
+
+            AbstractPlayer player = platform.getPlayer(uuid);
+            String inGameName = player != null ? player.getName() : uuid.toString();
+            String displayName = cache.getStaffDisplayName(uuid);
+            String role = cache.getStaffRole(uuid);
+            String server = platform.getPlayerServer(uuid);
+
+            entries.add(new StaffEntry(
+                    displayName != null ? displayName : inGameName,
+                    inGameName,
+                    role != null ? role : localeManager.getStaffWord(),
+                    server != null ? server : localeManager.getUnknownWord(),
+                    moderation.isVanished(uuid)
+            ));
+        }
+        return entries;
+    }
+
+    @Value
+    private static class StaffEntry {
+        String displayName;
+        String inGameName;
+        String role;
+        String server;
+        boolean vanished;
+    }
+}
+

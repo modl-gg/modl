@@ -1,0 +1,135 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "modl/v1/servers.proto";
+
+enum DeploymentKind {
+  DEPLOYMENT_KIND_UNSPECIFIED = 0;
+  DEPLOYMENT_KIND_JAR = 1;
+  DEPLOYMENT_KIND_EMBEDDED = 2;
+  DEPLOYMENT_KIND_DOCKER = 3;
+  DEPLOYMENT_KIND_UNMANAGED = 4;
+}
+
+enum UpdateCheckOutcome {
+  UPDATE_CHECK_OUTCOME_UNSPECIFIED = 0;
+  UPDATE_CHECK_OUTCOME_SUCCEEDED = 1;
+  UPDATE_CHECK_OUTCOME_NO_RELEASE = 2;
+  UPDATE_CHECK_OUTCOME_NETWORK_ERROR = 3;
+  UPDATE_CHECK_OUTCOME_RATE_LIMITED = 4;
+  UPDATE_CHECK_OUTCOME_INVALID_SIGNATURE = 5;
+  UPDATE_CHECK_OUTCOME_INVALID_MANIFEST = 6;
+  UPDATE_CHECK_OUTCOME_UNSUPPORTED_FORMAT = 7;
+}
+
+enum InstallAvailability {
+  INSTALL_AVAILABILITY_UNSPECIFIED = 0;
+  INSTALL_AVAILABILITY_AVAILABLE = 1;
+  INSTALL_AVAILABILITY_DOCKER = 2;
+  INSTALL_AVAILABILITY_UNMANAGED = 3;
+  INSTALL_AVAILABILITY_PLUGIN_JAR_REQUIRED = 4;
+  INSTALL_AVAILABILITY_UPGRADE_PATH_UNSUPPORTED = 5;
+  INSTALL_AVAILABILITY_JAVA_TOO_OLD = 6;
+  INSTALL_AVAILABILITY_LAUNCHER_TOO_OLD = 7;
+  INSTALL_AVAILABILITY_DATA_DIRECTORY_UNSUPPORTED = 8;
+}
+
+enum InstallPhase {
+  INSTALL_PHASE_UNSPECIFIED = 0;
+  INSTALL_PHASE_IDLE = 1;
+  INSTALL_PHASE_DOWNLOADING = 2;
+  INSTALL_PHASE_PREPARING = 3;
+  INSTALL_PHASE_RESTARTING = 4;
+  INSTALL_PHASE_FAILED = 5;
+}
+
+enum InstallFailure {
+  INSTALL_FAILURE_UNSPECIFIED = 0;
+  INSTALL_FAILURE_DOWNLOAD = 1;
+  INSTALL_FAILURE_VERIFICATION = 2;
+  INSTALL_FAILURE_DISK_SPACE = 3;
+  INSTALL_FAILURE_BACKUP_DIRECTORY = 4;
+  INSTALL_FAILURE_DATABASE = 5;
+  INSTALL_FAILURE_PREPARATION = 6;
+  INSTALL_FAILURE_INTERNAL = 7;
+}
+
+message AvailableRelease {
+  string version = 1;
+  bool prerelease = 2;
+  bool critical = 3;
+  google.protobuf.Timestamp published_at = 4 [json_name = "publishedAt"];
+  string release_url = 5 [json_name = "releaseUrl"];
+  bool requires_plugin_update = 6 [json_name = "requiresPluginUpdate"];
+  InstallAvailability install_availability = 7 [json_name = "installAvailability"];
+  reserved 8, 9;
+  reserved "image_tag", "image_tag_change";
+  string min_upgrade_from = 10 [json_name = "minUpgradeFrom"];
+  int32 min_java = 11 [json_name = "minJava"];
+  string image_reference = 12 [json_name = "imageReference"];
+}
+
+message UpdateSettings {
+  bool checks_enabled = 1 [json_name = "checksEnabled"];
+  bool checks_managed_by_config = 2 [json_name = "checksManagedByConfig"];
+  bool include_prereleases = 3 [json_name = "includePrereleases"];
+}
+
+message UpdateInstallState {
+  InstallPhase phase = 1;
+  optional string target_version = 2 [json_name = "targetVersion"];
+  InstallFailure failure = 3;
+  int32 download_percent = 4 [json_name = "downloadPercent"];
+}
+
+message FailedUpdate {
+  string from_version = 1 [json_name = "fromVersion"];
+  string to_version = 2 [json_name = "toVersion"];
+  google.protobuf.Timestamp failed_at = 3 [json_name = "failedAt"];
+  bool database_restored = 4 [json_name = "databaseRestored"];
+}
+
+message RefusedPluginServer {
+  string platform = 1;
+  string plugin_version = 2 [json_name = "pluginVersion"];
+  ServerCompatibility compatibility = 3;
+  google.protobuf.Timestamp refused_at = 4 [json_name = "refusedAt"];
+}
+
+message UpdateStatusResponse {
+  string current_version = 1 [json_name = "currentVersion"];
+  DeploymentKind deployment = 2;
+  optional AvailableRelease release = 3;
+  bool dismissed = 4;
+  UpdateSettings settings = 5;
+  optional google.protobuf.Timestamp last_checked_at = 6 [json_name = "lastCheckedAt"];
+  optional google.protobuf.Timestamp next_check_at = 7 [json_name = "nextCheckAt"];
+  UpdateCheckOutcome last_outcome = 8 [json_name = "lastOutcome"];
+  UpdateInstallState install = 9;
+  optional FailedUpdate last_failure = 10 [json_name = "lastFailure"];
+  int32 incompatible_servers = 11 [json_name = "incompatibleServers"];
+  bool pre_update_backup = 12 [json_name = "preUpdateBackup"];
+  repeated RefusedPluginServer refused_servers = 13 [json_name = "refusedServers"];
+}
+
+message DismissUpdateRequest {
+  string version = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+}
+
+message UpdateSettingsRequest {
+  bool checks_enabled = 1 [json_name = "checksEnabled"];
+  bool include_prereleases = 2 [json_name = "includePrereleases"];
+}
+
+message InstallUpdateRequest {
+  string version = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  bool acknowledge_plugin_update = 2 [json_name = "acknowledgePluginUpdate"];
+}

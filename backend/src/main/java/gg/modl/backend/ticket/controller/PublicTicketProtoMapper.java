@@ -1,0 +1,176 @@
+package gg.modl.backend.ticket.controller;
+
+import static gg.modl.backend.infrastructure.proto.ProtoMapperSupport.addAll;
+import static gg.modl.backend.infrastructure.proto.ProtoMapperSupport.asMap;
+import static gg.modl.backend.infrastructure.proto.ProtoMapperSupport.setOptionalString;
+import static gg.modl.backend.infrastructure.proto.ProtoMapperSupport.stringValue;
+import static gg.modl.backend.infrastructure.proto.ProtoMapperSupport.structListToObjects;
+import static gg.modl.backend.infrastructure.proto.ProtoMapperSupport.structToMap;
+import static gg.modl.backend.infrastructure.proto.ProtoMapperSupport.toStruct;
+import static gg.modl.backend.infrastructure.proto.ProtoMapperSupport.toTimestamp;
+
+import gg.modl.backend.infrastructure.proto.PublicDataRedactor;
+import gg.modl.backend.ticket.data.Ticket;
+import gg.modl.backend.ticket.data.TicketReply;
+import gg.modl.backend.ticket.dto.request.CreateTicketRequest;
+import gg.modl.backend.ticket.dto.request.SubmitTicketFormRequest;
+import gg.modl.backend.ticket.dto.response.TicketResponse;
+import gg.modl.proto.modl.v1.AddReplyRequest;
+import gg.modl.proto.modl.v1.CreateTicketResponse;
+import gg.modl.proto.modl.v1.PublicTicketReply;
+import gg.modl.proto.modl.v1.PublicTicketResponse;
+import gg.modl.proto.modl.v1.PublicTicketStatusResponse;
+import gg.modl.proto.modl.v1.SubmitPublicTicketResponse;
+import org.jspecify.annotations.Nullable;
+import java.time.temporal.ChronoUnit;
+import java.util.List;
+import java.util.Map;
+import java.util.Objects;
+import java.util.Set;
+
+final class PublicTicketProtoMapper {
+    private PublicTicketProtoMapper() {
+    }
+
+    static CreateTicketResponse toCreateTicketResponse(TicketResponse ticket, String message) {
+        CreateTicketResponse.Builder builder = CreateTicketResponse.newBuilder()
+            .setSuccess(true)
+            .setTicketId(stringValue(ticket.id()))
+            .setMessage(message)
+            .setTicket(CreateTicketResponse.CreateTicketInfo.newBuilder()
+                .setId(stringValue(ticket.id()))
+                .setType(stringValue(ticket.type()))
+                .setSubject(stringValue(ticket.subject()))
+                .setStatus(stringValue(ticket.status()))
+                .setCreated(ticket.date() != null ? ticket.date().truncatedTo(ChronoUnit.MILLIS).toString() : ""));
+        setOptionalString(builder::setPublicUrl, ticket.publicUrl());
+        return builder.build();
+    }
+
+    static PublicTicketResponse toPublicTicketResponse(TicketResponse ticket, Ticket rawTicket, Set<String> formFieldAllowlist,
+                                                      boolean emailVerified) {
+        String creatorName = ticket.creatorName() != null ? ticket.creatorName() : "";
+        List<PublicTicketReply> publicReplies =
+            (ticket.messages() == null ? List.<TicketReply>of() : ticket.messages()).stream()
+                .map(PublicTicketProtoMapper::toPublicReply)
+                .toList();
+
+        PublicTicketResponse.Builder builder = PublicTicketResponse.newBuilder()
+            .setId(stringValue(ticket.id()))
+            .setIdAlias(stringValue(ticket.id()))
+            .setType(stringValue(ticket.type()))
+            .setSubject(stringValue(ticket.subject()))
+            .setStatus(stringValue(ticket.status()))
+            .setCreatorName(creatorName)
+            .setCreator(creatorName)
+            .setCreatorUuid("")
+            .setCreatorLinked(ticket.creatorLinked())
+            .setReportedBy(ticket.reportedBy() != null ? ticket.reportedBy() : "")
+            .setCategory(stringValue(ticket.category()))
+            .setLocked(ticket.locked())
+            .setReportedPlayer(ticket.reportedPlayer() != null ? ticket.reportedPlayer() : "")
+            .setReportedPlayerUuid("")
+            .setEmailAuthEnabled(ticket.emailAuthEnabled())
+            .setData(PublicDataRedactor.toPublicStruct(
+                Objects.requireNonNullElse(ticket.data(), Map.of()), PublicDataRedactor.SYSTEM_DATA_ALLOWLIST))
+            .setFormData(PublicDataRedactor.toPublicStruct(
+                Objects.requireNonNullElse(ticket.formData(), Map.of()), formFieldAllowlist));
+
+        builder.addAllReplies(publicReplies);
+        builder.addAllMessages(publicReplies);
+
+        if (ticket.date() != null) {
+            builder.setCreated(toTimestamp(ticket.date()));
+            builder.setDate(toTimestamp(ticket.date()));
+        }
+        addAll(ticket.tags(), value -> value, builder::addTags);
+
+        if (emailVerified && rawTicket.isEmailAuthEnabled() && ticket.chatMessages() != null) {
+            ticket.chatMessages().forEach(message -> builder.addChatMessages(
+                PublicTicketResponse.PublicTicketChatMessage.newBuilder()
+                    .setContent(stringValue(message.getContent()))
+                    .setTimestamp(toTimestamp(message.getTimestamp()))
+                    .setSender(stringValue(message.getSender()))
+                    .build()));
+        }
+        return builder.build();
+    }
+
+    static PublicTicketStatusResponse toStatusResponse(TicketResponse ticket) {
+        PublicTicketStatusResponse.Builder builder = PublicTicketStatusResponse.newBuilder()
+            .setId(stringValue(ticket.id()))
+            .setType(stringValue(ticket.type()))
+            .setSubject(stringValue(ticket.subject()))
+            .setStatus(stringValue(ticket.status()))
+            .setLocked(ticket.locked());
+        if (ticket.date() != null) {
+            builder.setCreated(toTimestamp(ticket.date()));
+        }
+        return builder.build();
+    }
+
+    static SubmitPublicTicketResponse toSubmitResponse(TicketResponse ticket) {
+        return SubmitPublicTicketResponse.newBuilder()
+            .setSuccess(true)
+            .setMessage("Ticket submitted successfully")
+            .setTicket(SubmitPublicTicketResponse.SubmitPublicTicketInfo.newBuilder()
+                .setId(stringValue(ticket.id()))
+                .setSubject(stringValue(ticket.subject()))
+                .setStatus(stringValue(ticket.status())))
+            .build();
+    }
+
+    static CreateTicketRequest fromPublicCreateTicketRequest(gg.modl.proto.modl.v1.CreateTicketRequest request) {
+        return new CreateTicketRequest(
+            request.getType(),
+            request.hasSubject() ? request.getSubject() : null,
+            request.hasDescription() ? request.getDescription() : null,
+            null,
+            request.hasCreatorName() ? request.getCreatorName() : null,
+            request.hasCreatorEmail() ? request.getCreatorEmail() : null,
+            null,
+            null,
+            null,
+            request.hasFormData() ? structToMap(request.getFormData()) : null,
+            structListToObjects(request.getAttachmentsList()),
+            null,
+            null,
+            request.hasCreatorIdentifier() ? request.getCreatorIdentifier() : null,
+            request.hasEmailAuthEnabled() ? request.getEmailAuthEnabled() : null,
+            request.getFieldLabelsMap().isEmpty() ? null : Map.copyOf(request.getFieldLabelsMap())
+        );
+    }
+
+    static SubmitTicketFormRequest fromSubmitTicketFormRequest(gg.modl.proto.modl.v1.SubmitTicketFormRequest request) {
+        return new SubmitTicketFormRequest(
+            request.getSubject(),
+            request.hasCreatorEmail() ? request.getCreatorEmail() : null,
+            request.hasFormData() ? structToMap(request.getFormData()) : null,
+            structListToObjects(request.getAttachmentsList()),
+            request.hasCreatorIdentifier() ? request.getCreatorIdentifier() : null,
+            request.getFieldLabelsMap().isEmpty() ? null : Map.copyOf(request.getFieldLabelsMap()),
+            request.hasEmailAuthEnabled() ? request.getEmailAuthEnabled() : null
+        );
+    }
+
+    static PublicTicketReply toPublicReply(TicketReply reply) {
+        PublicTicketReply.Builder builder = PublicTicketReply.newBuilder()
+            .setId(stringValue(reply.getId()))
+            .setName(stringValue(reply.getName()))
+            .setAvatar(stringValue(reply.getAvatar()))
+            .setContent(stringValue(reply.getContent()))
+            .setType(stringValue(reply.getType()))
+            .setStaff(reply.isStaff())
+            .setAction(stringValue(reply.getAction()));
+        if (reply.getCreated() != null) {
+            builder.setCreated(toTimestamp(reply.getCreated()));
+        }
+        addAll(reply.getAttachments(), value -> toStruct(asMap(value)), builder::addAttachments);
+        return builder.build();
+    }
+
+    @Nullable
+    static List<Object> attachmentsFromReply(AddReplyRequest request) {
+        return structListToObjects(request.getAttachmentsList());
+    }
+}

@@ -1,0 +1,34 @@
+name: ${plugin.name}
+main: ${project.groupId}.minecraft.spigot.SpigotPlugin
+version: ${plugin.version}
+author: '${plugin.author}'
+description: ${plugin.description}
+website: ${plugin.url}
+api-version: 1.13
+folia-supported: true
+softdepend:
+  - packetevents
+  - ProtocolLib
+  - ProtocolSupport
+  - ViaVersion
+  - ViaBackwards
+  - ViaRewind
+  - Geyser-Spigot
+  - GrimAC
+  - Polar
+  - Vulcan
+  - LiteBans
+  - LibertyBans
+  - BanManager
+  - BanSystem
+commands:
+  proxycmd:
+    description: Run a modl command on the proxy
+    usage: /proxycmd <command>
+  modlserver:
+    description: Manage the modl server features on this server
+    usage: /modlserver reload
+permissions:
+  modl.server.reload:
+    description: Reload the modl server features configuration
+    default: op

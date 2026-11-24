@@ -1,0 +1,47 @@
+{
+  "provider": "vpnapi",
+  "source": "https://vpnapi.io/api-documentation",
+  "cases": [
+    {
+      "name": "the documented example",
+      "status": 200,
+      "body": {
+        "ip": "8.8.8.8",
+        "security": { "vpn": false, "proxy": false, "tor": false, "relay": false },
+        "location": {
+          "city": "Mountain View", "region": "California", "country": "United States", "continent": "North America",
+          "region_code": "CA", "country_code": "US", "continent_code": "NA", "latitude": "37.4056",
+          "longitude": "-122.0775", "time_zone": "America/Los_Angeles", "is_in_european_union": false
+        },
+        "network": { "network": "8.8.8.0/24", "autonomous_system_number": "AS15169", "autonomous_system_organization": "GOOGLE" }
+      },
+      "outcome": "FOUND",
+      "expected": { "country": "US", "region": "California", "asn": "AS15169 GOOGLE", "vpn": "NO", "hosting": false }
+    },
+    {
+      "name": "a relay counts as a VPN",
+      "status": 200,
+      "body": {
+        "ip": "203.0.113.9",
+        "security": { "vpn": false, "proxy": false, "tor": false, "relay": true },
+        "location": { "country_code": "DE", "region": "Berlin" },
+        "network": { "autonomous_system_number": "AS64501", "autonomous_system_organization": "Example Relay" }
+      },
+      "outcome": "FOUND",
+      "expected": { "country": "DE", "region": "Berlin", "asn": "AS64501 Example Relay", "vpn": "YES", "hosting": false }
+    },
+    {
+      "name": "a missing detection field leaves the status unknown",
+      "status": 200,
+      "body": { "ip": "203.0.113.9", "security": { "vpn": false, "proxy": false }, "location": {}, "network": {} },
+      "outcome": "FOUND",
+      "expected": { "country": null, "region": null, "asn": null, "vpn": "UNKNOWN", "hosting": false }
+    },
+    {
+      "name": "an invalid key",
+      "status": 403,
+      "body": { "message": "Invalid API key" },
+      "outcome": "REFUSED"
+    }
+  ]
+}

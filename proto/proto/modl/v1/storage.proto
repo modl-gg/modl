@@ -1,0 +1,82 @@
+syntax = "proto3";
+package modl.v1;
+
+import "google/protobuf/timestamp.proto";
+import "buf/validate/validate.proto";
+
+// --- Requests ---
+
+message PresignUploadRequest {
+  string upload_type = 1 [
+    json_name = "uploadType",
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 32
+    }
+  ];
+  string file_name = 2 [
+    json_name = "fileName",
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 255
+    }
+  ];
+  int64 file_size = 3 [json_name = "fileSize", (buf.validate.field).int64.gt = 0];
+  string content_type = 4 [
+    json_name = "contentType",
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 127
+    }
+  ];
+  optional string entity_id = 5 [
+    json_name = "entityId",
+    (buf.validate.field).string.max_len = 64
+  ];
+  optional string access_token = 6 [
+    json_name = "accessToken",
+    (buf.validate.field).string.max_len = 256
+  ];
+}
+
+message ConfirmUploadRequest {
+  string key = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 512
+  }];
+  optional string access_token = 2 [
+    json_name = "accessToken",
+    (buf.validate.field).string.max_len = 256
+  ];
+}
+
+// --- Responses ---
+
+message PresignUploadResponse {
+  string presigned_url = 1 [json_name = "presignedUrl"];
+  string key = 2;
+  google.protobuf.Timestamp expires_at = 3 [json_name = "expiresAt"];
+  string method = 4;
+  map<string, string> required_headers = 5 [json_name = "requiredHeaders"];
+}
+
+message UploadResponse {
+  string key = 1;
+  string url = 2;
+  string file_name = 3 [json_name = "fileName"];
+  int64 size = 4;
+  string content_type = 5 [json_name = "contentType"];
+}
+
+message MediaConfigResponse {
+  reserved 1, 4;
+  reserved "backblaze_configured", "cdn_domain";
+  map<string, MediaSupportedTypes> supported_types = 2 [json_name = "supportedTypes"];
+  map<string, int64> file_size_limits = 3 [json_name = "fileSizeLimits"];
+  bool storage_configured = 5 [json_name = "storageConfigured"];
+  string public_base_url = 6 [json_name = "publicBaseUrl"];
+}
+
+message MediaSupportedTypes {
+  repeated string types = 1;
+}

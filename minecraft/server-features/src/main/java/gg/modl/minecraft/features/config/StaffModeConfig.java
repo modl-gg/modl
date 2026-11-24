@@ -1,0 +1,172 @@
+package gg.modl.minecraft.features.config;
+
+import gg.modl.minecraft.features.resource.FeaturesYamlResource;
+import gg.modl.minecraft.core.util.PluginLogger;
+import lombok.Getter;
+import org.jspecify.annotations.Nullable;
+
+import java.nio.file.Path;
+import java.util.ArrayList;
+import java.util.LinkedHashMap;
+import java.util.List;
+import java.util.Map;
+import java.util.Optional;
+import java.util.stream.Collectors;
+
+public class StaffModeConfig {
+
+    private static final String ACTION_TARGET_SELECTOR = "target_selector";
+    private static final String ACTION_VANISH_TOGGLE = "vanish_toggle";
+    private static final String ACTION_STAFF_MENU = "staff_menu";
+
+    @Getter private Map<Integer, HotbarItem> staffHotbar = new LinkedHashMap<>();
+    @Getter private Map<Integer, HotbarItem> targetHotbar = new LinkedHashMap<>();
+    @Getter private ScoreboardConfig staffScoreboard = new ScoreboardConfig();
+    @Getter private ScoreboardConfig targetScoreboard = new ScoreboardConfig();
+
+    private final PluginLogger logger;
+
+    public static StaffModeConfig load(Path dataFolder, PluginLogger logger) {
+        return new StaffModeConfig(dataFolder, logger);
+    }
+
+    private StaffModeConfig(Path dataFolder, PluginLogger logger) {
+        this.logger = logger;
+        read(dataFolder);
+    }
+
+    public void reload(Path dataFolder) {
+        staffHotbar = new LinkedHashMap<>();
+        targetHotbar = new LinkedHashMap<>();
+        staffScoreboard = new ScoreboardConfig();
+        targetScoreboard = new ScoreboardConfig();
+        read(dataFolder);
+    }
+
+    private void read(Path dataFolder) {
+        Path configFile = dataFolder.resolve("staff_mode.yml");
+        if (!configFile.toFile().exists()) {
+            setDefaults();
+            return;
+        }
+
+        try {
+            Map<String, Object> data = FeaturesYamlResource.loadMap(configFile);
+            if (data.isEmpty()) {
+                setDefaults();
+                return;
+            }
+
+            Optional.ofNullable((Map<?, ?>) data.get("staff_hotbar")).map(this::parseHotbar).ifPresent(h -> staffHotbar = h);
+            Optional.ofNullable((Map<?, ?>) data.get("target_hotbar")).map(this::parseHotbar).ifPresent(h -> targetHotbar = h);
+            Optional.ofNullable((Map<?, ?>) data.get("staff_scoreboard")).map(this::parseScoreboard).ifPresent(s -> staffScoreboard = s);
+            Optional.ofNullable((Map<?, ?>) data.get("target_scoreboard")).map(this::parseScoreboard).ifPresent(s -> targetScoreboard = s);
+
+            if (staffHotbar.isEmpty()) setStaffDefaults();
+            if (targetHotbar.isEmpty()) setTargetDefaults();
+        } catch (Exception e) {
+            logger.warning("[StaffMode] Failed to load staff_mode.yml: " + e.getMessage());
+            setDefaults();
+        }
+    }
+
+    @SuppressWarnings("unchecked")
+    private Map<Integer, HotbarItem> parseHotbar(Map<?, ?> raw) {
+        Map<Integer, HotbarItem> result = new LinkedHashMap<>();
+        if (raw == null) return result;
+
+        for (Map.Entry<?, ?> entry : raw.entrySet()) {
+            try {
+                int slot = entry.getKey() instanceof Number
+                        ? ((Number) entry.getKey()).intValue()
+                        : Integer.parseInt(entry.getKey().toString());
+                Map<String, Object> itemData = (Map<String, Object>) entry.getValue();
+                HotbarItem item = new HotbarItem();
+                item.item = (String) itemData.getOrDefault("item", "minecraft:stone");
+                item.name = (String) itemData.getOrDefault("name", "");
+                item.action = (String) itemData.getOrDefault("action", "");
+                item.toggleItem = (String) itemData.get("toggle_item");
+                item.toggleName = (String) itemData.get("toggle_name");
+                item.lore = parseStringList(itemData.get("lore"));
+                item.toggleLore = parseStringList(itemData.get("toggle_lore"));
+                result.put(slot, item);
+            } catch (Exception e) {
+                logger.warning("[StaffMode] Skipping malformed hotbar entry: " + e.getMessage());
+            }
+        }
+        return result;
+    }
+
+    private List<String> parseStringList(@Nullable Object value) {
+        if (value instanceof List<?>) {
+            List<?> list = (List<?>) value;
+            return list.stream()
+                    .map(o -> o != null ? String.valueOf(o) : "")
+                    .collect(Collectors.toList());
+        }
+        return new ArrayList<>();
+    }
+
+    private ScoreboardConfig parseScoreboard(Map<?, ?> raw) {
+        ScoreboardConfig config = new ScoreboardConfig();
+        if (raw == null) return config;
+        if (raw.containsKey("enabled")) config.enabled = Boolean.TRUE.equals(raw.get("enabled"));
+        if (raw.containsKey("title")) config.title = String.valueOf(raw.get("title"));
+        if (raw.containsKey("vanish")) config.vanish = String.valueOf(raw.get("vanish"));
+        config.lines = parseStringList(raw.get("lines"));
+        return config;
+    }
+
+    private void setDefaults() {
+        setStaffDefaults();
+        setTargetDefaults();
+    }
+
+    private void setStaffDefaults() {
+        staffHotbar.put(0, createHotbarItem("minecraft:lead", "&eTarget Player", ACTION_TARGET_SELECTOR));
+        staffHotbar.put(3, createVanishToggleItem());
+        staffHotbar.put(8, createHotbarItem("minecraft:compass", "&6Staff Menu", ACTION_STAFF_MENU));
+    }
+
+    private void setTargetDefaults() {
+        targetHotbar.put(0, createHotbarItem("minecraft:ice", "&bFreeze Target", "freeze_target"));
+        targetHotbar.put(3, createHotbarItem("minecraft:nether_star", "&cStop Targeting", "stop_target"));
+        targetHotbar.put(4, createHotbarItem("minecraft:book", "&eInspect Target", "inspect_target"));
+        targetHotbar.put(5, createHotbarItem("minecraft:chest", "&eOpen Inventory", "open_inventory"));
+        targetHotbar.put(7, createVanishToggleItem());
+    }
+
+    private static HotbarItem createHotbarItem(String material, String name, String action) {
+        HotbarItem item = new HotbarItem();
+        item.item = material;
+        item.name = name;
+        item.action = action;
+        return item;
+    }
+
+    private static HotbarItem createVanishToggleItem() {
+        HotbarItem item = createHotbarItem("minecraft:lime_dye", "&aVanish: ON", ACTION_VANISH_TOGGLE);
+        item.toggleItem = "minecraft:gray_dye";
+        item.toggleName = "&7Vanish: OFF";
+        return item;
+    }
+
+    @Getter
+    public static class HotbarItem {
+        private String item = "minecraft:stone";
+        private String name = "";
+        private String action = "";
+        private @Nullable String toggleItem;
+        private @Nullable String toggleName;
+        private List<String> lore = new ArrayList<>();
+        private List<String> toggleLore = new ArrayList<>();
+    }
+
+    @Getter
+    public static class ScoreboardConfig {
+        private boolean enabled = false;
+        private String title = "";
+        private String vanish = "";
+        private List<String> lines = new ArrayList<>();
+    }
+}

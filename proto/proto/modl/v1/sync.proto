@@ -1,0 +1,161 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/struct.proto";
+import "modl/v1/player.proto";
+
+// --- Sync Request (V2 backend record) ---
+
+message SyncRequest {
+  reserved 6, 8;
+  reserved "server_status", "bridge_servers";
+
+  string last_sync_timestamp = 1 [json_name = "lastSyncTimestamp"];
+  repeated SyncOnlinePlayer online_players = 2 [
+    json_name = "onlinePlayers",
+    (buf.validate.field).repeated.max_items = 10000
+  ];
+  optional string server_name = 3 [json_name = "serverName"];
+  repeated SyncChatLogEntry chat_logs = 4 [json_name = "chatLogs"];
+  repeated SyncCommandLogEntry command_logs = 5 [json_name = "commandLogs"];
+  optional string server_instance_id = 7 [json_name = "serverInstanceId"];
+}
+
+message SyncOnlinePlayer {
+  string uuid = 1;
+  string username = 2;
+  string ip_address = 3 [json_name = "ipAddress"];
+  int64 session_duration_ms = 4 [json_name = "sessionDurationMs"];
+}
+
+message SyncChatLogEntry {
+  string uuid = 1;
+  string username = 2;
+  string message = 3;
+  string server = 4;
+  int64 timestamp = 5;
+}
+
+message SyncCommandLogEntry {
+  string uuid = 1;
+  string username = 2;
+  string command = 3;
+  string server = 4;
+  int64 timestamp = 5;
+}
+
+// --- Sync Response ---
+
+message SyncResponse {
+  string timestamp = 1;
+  SyncData data = 2;
+}
+
+message SyncData {
+  reserved 6;
+  reserved "migration_task";
+  repeated SyncPendingPunishment pending_punishments = 1;
+  repeated SyncPendingPunishment recently_started_punishments = 2;
+  repeated SyncModifiedPunishment recently_modified_punishments = 3;
+  repeated SyncPlayerNotification player_notifications = 4;
+  repeated SyncActiveStaffMember active_staff_members = 5;
+  repeated SyncStaffNotification staff_notifications = 7;
+  repeated SyncPendingStatWipe pending_stat_wipes = 8;
+  repeated SyncStaff2faVerification staff_2fa_verifications = 9;
+  optional int64 staff_permissions_updated_at = 10;
+  optional int64 punishment_types_updated_at = 11;
+  optional string panel_url = 12 [json_name = "panelUrl"];
+}
+
+message SyncPendingPunishment {
+  string minecraft_uuid = 1;
+  string username = 2;
+  SimplePunishment punishment = 3;
+}
+
+message SyncModifiedPunishment {
+  string minecraft_uuid = 1;
+  string username = 2;
+  SyncPunishmentWithModifications punishment = 3;
+}
+
+message SyncPunishmentWithModifications {
+  string id = 1;
+  repeated SyncPunishmentModification modifications = 2;
+}
+
+message SyncPunishmentModification {
+  string type = 1;
+  optional int64 timestamp = 2;
+  optional int64 effective_duration = 3;
+}
+
+message SyncPlayerNotification {
+  string id = 1;
+  string message = 2;
+  string type = 3;
+  optional string target_player_uuid = 4;
+  optional google.protobuf.Struct data = 5;
+  optional int64 timestamp = 6;
+}
+
+message SyncActiveStaffMember {
+  string minecraft_uuid = 1;
+  string minecraft_username = 2;
+  string staff_username = 3;
+  string staff_role = 4;
+  string email = 5;
+  string staff_id = 6;
+  repeated string permissions = 7;
+  optional bool two_factor_session_valid = 8;
+}
+
+message SyncStaffNotification {
+  string id = 1;
+  string type = 2;
+  string message = 3;
+  optional google.protobuf.Struct data = 4;
+  optional int64 timestamp = 5;
+}
+
+message SyncPendingStatWipe {
+  string minecraft_uuid = 1;
+  string username = 2;
+  string punishment_id = 3;
+}
+
+message SyncStaff2faVerification {
+  string minecraft_uuid = 1;
+  optional string ip = 2;
+}
+
+// --- Acknowledgments ---
+
+message AcknowledgeNotificationsRequest {
+  string player_uuid = 1 [
+    json_name = "playerUuid",
+    (buf.validate.field).string = {
+      min_len: 1
+      pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    }
+  ];
+  string acknowledged_at = 2 [
+    json_name = "acknowledgedAt",
+    (buf.validate.field).string.max_len = 64
+  ];
+  repeated string notification_ids = 3 [
+    json_name = "notificationIds",
+    (buf.validate.field).repeated = {
+      min_items: 1
+      max_items: 100
+      items: {
+        string: {
+          min_len: 1
+          max_len: 64
+          pattern: "(?s).*\\S.*"
+        }
+      }
+    }
+  ];
+}

@@ -1,0 +1,1495 @@
+# modl in-game messages, zh_CN. Colors, placeholders and overrides: https://github.com/modl-gg/modl/wiki/Placeholders
+
+messages:
+  cannot_report_self: "&c你不能举报自己。"
+  player_not_online: "&c该玩家不在线。"
+  submitting: "&e正在提交{type}..."
+  creating: "&e正在创建{type}..."
+  success: "&a{type}已提交。"
+  created: "&a{type}已创建。"
+  ticket_id: "&7工单 ID: &f{ticketId}"
+  view_ticket: "&7查看你的工单: &b{url}"
+  complete_form: "&7完成你的{type}: &b{url}"
+  form_title_note: "&7提交前你可以在表单中修改标题「&f{title}&7」。"
+  failed_submit: "&c提交{type}失败: {error}"
+  failed_create: "&c创建{type}失败: {error}"
+  try_again: "&c请稍后重试，或直接联系管理员。"
+  unknown_error: "未知错误"
+  no_details: "未提供更多详情"
+  no_chat_logs_available: "&c{player} 没有可举报的近期聊天消息。"
+  view_ticket_label: "查看你的工单"
+  complete_form_label: "完成你的{type}"
+  click_to_view: "[点击查看]"
+  click_to_view_hover: "点击查看工单 {ticketId}"
+  console_ticket_url: "&6{message}: &b{url}"
+  claiming_ticket: "&e正在将工单 &f{ticketId}&e 关联到你的账号..."
+  ticket_claimed_success: "&a工单 &f{ticketId}&a 已关联到你的账号。"
+  ticket_claim_failed: "&c关联工单失败: {error}"
+  ticket_cooldown: "&c你需要等待 {seconds} 秒后才能再次创建此类工单。"
+  report_gui_title: "&f举报 {player}"
+  report_skull_chat_log:
+    - "&b举报 {player}"
+    - "&7是否附加聊天记录？"
+  report_skull_details:
+    - "&b举报 {player}"
+    - "&7是否补充更多详情？"
+  report_skull_confirm:
+    - "&b举报 {player}"
+    - "&7确认提交举报？"
+  report_skull_replay:
+    - "&b举报 {player}"
+    - "&7是否附加回放？"
+  report_skull_evidence:
+    - "&b举报 {player}"
+    - "&7是否附加聊天记录或回放？"
+  report_attach_chat: "&a附加聊天记录"
+  report_attach_chat_lore: []
+  report_skip_chat: "&c跳过聊天记录"
+  report_skip_chat_lore: []
+  report_chat_attached: "&a将附加聊天记录"
+  report_chat_click_to_attach: "&7点击以附加聊天记录"
+  report_capture_replay: "&a抓取回放"
+  report_capture_replay_lore: []
+  report_replay_attached: "&a将抓取回放"
+  report_replay_not_attached: "&c将不会抓取回放"
+  report_skip_replay: "&c跳过"
+  report_skip_replay_lore: []
+  report_continue: "&a继续"
+  report_continue_lore: []
+  report_add_details: "&a补充详情"
+  report_add_details_lore: []
+  report_skip_details: "&c跳过详情"
+  report_skip_details_lore: []
+  report_confirm: "&a确认举报"
+  report_cancel: "&c取消举报"
+  report_cancel_lore: []
+  report_summary_reason: "&7原因: &f{reason}"
+  report_summary_details: "&7详情: &f{details}"
+  report_summary_chat_log: "&7聊天记录: &f已附加"
+  report_summary_replay: "&7回放: &a将被抓取"
+  report_attach_replay: "&e附加回放"
+  report_close: "&c关闭"
+  report_close_lore: []
+  report_details_prompt: "请输入你举报 {player} 的补充详情:"
+  report_submitted: "&a举报已提交。"
+  # Ticket kinds shown as {type} in ticket messages: "name" starts a sentence, "inline" appears mid-sentence
+  ticket_types:
+    report:
+      name: "举报"
+      inline: "举报"
+    chat_report:
+      name: "聊天举报"
+      inline: "聊天举报"
+    support:
+      name: "支持请求"
+      inline: "支持请求"
+    bug:
+      name: "Bug 报告"
+      inline: "Bug 报告"
+    application:
+      name: "管理员申请"
+      inline: "管理员申请"
+
+general:
+  players_only: "&c此命令只能由玩家使用。"
+  local_console_only: "&c请在本服务器自己的控制台中运行此命令。"
+  no_permission: "&c你没有权限使用此命令。"
+  no_permission_punishment: "&c你没有权限执行「{type}」类型的处罚。"
+  no_permission_reload: "&c你没有权限重载处罚数据。"
+  invalid_syntax: "&c命令语法错误。请检查你的用法。"
+  gui_requires_player: "&c此命令会打开图形界面，只能由玩家执行。使用 &f-p &c可改为文本输出。"
+  gui_unavailable: "&c此代理服务器不支持图形界面菜单。"
+
+  unknown: "未知"
+  staff: "管理员"
+  answer_yes: "是"
+  answer_no: "否"
+  not_available: "暂无"
+  never: "从未"
+  permanent: "永久"
+  loading: "加载中..."
+  no_reason: "未提供原因"
+  console: "控制台"
+  player_not_found: "&c未找到该玩家。"
+  punishment_error: "&c创建处罚时出错: {error}"
+  punishment_types_not_loaded: "&c处罚类型尚未加载。请尝试 &f/modl reload&c 或联系管理员。"
+  invalid_punishment_type: "&c无效的处罚类型。可用类型: {types}"
+  invalid_duration: "&c时长格式无效。示例: 1d, 2h, 30m, 1w"
+  cannot_punish_self: "&c你不能处罚自己。"
+  target_immune: "&c你无法处罚 {target}，该玩家拥有豁免权限。"
+
+  punishment_issued: "&a已对 &f{target}&a 执行{type}。"
+  punishment_issued_duration: "&a已对 &f{target}&a 执行{type}（{duration}）。"
+
+  reloading: "&e正在重载..."
+  reload_success: "&a重载完成。"
+  reload_error: "&c重载时出错: {error}"
+
+command_errors:
+  unknown_command: "&c未知命令: &f{input}"
+  unknown_command_suggestions: "&c未知命令: &f{input}&c。你是否想输入 &f{suggestions}&c？"
+  unknown_subcommand: "&c没有与 &f/{input}&c 匹配的命令。你是否想输入:"
+  suggestion: "&7- &f/{command}"
+  expected_literal: "&c应输入 &f{expected}&c，但收到 &f'{input}'&c。"
+  missing_argument: "&c缺少参数 &f{parameter}&c。用法: &f/{usage}"
+  too_many_arguments: "&c参数过多。多余的输入: &f{input}"
+  invalid_choice: "&c无效的选项: &f{input}&c。请输入一个可用选项。"
+  value_not_allowed: "&c无效的值: &f{input}&c。允许的值: &f{allowed}"
+  invalid_boolean: "&c应输入 &ftrue&c 或 &ffalse&c，但收到 &f{input}&c。"
+  invalid_number: "&c无效的数字: &f{input}"
+  invalid_integer: "&c无效的整数: &f{input}"
+  invalid_uuid: "&c无效的 UUID: &f{input}"
+  number_too_small: "&c值 &f{value}&c 太小。最小值为 &f{minimum}&c。"
+  number_too_large: "&c值 &f{value}&c 太大。最大值为 &f{maximum}&c。"
+  text_too_short: "&c文本太短。最少字符数为 &f{minimum}&c。"
+  text_too_long: "&c文本太长。最多字符数为 &f{maximum}&c。"
+  too_few_values: "&c值太少。最少数量为 &f{minimum}&c。"
+  too_many_values: "&c值太多。最多数量为 &f{maximum}&c。"
+  invalid_escape: "&c无效的转义字符。请使用 &f\\\\&c 输入反斜杠。"
+  unclosed_quote: "&c引号未闭合。请闭合所有引号。"
+  expected_space: "&c请用空格分隔参数。"
+  unknown_flag: "&c未知选项: &f{input}"
+  unknown_short_flag: "&c未知短选项: &f{input}"
+  invalid_help_page: "&c无效的帮助页码: &f{page}&c。最后一页为 &f{pages}&c。"
+  cooldown: "&c你需要等待 &f{time}&c 后才能再次使用此命令。"
+  failed: "&c命令执行失败。错误已记录到服务器控制台。"
+  console_only: "&c此命令只能在控制台中使用。"
+  invalid_player: "&c无效的玩家: &f{input}"
+  invalid_world: "&c无效的世界: &f{input}"
+  missing_coordinate: "&c缺少坐标: &f{axis}"
+  invalid_selector: "&c无效的实体选择器: &f{input}"
+  selector_players_only: "&c选择器 &f{input}&c 只能选择玩家。"
+  selector_too_many: "&c选择器只能选择一个实体。"
+  selector_empty: "&c未找到任何实体。"
+
+validation:
+  single_severity_error: "&c无法为单一严重度的处罚类型「{type}」设置严重度。该处罚类型只有一个严重度等级。"
+  permanent_skin_change_error: "&c无法为「更换皮肤前永久生效」的处罚类型「{type}」设置严重度。"
+  permanent_username_change_error: "&c无法为「更换用户名前永久生效」的处罚类型「{type}」设置严重度。"
+  alt_blocking_not_supported: "&c处罚类型「{type}」不支持封锁小号选项。"
+  stat_wiping_not_supported: "&c处罚类型「{type}」不支持清除统计数据选项。"
+
+# Words substituted into punishment messages.
+punishment_words:
+  # {tense}, as in "You {tense} banned"
+  tense_default: "已被"
+  tense_active: "当前被"
+  # {tense2}, as in "Your account {tense2} restricted"
+  tense2_default: "已"
+  tense2_active: "当前"
+  # {temp}, as in "You have been {temp} banned"
+  temporarily: "临时"
+  permanently: "永久"
+  # Expiry texts of timed punishments; {type} is type_ban, type_mute or type_punishment
+  will_expire: "\n&7此{type}将在 &f{duration}&7 后到期。"
+  duration_formatted: "\n&7此{type}将在 {duration} 后到期"
+  mute_duration_formatted: "，为期 {duration}"
+  # {for_duration} on timed mutes; keep the leading space
+  for_duration: "，为期 {duration}"
+  type_ban: "封禁"
+  type_mute: "禁言"
+  type_punishment: "处罚"
+  # {duration} of permanent punishments; config.yml locale_config.duration_format.permanent overrides it when set
+  duration_permanent: "永久"
+
+punishments:
+  public_notification:
+    ban_default: "&c{target} 已被封禁。"
+    mute_default: "&c{target} 已被禁言。"
+    kick_default: "&c{target} 已被踢出。"
+    default: "&c{target} 已被处罚。"
+  mute_fallback: "&c你已被禁言。"
+  player_notification:
+    ban_default: "&c你{tense}封禁 (#{id})。"
+    mute_default: "&c你{tense}禁言 (#{id})。"
+    kick_default: "&c你已被踢出服务器 (#{id})。"
+    default: "&c你{tense}处罚 (#{id})。"
+
+# punishment_types.ordinal_<n>: public_notification is broadcast, player_notification lines go to the punished player.
+# Types without an entry use the punishments section. Placeholders: https://github.com/modl-gg/modl/wiki/Placeholders#punishment-messages
+punishment_types:
+  ordinal_0: # Kick
+    public_notification: "&c{target} 已被踢出。"
+    player_notification:
+      - "&c&l你已被踢出服务器。"
+      - "&f{reason} &7(#{id})"
+
+  ordinal_1: # Manual Mute
+    public_notification: "&c{target} 已被禁言。"
+    player_notification:
+      - ""
+      - "&c你{tense}{temp}禁言{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{reason}"
+      - ""
+
+  ordinal_2: # Manual Ban
+    public_notification: "&c{target} 已被封禁。"
+    player_notification:
+      - "&c&l你{tense}{temp}封禁，原因："
+      - ""
+      - "&f{reason}"
+      - "&7{will_expire}"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉。"
+
+  ordinal_3: # Security Ban
+    public_notification: "&c{target} 已被封禁。"
+    player_notification:
+      - "&c&l你的账号{tense2}因安全问题而受到限制。"
+      - "&f我们在你的账号上检测到可疑活动。请先确保账号安全，然后前往 {appeal_url} 使用 ID #{id} 提交申诉。"
+
+  ordinal_4: # Linked Ban
+    public_notification: "&c{target} 已被封禁。"
+    player_notification:
+      - "&c&l你的账号{tense2}与一个被封禁的账号相关联。"
+      - ""
+      - "&f严禁使用小号规避封禁或与他人共享账号。"
+      - ""
+      - "&7当关联的封禁到期后，此封禁将自动解除。"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉"
+
+  ordinal_5: # Blacklist
+    public_notification: "&c{target} 已被列入黑名单。"
+    player_notification:
+      - "&c你{tense}列入黑名单"
+      - "&7ID: #{id}"
+
+  ordinal_6: # Chat Abuse
+    public_notification: "&c{target} 因滥用聊天已被禁言。"
+    player_notification:
+      - ""
+      - "&c你{tense}{temp}禁言{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+  ordinal_7: # Anti-Social
+    public_notification: "&c{target} 因不友善行为已被禁言。"
+    player_notification:
+      - ""
+      - "&c你{tense}{temp}禁言{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+
+  ordinal_8: # Targeting
+    public_notification: "&c{target} 因针对性骚扰已被封禁。"
+    player_notification:
+      - "&c&l你{tense}{temp}封禁，原因："
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉。"
+
+  ordinal_9: # Bad Content
+    public_notification: "&c{target} 因发布不当内容已被封禁。"
+    player_notification:
+      - "&c&l你{tense}{temp}封禁，原因："
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉。"
+
+  ordinal_10: # Bad Username
+    public_notification: "&c{target} 已被封禁。"
+    player_notification:
+      - "&c&l你{tense}封禁，原因是你的 Minecraft 用户名。"
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7当你更改用户名后，此封禁将自动解除。"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉"
+
+  ordinal_11: # Bad Skin
+    public_notification: "&c{target} 已被封禁。"
+    player_notification:
+      - "&c&l你{tense}封禁，原因是你的 Minecraft 皮肤。"
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7当你更换皮肤后，此封禁将自动解除。"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉"
+
+  ordinal_12: # Team Abuse
+    public_notification: "&c{target} 因滥用组队机制已被封禁。"
+    player_notification:
+      - "&c&l你{tense}{temp}封禁，原因："
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉。"
+
+  ordinal_13: # Game Abuse
+    public_notification: "&c{target} 因滥用游戏机制已被封禁。"
+    player_notification:
+      - "&c&l你{tense}{temp}封禁，原因："
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉。"
+
+  ordinal_14: # Cheating
+    public_notification: "&c{target} 因作弊已被封禁。"
+    player_notification:
+      - "&c&l你{tense}{temp}封禁，原因："
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉。"
+
+  ordinal_15: # Game Trading
+    public_notification: "&c{target} 因违规游戏交易已被封禁。"
+    player_notification:
+      - "&c&l你{tense}{temp}封禁，原因："
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉。"
+
+  ordinal_16: # Account Abuse
+    public_notification: "&c{target} 因账号滥用已被封禁。"
+    player_notification:
+      - "&c&l你{tense}{temp}封禁，原因："
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉。"
+
+  ordinal_17: # Systems Abuse
+    public_notification: "&c{target} 因滥用服务器系统已被封禁。"
+    player_notification:
+      - "&c&l你{tense}{temp}封禁，原因："
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7认为这是误判？请前往 {appeal_url} 使用 ID #{id} 提交申诉。"
+
+notification:
+  ticket_reply: "&6[工单] &f{message}"
+  ticket_reply_with_link: "&6[工单] &f{message} &b[点击查看]"
+  ticket_click_action: "&7点击查看工单 {ticketId}"
+  ticket_prefix: "[工单] "
+
+iammuted:
+  only_players: "&c此命令只能由玩家使用。"
+  not_muted: "&c你只能在被禁言期间使用此命令。"
+  player_not_online: "&c该玩家不在线。"
+  cannot_message_self: "&c你不能把这条消息发送给自己。"
+  cooldown_message: "&c你需要等待 {minutes} 分 {seconds} 秒后才能再次使用此命令。"
+  notification_to_target: "&6[被禁言的玩家] &f{sender} &7当前处于禁言状态，无法在聊天中回复。"
+  success_message: "&a你的禁言状态已告知 &f{target}&a。"
+
+standing:
+  error: "&c加载你的处罚状态失败。请稍后重试。"
+  cooldown: "&c请等待 {seconds} 秒后再使用此命令。"
+
+player_lookup:
+  error: "&c查询玩家时出错: {error}"
+  uuid: "&7UUID: &f{uuid}"
+  currently_banned: "&7当前封禁: {status}"
+  currently_muted: "&7当前禁言: {status}"
+  staff_notes_label: "&7管理备注:"
+  staff_note_format: "  &8• &f{text} &7- {issuer}"
+  no_staff_notes: "  &8暂无管理备注"
+  total_punishments: "&7处罚总数: &f{count}"
+  linked_accounts_label: "&7关联账号:"
+  linked_account_format: "  &8• &f{username}{status}"
+  linked_account_more: "  &8... 还有 {count} 个"
+  no_linked_accounts: "  &8无关联账号"
+  total_tickets: "&7工单总数: &f{count}"
+  profile_fallback: "&6档案: &b{url}"
+
+  status:
+    banned_and_muted: " &c(当前处于封禁与禁言状态)"
+    banned: " &c(当前处于封禁状态)"
+    muted: " &e(当前处于禁言状态)"
+    no_punishments: " &7(无生效中的处罚)"
+
+print:
+  inspect:
+    header: ""
+    uuid: "&f{player} 的信息 &7({uuid})"
+    currently_banned: "&e封禁: {status}"
+    currently_muted: "&e禁言: {status}"
+    notes_label: "&e管理备注:"
+    note_entry: "&6{ordinal}. &f{text} &e由 {issuer} 添加"
+    no_notes: "&7暂无管理备注"
+    total_punishments: "&e处罚总数: &f{count}"
+    linked_accounts_label: "&e关联账号:"
+    linked_account_entry: "&6{ordinal}. &e{username} ({status}&e)"
+    linked_account_more: "&e... 还有 {count} 个"
+    no_linked_accounts: "&7无关联账号"
+    total_tickets: "&e工单总数: &f{count}"
+    profile_fallback: "&e档案: &b{url}"
+    web_profile_link: "查看网页档案"
+    web_profile_hover: "点击查看 {player} 的档案"
+    footer: ""
+
+  punishment_detail:
+    not_found: "&c未找到处罚 #{id}。"
+    header: " "
+    type: "&e类型: &f{type}"
+    player: "&e玩家: &f{player}"
+    issuer: "&e执行者: &f{issuer}"
+    date: "&e日期: &f{date}"
+    status: "&e状态: {status}"
+    duration: "&e时长: &f{duration}"
+    reason: "&e原因: &f{reason}"
+    evidence: "&e证据: &f{count} 个文件"
+    notes: "&e备注: &f{count}"
+    modifications: "&e修改记录: &f{count}"
+    status_active: "生效中"
+    status_pardoned: "已撤销"
+    status_rolled_back: "已回滚"
+    status_inactive: "已失效"
+    footer: " "
+
+  history:
+    header: ""
+    entry_kick: "&6{ordinal}. &7#{id} &e{date} &f{type} &e由 {issuer} 执行，原因 &f{reason}"
+    entry_active: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &e由 {issuer} 执行，原因 &f{reason} &7({expiry} 后到期)"
+    entry_permanent: "&6{ordinal}. &c#{id} &e{date} &f{type} (永久) &e由 {issuer} 执行，原因 &f{reason}"
+    entry_unstarted: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &e由 {issuer} 执行，原因 &f{reason} &7(尚未开始)"
+    entry_expired: "&6{ordinal}. &7#{id} &e{date} &f{type} ({duration}) &e由 {issuer} 执行，原因 &f{reason} &7({expired_ago} 前已到期)"
+    entry_pardoned: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &e由 {issuer} 执行，原因 &f{reason} &7({pardoned_ago} 前已撤销)"
+    entry_rolled_back: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &e由 {issuer} 执行，原因 &f{reason} &7({rolled_back_ago} 前已回滚)"
+    total: "&e第 {page}/{total_pages} 页（共 {count} 条）"
+    empty: "&7该玩家从未受到处罚。"
+    footer: ""
+
+  notes:
+    header: ""
+    entry: "&6{ordinal}. &e{date} {author}: &f{content}"
+    warning_badge: "&c&l[警告]&r&f "
+    total: "&e第 {page}/{total_pages} 页（共 {count} 条）"
+    empty: "&7未找到管理备注。"
+    footer: ""
+
+  alts:
+    header: ""
+    entry: "&6{ordinal}. {color}{username} &e({status}&e)"
+    status_banned: "&c已封禁"
+    status_muted: "&e已禁言"
+    status_banned_and_muted: "&c已封禁与禁言"
+    status_clean: "&a无处罚"
+    total: "&e第 {page}/{total_pages} 页（共 {count} 条）"
+    total_truncated: "&e第 {page}/{total_pages} 页（最近 {count} 条）"
+    empty: "&7未找到关联账号。"
+    footer: ""
+
+  reports:
+    header: ""
+    entry: "&6{ordinal}. &e#{id} {date} ({status}&e) &f{type} 举报 &e由 {reporter} 提交"
+    entry_content: " &f{content}"
+    status_open: "待处理"
+    status_closed: "已关闭"
+    total: "&e第 {page}/{total_pages} 页（共 {count} 条）"
+    empty: "&7未找到举报。"
+    footer: ""
+
+  staff_list:
+    header: ""
+    entry: "&6 - &e{player} ({in-game-name}) &7[{role}] &e位于 &f{server}{v}"
+    vanish: " &7[V]"
+    empty: "&7当前没有在线的管理员。"
+    total: "&e第 {page}/{total_pages} 页（共 {count} 条）"
+
+punishment_commands:
+  invalid_severity: "&c无效的严重度。有效的严重度: lenient, regular, severe"
+  warning_message: "&c{username} 已被{punishment_type}。"
+
+api_errors:
+  panel_unavailable: "&c目前无法连接到面板，请稍后再试。"
+  connection_failed: "&c连接面板失败。请稍后重试。"
+  startup_failed: "&c此服务器的管理系统当前未运行。请稍后再试。"
+  version_mismatch: "&c此服务器的管理系统正在更新。请稍后再试。"
+  database_moving: "&c此服务器的管理系统正在迁移到新的数据库。请稍后再试。"
+  packetevents_required: "&c在安装 PacketEvents {version} 或更高版本之前，此服务器无法接受玩家。"
+  ban_check_failed: "&c无法验证封禁状态。出于安全考虑，登录暂时受限。"
+  invalid_name: "&c你的玩家名在此服务器上无效。名称只能包含字母、数字和下划线 (最多 16 个字符)。"
+  login_check_skipped: "&c无法根据本服务器的封禁记录检查你的登录。请联系服务器工作人员。"
+  shortening_needs_pardon: "&c让处罚提前结束需要同时拥有修改时长和赦免处罚的权限。"
+
+pardon:
+  success_id: "&a已撤销处罚 &e#{id}&a。"
+  success_player: "&a已撤销 {player} 的 {count} 项{type}。"
+  already_pardoned_id: "&7处罚 &e#{id}&7 已失效或已被撤销。"
+  no_active_punishment: "&7{player} 没有可撤销的生效中{type}。"
+  error: "&c撤销失败: {error}"
+  error_player: "&c撤销 {player} 的{type}失败: {error}"
+  error_wrong_type_ban: "&c处罚 &e#{id}&c 不是封禁。使用 &e/pardon {id}&c 可撤销任意类型的处罚。"
+  error_wrong_type_mute: "&c处罚 &e#{id}&c 不是禁言。使用 &e/pardon {id}&c 可撤销任意类型的处罚。"
+  staff_notification_id: "&7&o[{issuer}: 撤销了处罚 #{id}&7&o]"
+  staff_notification_player: "&7&o[{issuer}: 撤销了 {player} 的{type}&7&o]"
+
+warn:
+  player_message: "&c&l你收到了来自 {issuer} 的警告。\n&f原因: &7{reason}"
+  success: "&a已警告 &f{target}&a，原因: &7{reason}"
+  staff_notification: "&7&o[{issuer}: 警告了 {target}，原因 {reason}&7&o]"
+  error: "&c创建警告失败: {error}"
+
+menus:
+  common:
+    action_failed: "&c操作未成功。请稍后重试。"
+    saved_but_incomplete: "&e更改已保存，但菜单未能完成更新。请重新打开以确认。"
+    back: "&c返回"
+    back_lore: []
+    previous_page: "&e上一页"
+    next_page: "&e下一页"
+    filter: "&6筛选"
+    sort: "&6排序"
+    filter_by_type: "&7按类型筛选:"
+    sort_by: "&7排序方式:"
+    option_selected: "&a▸ {option}"
+    option_unselected: "&7  {option}"
+    cycle_filters: "&e点击以切换筛选条件"
+    cycle_sort: "&e点击以切换排序方式"
+    # {status} is status_open or status_closed, {items} is items_reports or items_tickets
+    status_showing: "&7当前显示: &a{status}的{items}"
+    status_click_toggle: "&e点击以仅显示{status}的{items}"
+    status_right_click_toggle: "&e右键点击以仅显示{status}的{items}"
+    click_to_toggle: "&e点击以切换"
+    status_open: "待处理"
+    status_closed: "已关闭"
+    items_reports: "举报"
+    items_tickets: "工单"
+    report_filters:
+      all: "全部"
+      gameplay: "游戏"
+      chat: "聊天"
+    report_status_open: "&a待处理"
+    report_status_closed: "&c已关闭"
+    enabled: "&a已启用"
+    disabled: "&c已禁用"
+    no_permission: "&c无权限"
+    no_permission_modify: "&c无修改权限"
+    load_profile_failed: "&c加载玩家档案失败"
+    load_profile_error: "&c加载玩家档案失败: {error}"
+    no_reported_player: "&c无法检查: 此举报没有玩家 UUID。"
+    dismissing_report: "&e正在驳回举报..."
+    report_dismissed: "&a举报已驳回。"
+    dismiss_report_failed: "&c驳回举报失败: {error}"
+    ticket_link_label: "工单 #{id}: "
+    open_in_browser: "点击以在浏览器中打开"
+    presence: "{time}"
+    presence_on_server: "{time} 于 {server}"
+
+  titles:
+    inspect: "检查: {player}"
+    notes: "备注: {player}"
+    alts: "小号: {player}"
+    history: "处罚记录: {player}"
+    reports: "举报: {player}"
+    punish: "处罚: {player}"
+    punish_type: "处罚: {type}"
+    modify_punishment: "修改处罚"
+    link_reports: "关联举报: {player}"
+    linked_tickets: "关联工单"
+    staff_panel: "管理面板"
+    online_players: "在线玩家"
+    staff_reports: "举报"
+    recent_punishments: "最近处罚"
+    support_tickets: "支持工单"
+    staff_members: "管理员列表"
+    manage_staff: "管理员管理"
+    edit_roles: "编辑职位"
+    edit_role: "编辑: {role}"
+
+  # Staff menu tab bar (compact_lore is used in compact headers)
+  staff_tabs:
+    online_players:
+      name: "&6在线玩家"
+      lore: []
+      compact_lore: []
+    reports:
+      name: "&6举报"
+      lore: []
+      compact_lore: []
+    punishments:
+      name: "&6最近处罚"
+      lore: []
+      compact_lore: []
+    tickets:
+      name: "&6支持工单"
+      lore: []
+      compact_lore: []
+    panel:
+      name: "&6前往面板"
+      lore: []
+      compact_lore: []
+    settings:
+      name: "&6设置"
+      lore: []
+      compact_lore: []
+    panel_link_label: "管理面板: "
+
+  inspect_tabs:
+    notes:
+      name: "&6备注"
+      lore:
+        - "&7管理备注 ({count})"
+      compact_lore:
+        - "&7管理备注 ({count})"
+    alts:
+      name: "&6小号"
+      lore: []
+      compact_lore: []
+    history:
+      name: "&6处罚记录"
+      lore:
+        - "&7处罚 ({count})"
+      compact_lore:
+        - "&7处罚 ({count})"
+    reports:
+      name: "&6举报"
+      lore: []
+      compact_lore: []
+    punish:
+      name: "&c处罚"
+      lore: []
+      compact_lore: []
+  player_head:
+    title: "&6{player_name} 的信息"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7首次登录: &f{first_login}"
+      - "&7在线: {is_online}（{presence}）"
+      - "&7游戏时长: &f{playtime}"
+      - "&7已记录真实 IP: &f{real_ip_logged}"
+      - "&7地区: &f{location}"
+      - "&7已封禁: &f{is_banned}"
+      - "&7已禁言: &f{is_muted}"
+      - ""
+      - "&e左键点击以选定 {player_name}"
+
+  history_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7服务器: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&e点击以修改此处罚"
+    status_active: "&7将在 {expiry} 后到期"
+    status_inactive: "&7已于 {expired} 前到期"
+    status_pardoned: "&7已于 {pardoned} 前撤销"
+    status_rolled_back: "&7已于 {rolled_back} 前回滚"
+    status_permanent: "&7永不到期"
+    status_unstarted: "&7处罚尚未开始"
+    note_format: "&e{note_date} {note_issuer}&f: {note}"
+
+  recent_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7玩家: &f{player}"
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7服务器: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&e点击以修改此处罚"
+
+  note_item:
+    title: "&e{date} {author}"
+    lore:
+      - "&f{content}"
+      - "&f "
+      - "&e点击以在聊天中查看备注"
+
+  report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7由 &a{reporter} &7举报（{type}）"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&e左键点击以检查玩家"
+      - "&e右键点击以驳回举报"
+
+  alt_item:
+    title: "{color}{player_name}"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7在线: {is_online}（{presence}）"
+      - "&7已记录真实 IP: {real_ip}"
+      - "&7首次登录: &f{first_login}"
+      - "&7{punishments}"
+      - "&f "
+      - "&e点击以检查 {player_name}"
+    punishment_line_active_true:
+      - "&7生效中的处罚（{active_count}）: &f"
+      - "{active_punishment_list}"
+    punishment_line_active_false:
+      - "&7生效中的处罚: &f0"
+      - "&7已失效的处罚: &f{inactive_count}"
+    active_punishment_format: "&7- &e#{punishment_id} {punishment_date}: {punishment_type}（{punishment_remaining}）"
+
+  empty:
+    history: "无处罚记录"
+    notes: "无管理备注"
+    reports: "无举报记录"
+    alts: "无关联账号"
+    tickets: "无工单"
+    staff_reports: "无举报"
+    punishments: "无处罚"
+    linked_tickets: "无关联工单"
+    online_players: "无在线玩家"
+    staff_members: "无管理员"
+    staff_online: "无在线管理员"
+    staff_offline: "无离线管理员"
+    roles: "无职位"
+    permissions: "无权限"
+
+  ticket_item:
+    title: "&6工单 #{id}"
+    lore:
+      - "&7玩家: &f{player}"
+      - "&7标题: &f{title}"
+      - "&7创建时间: &f{date}"
+      - "&7状态: {status}"
+      - "&f "
+      - "&e点击以在面板中打开"
+    no_title: "无标题"
+
+  staff_report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&c{reported}&7 被 &a{reporter} &7举报（{type}）"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&e左键点击以检查玩家"
+      - "&e右键点击以驳回举报"
+  linked_ticket_item:
+    no_subject: "无主题"
+    click_to_view: "&e点击以在面板中查看"
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7{title}"
+      - "&f "
+      - "{content}"
+  link_report_item_unselected:
+    title: "&e{date} {id}"
+    lore:
+      - "&7由 &a{reporter} &7举报（{type}）"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&e点击以选择"
+  link_report_item_selected:
+    title: "&a{date} {id}"
+    lore:
+      - "&7由 &a{reporter} &7举报（{type}）"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&e点击以取消选择"
+
+  staff_members:
+    title: "&e{panel_name}"
+    lore:
+      - "&7职位: &f{role}"
+      - "&7Minecraft: &f{minecraft_username}"
+      - ""
+      - "&7在线: {is_online}（{presence}）"
+      - "&7游戏时长: &f{playtime}"
+      - "&7已执行处罚: &f{punishments_count}"
+    not_linked: "未关联"
+    filters:
+      online: "在线"
+      offline: "离线"
+      all: "全部"
+
+  notes:
+    created: "&a备注已创建。"
+    create_failed: "&c创建备注失败: {error}"
+    cancelled: "&7已取消创建备注。"
+    create: "&a创建备注"
+    create_lore: []
+    prompt: "请输入 {player} 的备注内容:"
+    chat_label: "备注: "
+  modify_punishment:
+    no_changes: "&7关联的工单没有变化。"
+    tickets_updated: "&a关联工单已更新。"
+    tickets_update_error: "&c更新关联工单失败: {error}"
+    current_state: "&7当前: {state}"
+    add_note:
+      name: "&e添加备注"
+      name_locked: "&7添加备注"
+      lore: []
+      prompt: "请输入要添加到此处罚的备注:"
+      added: "&a备注已添加。"
+      failed: "&c添加备注失败: {error}"
+      cancelled: "&7已取消添加备注。"
+    evidence:
+      name: "&b证据"
+      name_locked: "&7证据"
+      none: "&8(未附加证据)"
+      header: "&7当前证据 ({count}):"
+      entry: "&f- {evidence}"
+      more: "&8... 还有 {count} 个"
+      left_click_add: "&e左键点击以添加证据"
+      right_click_view: "&e右键点击以在聊天中查看"
+      no_evidence: "&7此处罚未附加任何证据。"
+      chat_header: "&6处罚 #{id} 的证据:"
+      chat_entry: "&f{index}. {evidence}"
+      chat_added_by: "&7   由 {uploader} 于 {date} 添加"
+      prompt: "请输入证据链接:"
+      added: "&a证据已添加。"
+      failed: "&c添加证据失败: {error}"
+      cancelled: "&7已取消添加证据。"
+    pardon:
+      name: "&a撤销处罚"
+      name_locked: "&7撤销处罚"
+      lore:
+        - "&7撤销此处罚并清除"
+        - "&7相关的处罚积分"
+      success: "&a处罚已撤销。"
+      already_inactive: "&7该处罚已失效或已被撤销。"
+      failed: "&c撤销处罚失败: {error}"
+    duration:
+      name: "&6修改时长"
+      name_locked: "&7修改时长"
+      current: "&7当前: &f{duration}"
+      # {permanent_keyword} is the literal word players type for a permanent duration; keep it as is
+      prompt: "请输入新的时长 (例如 30d, 2h, 30m, 1d2h30m，或输入 '{permanent_keyword}' 表示永久):"
+      invalid: "&c时长格式无效。示例: 30d, 2h, 30m, 1d2h30m"
+      changed: "&a时长已修改。"
+      failed: "&c修改时长失败: {error}"
+      lengthen_only: "&7你只能延长此处罚：缩短它需要赦免权限。"
+      needs_pardon: "&c缩短此处罚需要赦免权限。"
+      cancelled: "&7已取消修改时长。"
+    linked_tickets:
+      name: "&6关联工单"
+      none: "&8(无关联工单)"
+      header: "&7关联工单 ({count}):"
+      entry: "&f- {ticket}"
+      more: "&8... 还有 {count} 个"
+      left_click_view: "&e左键点击以查看工单"
+      right_click_link: "&e右键点击以关联举报"
+    stat_wipe:
+      name: "&6切换清除统计数据"
+      name_locked: "&7切换清除统计数据"
+      enable_lore: "&7为此封禁启用清除统计数据"
+      disable_lore: "&7为此封禁禁用清除统计数据"
+      enabled: "&a已启用清除统计数据。"
+      disabled: "&a已禁用清除统计数据。"
+      failed: "&c切换清除统计数据失败: {error}"
+    alt_block:
+      name: "&6切换封锁小号"
+      name_locked: "&7切换封锁小号"
+      enable_lore: "&7为此封禁启用封锁小号"
+      disable_lore: "&7为此封禁禁用封锁小号"
+      enabled: "&a已启用封锁小号。"
+      disabled: "&a已禁用封锁小号。"
+      failed: "&c切换封锁小号失败: {error}"
+
+  online_players:
+    title: "&6{player_name}"
+    lore:
+      - "&7本次在线: &f{session_duration}"
+      - "&7总游戏时长: &f{total_playtime}"
+      - ""
+      - "&7举报（{report_count}）:"
+      - "{report-list}"
+      - ""
+      - "&e左键点击以检查"
+      - "&e右键点击以选定"
+    report_entry: " &6- &e{date} {reporter}: &f{details}"
+    reports_more: " &e... 还有 {count} 个"
+    sorts:
+      least_playtime: "游戏时长最短"
+      recent_gameplay_reports: "最近的游戏举报"
+      longest_session: "本次在线最久"
+
+  settings:
+    title: "设置"
+    information:
+      name: "&6信息"
+      username: "&7用户名: &f{username}"
+      role: "&7职位: &f{role}"
+      role_admin: "Super Admin"
+      role_staff: "管理员"
+      permissions_header: "&7权限:"
+      permission_modify_settings: "&a  ✓ &7修改设置"
+      permission_manage_staff: "&a  ✓ &7管理员管理"
+    staff_list:
+      name: "&6管理员列表"
+      lore: []
+    manage_staff:
+      name: "&6管理员管理"
+      lore: []
+    edit_roles:
+      name: "&6编辑职位"
+      lore: []
+    reload:
+      name: "&c重载 modl"
+      lore:
+        - "&7重载配置文件和语言文件"
+
+  punish:
+    no_types: "&c无处罚类型"
+    no_types_lore:
+      - "&7无法从 API 加载"
+      - "&7处罚类型"
+    click_to_issue: "&e点击以执行处罚"
+    click_to_select_severity: "&e点击以选择严重度"
+    no_permission_lore:
+      - "&c无权限"
+    type_not_found: "&c未找到该处罚类型"
+    ordinal: "&7序号: {ordinal}"
+
+  # Punishment severity menu. {state} is menus.common.enabled or menus.common.disabled
+  punish_severity:
+    severities:
+      lenient:
+        title: "&a轻度"
+      regular:
+        title: "&e常规"
+      aggravated:
+        title: "&c加重"
+    issue_punishment: "&e执行处罚"
+    preview_duration: "&7处罚: &f{duration}"
+    preview_duration_permanent: "&7处罚: &f{duration} &c(永久)"
+    preview_type: "&7类型: &f{type}"
+    preview_points: "&7积分: &e+{points}"
+    offender_level: "&7违规等级: {current}&7 → {next}"
+    restricted_until_username:
+      - "&e该玩家将一直受到限制，"
+      - "&e直到其更改用户名"
+    restricted_until_skin:
+      - "&e该玩家将一直受到限制，"
+      - "&e直到其更换皮肤"
+    click_to_issue: "&e点击以执行处罚"
+    click_to_issue_silent: "&e点击以执行静默处罚"
+    single_click_to_issue: "&a点击以执行处罚"
+    single_click_to_issue_silent: "&a点击以执行静默处罚"
+    link_reports: "&6关联举报"
+    link_reports_selected: "&6关联举报&a ({count})"
+    select_reports: "&e点击以选择举报"
+    linked_reports_header: "&a已关联的举报:"
+    linked_report_entry: "&7  - &f{id}"
+    modify_selection: "&e点击以修改选择"
+    silent_mode: "&6静默模式: {state}"
+    silent_on: "&a处罚将静默执行"
+    silent_off: "&7处罚将公开执行"
+    alt_blocking: "&6封锁小号: {state}"
+    alt_blocking_on: "&a小号将被封锁"
+    alt_blocking_off: "&7小号仍可进入服务器"
+    stat_wipe: "&6清除统计数据: {state}"
+    stat_wipe_on: "&a统计数据将被清除"
+    stat_wipe_off: "&7统计数据将被保留"
+    reason_prompt: "请输入对 {player} 的处罚原因:"
+    reports_resolved: "&a已处理 {count} 个关联举报。"
+    reports_not_resolved: "&c无法处理 {count} 个关联举报: {reports}"
+    reports_resolve_error: "&c原因: {error}"
+    issue_failed: "&c执行处罚失败: {error}"
+    cancelled: "&7已取消处罚。"
+
+  staff_list:
+    no_permission_lore:
+      - "&7你没有权限"
+      - "&7管理管理员"
+    role: "&7职位: &f{role}"
+    super_admin_locked: "&c无法修改超级管理员"
+    self_locked: "&c你不能修改自己的职位"
+    rank_locked:
+      - "&c你不能修改职级与你"
+      - "&c相同或更高的管理员"
+    roles_header: "&7职位:"
+    role_current: "&a  &l{role} &r&7(当前)"
+    role_selected: "&a  {role} &7(已选择)"
+    role_option: "&7  {role}"
+    cycle_roles: "&e右键点击以切换职位"
+    apply_role: "&e左键点击以应用所选职位"
+    no_roles: "&c没有可用的职位。"
+    role_chosen: "&e已选择职位: &a{role}&7 (左键点击以应用)"
+    already_current: "&7这已经是 {player} 当前的职位。"
+    applying: "&e正在为 {player} 应用职位 &a{role}&e..."
+    updated: "&a职位已更新。"
+    update_failed: "&c更新职位失败: {error}"
+
+  roles:
+    no_permission_lore:
+      - "&7你没有权限"
+      - "&7编辑职位"
+    permission_count: "&7权限: &f{count}"
+    click_to_edit: "&e点击以编辑权限"
+    cannot_edit_own: "&c你不能编辑自己的职位。"
+
+  role_permissions:
+    apply_changes: "&a应用更改"
+    apply_changes_lore: "&e点击以保存权限更改"
+    no_changes: "&7无更改"
+    no_changes_lore: "&8切换权限后点击以保存"
+    no_permission_lore:
+      - "&7你没有权限"
+      - "&7编辑职位权限"
+    auto_granted: "&8由上级权限自动授予"
+    nothing_to_save: "&7没有需要保存的更改。"
+    saving: "&e正在保存 {role} 的权限..."
+    saved: "&a权限已保存。"
+    save_failed: "&c保存失败: {error}"
+
+  link_reports:
+    apply: "&a应用选择"
+    apply_lore:
+      - "&7保存选择并返回"
+      - ""
+      - "&e已选择 {count} 个举报"
+    select_all: "&a全选"
+    select_all_lore:
+      - "&7切换当前筛选出的所有举报"
+
+  punishment_kind:
+    kick: "踢出"
+    ban: "封禁"
+    mute: "禁言"
+    details: " &f({details})"
+
+  # Chat input prompts opened from menus. {cancel} is the literal word that cancels the prompt; keep it as is
+  chat_input:
+    prompt: "&6&l» &e{prompt}"
+    hint: "&7请在聊天中输入你的回复，或输入 &c{cancel} &7以取消。"
+    timed_out: "&c输入已超时。请重试。"
+
+# Set usage to "" to hide a command from the help list.
+help:
+  header: "&a&lmodl &av{version} &f- &e命令列表"
+  entry: "&f/{command} &7- {description}"
+  footer: "&e第 {page}/{total_pages} 页。使用 &a/modl help {next_page}&e 查看下一页。"
+  no_more_pages: "&7没有更多页了。"
+  version_header: "&a&lmodl&a v{version}&f - &e管理与支持系统"
+  version_footer: "&7GNU AGPLv3 自由软件。使用 /modl help 查看命令信息。"
+  player_commands:
+    iammuted:
+      usage: "iammuted <player>"
+      description: "告知他人你已被禁言"
+    standing:
+      usage: "standing"
+      description: "查看你的处罚状态"
+    report:
+      usage: "report <player>"
+      description: "举报玩家"
+    chatreport:
+      usage: "chatreport <player>"
+      description: "举报玩家的聊天内容"
+    claimticket:
+      usage: "claimticket <id> <密钥>"
+      description: "将工单关联到你的账号"
+    apply:
+      usage: "apply"
+      description: "申请加入管理团队"
+    bugreport:
+      usage: "bugreport"
+      description: "报告 Bug"
+    support:
+      usage: "support"
+      description: "创建支持工单"
+    link:
+      usage: "modl link <code>"
+      description: "将你的 Minecraft 账号关联到面板"
+    panel:
+      usage: "modl panel"
+      description: "获取一次性面板登录链接"
+  staff_commands:
+    staffmenu:
+      usage: "staffmenu"
+      description: "打开管理菜单"
+    inspect:
+      usage: "inspect <player> [-p]"
+      description: "打开玩家检查菜单（-p 为文本输出）"
+    history:
+      usage: "history <player> [-p [page]]"
+      description: "查看玩家处罚记录（-p 为文本输出）"
+    notes:
+      usage: "notes <player> [-p [page]]"
+      description: "查看玩家备注（-p 为文本输出）"
+    alts:
+      usage: "alts <player> [-p [page]]"
+      description: "查看玩家小号（-p 为文本输出）"
+    reports:
+      usage: "reports [player] [-p [page]]"
+      description: "打开举报菜单（-p 为文本输出）"
+    punish:
+      usage: "punish <player> [type] [reason]"
+      description: "执行一项处罚"
+    ban:
+      usage: "ban <player> [duration] [reason]"
+      description: "封禁玩家"
+    mute:
+      usage: "mute <player> [duration] [reason]"
+      description: "禁言玩家"
+    kick:
+      usage: "kick <player> [reason]"
+      description: "踢出玩家"
+    blacklist:
+      usage: "blacklist <player> [reason]"
+      description: "将玩家列入黑名单"
+    pardon:
+      usage: "pardon <player>"
+      description: "撤销全部生效中和排队中的处罚"
+    unban:
+      usage: "unban <player>"
+      description: "撤销全部生效中和排队中的封禁"
+    unmute:
+      usage: "unmute <player>"
+      description: "撤销全部生效中和排队中的禁言"
+    replay:
+      usage: "replay <status|capture> [player]"
+      description: "管理回放录制"
+    modl_reload:
+      usage: "modl reload"
+      description: "重载配置"
+    modl_import:
+      usage: "modl import"
+      description: "从 LiteBans 导入（仅限控制台）"
+    modl_status:
+      usage: "modl status"
+      description: "显示可安全分享的支持报告（仅限控制台）"
+
+stat_wipe:
+  kick_message: "&c请稍后重新登录。由于一项刚刚到期的封禁，你的统计数据正在被重置。"
+
+staff_chat:
+  enabled: "&e管理员聊天&a已开启&e。消息将默认发送到管理员聊天。"
+  disabled: "&e管理员聊天&c已关闭&e。消息将默认发送到本地聊天。"
+  feature_disabled: "&c本服务器未启用管理员聊天。"
+  already_normal: "&c你已经处于本地聊天模式。"
+  mode_lost: "&c你已无法使用管理员聊天，已切换回本地聊天。你的消息未发送。"
+  format: "&b[STAFF] &e{panel-name}&f: {message}"
+  local_chat_enabled: "&e管理员聊天&c已关闭&e。消息将默认发送到本地聊天。"
+
+chat_management:
+  chat_toggled_on: "&7&o[{staff}: 开启了聊天]"
+  chat_toggled_off: "&7&o[{staff}: 关闭了聊天]"
+  chat_disabled: "&c聊天当前已关闭。"
+  chat_cleared: "&7&o[{staff}: 清空了聊天]"
+  slow_mode_enabled: "&7&o[{staff}: 将聊天慢速模式设为 {seconds} 秒]"
+  slow_mode_disabled: "&7&o[{staff}: 关闭了慢速模式]"
+  slow_mode_wait: "&c请等待 {seconds} 秒后再发言。"
+  invalid_seconds: "&c请输入有效的秒数。"
+  usage_toggle: "&f用法: &a/chat &ftoggle"
+  usage_clear: "&f用法: &a/chat &fclear"
+  usage_slow: "&f用法: &a/chat &fslow <seconds|off>"
+  help:
+    header: "&e聊天命令:"
+    staff: "&f/chat staff &7- 切换管理员聊天模式"
+    toggle: "&f/chat toggle &7- 开启/关闭公共聊天"
+    clear: "&f/chat clear [count] &7- 清空聊天"
+    slow: "&f/chat slow <seconds|off> &7- 设置/关闭慢速模式"
+
+staff_notifications:
+  join: "&7&o[{staff}: 已上线]"
+  verified: "&7&o[{staff}: 已验证]"
+  leave: "&7&o[{staff}: 已下线]"
+  switch: "&7&o[{staff}: 已连接至 {server}]"
+  generic: "&7&o[{message}]"
+  click_to_target: "点击以选定 {player}"
+
+staff_2fa:
+  not_verified: "&c使用管理命令前必须先验证身份。请使用 &f/verify"
+  verify_prompt: "&a点击链接进行验证: &f{url}"
+  verify_success: "&a身份验证成功。"
+  verify_error: "&c生成验证链接失败。请重试。"
+  auto_verified: "&a已通过受信任 IP 自动验证。"
+
+verify:
+  only_players: "&c此命令只能由玩家使用。"
+  disabled: "&c本服务器未启用管理员双重验证。"
+  already_verified: "&a你已完成验证。"
+  header: ""
+  instructions: "&a点击下方链接以验证你的身份:"
+  click_here: "点击此处进行验证"
+  click_here_hover: "点击以打开验证页面"
+  error: "&c生成验证链接失败。请重试。"
+  footer: "&e此链接将很快失效。"
+
+panel_account:
+  link_success: "&a你的 Minecraft 账号已成功关联到你的面板账号。"
+  link_invalid_code: "&c该关联码无效或已过期。请在面板的账号设置中创建新的关联码。"
+  link_already_linked: "&c此 Minecraft 账户已关联到另一个面板账户。请先在那里取消关联，然后再试一次。"
+  link_error: "&c暂时无法关联你的账号。请稍后重试。"
+  login_offline_mode: "&c由于本服务器不验证玩家账号，游戏内面板登录已被禁用。"
+  login_not_linked: "&c你的 Minecraft 账号尚未关联面板账号。请在面板的账号设置中创建关联码，然后执行 &e/modl link <code>&c。"
+  login_not_online: "&c面板尚未检测到你在线。请稍后重试。"
+  login_error: "&c暂时无法创建面板登录链接。请稍后重试。"
+  login_link: "打开面板"
+  login_link_hover: "一次性链接，将在 {minutes} 分钟后失效"
+  rate_limited: "&c你的操作过于频繁。请稍等片刻后重试。"
+
+maintenance:
+  enabled: "&7&o[{staff}: 开启了维护模式]"
+  disabled: "&7&o[{staff}: 关闭了维护模式]"
+  already_enabled: "&c维护模式已经处于开启状态。"
+  already_disabled: "&c维护模式已经处于关闭状态。"
+  status_enabled: "&e维护模式当前已开启。"
+  status_disabled: "&e维护模式当前已关闭。"
+  login_denied: "&c服务器正在维护中。请稍后重试。"
+  kick_message: "&c服务器现已进入维护模式。请稍后重试。"
+  usage: "&f用法: &a/maintenance&f <on|off>"
+
+freeze:
+  frozen_message: "&c你已被冻结。请勿断开连接。"
+  staff_notification_freeze: "&7&o[{staff}: 冻结了 {player}]"
+  staff_notification_unfreeze: "&7&o[{staff}: 解除了 {player} 的冻结]"
+  unfrozen: "&a你的冻结已被解除。"
+  logout_notification: "&c&l{player} 在被冻结期间退出了游戏。"
+  frozen_chat: "&b[FROZEN] &e{player}&f: {message}"
+  command_blocked: "&c你在被冻结期间无法使用命令。"
+  target_offline: "&c{player} 不在此服务器上，因此无法冻结。"
+  not_enforced: "&e{player} 已被冻结，但其所在服务器尚未连接到 modl，因此在连接之前不会限制其移动。"
+  limit_reached: "&c当前被冻结的玩家过多。"
+
+intercept_chat:
+  enabled: "&a已开启跨服聊天拦截"
+  disabled: "&a已关闭跨服聊天拦截"
+  format: "&8[G-{server}] &e{player}&f: {message}"
+
+intercept:
+  message: "&8[拦截] &f{player}: &7{message}"
+
+chat_logs:
+  header: ""
+  entry: "&7[{timestamp}] &8[{server}] &f{message}"
+  empty: "&7未找到该玩家的聊天记录。"
+  footer: "&e第 {page}/{total_pages} 页（共 {total} 条）"
+  error: "&c获取聊天记录失败。"
+  usage: "&f用法: &a/chatlogs&f <player>"
+
+command_logs:
+  header: ""
+  entry: "&7[{timestamp}] &e{player}&7: &f/{command}"
+  empty: "&7未找到该玩家的命令记录。"
+  footer: "&e第 {page}/{total_pages} 页（共 {total} 条）"
+  error: "&c获取命令记录失败。"
+  usage: "&f用法: &a/commandlogs&f <player>"
+
+staff_mode:
+  enabled: "&a已开启管理员模式"
+  disabled: "&a已关闭管理员模式"
+  enabled_broadcast: "&7&o[{staff}: 进入了管理员模式]"
+  disabled_broadcast: "&7&o[{staff}: 退出了管理员模式]"
+  limit_reached: "&c当前处于管理员模式的管理员过多。"
+
+vanish:
+  enabled: "&a你已进入隐身状态"
+  disabled: "&a你已退出隐身状态"
+  enabled_broadcast: "&7&o[{staff}: 已隐身]"
+  disabled_broadcast: "&7&o[{staff}: 已取消隐身]"
+
+target:
+  targeting: "&e已选定 &f{player}"
+  cleared: "&a已清除选定目标。"
+  usage: "&f用法: &a/target&f <player>"
+  connecting: "&e正在连接到 &f{server} &e以选定 &f{player}&e..."
+  cannot_target_self: "&c你不能选定自己。"
+  not_online: "&c玩家不在线。"
+  target_left: "&c{player} 已离开网络。返回管理员模式。"
+
+network:
+  action_unavailable: "&c该操作当前不可用。"
+
+replay:
+  usage:
+    - "&f/replay status [player] &7- 查看录制状态"
+    - "&f/replay capture [player] &7- 抓取并上传回放"
+  not_available: "&c本服务器不支持回放录制。"
+  status_recording: "&a{player} 正在被录制"
+  status_not_recording: "&c{player} 未在录制中"
+  no_server_connected: "&c没有已连接的服务器可用于抓取回放。"
+  no_active_recording: "&c{player} 当前没有进行中的录制"
+  capturing: "&a正在抓取并上传 {player} 的回放..."
+  capture_success: "&a已抓取 {player} 的回放"
+  capture_link: "&b{url}"
+  capture_failed: "&c抓取 {player} 的回放失败"
+  click_to_view: "[点击查看回放]"
+  click_to_view_hover: "打开回放查看器"
+  console_specify_player: "&c从控制台使用时请指定玩家名。"
+
+standing_gui:
+  title: "&f你的处罚状态"
+  social_status:
+    title: "&e社交行为状态: {status}"
+    description:
+      Low:
+        - "&7此类别的处罚保持宽松。"
+      Medium:
+        - "&7此类别的处罚更严厉。"
+      Habitual:
+        - "&7此类别的处罚非常严厉。"
+  gameplay_status:
+    title: "&e游戏行为状态: {status}"
+    description:
+      Low:
+        - "&7此类别的处罚保持宽松。"
+      Medium:
+        - "&7此类别的处罚更严厉。"
+      Habitual:
+        - "&7此类别的处罚非常严厉。"
+  status_display:
+    Low: "&a低"
+    Medium: "&6中"
+    Habitual: "&c惯犯"
+  punishment_item:
+    status_pardoned: "{duration} 前已撤销"
+    status_rolled_back: "{duration} 前已回滚"
+    status_queued: "等待生效"
+    status_permanent: "永久"
+    status_expires: "{duration} 后到期"
+    status_expired_ago: "{duration} 前已到期"
+    status_expired: "已到期"
+    title: "&e#{id} {date}"
+    lore:
+      - "&7{duration} {type}（{status}）"
+      - ""
+      - "&f{reason}"
+
+punishment_action:
+  unknown_action: "&c未知操作: {action}"
+  enter_evidence_url: "&7请输入处罚 #{id} 的证据链接:"
+  no_url: "&c未提供链接。"
+  evidence_linked: "&a证据已关联到处罚 #{id}"
+  evidence_link_failed: "&c关联证据失败: {error}"
+  evidence_cancelled: "&7已取消关联证据。"
+  generating_upload: "&7正在生成上传链接..."
+  upload_failed: "&c生成上传链接失败。"
+  upload_link: "点击此处上传证据"
+  upload_link_hover: "将在你的浏览器中打开"
+  buttons:
+    label: "处罚 #{id}: "
+    modify: "[修改]"
+    modify_hover: "点击以修改此处罚"
+    link_evidence: "[关联证据]"
+    link_evidence_hover: "点击以将链接关联为证据"
+    upload_evidence: "[上传证据]"
+    upload_evidence_hover: "点击以上传文件作为证据"
+
+import:
+  usage: "用法：先运行 /modl import <source>，再运行 /modl import <source> confirm <widen|skip> <keep|standard>。另有：/modl import status、/modl import cancel。"
+  detected: "在此处找到：{detected}。支持的来源：{supported}。"
+  nothing_detected: "此处未找到任何受支持插件的数据。支持的来源：{supported}。"
+  unknown_source: "{source} 不是受支持的来源。支持的来源：{supported}。"
+  litebans_missing: "LiteBans 未在本服务器上运行。请在此处（群组服则在代理端）安装并启用它，连接到你的 LiteBans 数据库，重启后再次运行。"
+  source_missing: "本服务器上未找到 {source} 的数据。请在拥有这些数据的服务器上运行（群组服则在运行 modl 的代理端）。"
+  source_locked: "{source} 正在运行并占用着其数据库文件。请移除它的 jar（保留其文件夹），重启后再次运行。"
+  database_failed: "无法读取 {source} 的数据：{error}"
+  no_space: "磁盘可用空间不足，无法复制 {source} 的数据库：{error}"
+  nothing_to_import: "{source} 中没有可导入的玩家或处罚。"
+  nothing_left: "按这些选项已没有可导入的内容。"
+  setup_required: "请先在面板中完成 modl 的设置。"
+  busy: "此处已有检查或导入正在进行。请查看 /modl import status。"
+  already_running: "在 {server}（{address}）发起的导入正在进行。请查看 /modl import status，或用 /modl import cancel 停止。"
+  ip_history_release_running: "之前导入保留的 IP 历史仍在释放中，请稍后再试。"
+  storage_moving: "上传的文件正在迁移到其他存储，请在迁移完成后再试。"
+  database_moving: "modl 正在迁移到另一个数据库，请在迁移完成后再试。"
+  confirm_first: "请先运行 /modl import {source_id}，然后在 60 秒内确认。"
+  choices_required: "必须提供两个选项：/modl import {source_id} confirm <widen|skip> <keep|standard>"
+  preview:
+    counts: "{source} 中有 {players} 名玩家的 {bans} 条封禁、{mutes} 条禁言、{warnings} 条警告、{kicks} 条踢出和 {notes} 条备注。"
+    not_imported: "不会导入：{without_account} 条没有玩家账号的处罚。"
+    scoped: "有 {ip_wide} 条 IP 范围和 {server_scoped} 条限定服务器的处罚。widen：在所有服务器上对该账号生效，且 IP 封禁还会封锁其小号。skip：不导入这些处罚。"
+    ip_history: "有 {old_entries} 条 IP 历史（约 {old_megabytes} MB）早于 {days} 天。keep：保留导入的 IP 历史。standard：删除早于 {days} 天的 IP 历史。"
+    ip_history_kept: "之前的导入保留了旧 IP 历史。standard 会终止保留并将其删除。"
+    backup: "请先备份 modl。取消导入时已导入的数据会保留，再次运行只会追加。"
+    confirm: "要开始，请在 60 秒内运行：/modl import {source_id} confirm <widen|skip> <keep|standard>"
+  started: "{source} 导入已开始（{scoped_choice}、{history_choice}）。"
+  exporting: "正在读取 {source}：{processed} / {total} 名玩家。"
+  uploading: "正在将导出发送到 modl。"
+  processing_started: "modl 已收到导出并正在导入。"
+  completed: "{source} 导入完成：已导入 {processed} 名玩家，跳过 {skipped} 项，未包含 {not_imported} 条处罚。"
+  completed_partly: "{source} 导入完成但有问题：已导入 {processed} 名玩家，{failed} 名无法读取，跳过 {skipped} 项，未包含 {not_imported} 条处罚。请修复后再次运行。"
+  cancelling: "正在停止导入。"
+  cancel_keeps_imported: "已导入的记录会保留。"
+  nothing_to_cancel: "没有正在进行的导入。"
+  job_gone: "modl 服务器已没有此导入的记录。"
+  too_many_players: "{source} 的玩家数超出单次导入上限（1,000,000）：{error}"
+  every_player_failed: "未能从 {source} 读取任何玩家：{error}"
+  file_failed: "无法写入导出文件：{error}"
+  upload_blocked: "modl 前面的反向代理或 CDN 以文件过大为由拒绝了上传：{error}"
+  upload_failed: "无法将导出发送到 modl：{error}"
+  unreachable: "无法连接到 modl：{error}"
+  request_failed: "导入请求失败：{error}"
+  status:
+    none: "尚未运行过导入。"
+    building_json: "正在读取 {source}：{processed} / {total} 名玩家。"
+    uploading_json: "导出正在等待发送。"
+    receiving_file: "modl 正在接收导出。"
+    processing_data: "正在导入：{processed} / {total} 名玩家，跳过 {skipped} 项。"
+    details: "{source} 导入由 {server}（{address}）发起，选项为 {scoped_choice} 和 {history_choice}。"
+  ended:
+    cancelled: "导入已取消。"
+    timed_out: "导入停止汇报并已超时。请再次运行。"
+    interrupted: "导入因重启而中断。请再次运行。"
+    export_failed: "{source} 导出失败。请再次运行。"
+    upload_failed: "发送导出失败。请再次运行。"
+    file_too_large: "导出超过了导入上限。"
+    invalid_file: "modl 无法读取导出：{error}"
+    import_failed: "导入失败：{error}"
+
+server_features:
+  staff_mode:
+    random_teleport:
+      no_players: "&c没有可传送到的玩家。"
+      teleported: "&a已传送到 &f{player}&a。"
+    teleport:
+      teleported: "&a已传送到 &f{player}&f。"
+      target_offline: "&c目标已不在线。"
+    custody:
+      not_saved: "&c无法安全保存你的物品，因此未开启管理员模式。你的物品都还在。请关闭管理员模式，并让服主检查控制台。"
+      kept_changing: "&c你的背包一直在变化，因此未开启管理员模式。你的物品都还在。请关闭管理员模式，站着不动后重试。"
+      unresolved: "&c之前保存你物品的操作尚未解决，因此未开启管理员模式。请让服主检查控制台，然后重新进入。"
+      held: "&c你的物品暂时无法归还。modl 会妥善保管，物品在归还前保持锁定。请让服主检查控制台。"
+      record_missing: "&cmodl 没有找到你的管理员模式会话中保存的物品。请让服主检查控制台。"
+    unknown_player: "未知"
+    scoreboard:
+      vanish_on: "&a开"
+      vanish_off: "&c关"
+      vanished: "已隐身"
+      visible: "可见"
+      frozen_yes: "&c是"
+      frozen_no: "&a否"
+      target_offline: "离线"
+      no_target: "无"
+      not_available: "不适用"
+    silent_container:
+      block_title: "&8正在查看：{container}"
+      inventory_title: "&8正在查看：{player} 的背包"
+  freeze:
+    frozen: "&c&l你已被管理员冻结。请不要断开连接。"
+    unfrozen: "&a你已被解冻。"
+    chat: "&b[已冻结] &e{player}&f: {message}"
+    no_commands: "&c冻结期间无法使用命令。"
+  command:
+    modlserver:
+      usage: "用法：&a/modlserver reload"
+      no_permission: "&c你没有权限使用此命令。"
+      reloading: "&e正在重新加载 modl 服务器功能配置..."
+      reloaded: "&a服务器功能配置已重新加载。"
+      reload_failed: "&c重新加载时以下文件出错：&f{files}&c。详情请查看控制台。"
+      restart_required: "&e以下设置需要重启后才会生效：&f{keys}"
+    proxycmd:
+      console_only: "&c此命令只能在控制台执行。"
+      usage: "用法：&a/proxycmd &f<命令>"
+      not_connected: "&c未连接到代理。请检查 connection.yml 中的连接设置。"
+      sent: "&a已发送到代理：{command}"
+      refused: "&c代理只执行 modl 命令；已拒绝 {command}。"
+      disabled: "&c此服务器的密钥已禁用 /proxycmd。服主可以在 Panel > 设置 > 常规 > Minecraft 服务器 中允许；在此之前请在代理控制台中执行该命令。"
+      no_answer: "&c代理未及时响应。"
+      rate_limited: "&c当前代理命令过多；请稍后再试。"
+      invalid: "&c代理无法执行 {command}。"
+  network:
+    unavailable: "&c目前无法连接到代理，请稍后再试。"
+
+support_status:
+  header: "==== modl 状态：请将直到结束行的全部内容复制到支持请求中 ===="
+  footer: "==== modl 状态结束 ===="
+  collecting: "正在收集 modl 状态..."
+  backend_unavailable: "modl 未连接到其服务器，因此只显示插件部分。上方的控制台信息说明了原因。"
+  backend_failed: "modl 服务器没有响应，因此只显示插件部分。"

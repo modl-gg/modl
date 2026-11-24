@@ -1,0 +1,49 @@
+package dev.simplix.cirrus.spigot.wrapper;
+
+import com.github.retrooper.packetevents.PacketEvents;
+import dev.simplix.cirrus.Utils;
+import dev.simplix.cirrus.model.SimpleSound;
+import dev.simplix.cirrus.player.CirrusPlayerWrapper;
+import java.util.Locale;
+import java.util.UUID;
+import lombok.RequiredArgsConstructor;
+import org.bukkit.Sound;
+import org.bukkit.entity.Player;
+
+@RequiredArgsConstructor
+@SuppressWarnings("unchecked")
+public class SpigotPlayerWrapper implements CirrusPlayerWrapper {
+
+    private final Player handle;
+
+    @Override
+    public UUID uuid() {
+        return handle.getUniqueId();
+    }
+
+    @Override
+    public Player handle() {
+        return handle;
+    }
+
+    @Override
+    public int protocolVersion() {
+        return PacketEvents.getAPI().getServerManager().getVersion().getProtocolVersion();
+    }
+
+    @Override
+    public void play(SimpleSound sound) {
+        try {
+            String soundName = sound.sound().name();
+            soundName = soundName.replace(".", "_").toUpperCase(Locale.ROOT);
+            final Sound bukkitSound = Sound.valueOf(soundName);
+            handle.playSound(handle.getLocation(), bukkitSound, sound.volume(), sound.pitch());
+        } catch (Throwable ignored) {
+        }
+    }
+
+    @Override
+    public void sendMessage(String message) {
+        handle.sendMessage(Utils.colorize(message));
+    }
+}

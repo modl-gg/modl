@@ -1,0 +1,747 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+import "modl/v1/sign_in.proto";
+
+// --- Requests ---
+
+message ApplyAIPunishmentRequest {
+  optional string staff_name = 1 [json_name = "staffName"];
+}
+
+message PatchDataRetentionSettingsRequest {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  optional int32 chat_log_days = 2 [
+    json_name = "chatLogDays",
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 3650
+    }
+  ];
+  optional int32 audit_log_days = 3 [
+    json_name = "auditLogDays",
+    (buf.validate.field).int32 = {
+      gte: 30
+      lte: 3650
+    }
+  ];
+}
+
+message PatchGeneralSettingsRequest {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  reserved 3;
+  reserved "discord_webhook_url";
+
+  optional string server_display_name = 2 [json_name = "serverDisplayName"];
+  optional string homepage_icon_url = 4 [json_name = "homepageIconUrl"];
+  optional string panel_icon_url = 5 [json_name = "panelIconUrl"];
+  optional string default_language = 6 [json_name = "defaultLanguage"];
+  optional string public_url = 7 [
+    json_name = "publicUrl",
+    (buf.validate.field).string.max_len = 2048
+  ];
+}
+
+message PatchQuickResponsesRequest {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  repeated QuickResponseCategory categories = 2 [(buf.validate.field).repeated.max_items = 100];
+}
+
+message PatchStatusThresholdSettingsRequest {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  OffenderThresholdSettings settings = 2;
+}
+
+message PatchTicketFormSettingsRequest {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  TicketFormSettings settings = 2;
+}
+
+message PatchTicketLabelSettingsRequest {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  repeated Label labels = 2;
+}
+
+message PunishmentTypeRequest {
+  string name = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 64
+  }];
+  string category = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }];
+  PunishmentDurations durations = 3;
+  OffenseLevelDurations single_severity_durations = 4 [json_name = "singleSeverityDurations"];
+  optional int32 single_severity_points = 5 [json_name = "singleSeverityPoints"];
+  PunishmentPoints points = 6;
+  optional int32 custom_points = 7 [json_name = "customPoints"];
+  string staff_description = 8 [
+    json_name = "staffDescription",
+    (buf.validate.field).string.max_len = 2000
+  ];
+  string player_description = 9 [
+    json_name = "playerDescription",
+    (buf.validate.field).string.max_len = 2000
+  ];
+  optional bool single_severity_punishment = 10 [json_name = "singleSeverityPunishment"];
+  optional bool can_be_alt_blocking = 11 [json_name = "canBeAltBlocking"];
+  optional bool can_be_stat_wiping = 12 [json_name = "canBeStatWiping"];
+  optional bool appealable = 13;
+  AppealForm appeal_form = 14 [json_name = "appealForm"];
+  optional bool permanent_until_skin_change = 15 [json_name = "permanentUntilSkinChange"];
+  optional bool permanent_until_username_change = 16 [json_name = "permanentUntilUsernameChange"];
+}
+
+message UpdateAIModerationSettingsRequest {
+  optional bool enable_ai_review = 1 [json_name = "enableAIReview"];
+  optional bool enable_automated_actions = 2 [json_name = "enableAutomatedActions"];
+  map<string, AIPunishmentConfigRequest> ai_punishment_configs = 3 [json_name = "aiPunishmentConfigs"];
+  int64 expected_version = 4 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+}
+
+message AIPunishmentConfigRequest {
+  string id = 1 [(buf.validate.field).string.min_len = 1];
+  string name = 2 [(buf.validate.field).string.min_len = 1];
+  string ai_description = 3 [
+    json_name = "aiDescription",
+    (buf.validate.field).string.min_len = 1
+  ];
+  optional bool enabled = 4;
+}
+
+message UpdateWebhookSettingsRequest {
+  optional string discord_webhook_url = 1 [
+    json_name = "discordWebhookUrl",
+    (buf.validate.field).string.max_len = 512
+  ];
+  string discord_admin_role_id = 2 [
+    json_name = "discordAdminRoleId",
+    (buf.validate.field).string.pattern = "^[0-9]{0,20}$"
+  ];
+  string bot_name = 3 [
+    json_name = "botName",
+    (buf.validate.field).string.max_len = 80
+  ];
+  string avatar_url = 4 [
+    json_name = "avatarUrl",
+    (buf.validate.field).string.max_len = 512
+  ];
+  optional bool enabled = 5;
+  WebhookNotificationSettingsRequest notifications = 6;
+  WebhookEmbedTemplatesRequest embed_templates = 7 [json_name = "embedTemplates"];
+  int64 expected_version = 8 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+}
+
+message WebhookNotificationSettingsRequest {
+  optional bool new_tickets = 1 [json_name = "newTickets"];
+  optional bool new_punishments = 2 [json_name = "newPunishments"];
+  optional bool audit_logs = 3 [json_name = "auditLogs"];
+}
+
+message WebhookEmbedTemplatesRequest {
+  WebhookEmbedTemplateRequest new_tickets = 1 [json_name = "newTickets"];
+  WebhookEmbedTemplateRequest new_punishments = 2 [json_name = "newPunishments"];
+  WebhookEmbedTemplateRequest audit_logs = 3 [json_name = "auditLogs"];
+}
+
+message WebhookEmbedTemplateRequest {
+  string title = 1 [(buf.validate.field).string.max_len = 256];
+  string description = 2 [(buf.validate.field).string.max_len = 4096];
+  string color = 3 [(buf.validate.field).string.max_len = 16];
+  repeated WebhookEmbedFieldRequest fields = 4 [(buf.validate.field).repeated.max_items = 25];
+}
+
+message WebhookEmbedFieldRequest {
+  string name = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 256
+  }];
+  string value = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 1024
+  }];
+  optional bool inline = 3;
+}
+
+// --- Responses ---
+
+message PublicSettingsResponse {
+  bool server_exists = 1 [json_name = "serverExists"];
+  string server_display_name = 2 [json_name = "serverDisplayName"];
+  string panel_icon_url = 3 [json_name = "panelIconUrl"];
+  string homepage_icon_url = 4 [json_name = "homepageIconUrl"];
+  google.protobuf.Struct ticket_forms = 5 [json_name = "ticketForms"];
+  reserved 6, 7;
+  reserved "maintenance_mode", "maintenance_message";
+  string default_language = 8 [json_name = "defaultLanguage"];
+  bool email_delivery = 9 [json_name = "emailDelivery"];
+  SignInMethod sign_in_method = 10 [json_name = "signInMethod"];
+  reserved 11;
+  reserved "source_code_url";
+  PublicTheme theme = 12;
+  string custom_css_revision = 13 [json_name = "customCssRevision"];
+}
+
+message ApiKeyGenerateResponse {
+  string message = 1;
+  string api_key = 2 [json_name = "apiKey"];
+}
+
+message ApiKeyRevealResponse {
+  string api_key = 1 [json_name = "apiKey"];
+}
+
+message ApiKeyExistsResponse {
+  bool exists = 1;
+  bool managed_by_config = 2 [json_name = "managedByConfig"];
+}
+
+message WebhookTestResponse {
+  string message = 1;
+}
+
+message AISuggestionActionResponse {
+  bool success = 1;
+  string error = 2;
+  string message = 3;
+}
+
+// --- Settings Data Types ---
+
+message GeneralSettings {
+  reserved 2;
+  reserved "discord_webhook_url";
+
+  string server_display_name = 1 [json_name = "serverDisplayName"];
+  string homepage_icon_url = 3 [json_name = "homepageIconUrl"];
+  string panel_icon_url = 4 [json_name = "panelIconUrl"];
+  string default_language = 5 [json_name = "defaultLanguage"];
+  string public_url = 6 [json_name = "publicUrl"];
+  bool public_url_managed_by_config = 7 [json_name = "publicUrlManagedByConfig"];
+  bool server_name_managed = 8 [json_name = "serverNameManaged"];
+}
+
+message OffenderThresholdSettings {
+  CategoryThresholds social = 1;
+  CategoryThresholds gameplay = 2;
+}
+
+message CategoryThresholds {
+  int32 medium = 1;
+  int32 habitual = 2;
+  int32 point_expiry_months = 3 [json_name = "pointExpiryMonths"];
+}
+
+message TicketFormSettings {
+  TicketForm bug = 1;
+  TicketForm support = 2;
+  TicketForm application = 3;
+  TicketForm player = 4;
+  TicketForm chat = 5;
+}
+
+message TicketForm {
+  bool require_email = 1 [json_name = "requireEmail"];
+  bool require_email_auth = 2 [json_name = "requireEmailAuth"];
+  bool allow_email_notifications = 3 [json_name = "allowEmailNotifications"];
+  repeated FormField fields = 4 [(buf.validate.field).repeated.max_items = 100];
+  repeated FormSection sections = 5 [(buf.validate.field).repeated.max_items = 50];
+}
+
+message FormField {
+  string id = 1 [(buf.validate.field).string.max_len = 64];
+  string type = 2 [(buf.validate.field).string.max_len = 32];
+  string label = 3 [(buf.validate.field).string.max_len = 256];
+  string description = 4 [(buf.validate.field).string.max_len = 2000];
+  bool required = 5;
+  repeated string options = 6 [(buf.validate.field).repeated = {
+    max_items: 100
+    items: {
+      string: {max_len: 256}
+    }
+  }];
+  int32 order = 7;
+  string section_id = 8 [
+    json_name = "sectionId",
+    (buf.validate.field).string.max_len = 64
+  ];
+  string go_to_section = 9 [
+    json_name = "goToSection",
+    (buf.validate.field).string.max_len = 64
+  ];
+  map<string, string> option_section_mapping = 10 [
+    json_name = "optionSectionMapping",
+    (buf.validate.field).map = {
+      max_pairs: 100
+      keys: {
+        string: {max_len: 256}
+      }
+      values: {
+        string: {max_len: 64}
+      }
+    }
+  ];
+}
+
+message FormSection {
+  string id = 1 [(buf.validate.field).string.max_len = 64];
+  string title = 2 [(buf.validate.field).string.max_len = 256];
+  string description = 3 [(buf.validate.field).string.max_len = 2000];
+  int32 order = 4;
+  string show_if_field_id = 5 [
+    json_name = "showIfFieldId",
+    (buf.validate.field).string.max_len = 64
+  ];
+  string show_if_value = 6 [
+    json_name = "showIfValue",
+    (buf.validate.field).string.max_len = 256
+  ];
+  repeated string show_if_values = 7 [
+    json_name = "showIfValues",
+    (buf.validate.field).repeated = {
+      max_items: 100
+      items: {
+        string: {max_len: 256}
+      }
+    }
+  ];
+  bool hide_by_default = 8 [json_name = "hideByDefault"];
+}
+
+message TicketLabelSettings {
+  repeated Label labels = 1;
+}
+
+message Label {
+  string id = 1;
+  string name = 2;
+  string color = 3;
+  string description = 4;
+}
+
+message QuickResponseSettings {
+  repeated QuickResponseCategory categories = 1;
+}
+
+message QuickResponseCategory {
+  string id = 1;
+  string name = 2;
+  repeated string ticket_types = 3 [
+    json_name = "ticketTypes",
+    (buf.validate.field).repeated = {
+      max_items: 16
+      items: {
+        string: {max_len: 32}
+      }
+    }
+  ];
+  repeated QuickResponseAction actions = 4;
+  optional int32 order = 5;
+}
+
+message QuickResponseAction {
+  string id = 1;
+  string name = 2;
+  string message = 3;
+  optional int32 order = 4;
+  optional bool close_ticket = 5 [json_name = "closeTicket"];
+  optional bool show_punishment = 6 [json_name = "showPunishment"];
+  string appeal_action = 7 [json_name = "appealAction"];
+}
+
+message AIModerationSettings {
+  bool enable_ai_review = 1 [json_name = "enableAIReview"];
+  bool enable_automated_actions = 2 [json_name = "enableAutomatedActions"];
+  map<string, AIPunishmentConfig> ai_punishment_configs = 3 [json_name = "aiPunishmentConfigs"];
+  int64 version = 4;
+}
+
+message AIPunishmentConfig {
+  string id = 1;
+  string name = 2;
+  string ai_description = 3 [json_name = "aiDescription"];
+  bool enabled = 4;
+}
+
+message WebhookSettings {
+  reserved 1;
+  reserved "discord_webhook_url";
+  string discord_admin_role_id = 2 [json_name = "discordAdminRoleId"];
+  string bot_name = 3 [json_name = "botName"];
+  string avatar_url = 4 [json_name = "avatarUrl"];
+  bool enabled = 5;
+  WebhookNotificationSettings notifications = 6;
+  WebhookEmbedTemplates embed_templates = 7 [json_name = "embedTemplates"];
+  int64 version = 8;
+  bool discord_webhook_configured = 9 [json_name = "discordWebhookConfigured"];
+  string discord_webhook_url_suffix = 10 [json_name = "discordWebhookUrlSuffix"];
+  optional WebhookDeliveryFailure last_delivery_failure = 11 [json_name = "lastDeliveryFailure"];
+}
+
+message WebhookDeliveryFailure {
+  int64 failed_at = 1 [json_name = "failedAt"];
+  string event = 2;
+  string reason = 3;
+  int32 http_status = 4 [json_name = "httpStatus"];
+}
+
+message WebhookNotificationSettings {
+  bool new_tickets = 1 [json_name = "newTickets"];
+  bool new_punishments = 2 [json_name = "newPunishments"];
+  bool audit_logs = 3 [json_name = "auditLogs"];
+}
+
+message WebhookEmbedTemplates {
+  WebhookEmbedTemplate new_tickets = 1 [json_name = "newTickets"];
+  WebhookEmbedTemplate new_punishments = 2 [json_name = "newPunishments"];
+  WebhookEmbedTemplate audit_logs = 3 [json_name = "auditLogs"];
+}
+
+message WebhookEmbedTemplate {
+  string title = 1;
+  string description = 2;
+  string color = 3;
+  repeated WebhookEmbedField fields = 4;
+}
+
+message WebhookEmbedField {
+  string name = 1;
+  string value = 2;
+  bool inline = 3;
+}
+
+message PunishmentType {
+  optional int32 id = 1;
+  string name = 2;
+  string category = 3;
+  optional bool customizable = 4;
+  optional int32 ordinal = 5;
+  PunishmentDurations durations = 6;
+  optional bool single_severity_punishment = 7 [json_name = "singleSeverityPunishment"];
+  OffenseLevelDurations single_severity_durations = 8 [json_name = "singleSeverityDurations"];
+  optional int32 single_severity_points = 9 [json_name = "singleSeverityPoints"];
+  PunishmentPoints points = 10;
+  optional int32 custom_points = 11 [json_name = "customPoints"];
+  string staff_description = 12 [json_name = "staffDescription"];
+  string player_description = 13 [json_name = "playerDescription"];
+  optional bool can_be_alt_blocking = 14 [json_name = "canBeAltBlocking"];
+  optional bool can_be_stat_wiping = 15 [json_name = "canBeStatWiping"];
+  optional bool appealable = 16;
+  AppealForm appeal_form = 17 [json_name = "appealForm"];
+  optional bool permanent_until_skin_change = 18 [json_name = "permanentUntilSkinChange"];
+  optional bool permanent_until_username_change = 19 [json_name = "permanentUntilUsernameChange"];
+  optional bool accepts_ai_suggestions = 20 [json_name = "acceptsAiSuggestions"];
+}
+
+message PunishmentDurations {
+  OffenseLevelDurations low = 1;
+  OffenseLevelDurations regular = 2;
+  OffenseLevelDurations severe = 3;
+}
+
+message OffenseLevelDurations {
+  DurationDetail first = 1;
+  DurationDetail medium = 2;
+  DurationDetail habitual = 3;
+}
+
+message DurationDetail {
+  int32 value = 1 [(buf.validate.field).int32 = {
+    gte: 0
+    lte: 100000000
+  }];
+  string unit = 2 [(buf.validate.field).string = {
+    max_len: 16
+    pattern: "^(?i)(seconds?|minutes?|hours?|days?|weeks?|months?)?$"
+  }];
+  string type = 3 [(buf.validate.field).string = {
+    in: [
+      "",
+      "mute",
+      "ban",
+      "permanent mute",
+      "permanent ban"
+    ]
+  }];
+}
+
+message PunishmentPoints {
+  int32 low = 1;
+  int32 regular = 2;
+  int32 severe = 3;
+}
+
+message AppealForm {
+  repeated AppealFormField fields = 1 [(buf.validate.field).repeated.max_items = 50];
+  repeated AppealFormSection sections = 2 [(buf.validate.field).repeated.max_items = 20];
+}
+
+message AppealFormField {
+  string id = 1 [(buf.validate.field).string.max_len = 64];
+  string type = 2 [(buf.validate.field).string.max_len = 32];
+  string label = 3 [(buf.validate.field).string.max_len = 256];
+  string description = 4 [(buf.validate.field).string.max_len = 2000];
+  optional bool required = 5;
+  optional int32 order = 6;
+  string section_id = 7 [
+    json_name = "sectionId",
+    (buf.validate.field).string.max_len = 64
+  ];
+  repeated string options = 8 [(buf.validate.field).repeated = {
+    max_items: 100
+    items: {
+      string: {max_len: 256}
+    }
+  }];
+  map<string, string> option_section_mapping = 9 [
+    json_name = "optionSectionMapping",
+    (buf.validate.field).map = {
+      max_pairs: 100
+      keys: {
+        string: {max_len: 256}
+      }
+      values: {
+        string: {max_len: 64}
+      }
+    }
+  ];
+}
+
+message AppealFormSection {
+  string id = 1 [(buf.validate.field).string.max_len = 64];
+  string title = 2 [(buf.validate.field).string.max_len = 256];
+  string description = 3 [(buf.validate.field).string.max_len = 2000];
+  optional int32 order = 4;
+  bool hide_by_default = 5 [json_name = "hideByDefault"];
+}
+
+message SettingsMeta {
+  int64 version = 1;
+  google.protobuf.Timestamp updated_at = 2 [json_name = "updatedAt"];
+}
+
+message GeneralSettingsEnvelope {
+  GeneralSettings data = 1;
+  SettingsMeta meta = 2 [json_name = "_meta"];
+}
+
+message TicketLabelSettingsEnvelope {
+  TicketLabelSettings data = 1;
+  SettingsMeta meta = 2 [json_name = "_meta"];
+}
+
+message OffenderThresholdSettingsEnvelope {
+  OffenderThresholdSettings data = 1;
+  SettingsMeta meta = 2 [json_name = "_meta"];
+}
+
+message TicketFormSettingsEnvelope {
+  TicketFormSettings data = 1;
+  SettingsMeta meta = 2 [json_name = "_meta"];
+}
+
+message QuickResponseSettingsEnvelope {
+  QuickResponseSettings data = 1;
+  SettingsMeta meta = 2 [json_name = "_meta"];
+}
+
+message ReplayRetentionSettings {
+  bool enabled = 1;
+  int32 days = 2;
+}
+
+message ReplayRetentionSettingsEnvelope {
+  ReplayRetentionSettings data = 1;
+  SettingsMeta meta = 2 [json_name = "_meta"];
+}
+
+message DataRetentionSettings {
+  int32 chat_log_days = 1 [json_name = "chatLogDays"];
+  int32 audit_log_days = 2 [json_name = "auditLogDays"];
+}
+
+message DataRetentionSettingsEnvelope {
+  DataRetentionSettings data = 1;
+  SettingsMeta meta = 2 [json_name = "_meta"];
+}
+
+message PanelPunishmentTypesResponse {
+  repeated PunishmentType punishment_types = 1;
+}
+
+enum MailSource {
+  MAIL_SOURCE_UNSPECIFIED = 0;
+  MAIL_SOURCE_NONE = 1;
+  MAIL_SOURCE_CONFIG = 2;
+  MAIL_SOURCE_PANEL = 3;
+}
+
+message MailSettings {
+  string host = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 253
+  }];
+  int32 port = 2 [(buf.validate.field).int32 = {
+    gte: 1
+    lte: 65535
+  }];
+  string username = 3 [(buf.validate.field).string.max_len = 254];
+  string from = 4 [(buf.validate.field).string = {
+    email: true
+    min_len: 1
+    max_len: 254
+  }];
+  bool starttls = 5;
+}
+
+message MailSettingsResponse {
+  MailSource source = 1;
+  MailSettings settings = 2;
+  bool password_set = 3 [json_name = "passwordSet"];
+}
+
+message UpdateMailSettingsRequest {
+  MailSettings settings = 1 [(buf.validate.field).required = true];
+  optional string password = 2 [(buf.validate.field).string.max_len = 1024];
+}
+
+message TestMailRequest {
+  MailSettings settings = 1;
+  optional string password = 2 [(buf.validate.field).string.max_len = 1024];
+}
+
+enum MailTestOutcome {
+  MAIL_TEST_OUTCOME_UNSPECIFIED = 0;
+  MAIL_TEST_OUTCOME_DELIVERED = 1;
+  MAIL_TEST_OUTCOME_CONNECT_FAILED = 2;
+  MAIL_TEST_OUTCOME_TLS_FAILED = 3;
+  MAIL_TEST_OUTCOME_AUTH_FAILED = 4;
+  MAIL_TEST_OUTCOME_REJECTED = 5;
+  MAIL_TEST_OUTCOME_TIMED_OUT = 6;
+}
+
+message TestMailResponse {
+  MailTestOutcome outcome = 1;
+  string detail = 2;
+  string recipient = 3;
+}
+
+enum PublicThemeFont {
+  PUBLIC_THEME_FONT_UNSPECIFIED = 0;
+  PUBLIC_THEME_FONT_SYSTEM = 1;
+  PUBLIC_THEME_FONT_INTER = 2;
+  PUBLIC_THEME_FONT_NUNITO = 3;
+  PUBLIC_THEME_FONT_LORA = 4;
+  PUBLIC_THEME_FONT_SPACE_GROTESK = 5;
+}
+
+enum PublicThemeRadius {
+  PUBLIC_THEME_RADIUS_UNSPECIFIED = 0;
+  PUBLIC_THEME_RADIUS_NONE = 1;
+  PUBLIC_THEME_RADIUS_SMALL = 2;
+  PUBLIC_THEME_RADIUS_MEDIUM = 3;
+  PUBLIC_THEME_RADIUS_LARGE = 4;
+}
+
+enum PublicColorScheme {
+  PUBLIC_COLOR_SCHEME_UNSPECIFIED = 0;
+  PUBLIC_COLOR_SCHEME_SYSTEM = 1;
+  PUBLIC_COLOR_SCHEME_LIGHT = 2;
+  PUBLIC_COLOR_SCHEME_DARK = 3;
+}
+
+message PublicTheme {
+  string primary_color = 1 [
+    json_name = "primaryColor",
+    (buf.validate.field).string.pattern = "^(#[0-9a-fA-F]{6})?$"
+  ];
+  string accent_color = 2 [
+    json_name = "accentColor",
+    (buf.validate.field).string.pattern = "^(#[0-9a-fA-F]{6})?$"
+  ];
+  string background_color = 3 [
+    json_name = "backgroundColor",
+    (buf.validate.field).string.pattern = "^(#[0-9a-fA-F]{6})?$"
+  ];
+  string background_image_url = 4 [
+    json_name = "backgroundImageUrl",
+    (buf.validate.field).string.max_len = 2048
+  ];
+  PublicThemeFont font = 5 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+  PublicThemeRadius radius = 6 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+  PublicColorScheme color_scheme = 7 [
+    json_name = "colorScheme",
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    }
+  ];
+}
+
+message PublicThemeEnvelope {
+  PublicTheme data = 1;
+  SettingsMeta meta = 2 [json_name = "_meta"];
+}
+
+message UpdatePublicThemeRequest {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  PublicTheme theme = 2 [(buf.validate.field).required = true];
+}
+
+message PublicThemeBackgroundResponse {
+  string url = 1;
+}
+
+message PublicCustomCss {
+  string css = 1;
+}
+
+message PublicCustomCssEnvelope {
+  PublicCustomCss data = 1;
+  SettingsMeta meta = 2 [json_name = "_meta"];
+}
+
+message UpdatePublicCustomCssRequest {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  string css = 2 [(buf.validate.field).string.max_bytes = 65536];
+}

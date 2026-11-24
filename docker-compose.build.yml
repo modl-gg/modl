@@ -1,0 +1,8 @@
+services:
+  modl:
+    build:
+      context: .
+      args:
+        MODL_SOURCE_COMMIT: ${MODL_SOURCE_COMMIT:-}
+        MODL_SOURCE_REPOSITORY: ${MODL_SOURCE_REPOSITORY:-}
+    image: modl-selfhost:local

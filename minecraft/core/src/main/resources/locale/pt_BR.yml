@@ -1,0 +1,1496 @@
+# modl in-game messages, pt_BR. Colors, placeholders and overrides: https://github.com/modl-gg/modl/wiki/Placeholders
+
+messages:
+  cannot_report_self: "&cVocê não pode denunciar a si mesmo."
+  player_not_online: "&cEsse jogador não está online."
+  submitting: "&eEnviando {type}..."
+  creating: "&eCriando {type}..."
+  success: "&a{type} enviado."
+  created: "&a{type} criado."
+  ticket_id: "&7ID do ticket: &f{ticketId}"
+  view_ticket: "&7Veja seu ticket: &b{url}"
+  complete_form: "&7Complete seu {type}: &b{url}"
+  form_title_note: "&7Você pode alterar o título '&f{title}&7' no formulário antes de enviar."
+  failed_submit: "&cFalha ao enviar {type}: {error}"
+  failed_create: "&cFalha ao criar {type}: {error}"
+  try_again: "&cTente novamente mais tarde ou fale diretamente com a staff."
+  unknown_error: "Erro desconhecido"
+  no_details: "Nenhum detalhe adicional informado"
+  no_chat_logs_available: "&c{player} não tem mensagens de chat recentes para denunciar."
+  view_ticket_label: "Veja seu ticket"
+  complete_form_label: "Complete seu {type}"
+  click_to_view: "[Clique para ver]"
+  click_to_view_hover: "Clique para ver o ticket {ticketId}"
+  console_ticket_url: "&6{message}: &b{url}"
+  claiming_ticket: "&eVinculando o ticket &f{ticketId}&e à sua conta..."
+  ticket_claimed_success: "&aTicket &f{ticketId}&a vinculado à sua conta."
+  ticket_claim_failed: "&cFalha ao vincular o ticket: {error}"
+  ticket_cooldown: "&cVocê precisa esperar {seconds}s antes de abrir outro ticket desse tipo."
+  report_gui_title: "&fDenunciar {player}"
+  report_skull_chat_log:
+    - "&bDenunciar {player}"
+    - "&7Anexar registros do chat?"
+  report_skull_details:
+    - "&bDenunciar {player}"
+    - "&7Adicionar mais detalhes?"
+  report_skull_confirm:
+    - "&bDenunciar {player}"
+    - "&7Confirmar denúncia?"
+  report_skull_replay:
+    - "&bDenunciar {player}"
+    - "&7Anexar um replay?"
+  report_skull_evidence:
+    - "&bDenunciar {player}"
+    - "&7Anexar registros do chat ou um replay?"
+  report_attach_chat: "&aAnexar Registro do Chat"
+  report_attach_chat_lore: []
+  report_skip_chat: "&cPular Registro do Chat"
+  report_skip_chat_lore: []
+  report_chat_attached: "&aO registro do chat será anexado"
+  report_chat_click_to_attach: "&7Clique para anexar o registro do chat"
+  report_capture_replay: "&aCapturar Replay"
+  report_capture_replay_lore: []
+  report_replay_attached: "&aO replay será capturado"
+  report_replay_not_attached: "&cO replay NÃO será capturado"
+  report_skip_replay: "&cPular"
+  report_skip_replay_lore: []
+  report_continue: "&aContinuar"
+  report_continue_lore: []
+  report_add_details: "&aAdicionar Detalhes"
+  report_add_details_lore: []
+  report_skip_details: "&cPular Detalhes"
+  report_skip_details_lore: []
+  report_confirm: "&aConfirmar Denúncia"
+  report_cancel: "&cCancelar Denúncia"
+  report_cancel_lore: []
+  report_summary_reason: "&7Motivo: &f{reason}"
+  report_summary_details: "&7Detalhes: &f{details}"
+  report_summary_chat_log: "&7Registro do Chat: &fAnexado"
+  report_summary_replay: "&7Replay: &aSerá capturado"
+  report_attach_replay: "&eAnexar Replay"
+  report_close: "&cFechar"
+  report_close_lore: []
+  report_details_prompt: "Digite detalhes adicionais para sua denúncia contra {player}:"
+  report_submitted: "&aDenúncia enviada."
+  # Ticket kinds shown as {type} in ticket messages: "name" starts a sentence, "inline" appears mid-sentence
+  ticket_types:
+    report:
+      name: "Reporte"
+      inline: "reporte"
+    chat_report:
+      name: "Reporte de chat"
+      inline: "reporte de chat"
+    support:
+      name: "Pedido de suporte"
+      inline: "pedido de suporte"
+    bug:
+      name: "Relatório de bug"
+      inline: "relatório de bug"
+    application:
+      name: "Pedido de vaga na staff"
+      inline: "pedido de vaga na staff"
+
+general:
+  players_only: "&cEste comando só pode ser usado por jogadores."
+  local_console_only: "&cExecute este comando no console deste próprio servidor."
+  no_permission: "&cVocê não tem permissão para usar este comando."
+  no_permission_punishment: "&cVocê não tem permissão para aplicar punições do tipo '{type}'."
+  no_permission_reload: "&cVocê não tem permissão para recarregar os dados de punição."
+  invalid_syntax: "&cSintaxe de comando inválida. Verifique o uso correto."
+  gui_requires_player: "&cEste comando abre uma GUI e só pode ser executado por um jogador. Use &f-p &cpara saída em texto."
+  gui_unavailable: "&cMenus de GUI não estão disponíveis neste proxy."
+
+  unknown: "Desconhecido"
+  staff: "Staff"
+  answer_yes: "Sim"
+  answer_no: "Não"
+  not_available: "N/D"
+  never: "Nunca"
+  permanent: "Permanente"
+  loading: "Carregando..."
+  no_reason: "Sem motivo"
+  console: "Console"
+  player_not_found: "&cJogador não encontrado."
+  punishment_error: "&cErro ao criar a punição: {error}"
+  punishment_types_not_loaded: "&cTipos de punição não carregados. Tente &f/modl reload&c ou fale com um administrador."
+  invalid_punishment_type: "&cTipo de punição inválido. Tipos disponíveis: {types}"
+  invalid_duration: "&cFormato de duração inválido. Exemplos: 1d, 2h, 30m, 1w"
+  cannot_punish_self: "&cVocê não pode punir a si mesmo."
+  target_immune: "&cVocê não pode punir {target}, pois esse jogador tem imunidade."
+
+  punishment_issued: "&a{type} aplicado em &f{target}&a."
+  punishment_issued_duration: "&a{type} aplicado em &f{target}&a ({duration})."
+
+  reloading: "&eRecarregando..."
+  reload_success: "&aRecarregamento concluído."
+  reload_error: "&cErro ao recarregar: {error}"
+
+command_errors:
+  unknown_command: "&cComando desconhecido: &f{input}"
+  unknown_command_suggestions: "&cComando desconhecido: &f{input}&c. Você quis dizer &f{suggestions}&c?"
+  unknown_subcommand: "&cNenhum comando corresponde a &f/{input}&c. Você quis dizer:"
+  suggestion: "&7- &f/{command}"
+  expected_literal: "&cEra esperado &f{expected}&c, mas foi informado &f'{input}'&c."
+  missing_argument: "&cO argumento &f{parameter}&c está faltando. Uso: &f/{usage}"
+  too_many_arguments: "&cArgumentos demais. Entrada inesperada: &f{input}"
+  invalid_choice: "&cOpção inválida: &f{input}&c. Informe uma das opções disponíveis."
+  value_not_allowed: "&cValor inválido: &f{input}&c. Valores permitidos: &f{allowed}"
+  invalid_boolean: "&cEra esperado &ftrue&c ou &ffalse&c, mas foi informado &f{input}&c."
+  invalid_number: "&cNúmero inválido: &f{input}"
+  invalid_integer: "&cNúmero inteiro inválido: &f{input}"
+  invalid_uuid: "&cUUID inválido: &f{input}"
+  number_too_small: "&cO valor &f{value}&c é pequeno demais. O mínimo é &f{minimum}&c."
+  number_too_large: "&cO valor &f{value}&c é grande demais. O máximo é &f{maximum}&c."
+  text_too_short: "&cO texto é curto demais. Mínimo de caracteres: &f{minimum}"
+  text_too_long: "&cO texto é longo demais. Máximo de caracteres: &f{maximum}"
+  too_few_values: "&cPoucos valores. O mínimo é &f{minimum}&c."
+  too_many_values: "&cValores demais. O máximo é &f{maximum}&c."
+  invalid_escape: "&cCaractere de escape inválido. Use &f\\\\&c para digitar uma barra invertida."
+  unclosed_quote: "&cHá aspas não fechadas. Feche todas as aspas que abrir."
+  expected_space: "&cColoque um espaço entre os argumentos."
+  unknown_flag: "&cOpção desconhecida: &f{input}"
+  unknown_short_flag: "&cOpção curta desconhecida: &f{input}"
+  invalid_help_page: "&cPágina de ajuda inválida: &f{page}&c. A última página é &f{pages}&c."
+  cooldown: "&cVocê precisa esperar &f{time}&c antes de usar este comando novamente."
+  failed: "&cO comando falhou. O erro foi registrado no console do servidor."
+  console_only: "&cEste comando só pode ser usado pelo console."
+  invalid_player: "&cJogador inválido: &f{input}"
+  invalid_world: "&cMundo inválido: &f{input}"
+  missing_coordinate: "&cCoordenada ausente: &f{axis}"
+  invalid_selector: "&cSeletor de entidades inválido: &f{input}"
+  selector_players_only: "&cO seletor &f{input}&c só pode selecionar jogadores."
+  selector_too_many: "&cO seletor deve selecionar uma única entidade."
+  selector_empty: "&cNenhuma entidade encontrada."
+
+validation:
+  single_severity_error: "&cNão é possível definir a severidade no tipo de punição de severidade única '{type}'. Esse tipo de punição tem apenas um nível de severidade."
+  permanent_skin_change_error: "&cNão é possível definir a severidade no tipo de punição permanente até a troca de skin '{type}'."
+  permanent_username_change_error: "&cNão é possível definir a severidade no tipo de punição permanente até a troca de nome de usuário '{type}'."
+  alt_blocking_not_supported: "&cO bloqueio de alts não é suportado pelo tipo de punição '{type}'."
+  stat_wiping_not_supported: "&cA limpeza de estatísticas não é suportada pelo tipo de punição '{type}'."
+
+# Words substituted into punishment messages.
+punishment_words:
+  # {tense}, as in "You {tense} banned"
+  tense_default: "foi"
+  tense_active: "está"
+  # {tense2}, as in "Your account {tense2} restricted"
+  tense2_default: "foi"
+  tense2_active: "está"
+  # {temp}, as in "You have been {temp} banned"
+  temporarily: "temporariamente"
+  permanently: "permanentemente"
+  # Expiry texts of timed punishments; {type} is type_ban, type_mute or type_punishment
+  will_expire: "\n&7O tempo de {type} termina em &f{duration}&7."
+  duration_formatted: "\n&7O tempo de {type} termina em {duration}"
+  mute_duration_formatted: " por {duration}"
+  # {for_duration} on timed mutes; keep the leading space
+  for_duration: " por {duration}"
+  type_ban: "banimento"
+  type_mute: "mute"
+  type_punishment: "punição"
+  # {duration} of permanent punishments; config.yml locale_config.duration_format.permanent overrides it when set
+  duration_permanent: "permanente"
+
+punishments:
+  public_notification:
+    ban_default: "&c{target} foi banido."
+    mute_default: "&c{target} foi mutado."
+    kick_default: "&c{target} foi expulso."
+    default: "&c{target} foi punido."
+  mute_fallback: "&cVocê está mutado."
+  player_notification:
+    ban_default: "&cVocê {tense} banido (#{id})."
+    mute_default: "&cVocê {tense} mutado (#{id})."
+    kick_default: "&cVocê foi expulso (#{id})."
+    default: "&cVocê {tense} punido (#{id})."
+
+# punishment_types.ordinal_<n>: public_notification is broadcast, player_notification lines go to the punished player.
+# Types without an entry use the punishments section. Placeholders: https://github.com/modl-gg/modl/wiki/Placeholders#punishment-messages
+punishment_types:
+  ordinal_0: # Kick
+    public_notification: "&c{target} foi expulso."
+    player_notification:
+      - "&c&lVocê foi expulso do servidor."
+      - "&f{reason} &7(#{id})"
+
+  ordinal_1: # Manual Mute
+    public_notification: "&c{target} foi mutado."
+    player_notification:
+      - ""
+      - "&cVocê {tense} {temp} mutado{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{reason}"
+      - ""
+
+  ordinal_2: # Manual Ban
+    public_notification: "&c{target} foi banido."
+    player_notification:
+      - "&c&lVocê {tense} {temp} banido por:"
+      - ""
+      - "&f{reason}"
+      - "&7{will_expire}"
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}."
+
+  ordinal_3: # Security Ban
+    public_notification: "&c{target} foi banido."
+    player_notification:
+      - "&c&lSua conta {tense2} restringida por questões de segurança."
+      - "&fAtividade suspeita foi detectada na sua conta. Proteja sua conta e abra uma apelação em {appeal_url} usando o ID #{id}."
+
+  ordinal_4: # Linked Ban
+    public_notification: "&c{target} foi banido."
+    player_notification:
+      - "&c&lSua conta {tense2} vinculada a uma conta banida."
+      - ""
+      - "&fBurlar banimentos usando contas alternativas ou compartilhar sua conta é estritamente proibido."
+      - ""
+      - "&7Este banimento será removido automaticamente quando o banimento vinculado terminar."
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}"
+
+  ordinal_5: # Blacklist
+    public_notification: "&c{target} foi colocado na lista negra."
+    player_notification:
+      - "&cVocê {tense} incluído na lista negra"
+      - "&7ID: #{id}"
+
+  ordinal_6: # Chat Abuse
+    public_notification: "&c{target} foi mutado por abuso no chat."
+    player_notification:
+      - ""
+      - "&cVocê {tense} {temp} mutado{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+  ordinal_7: # Anti-Social
+    public_notification: "&c{target} foi mutado por comportamento antissocial."
+    player_notification:
+      - ""
+      - "&cVocê {tense} {temp} mutado{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+
+  ordinal_8: # Targeting
+    public_notification: "&c{target} foi banido por perseguir outros jogadores."
+    player_notification:
+      - "&c&lVocê {tense} {temp} banido por:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}."
+
+  ordinal_9: # Bad Content
+    public_notification: "&c{target} foi banido por conteúdo inapropriado."
+    player_notification:
+      - "&c&lVocê {tense} {temp} banido por:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}."
+
+  ordinal_10: # Bad Username
+    public_notification: "&c{target} foi banido."
+    player_notification:
+      - "&c&lVocê {tense} banido por causa do seu nome de usuário do Minecraft."
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7Este banimento será removido automaticamente quando você mudar seu nome de usuário."
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}"
+
+  ordinal_11: # Bad Skin
+    public_notification: "&c{target} foi banido."
+    player_notification:
+      - "&c&lVocê {tense} banido por causa da sua skin do Minecraft."
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7Este banimento será removido automaticamente quando você mudar sua skin."
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}"
+
+  ordinal_12: # Team Abuse
+    public_notification: "&c{target} foi banido por abuso de equipe."
+    player_notification:
+      - "&c&lVocê {tense} {temp} banido por:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}."
+
+  ordinal_13: # Game Abuse
+    public_notification: "&c{target} foi banido por abuso das mecânicas do jogo."
+    player_notification:
+      - "&c&lVocê {tense} {temp} banido por:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}."
+
+  ordinal_14: # Cheating
+    public_notification: "&c{target} foi banido por uso de cheats."
+    player_notification:
+      - "&c&lVocê {tense} {temp} banido por:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}."
+
+  ordinal_15: # Game Trading
+    public_notification: "&c{target} foi banido por comércio irregular de itens do jogo."
+    player_notification:
+      - "&c&lVocê {tense} {temp} banido por:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}."
+
+  ordinal_16: # Account Abuse
+    public_notification: "&c{target} foi banido por abuso de conta."
+    player_notification:
+      - "&c&lVocê {tense} {temp} banido por:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}."
+
+  ordinal_17: # Systems Abuse
+    public_notification: "&c{target} foi banido por abuso dos sistemas do servidor."
+    player_notification:
+      - "&c&lVocê {tense} {temp} banido por:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Isso é um erro? Faça uma apelação em {appeal_url} usando o ID #{id}."
+
+notification:
+  ticket_reply: "&6[Ticket] &f{message}"
+  ticket_reply_with_link: "&6[Ticket] &f{message} &b[Clique para ver]"
+  ticket_click_action: "&7Clique para ver o ticket {ticketId}"
+  ticket_prefix: "[Ticket] "
+
+iammuted:
+  only_players: "&cEste comando só pode ser usado por jogadores."
+  not_muted: "&cVocê só pode usar este comando enquanto estiver mutado."
+  player_not_online: "&cEsse jogador não está online."
+  cannot_message_self: "&cVocê não pode enviar esta mensagem para si mesmo."
+  cooldown_message: "&cVocê precisa esperar {minutes} minutos e {seconds} segundos antes de usar este comando novamente."
+  notification_to_target: "&6[Jogador Mutado] &f{sender} &7está mutado no momento e não pode responder no chat."
+  success_message: "&aSeu status de mutado foi informado a &f{target}&a."
+
+standing:
+  error: "&cFalha ao carregar sua situação. Tente novamente mais tarde."
+  cooldown: "&cAguarde {seconds}s antes de usar este comando novamente."
+
+player_lookup:
+  error: "&cErro ao consultar o jogador: {error}"
+  uuid: "&7UUID: &f{uuid}"
+  currently_banned: "&7Banido atualmente: {status}"
+  currently_muted: "&7Mutado atualmente: {status}"
+  staff_notes_label: "&7Notas da staff:"
+  staff_note_format: "  &8• &f{text} &7- {issuer}"
+  no_staff_notes: "  &8Sem notas da staff"
+  total_punishments: "&7Total de punições: &f{count}"
+  linked_accounts_label: "&7Contas vinculadas:"
+  linked_account_format: "  &8• &f{username}{status}"
+  linked_account_more: "  &8... e mais {count}"
+  no_linked_accounts: "  &8Nenhuma conta vinculada"
+  total_tickets: "&7Total de tickets: &f{count}"
+  profile_fallback: "&6Perfil: &b{url}"
+
+  status:
+    banned_and_muted: " &c(banido e mutado no momento)"
+    banned: " &c(banido no momento)"
+    muted: " &e(mutado no momento)"
+    no_punishments: " &7(sem punições ativas)"
+
+print:
+  inspect:
+    header: ""
+    uuid: "&fInformações de {player} &7({uuid})"
+    currently_banned: "&eBanido: {status}"
+    currently_muted: "&eMutado: {status}"
+    notes_label: "&eNotas da staff:"
+    note_entry: "&6{ordinal}. &f{text} &epor {issuer}"
+    no_notes: "&7Sem notas da staff"
+    total_punishments: "&eTotal de punições: &f{count}"
+    linked_accounts_label: "&eContas vinculadas:"
+    linked_account_entry: "&6{ordinal}. &e{username} ({status}&e)"
+    linked_account_more: "&e... e mais {count}"
+    no_linked_accounts: "&7Nenhuma conta vinculada"
+    total_tickets: "&eTotal de tickets: &f{count}"
+    profile_fallback: "&ePerfil: &b{url}"
+    web_profile_link: "Ver Perfil na Web"
+    web_profile_hover: "Clique para ver o perfil de {player}"
+    footer: ""
+
+  punishment_detail:
+    not_found: "&cPunição #{id} não encontrada."
+    header: " "
+    type: "&eTipo: &f{type}"
+    player: "&eJogador: &f{player}"
+    issuer: "&eAplicada por: &f{issuer}"
+    date: "&eData: &f{date}"
+    status: "&eStatus: {status}"
+    duration: "&eDuração: &f{duration}"
+    reason: "&eMotivo: &f{reason}"
+    evidence: "&eProvas: &f{count} arquivo(s)"
+    notes: "&eNotas: &f{count}"
+    modifications: "&eModificações: &f{count}"
+    status_active: "Ativa"
+    status_pardoned: "Perdoada"
+    status_rolled_back: "Revertida"
+    status_inactive: "Inativa"
+    footer: " "
+
+  history:
+    header: ""
+    entry_kick: "&6{ordinal}. &7#{id} &e{date} &f{type} &epor {issuer}, motivo: &f{reason}"
+    entry_active: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &epor {issuer}, motivo: &f{reason} &7(expira em {expiry})"
+    entry_permanent: "&6{ordinal}. &c#{id} &e{date} &f{type} (permanente) &epor {issuer}, motivo: &f{reason}"
+    entry_unstarted: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &epor {issuer}, motivo: &f{reason} &7(ainda não iniciada)"
+    entry_expired: "&6{ordinal}. &7#{id} &e{date} &f{type} ({duration}) &epor {issuer}, motivo: &f{reason} &7(expirou há {expired_ago})"
+    entry_pardoned: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &epor {issuer}, motivo: &f{reason} &7(perdoada há {pardoned_ago})"
+    entry_rolled_back: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &epor {issuer}, motivo: &f{reason} &7(revertida há {rolled_back_ago})"
+    total: "&ePágina {page}/{total_pages} ({count} no total)"
+    empty: "&7O jogador nunca foi punido."
+    footer: ""
+
+  notes:
+    header: ""
+    entry: "&6{ordinal}. &e{date} {author}: &f{content}"
+    warning_badge: "&c&l[Aviso]&r&f "
+    total: "&ePágina {page}/{total_pages} ({count} no total)"
+    empty: "&7Nenhuma nota da staff encontrada."
+    footer: ""
+
+  alts:
+    header: ""
+    entry: "&6{ordinal}. {color}{username} &e({status}&e)"
+    status_banned: "&cBanido"
+    status_muted: "&eMutado"
+    status_banned_and_muted: "&cBanido e Mutado"
+    status_clean: "&aLimpo"
+    total: "&ePágina {page}/{total_pages} ({count} no total)"
+    total_truncated: "&ePágina {page}/{total_pages} ({count} mais recentes)"
+    empty: "&7Nenhuma conta vinculada encontrada."
+    footer: ""
+
+  reports:
+    header: ""
+    entry: "&6{ordinal}. &e#{id} {date} ({status}&e) &fdenúncia de {type} &epor {reporter}"
+    entry_content: " &f{content}"
+    status_open: "Aberta"
+    status_closed: "Fechada"
+    total: "&ePágina {page}/{total_pages} ({count} no total)"
+    empty: "&7Nenhuma denúncia encontrada."
+    footer: ""
+
+  staff_list:
+    header: ""
+    entry: "&6 - &e{player} ({in-game-name}) &7[{role}] &eem &f{server}{v}"
+    vanish: " &7[V]"
+    empty: "&7Nenhum membro da staff online."
+    total: "&ePágina {page}/{total_pages} ({count} no total)"
+
+punishment_commands:
+  invalid_severity: "&cSeveridade inválida. Severidades válidas: lenient, regular, severe"
+  warning_message: "&c{username} foi punido ({punishment_type})."
+
+api_errors:
+  panel_unavailable: "&cNão é possível alcançar o painel agora; tente novamente em instantes."
+  connection_failed: "&cFalha na conexão com o painel. Tente novamente em instantes."
+  startup_failed: "&cO sistema de moderação deste servidor não está em execução. Tente novamente mais tarde."
+  version_mismatch: "&cO sistema de moderação deste servidor está sendo atualizado. Tente novamente mais tarde."
+  database_moving: "&cO sistema de moderação deste servidor está sendo movido para um novo banco de dados. Tente novamente mais tarde."
+  packetevents_required: "&cEste servidor não pode aceitar jogadores até que o PacketEvents {version} ou mais recente seja instalado."
+  ban_check_failed: "&cNão foi possível verificar o status de banimento. Login restrito temporariamente por segurança."
+  invalid_name: "&cSeu nome de jogador não é válido neste servidor. Os nomes só podem usar letras, números e sublinhados (até 16 caracteres)."
+  login_check_skipped: "&cNão foi possível verificar seu login com os banimentos deste servidor. Entre em contato com a equipe do servidor."
+  shortening_needs_pardon: "&cFazer uma punição terminar antes exige as permissões para alterar a duração e para perdoá-la."
+
+pardon:
+  success_id: "&aPunição &e#{id}&a perdoada."
+  success_player: "&a{count} {type}(s) de {player} perdoado(s)."
+  already_pardoned_id: "&7A punição &e#{id}&7 já está inativa ou já foi perdoada."
+  no_active_punishment: "&7{player} não possui {type} ativo para perdoar."
+  error: "&cFalha ao perdoar: {error}"
+  error_player: "&cFalha ao perdoar o {type} de {player}: {error}"
+  error_wrong_type_ban: "&cA punição &e#{id}&c não é um ban. Use &e/pardon {id}&c para perdoar qualquer tipo de punição."
+  error_wrong_type_mute: "&cA punição &e#{id}&c não é um mute. Use &e/pardon {id}&c para perdoar qualquer tipo de punição."
+  staff_notification_id: "&7&o[{issuer}: perdoou a punição #{id}&7&o]"
+  staff_notification_player: "&7&o[{issuer}: perdoou o {type} de {player}&7&o]"
+
+warn:
+  player_message: "&c&lVocê recebeu um aviso de {issuer}.\n&fMotivo: &7{reason}"
+  success: "&aAviso aplicado em &f{target}&a. Motivo: &7{reason}"
+  staff_notification: "&7&o[{issuer}: avisou {target} por {reason}&7&o]"
+  error: "&cFalha ao criar o aviso: {error}"
+
+menus:
+  common:
+    action_failed: "&cIsso não funcionou. Tente novamente em instantes."
+    saved_but_incomplete: "&eA alteração foi salva, mas o menu não terminou de atualizar. Abra-o novamente para conferir."
+    back: "&cVoltar"
+    back_lore: []
+    previous_page: "&ePágina Anterior"
+    next_page: "&ePróxima Página"
+    filter: "&6Filtrar"
+    sort: "&6Ordenar"
+    filter_by_type: "&7Filtrar por tipo:"
+    sort_by: "&7Ordenar por:"
+    option_selected: "&a▸ {option}"
+    option_unselected: "&7  {option}"
+    cycle_filters: "&eClique para alternar os filtros"
+    cycle_sort: "&eClique para alternar a ordenação"
+    # {status} is status_open or status_closed, {items} is items_reports or items_tickets
+    status_showing: "&7Mostrando: &a{items} com status {status}"
+    status_click_toggle: "&eClique para mostrar apenas {items} com status {status}"
+    status_right_click_toggle: "&eClique com o direito para mostrar apenas {items} com status {status}"
+    click_to_toggle: "&eClique para alternar"
+    status_open: "aberto"
+    status_closed: "fechado"
+    items_reports: "denúncias"
+    items_tickets: "tickets"
+    report_filters:
+      all: "todas"
+      gameplay: "jogo"
+      chat: "chat"
+    report_status_open: "&aABERTA"
+    report_status_closed: "&cFECHADA"
+    enabled: "&aAtivado"
+    disabled: "&cDesativado"
+    no_permission: "&cSem Permissão"
+    no_permission_modify: "&cSem permissão para modificar"
+    load_profile_failed: "&cFalha ao carregar o perfil do jogador"
+    load_profile_error: "&cFalha ao carregar o perfil do jogador: {error}"
+    no_reported_player: "&cNão é possível inspecionar: esta denúncia não tem UUID de jogador."
+    dismissing_report: "&eDescartando a denúncia..."
+    report_dismissed: "&aDenúncia descartada."
+    dismiss_report_failed: "&cFalha ao descartar a denúncia: {error}"
+    ticket_link_label: "Ticket #{id}: "
+    open_in_browser: "Clique para abrir no navegador"
+    presence: "{time}"
+    presence_on_server: "{time} em {server}"
+
+  titles:
+    inspect: "Inspecionar: {player}"
+    notes: "Notas: {player}"
+    alts: "Alts: {player}"
+    history: "Histórico: {player}"
+    reports: "Denúncias: {player}"
+    punish: "Punir: {player}"
+    punish_type: "Punir: {type}"
+    modify_punishment: "Modificar Punição"
+    link_reports: "Vincular Denúncias: {player}"
+    linked_tickets: "Tickets Vinculados"
+    staff_panel: "Painel da Staff"
+    online_players: "Jogadores Online"
+    staff_reports: "Denúncias"
+    recent_punishments: "Punições Recentes"
+    support_tickets: "Tickets de Suporte"
+    staff_members: "Membros da Staff"
+    manage_staff: "Gerenciar Staff"
+    edit_roles: "Editar Cargos"
+    edit_role: "Editar: {role}"
+
+  # Staff menu tab bar (compact_lore is used in compact headers)
+  staff_tabs:
+    online_players:
+      name: "&6Jogadores Online"
+      lore: []
+      compact_lore: []
+    reports:
+      name: "&6Denúncias"
+      lore: []
+      compact_lore: []
+    punishments:
+      name: "&6Punições Recentes"
+      lore: []
+      compact_lore: []
+    tickets:
+      name: "&6Tickets de Suporte"
+      lore: []
+      compact_lore: []
+    panel:
+      name: "&6Ir para o Painel"
+      lore: []
+      compact_lore: []
+    settings:
+      name: "&6Configurações"
+      lore: []
+      compact_lore: []
+    panel_link_label: "Painel da Staff: "
+
+  inspect_tabs:
+    notes:
+      name: "&6Notas"
+      lore:
+        - "&7Notas da staff ({count})"
+      compact_lore:
+        - "&7Notas da staff ({count})"
+    alts:
+      name: "&6Alts"
+      lore: []
+      compact_lore: []
+    history:
+      name: "&6Histórico"
+      lore:
+        - "&7Punições ({count})"
+      compact_lore:
+        - "&7Punições ({count})"
+    reports:
+      name: "&6Denúncias"
+      lore: []
+      compact_lore: []
+    punish:
+      name: "&cPunir"
+      lore: []
+      compact_lore: []
+
+  player_head:
+    title: "&6Informações de {player_name}"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7Primeiro login: &f{first_login}"
+      - "&7Online: {is_online} ({presence})"
+      - "&7Tempo de jogo: &f{playtime}"
+      - "&7IP real registrado: &f{real_ip_logged}"
+      - "&7Região: &f{location}"
+      - "&7Banido: &f{is_banned}"
+      - "&7Mutado: &f{is_muted}"
+      - ""
+      - "&eClique esquerdo para definir {player_name} como alvo"
+
+  history_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7Servidor: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&eClique para modificar esta punição"
+    status_active: "&7Expira em {expiry}"
+    status_inactive: "&7Expirou há {expired}"
+    status_pardoned: "&7Perdoada há {pardoned}"
+    status_rolled_back: "&7Revertida há {rolled_back}"
+    status_permanent: "&7Nunca expira"
+    status_unstarted: "&7Punição ainda não iniciada"
+    note_format: "&e{note_date} {note_issuer}&f: {note}"
+
+  recent_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7Jogador: &f{player}"
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7Servidor: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&eClique para modificar esta punição"
+
+  note_item:
+    title: "&e{date} {author}"
+    lore:
+      - "&f{content}"
+      - "&f "
+      - "&eClique para ver a nota no chat"
+
+  report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7Denunciado por &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eClique com o esquerdo para inspecionar o jogador"
+      - "&eClique com o direito para descartar a denúncia"
+
+  alt_item:
+    title: "{color}{player_name}"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7Online: {is_online} ({presence})"
+      - "&7IP real registrado: {real_ip}"
+      - "&7Primeiro login: &f{first_login}"
+      - "&7{punishments}"
+      - "&f "
+      - "&eClique para inspecionar {player_name}"
+    punishment_line_active_true:
+      - "&7Punições ativas ({active_count}): &f"
+      - "{active_punishment_list}"
+    punishment_line_active_false:
+      - "&7Punições ativas: &f0"
+      - "&7Punições inativas: &f{inactive_count}"
+    active_punishment_format: "&7- &e#{punishment_id} {punishment_date}: {punishment_type} ({punishment_remaining})"
+
+  empty:
+    history: "Sem histórico de punições"
+    notes: "Sem notas da staff"
+    reports: "Nenhuma denúncia registrada"
+    alts: "Nenhuma conta vinculada"
+    tickets: "Nenhum ticket"
+    staff_reports: "Nenhuma denúncia"
+    punishments: "Nenhuma punição"
+    linked_tickets: "Nenhum ticket vinculado"
+    online_players: "Nenhum jogador online"
+    staff_members: "Nenhum membro da staff"
+    staff_online: "Nenhum membro da staff online"
+    staff_offline: "Nenhum membro da staff offline"
+    roles: "Nenhum cargo"
+    permissions: "Nenhuma permissão"
+
+  ticket_item:
+    title: "&6Ticket #{id}"
+    lore:
+      - "&7Jogador: &f{player}"
+      - "&7Título: &f{title}"
+      - "&7Criado em: &f{date}"
+      - "&7Status: {status}"
+      - "&f "
+      - "&eClique para abrir no painel"
+    no_title: "Sem título"
+
+  staff_report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&c{reported}&7 denunciado por &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eClique com o esquerdo para inspecionar o jogador"
+      - "&eClique com o direito para descartar a denúncia"
+  linked_ticket_item:
+    no_subject: "Sem assunto"
+    click_to_view: "&eClique para ver no painel"
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7{title}"
+      - "&f "
+      - "{content}"
+  link_report_item_unselected:
+    title: "&e{date} {id}"
+    lore:
+      - "&7Denunciado por &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eClique para selecionar"
+  link_report_item_selected:
+    title: "&a{date} {id}"
+    lore:
+      - "&7Denunciado por &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eClique para desmarcar"
+
+  staff_members:
+    title: "&e{panel_name}"
+    lore:
+      - "&7Cargo: &f{role}"
+      - "&7Minecraft: &f{minecraft_username}"
+      - ""
+      - "&7Online: {is_online} ({presence})"
+      - "&7Tempo de jogo: &f{playtime}"
+      - "&7Punições aplicadas: &f{punishments_count}"
+    not_linked: "Não vinculado"
+    filters:
+      online: "Online"
+      offline: "Offline"
+      all: "Todos"
+
+  notes:
+    created: "&aNota criada."
+    create_failed: "&cFalha ao criar a nota: {error}"
+    cancelled: "&7Criação da nota cancelada."
+    create: "&aCriar Nota"
+    create_lore: []
+    prompt: "Digite o conteúdo da nota sobre {player}:"
+    chat_label: "Nota: "
+  modify_punishment:
+    no_changes: "&7Nenhuma alteração nos tickets vinculados."
+    tickets_updated: "&aTickets vinculados atualizados."
+    tickets_update_error: "&cFalha ao atualizar os tickets vinculados: {error}"
+    current_state: "&7Atual: {state}"
+    add_note:
+      name: "&eAdicionar Nota"
+      name_locked: "&7Adicionar Nota"
+      lore: []
+      prompt: "Digite a nota a ser adicionada a esta punição:"
+      added: "&aNota adicionada."
+      failed: "&cFalha ao adicionar a nota: {error}"
+      cancelled: "&7Adição da nota cancelada."
+    evidence:
+      name: "&bProvas"
+      name_locked: "&7Provas"
+      none: "&8(Nenhuma prova anexada)"
+      header: "&7Provas atuais ({count}):"
+      entry: "&f- {evidence}"
+      more: "&8... e mais {count}"
+      left_click_add: "&eClique com o esquerdo para adicionar provas"
+      right_click_view: "&eClique com o direito para ver no chat"
+      no_evidence: "&7Nenhuma prova anexada a esta punição."
+      chat_header: "&6Provas da punição #{id}:"
+      chat_entry: "&f{index}. {evidence}"
+      chat_added_by: "&7   Adicionada por {uploader} em {date}"
+      prompt: "Digite a URL da prova:"
+      added: "&aProva adicionada."
+      failed: "&cFalha ao adicionar a prova: {error}"
+      cancelled: "&7Adição da prova cancelada."
+    pardon:
+      name: "&aPerdoar Punição"
+      name_locked: "&7Perdoar Punição"
+      lore:
+        - "&7Remove a punição e limpa"
+        - "&7os pontos associados"
+      success: "&aPunição perdoada."
+      already_inactive: "&7A punição já está inativa ou já foi perdoada."
+      failed: "&cFalha ao perdoar a punição: {error}"
+    duration:
+      name: "&6Alterar Duração"
+      name_locked: "&7Alterar Duração"
+      current: "&7Atual: &f{duration}"
+      # {permanent_keyword} is the literal word players type for a permanent duration; keep it as is
+      prompt: "Digite a nova duração (ex.: 30d, 2h, 30m, 1d2h30m ou '{permanent_keyword}' para permanente):"
+      invalid: "&cFormato de duração inválido. Exemplos: 30d, 2h, 30m, 1d2h30m"
+      changed: "&aDuração alterada."
+      failed: "&cFalha ao alterar a duração: {error}"
+      lengthen_only: "&7Você só pode aumentar esta punição: reduzi-la exige a permissão para perdoar."
+      needs_pardon: "&cReduzir esta punição exige a permissão para perdoar."
+      cancelled: "&7Alteração da duração cancelada."
+    linked_tickets:
+      name: "&6Tickets Vinculados"
+      none: "&8(Nenhum ticket vinculado)"
+      header: "&7Tickets vinculados ({count}):"
+      entry: "&f- {ticket}"
+      more: "&8... e mais {count}"
+      left_click_view: "&eClique com o esquerdo para ver os tickets"
+      right_click_link: "&eClique com o direito para vincular denúncias"
+    stat_wipe:
+      name: "&6Alternar Limpeza de Estatísticas"
+      name_locked: "&7Alternar Limpeza de Estatísticas"
+      enable_lore: "&7Ativar a limpeza de estatísticas para este banimento"
+      disable_lore: "&7Desativar a limpeza de estatísticas para este banimento"
+      enabled: "&aLimpeza de estatísticas ativada."
+      disabled: "&aLimpeza de estatísticas desativada."
+      failed: "&cFalha ao alternar a limpeza de estatísticas: {error}"
+    alt_block:
+      name: "&6Alternar Bloqueio de Alts"
+      name_locked: "&7Alternar Bloqueio de Alts"
+      enable_lore: "&7Ativar o bloqueio de alts para este banimento"
+      disable_lore: "&7Desativar o bloqueio de alts para este banimento"
+      enabled: "&aBloqueio de alts ativado."
+      disabled: "&aBloqueio de alts desativado."
+      failed: "&cFalha ao alternar o bloqueio de alts: {error}"
+
+  online_players:
+    title: "&6{player_name}"
+    lore:
+      - "&7Sessão: &f{session_duration}"
+      - "&7Tempo total de jogo: &f{total_playtime}"
+      - ""
+      - "&7Denúncias ({report_count}):"
+      - "{report-list}"
+      - ""
+      - "&eClique com o esquerdo para inspecionar"
+      - "&eClique com o direito para definir como alvo"
+    report_entry: " &6- &e{date} {reporter}: &f{details}"
+    reports_more: " &e... e mais {count}"
+    sorts:
+      least_playtime: "Menor Tempo de Jogo"
+      recent_gameplay_reports: "Denúncias de Jogo Recentes"
+      longest_session: "Sessão Mais Longa"
+
+  settings:
+    title: "Configurações"
+    information:
+      name: "&6Informações"
+      username: "&7Nome de usuário: &f{username}"
+      role: "&7Cargo: &f{role}"
+      role_admin: "Super Admin"
+      role_staff: "Staff"
+      permissions_header: "&7Permissões:"
+      permission_modify_settings: "&a  ✓ &7Modificar configurações"
+      permission_manage_staff: "&a  ✓ &7Gerenciar staff"
+    staff_list:
+      name: "&6Lista da Staff"
+      lore: []
+    manage_staff:
+      name: "&6Gerenciar Staff"
+      lore: []
+    edit_roles:
+      name: "&6Editar Cargos"
+      lore: []
+    reload:
+      name: "&cRecarregar modl"
+      lore:
+        - "&7Recarregar arquivos de configuração e idioma"
+
+  punish:
+    no_types: "&cNenhum Tipo de Punição"
+    no_types_lore:
+      - "&7Falha ao carregar os tipos de punição"
+      - "&7da API"
+    click_to_issue: "&eClique para aplicar a punição"
+    click_to_select_severity: "&eClique para selecionar a severidade"
+    no_permission_lore:
+      - "&cSem Permissão"
+    type_not_found: "&cTipo de punição não encontrado"
+    ordinal: "&7Ordinal: {ordinal}"
+
+  # Punishment severity menu. {state} is menus.common.enabled or menus.common.disabled
+  punish_severity:
+    severities:
+      lenient:
+        title: "&aLeve"
+      regular:
+        title: "&eRegular"
+      aggravated:
+        title: "&cGrave"
+    issue_punishment: "&eAplicar Punição"
+    preview_duration: "&7Punição: &f{duration}"
+    preview_duration_permanent: "&7Punição: &f{duration} &c(Permanente)"
+    preview_type: "&7Tipo: &f{type}"
+    preview_points: "&7Pontos: &e+{points}"
+    offender_level: "&7Nível de Infrator: {current}&7 → {next}"
+    restricted_until_username:
+      - "&eO jogador ficará restrito até"
+      - "&etrocar seu nome de usuário"
+    restricted_until_skin:
+      - "&eO jogador ficará restrito até"
+      - "&etrocar sua skin"
+    click_to_issue: "&eClique para aplicar a punição"
+    click_to_issue_silent: "&eClique para aplicar a punição silenciosa"
+    single_click_to_issue: "&aClique para aplicar a punição"
+    single_click_to_issue_silent: "&aClique para aplicar a punição silenciosa"
+    link_reports: "&6Vincular Denúncias"
+    link_reports_selected: "&6Vincular Denúncias&a ({count})"
+    select_reports: "&eClique para selecionar denúncias"
+    linked_reports_header: "&aDenúncias vinculadas:"
+    linked_report_entry: "&7  - &f{id}"
+    modify_selection: "&eClique para modificar a seleção"
+    silent_mode: "&6Modo Silencioso: {state}"
+    silent_on: "&aA punição será silenciosa"
+    silent_off: "&7A punição será pública"
+    alt_blocking: "&6Bloqueio de Alts: {state}"
+    alt_blocking_on: "&aAs contas alt serão bloqueadas"
+    alt_blocking_off: "&7As contas alt ainda poderão entrar"
+    stat_wipe: "&6Limpar Estatísticas: {state}"
+    stat_wipe_on: "&aAs estatísticas serão limpas"
+    stat_wipe_off: "&7As estatísticas serão mantidas"
+    reason_prompt: "Digite o motivo da punição de {player}:"
+    reports_resolved: "&a{count} denúncia(s) vinculada(s) resolvida(s)."
+    reports_not_resolved: "&cNão foi possível resolver {count} denúncia(s) vinculada(s): {reports}"
+    reports_resolve_error: "&cMotivo: {error}"
+    issue_failed: "&cFalha ao aplicar a punição: {error}"
+    cancelled: "&7Punição cancelada."
+
+  staff_list:
+    no_permission_lore:
+      - "&7Você não tem permissão para"
+      - "&7gerenciar os membros da staff"
+    role: "&7Cargo: &f{role}"
+    super_admin_locked: "&cSuper Admins não podem ser modificados"
+    self_locked: "&cVocê não pode modificar o seu próprio cargo"
+    rank_locked:
+      - "&cVocê não pode modificar membros da staff"
+      - "&ccom cargo igual ou superior ao seu"
+    roles_header: "&7Cargos:"
+    role_current: "&a  &l{role} &r&7(atual)"
+    role_selected: "&a  {role} &7(selecionado)"
+    role_option: "&7  {role}"
+    cycle_roles: "&eClique com o direito para alternar os cargos"
+    apply_role: "&eClique com o esquerdo para aplicar o cargo selecionado"
+    no_roles: "&cNenhum cargo disponível."
+    role_chosen: "&eCargo selecionado: &a{role}&7 (clique com o esquerdo para aplicar)"
+    already_current: "&7Este já é o cargo atual de {player}."
+    applying: "&eAplicando o cargo &a{role}&e a {player}..."
+    updated: "&aCargo atualizado."
+    update_failed: "&cFalha ao atualizar o cargo: {error}"
+
+  roles:
+    no_permission_lore:
+      - "&7Você não tem permissão para"
+      - "&7editar cargos"
+    permission_count: "&7Permissões: &f{count}"
+    click_to_edit: "&eClique para editar as permissões"
+    cannot_edit_own: "&cVocê não pode editar o seu próprio cargo."
+
+  role_permissions:
+    apply_changes: "&aAplicar Alterações"
+    apply_changes_lore: "&eClique para salvar as alterações de permissões"
+    no_changes: "&7Nenhuma Alteração"
+    no_changes_lore: "&8Alterne as permissões e clique para salvar"
+    no_permission_lore:
+      - "&7Você não tem permissão para"
+      - "&7editar as permissões dos cargos"
+    auto_granted: "&8Concedida automaticamente pela permissão pai"
+    nothing_to_save: "&7Nenhuma alteração para salvar."
+    saving: "&eSalvando as permissões de {role}..."
+    saved: "&aPermissões salvas."
+    save_failed: "&cFalha ao salvar: {error}"
+
+  link_reports:
+    apply: "&aAplicar Seleção"
+    apply_lore:
+      - "&7Salvar a seleção e voltar"
+      - ""
+      - "&e{count} denúncia(s) selecionada(s)"
+    select_all: "&aSelecionar Todas"
+    select_all_lore:
+      - "&7Alternar todas as denúncias filtradas no momento"
+
+  punishment_kind:
+    kick: "Expulsão"
+    ban: "Banimento"
+    mute: "Mute"
+    details: " &f({details})"
+
+  # Chat input prompts opened from menus. {cancel} is the literal word that cancels the prompt; keep it as is
+  chat_input:
+    prompt: "&6&l» &e{prompt}"
+    hint: "&7Digite sua resposta no chat ou digite &c{cancel} &7para cancelar."
+    timed_out: "&cO tempo para responder esgotou. Tente novamente."
+
+# Set usage to "" to hide a command from the help list.
+help:
+  header: "&a&lmodl &av{version} &f- &eLista de Comandos"
+  entry: "&f/{command} &7- {description}"
+  footer: "&ePágina {page}/{total_pages}. Use &a/modl help {next_page}&e para ver a próxima página."
+  no_more_pages: "&7Não há mais páginas."
+  version_header: "&a&lmodl&a v{version}&f - &eSistema de gerenciamento de moderação e suporte"
+  version_footer: "&7Software livre GNU AGPLv3. Use /modl help para informações sobre os comandos."
+  player_commands:
+    iammuted:
+      usage: "iammuted <jogador>"
+      description: "Avisar alguém de que você está mutado"
+    standing:
+      usage: "standing"
+      description: "Ver sua situação de punições"
+    report:
+      usage: "report <jogador>"
+      description: "Denunciar um jogador"
+    chatreport:
+      usage: "chatreport <jogador>"
+      description: "Denunciar o chat de um jogador"
+    claimticket:
+      usage: "claimticket <id> <chave>"
+      description: "Vincular um ticket à sua conta"
+    apply:
+      usage: "apply"
+      description: "Candidatar-se a uma vaga na staff"
+    bugreport:
+      usage: "bugreport"
+      description: "Reportar um bug"
+    support:
+      usage: "support"
+      description: "Abrir um ticket de suporte"
+    link:
+      usage: "modl link <código>"
+      description: "Vincular sua conta do Minecraft ao painel"
+    panel:
+      usage: "modl panel"
+      description: "Obter um link de login de uso único para o painel"
+  staff_commands:
+    staffmenu:
+      usage: "staffmenu"
+      description: "Abrir o menu da staff"
+    inspect:
+      usage: "inspect <jogador> [-p]"
+      description: "Abrir o menu de inspeção do jogador (-p para texto)"
+    history:
+      usage: "history <jogador> [-p [página]]"
+      description: "Abrir o histórico do jogador (-p para texto)"
+    notes:
+      usage: "notes <jogador> [-p [página]]"
+      description: "Abrir as notas do jogador (-p para texto)"
+    alts:
+      usage: "alts <jogador> [-p [página]]"
+      description: "Abrir as contas alt do jogador (-p para texto)"
+    reports:
+      usage: "reports [jogador] [-p [página]]"
+      description: "Abrir o menu de denúncias (-p para texto)"
+    punish:
+      usage: "punish <jogador> [tipo] [motivo]"
+      description: "Aplicar uma punição"
+    ban:
+      usage: "ban <jogador> [duração] [motivo]"
+      description: "Banir um jogador"
+    mute:
+      usage: "mute <jogador> [duração] [motivo]"
+      description: "Mutar um jogador"
+    kick:
+      usage: "kick <jogador> [motivo]"
+      description: "Expulsar um jogador"
+    blacklist:
+      usage: "blacklist <jogador> [motivo]"
+      description: "Colocar um jogador na lista negra"
+    pardon:
+      usage: "pardon <jogador>"
+      description: "Perdoar todas as punições ativas e em espera"
+    unban:
+      usage: "unban <jogador>"
+      description: "Perdoar todos os bans ativos e em espera"
+    unmute:
+      usage: "unmute <jogador>"
+      description: "Perdoar todos os mutes ativos e em espera"
+    replay:
+      usage: "replay <status|capture> [jogador]"
+      description: "Gerenciar as gravações de replay"
+    modl_reload:
+      usage: "modl reload"
+      description: "Recarregar a configuração"
+    modl_import:
+      usage: "modl import"
+      description: "Importar do LiteBans (somente console)"
+    modl_status:
+      usage: "modl status"
+      description: "Mostrar um relatório de suporte que pode ser compartilhado com segurança (somente console)"
+
+stat_wipe:
+  kick_message: "&cPor favor, entre novamente em instantes. Suas estatísticas estão sendo redefinidas por causa de um banimento que expirou recentemente."
+
+staff_chat:
+  enabled: "&eChat da staff &aativado&e. Suas mensagens irão por padrão para o chat da staff."
+  disabled: "&eChat da staff &cdesativado&e. Suas mensagens irão por padrão para o chat local."
+  feature_disabled: "&cO chat da staff não está ativado neste servidor."
+  already_normal: "&cVocê já está no modo de chat local."
+  mode_lost: "&cVocê não pode mais usar o chat da staff e voltou para o chat local. Sua mensagem não foi enviada."
+  format: "&b[STAFF] &e{panel-name}&f: {message}"
+  local_chat_enabled: "&eChat da staff &cdesativado&e. Suas mensagens irão por padrão para o chat local."
+
+chat_management:
+  chat_toggled_on: "&7&o[{staff}: ativou o chat]"
+  chat_toggled_off: "&7&o[{staff}: desativou o chat]"
+  chat_disabled: "&cO chat está desativado no momento."
+  chat_cleared: "&7&o[{staff}: limpou o chat]"
+  slow_mode_enabled: "&7&o[{staff}: colocou o chat em modo lento de {seconds}s]"
+  slow_mode_disabled: "&7&o[{staff}: desativou o modo lento]"
+  slow_mode_wait: "&cAguarde {seconds} segundos antes de falar novamente."
+  invalid_seconds: "&cInforme um número válido de segundos."
+  usage_toggle: "&fUso: &a/chat &ftoggle"
+  usage_clear: "&fUso: &a/chat &fclear"
+  usage_slow: "&fUso: &a/chat &fslow <segundos|off>"
+  help:
+    header: "&eComandos de chat:"
+    staff: "&f/chat staff &7- Alternar o modo de chat da staff"
+    toggle: "&f/chat toggle &7- Ativar/desativar o chat público"
+    clear: "&f/chat clear [quantidade] &7- Limpar o chat"
+    slow: "&f/chat slow <segundos|off> &7- Ativar/desativar o modo lento"
+
+staff_notifications:
+  join: "&7&o[{staff}: entrou]"
+  verified: "&7&o[{staff}: verificado]"
+  leave: "&7&o[{staff}: saiu]"
+  switch: "&7&o[{staff}: conectou-se a {server}]"
+  generic: "&7&o[{message}]"
+  click_to_target: "Clique para definir {player} como alvo"
+
+staff_2fa:
+  not_verified: "&cVocê precisa verificar sua identidade antes de usar comandos da staff. Use &f/verify"
+  verify_prompt: "&aClique no link para verificar: &f{url}"
+  verify_success: "&aIdentidade verificada."
+  verify_error: "&cFalha ao gerar o link de verificação. Tente novamente."
+  auto_verified: "&aVerificado automaticamente por IP confiável."
+
+verify:
+  only_players: "&cEste comando só pode ser usado por jogadores."
+  disabled: "&cA verificação em duas etapas da staff não está ativada neste servidor."
+  already_verified: "&aVocê já está verificado."
+  header: ""
+  instructions: "&aClique no link abaixo para verificar sua identidade:"
+  click_here: "Clique aqui para verificar"
+  click_here_hover: "Clique para abrir a página de verificação"
+  error: "&cFalha ao gerar o link de verificação. Tente novamente."
+  footer: "&eEste link expira em breve."
+
+panel_account:
+  link_success: "&aSua conta do Minecraft agora está vinculada à sua conta do painel."
+  link_invalid_code: "&cEsse código é inválido ou expirou. Crie um novo no painel, em Configurações da conta."
+  link_already_linked: "&cEsta conta do Minecraft já está vinculada a outra conta do painel. Desvincule-a lá primeiro e tente novamente."
+  link_error: "&cNão foi possível vincular sua conta agora. Tente novamente em instantes."
+  login_offline_mode: "&cO login no painel pelo jogo está desativado porque este servidor não verifica as contas dos jogadores."
+  login_not_linked: "&cSua conta do Minecraft não está vinculada a uma conta do painel. Crie um código no painel, em Configurações da conta, e depois use &e/modl link <código>&c."
+  login_not_online: "&cO painel ainda não detectou você online. Tente novamente em instantes."
+  login_error: "&cNão foi possível criar um link de login do painel agora. Tente novamente em instantes."
+  login_link: "Abrir o painel"
+  login_link_hover: "Link de uso único, expira em {minutes} minutos"
+  rate_limited: "&cVocê está fazendo isso com muita frequência. Aguarde um momento e tente novamente."
+
+maintenance:
+  enabled: "&7&o[{staff}: ativou a manutenção]"
+  disabled: "&7&o[{staff}: desativou a manutenção]"
+  already_enabled: "&cO modo de manutenção já está ativado."
+  already_disabled: "&cO modo de manutenção já está desativado."
+  status_enabled: "&eO modo de manutenção está ativado no momento."
+  status_disabled: "&eO modo de manutenção está desativado no momento."
+  login_denied: "&cO servidor está em manutenção. Tente novamente mais tarde."
+  kick_message: "&cO servidor entrou em modo de manutenção. Tente novamente mais tarde."
+  usage: "&fUso: &a/maintenance&f <on|off>"
+
+freeze:
+  frozen_message: "&cVocê foi congelado. Não desconecte."
+  staff_notification_freeze: "&7&o[{staff}: congelou {player}]"
+  staff_notification_unfreeze: "&7&o[{staff}: descongelou {player}]"
+  unfrozen: "&aVocê foi descongelado."
+  logout_notification: "&c&l{player} saiu do servidor enquanto estava congelado."
+  frozen_chat: "&b[CONGELADO] &e{player}&f: {message}"
+  command_blocked: "&cVocê não pode usar comandos enquanto está congelado."
+  target_offline: "&c{player} não está online neste servidor, então não pode ser congelado."
+  not_enforced: "&e{player} está congelado, mas o servidor dele ainda não está conectado ao modl, então o movimento só será bloqueado quando ele se conectar."
+  limit_reached: "&cHá jogadores congelados demais agora."
+
+intercept_chat:
+  enabled: "&aInterceptação do chat da rede ativada"
+  disabled: "&aInterceptação do chat da rede desativada"
+  format: "&8[G-{server}] &e{player}&f: {message}"
+
+intercept:
+  message: "&8[Interceptação] &f{player}: &7{message}"
+
+chat_logs:
+  header: ""
+  entry: "&7[{timestamp}] &8[{server}] &f{message}"
+  empty: "&7Nenhum registro de chat encontrado para este jogador."
+  footer: "&ePágina {page}/{total_pages} ({total} no total)"
+  error: "&cFalha ao buscar os registros de chat."
+  usage: "&fUso: &a/chatlogs&f <jogador>"
+
+command_logs:
+  header: ""
+  entry: "&7[{timestamp}] &e{player}&7: &f/{command}"
+  empty: "&7Nenhum registro de comandos encontrado para este jogador."
+  footer: "&ePágina {page}/{total_pages} ({total} no total)"
+  error: "&cFalha ao buscar os registros de comandos."
+  usage: "&fUso: &a/commandlogs&f <jogador>"
+
+staff_mode:
+  enabled: "&aModo staff ativado"
+  disabled: "&aModo staff desativado"
+  enabled_broadcast: "&7&o[{staff}: entrou no modo staff]"
+  disabled_broadcast: "&7&o[{staff}: saiu do modo staff]"
+  limit_reached: "&cHá membros da staff demais no modo staff agora."
+
+vanish:
+  enabled: "&aVocê está invisível agora"
+  disabled: "&aVocê não está mais invisível"
+  enabled_broadcast: "&7&o[{staff}: ficou invisível]"
+  disabled_broadcast: "&7&o[{staff}: saiu da invisibilidade]"
+
+target:
+  targeting: "&eAlvo definido: &f{player}"
+  cleared: "&aAlvo removido."
+  usage: "&fUso: &a/target&f <jogador>"
+  connecting: "&eConectando a &f{server} &epara definir &f{player}&e como alvo..."
+  cannot_target_self: "&cVocê não pode definir a si mesmo como alvo."
+  not_online: "&cO jogador não está online."
+  target_left: "&c{player} saiu da rede. Voltando ao modo staff."
+
+network:
+  action_unavailable: "&cEssa ação não está disponível agora."
+
+replay:
+  usage:
+    - "&f/replay status [jogador] &7- Ver o status da gravação"
+    - "&f/replay capture [jogador] &7- Capturar e enviar o replay"
+  not_available: "&cA gravação de replay não está disponível neste servidor."
+  status_recording: "&a{player} está sendo gravado no momento"
+  status_not_recording: "&c{player} não está sendo gravado"
+  no_server_connected: "&cNenhum servidor está conectado para capturar um replay."
+  no_active_recording: "&cNenhuma gravação ativa para {player}"
+  capturing: "&aCapturando e enviando o replay de {player}..."
+  capture_success: "&aReplay de {player} capturado"
+  capture_link: "&b{url}"
+  capture_failed: "&cFalha ao capturar o replay de {player}"
+  click_to_view: "[Clique para ver o replay]"
+  click_to_view_hover: "Abrir o visualizador de replay"
+  console_specify_player: "&cInforme o nome de um jogador pelo console."
+
+standing_gui:
+  title: "&fSua Situação"
+  social_status:
+    title: "&eSituação Social: {status}"
+    description:
+      Low:
+        - "&7As punições nesta categoria continuam leves."
+      Medium:
+        - "&7As punições nesta categoria são mais severas."
+      Habitual:
+        - "&7As punições nesta categoria são muito severas."
+  gameplay_status:
+    title: "&eSituação de Jogo: {status}"
+    description:
+      Low:
+        - "&7As punições nesta categoria continuam leves."
+      Medium:
+        - "&7As punições nesta categoria são mais severas."
+      Habitual:
+        - "&7As punições nesta categoria são muito severas."
+  status_display:
+    Low: "&aBaixo"
+    Medium: "&6Médio"
+    Habitual: "&cHabitual"
+  punishment_item:
+    status_pardoned: "perdoada há {duration}"
+    status_rolled_back: "revertida há {duration}"
+    status_queued: "na fila"
+    status_permanent: "permanente"
+    status_expires: "expira em {duration}"
+    status_expired_ago: "expirou há {duration}"
+    status_expired: "expirada"
+    title: "&e#{id} {date}"
+    lore:
+      - "&7{duration} {type} ({status})"
+      - ""
+      - "&f{reason}"
+
+punishment_action:
+  unknown_action: "&cAção desconhecida: {action}"
+  enter_evidence_url: "&7Digite a URL da prova para a punição #{id}:"
+  no_url: "&cNenhuma URL informada."
+  evidence_linked: "&aProva vinculada à punição #{id}"
+  evidence_link_failed: "&cFalha ao vincular a prova: {error}"
+  evidence_cancelled: "&7Vinculação da prova cancelada."
+  generating_upload: "&7Gerando link de upload..."
+  upload_failed: "&cFalha ao gerar o link de upload."
+  upload_link: "Clique aqui para enviar provas"
+  upload_link_hover: "Abre no seu navegador"
+  buttons:
+    label: "Punição #{id}: "
+    modify: "[Modificar]"
+    modify_hover: "Clique para modificar esta punição"
+    link_evidence: "[Vincular Prova]"
+    link_evidence_hover: "Clique para vincular uma URL como prova"
+    upload_evidence: "[Enviar Provas]"
+    upload_evidence_hover: "Clique para enviar arquivos como prova"
+
+import:
+  usage: "Uso: /modl import <source> e depois /modl import <source> confirm <widen|skip> <keep|standard>. Também: /modl import status, /modl import cancel."
+  detected: "Encontrado aqui: {detected}. Compatíveis: {supported}."
+  nothing_detected: "Nenhum dado de plugin compatível foi encontrado aqui. Compatíveis: {supported}."
+  unknown_source: "{source} não é uma origem compatível. Compatíveis: {supported}."
+  litebans_missing: "O LiteBans não está em execução neste servidor. Instale e ative-o aqui (no proxy, em redes), conectado ao seu banco de dados do LiteBans, reinicie e execute novamente."
+  source_missing: "Nenhum dado de {source} foi encontrado neste servidor. Execute isto no servidor que tem esses dados (em uma rede, o proxy que executa o modl)."
+  source_locked: "{source} está em execução e mantém o arquivo do banco de dados aberto. Remova o jar dele (mantenha a pasta), reinicie e execute novamente."
+  database_failed: "Não foi possível ler os dados de {source}: {error}"
+  no_space: "Não há espaço livre em disco suficiente para copiar o banco de dados de {source}: {error}"
+  nothing_to_import: "{source} não tem jogadores ou punições para importar."
+  nothing_left: "Com essas opções não resta nada para importar."
+  setup_required: "Conclua primeiro a configuração do modl no painel."
+  busy: "Já há uma verificação ou importação em andamento aqui. Veja /modl import status."
+  already_running: "Uma importação iniciada em {server} ({address}) está em andamento. Veja /modl import status ou pare com /modl import cancel."
+  ip_history_release_running: "O histórico de IP mantido por uma importação anterior ainda está sendo liberado. Tente novamente mais tarde."
+  storage_moving: "Os arquivos enviados estão sendo movidos para outro armazenamento. Tente novamente quando terminar."
+  database_moving: "O modl está sendo movido para outro banco de dados. Tente novamente quando terminar."
+  confirm_first: "Execute primeiro /modl import {source_id} e confirme em até 60 segundos."
+  choices_required: "As duas opções são obrigatórias: /modl import {source_id} confirm <widen|skip> <keep|standard>"
+  preview:
+    counts: "{source} tem {bans} banimentos, {mutes} silenciamentos, {warnings} avisos, {kicks} expulsões e {notes} notas de {players} jogadores."
+    not_imported: "Não importadas: {without_account} punições sem conta de jogador."
+    scoped: "{ip_wide} punições por IP e {server_scoped} limitadas a um servidor. widen: valem para a conta em todos os servidores, e os banimentos de IP também bloqueiam suas contas alternativas. skip: ficam de fora."
+    ip_history: "{old_entries} entradas do histórico de IP (cerca de {old_megabytes} MB) têm mais de {days} dias. keep: o histórico de IP importado é mantido. standard: o histórico de IP com mais de {days} dias é apagado."
+    ip_history_kept: "Uma importação anterior mantém o histórico de IP antigo. standard encerra isso e o apaga."
+    backup: "Faça backup do modl primeiro. O que foi importado permanece se você cancelar, e repetir a importação apenas adiciona."
+    confirm: "Para começar, execute em até 60 segundos: /modl import {source_id} confirm <widen|skip> <keep|standard>"
+  started: "Importação de {source} iniciada ({scoped_choice}, {history_choice})."
+  exporting: "Lendo {source}: {processed} de {total} jogadores."
+  uploading: "Enviando a exportação ao modl."
+  processing_started: "O modl recebeu a exportação e está importando."
+  completed: "Importação de {source} concluída: {processed} jogadores importados, {skipped} ignorados, {not_imported} punições deixadas de fora."
+  completed_partly: "Importação de {source} concluída com problemas: {processed} jogadores importados, {failed} ilegíveis, {skipped} ignorados, {not_imported} punições deixadas de fora. Corrija e execute novamente."
+  cancelling: "Parando a importação."
+  cancel_keeps_imported: "Os registros já importados permanecem."
+  nothing_to_cancel: "Nenhuma importação em andamento."
+  job_gone: "O servidor modl não conhece mais esta importação."
+  too_many_players: "{source} tem jogadores demais para uma importação (limite de 1.000.000): {error}"
+  every_player_failed: "Nenhum jogador pôde ser lido de {source}: {error}"
+  file_failed: "Não foi possível gravar o arquivo de exportação: {error}"
+  upload_blocked: "Algo à frente do modl (um proxy reverso ou CDN) recusou o arquivo por ser grande demais: {error}"
+  upload_failed: "Não foi possível enviar a exportação ao modl: {error}"
+  unreachable: "Não foi possível acessar o modl: {error}"
+  request_failed: "A solicitação de importação falhou: {error}"
+  status:
+    none: "Nenhuma importação foi feita ainda."
+    building_json: "Lendo {source}: {processed} de {total} jogadores."
+    uploading_json: "A exportação está aguardando envio."
+    receiving_file: "O modl está recebendo a exportação."
+    processing_data: "Importando: {processed} de {total} jogadores, {skipped} ignorados."
+    details: "Importação de {source} iniciada em {server} ({address}) com {scoped_choice} e {history_choice}."
+  ended:
+    cancelled: "A importação foi cancelada."
+    timed_out: "A importação parou de responder e expirou. Execute novamente."
+    interrupted: "A importação foi interrompida por uma reinicialização. Execute novamente."
+    export_failed: "A exportação de {source} falhou. Execute novamente."
+    upload_failed: "O envio da exportação falhou. Execute novamente."
+    file_too_large: "A exportação excede o limite de importação."
+    invalid_file: "O modl não conseguiu ler a exportação: {error}"
+    import_failed: "A importação falhou: {error}"
+
+server_features:
+  staff_mode:
+    random_teleport:
+      no_players: "&cNão há jogadores disponíveis para teleportar."
+      teleported: "&aTeleportado para &f{player}&a."
+    teleport:
+      teleported: "&aTeleportado para &f{player}&f."
+      target_offline: "&cO alvo não está mais online."
+    custody:
+      not_saved: "&cO modo staff não foi iniciado porque seus pertences não puderam ser salvos com segurança. Você mantém tudo. Desative o modo staff e peça ao dono do servidor para verificar o console."
+      kept_changing: "&cO modo staff não foi iniciado porque seu inventário continuava mudando. Você mantém tudo. Desative o modo staff, fique parado e tente de novo."
+      unresolved: "&cO modo staff não foi iniciado porque um salvamento anterior dos seus pertences não foi resolvido. Peça ao dono do servidor para verificar o console e depois entre novamente."
+      held: "&cSeus pertences ainda não puderam ser devolvidos. O modl os mantém seguros, e seus itens ficam bloqueados até voltarem. Peça ao dono do servidor para verificar o console."
+      record_missing: "&cO modl não encontrou pertences salvos da sua sessão no modo staff. Peça ao dono do servidor para verificar o console."
+    unknown_player: "Desconhecido"
+    scoreboard:
+      vanish_on: "&aLIGADO"
+      vanish_off: "&cDESLIGADO"
+      vanished: "Invisível"
+      visible: "Visível"
+      frozen_yes: "&cSim"
+      frozen_no: "&aNão"
+      target_offline: "Offline"
+      no_target: "Nenhum"
+      not_available: "N/D"
+    silent_container:
+      block_title: "&8Visualizando: {container}"
+      inventory_title: "&8Visualizando: inventário de {player}"
+  freeze:
+    frozen: "&c&lVocê foi congelado por um membro da staff. Não desconecte."
+    unfrozen: "&aVocê foi descongelado."
+    chat: "&b[Congelado] &e{player}&f: {message}"
+    no_commands: "&cVocê não pode usar comandos enquanto estiver congelado."
+  command:
+    modlserver:
+      usage: "Uso: &a/modlserver reload"
+      no_permission: "&cVocê não tem permissão para usar este comando."
+      reloading: "&eRecarregando a configuração dos recursos de servidor do modl..."
+      reloaded: "&aConfiguração dos recursos de servidor recarregada."
+      reload_failed: "&cRecarregado com erros em: &f{files}&c. Veja o console para mais detalhes."
+      restart_required: "&eEstas configurações só valem após reiniciar: &f{keys}"
+    proxycmd:
+      console_only: "&cEste comando só pode ser executado pelo console."
+      usage: "Uso: &a/proxycmd &f<comando>"
+      not_connected: "&cSem conexão com o proxy. Verifique as configurações de conexão no connection.yml."
+      sent: "&aEnviado ao proxy: {command}"
+      refused: "&cO proxy só executa comandos do modl; {command} foi recusado."
+      disabled: "&cO /proxycmd está desativado para a chave deste servidor. O dono pode permitir em Panel > Configurações > Geral > Servidores de Minecraft; até lá, execute o comando no console do proxy."
+      no_answer: "&cO proxy não respondeu a tempo."
+      rate_limited: "&cMuitos comandos de proxy no momento; tente novamente em instantes."
+      invalid: "&cO proxy não conseguiu executar {command}."
+  network:
+    unavailable: "&cNão é possível alcançar o proxy agora; tente novamente em instantes."
+
+support_status:
+  header: "==== Status do modl: copie tudo até a linha final no seu pedido de suporte ===="
+  footer: "==== Fim do status do modl ===="
+  collecting: "Coletando o status do modl..."
+  backend_unavailable: "O modl não está conectado ao seu servidor, então só a parte do plugin é mostrada. As linhas do console acima explicam o motivo."
+  backend_failed: "O servidor do modl não respondeu, então só a parte do plugin é mostrada."

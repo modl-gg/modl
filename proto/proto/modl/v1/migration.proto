@@ -1,0 +1,113 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+
+enum ImportEndReason {
+  IMPORT_END_REASON_UNSPECIFIED = 0;
+  IMPORT_END_REASON_CANCELLED = 1;
+  IMPORT_END_REASON_TIMED_OUT = 2;
+  IMPORT_END_REASON_INTERRUPTED = 3;
+  IMPORT_END_REASON_EXPORT_FAILED = 4;
+  IMPORT_END_REASON_UPLOAD_FAILED = 5;
+  IMPORT_END_REASON_FILE_TOO_LARGE = 6;
+  IMPORT_END_REASON_INVALID_FILE = 7;
+  IMPORT_END_REASON_IMPORT_FAILED = 8;
+}
+
+enum ExportPhase {
+  EXPORT_PHASE_UNSPECIFIED = 0;
+  EXPORT_PHASE_BUILDING = 1;
+  EXPORT_PHASE_UPLOADING = 2;
+}
+
+enum ScopedPunishmentChoice {
+  SCOPED_PUNISHMENT_CHOICE_UNSPECIFIED = 0;
+  SCOPED_PUNISHMENT_CHOICE_WIDEN = 1;
+  SCOPED_PUNISHMENT_CHOICE_SKIP = 2;
+}
+
+enum ImportedIpHistoryChoice {
+  IMPORTED_IP_HISTORY_CHOICE_UNSPECIFIED = 0;
+  IMPORTED_IP_HISTORY_CHOICE_KEEP = 1;
+  IMPORTED_IP_HISTORY_CHOICE_STANDARD = 2;
+}
+
+message ImportJob {
+  string id = 1;
+  string status = 2;
+  ImportEndReason end_reason = 3;
+  optional string error = 4;
+  optional int32 records_processed = 5;
+  optional int32 records_skipped = 6;
+  optional int32 total_records = 7;
+  optional int32 export_failed = 8;
+  optional int32 export_skipped = 9;
+  optional string started_from = 10;
+  optional string started_address = 11;
+  ScopedPunishmentChoice scoped_punishments = 12;
+  ImportedIpHistoryChoice ip_history = 13;
+  string type = 14;
+}
+
+message StartImportJobRequest {
+  string type = 1 [(buf.validate.field).string = {
+    in: [
+      "litebans",
+      "advancedban",
+      "libertybans",
+      "banmanager",
+      "bansystem",
+      "vanilla"
+    ]
+  }];
+  string server_name = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 255
+  }];
+  ScopedPunishmentChoice scoped_punishments = 3 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+  ImportedIpHistoryChoice ip_history = 4 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+}
+
+message ReportExportProgressRequest {
+  ExportPhase phase = 1 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+  optional int32 records_processed = 2 [(buf.validate.field).int32.gte = 0];
+  optional int32 total_records = 3 [(buf.validate.field).int32.gte = 0];
+  optional int32 export_failed = 4 [(buf.validate.field).int32.gte = 0];
+  optional int32 export_skipped = 5 [(buf.validate.field).int32.gte = 0];
+}
+
+message EndImportJobRequest {
+  ImportEndReason reason = 1 [(buf.validate.field).enum = {
+    in: [
+      1,
+      3,
+      4,
+      5,
+      6
+    ]
+  }];
+  optional string detail = 2 [(buf.validate.field).string.max_len = 1000];
+}
+
+message ImportJobResponse {
+  ImportJob job = 1;
+  int64 max_upload_bytes = 2;
+}
+
+message ImportStatusResponse {
+  ImportJob job = 1;
+  bool setup_ready = 2;
+  int64 max_upload_bytes = 3;
+  int32 ip_history_days = 4;
+  optional int64 ip_history_kept_before = 5;
+}

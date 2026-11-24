@@ -1,0 +1,23 @@
+{
+  "name": "modl-selfhost",
+  "private": true,
+  "license": "AGPL-3.0-only",
+  "workspaces": [
+    "panel"
+  ],
+  "scripts": {
+    "check": "npm run check -w panel",
+    "build": "npm run build -w panel"
+  },
+  "engines": {
+    "node": ">=24"
+  },
+  "overrides": {
+    "@tailwindcss/typography": {
+      "postcss-selector-parser": "^6.1.6"
+    }
+  },
+  "allowScripts": {
+    "fsevents": false
+  }
+}

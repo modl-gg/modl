@@ -1,0 +1,180 @@
+package gg.modl.minecraft.core.impl.commands.staff;
+
+import dev.simplix.cirrus.player.CirrusPlayerWrapper;
+import gg.modl.minecraft.core.connection.PanelUrl;
+import gg.modl.minecraft.api.http.PanelUnavailableException;
+import gg.modl.minecraft.api.http.request.PlayerLookupRequest;
+import gg.modl.minecraft.api.http.response.ReportsResponse;
+import gg.modl.minecraft.core.HttpClientHolder;
+import gg.modl.minecraft.core.Platform;
+import gg.modl.minecraft.core.cache.Cache;
+import gg.modl.minecraft.core.command.StaffOnly;
+import gg.modl.minecraft.core.impl.menus.inspect.ReportsMenu;
+import gg.modl.minecraft.core.impl.menus.util.MenuAsync;
+import gg.modl.minecraft.core.impl.menus.staff.StaffReportsMenu;
+import gg.modl.minecraft.core.locale.LocaleManager;
+import gg.modl.minecraft.core.util.CommandUtil;
+import gg.modl.minecraft.core.util.Pagination;
+import gg.modl.minecraft.core.util.Permissions;
+import lombok.RequiredArgsConstructor;
+import org.jspecify.annotations.Nullable;
+import revxrsal.commands.annotation.Command;
+import revxrsal.commands.annotation.Description;
+import revxrsal.commands.annotation.Optional;
+import revxrsal.commands.annotation.Named;
+import revxrsal.commands.command.CommandActor;
+
+import java.util.List;
+import java.util.Locale;
+import java.util.UUID;
+import static gg.modl.minecraft.core.util.Java8Collections.listOf;
+import static gg.modl.minecraft.core.util.Java8Collections.mapOf;
+
+@RequiredArgsConstructor
+public class ReportsCommand {
+    private static final String STATUS_OPEN_COLOR = "&a", STATUS_CLOSED_COLOR = "&7", STATUS_DEFAULT_COLOR = "&f";
+    private static final int MAX_CONTENT_LENGTH = 80, TRUNCATED_LENGTH = 77;
+
+    private final HttpClientHolder httpClientHolder;
+    private final Platform platform;
+    private final Cache cache;
+    private final LocaleManager localeManager;
+    private final PanelUrl panelUrl;
+
+    @Command("reports")
+    @Description("Open the reports menu (for a player or all reports), or use -p with a player to print to chat")
+    @StaffOnly
+    public void reports(CommandActor actor, @Optional @Named("player") @Nullable String playerQuery, @Optional @Nullable String flags) {
+        if (flags == null) flags = "";
+        boolean printMode;
+        String actualPlayerQuery;
+
+        int page;
+        if ("-p".equalsIgnoreCase(playerQuery) || "print".equalsIgnoreCase(playerQuery)) {
+            printMode = true;
+            actualPlayerQuery = null;
+            page = 1;
+        } else {
+            page = Pagination.parsePrintFlags(flags);
+            printMode = page > 0;
+            actualPlayerQuery = playerQuery;
+        }
+
+        if (CommandUtil.rendersAsText(actor, platform, printMode)) {
+            if (actualPlayerQuery != null && !actualPlayerQuery.isEmpty()) {
+                printPlayerReports(actor, actualPlayerQuery, Math.max(1, page));
+                return;
+            }
+            actor.reply(localeManager.getMessage(printMode || CommandUtil.isConsole(actor)
+                    ? "general.invalid_syntax" : "general.gui_unavailable"));
+            return;
+        }
+
+        UUID senderUuid = actor.uniqueId();
+
+        if (actualPlayerQuery == null || actualPlayerQuery.isEmpty()) {
+            openStaffReportsMenu(senderUuid);
+            return;
+        }
+
+        ProfileMenuOpener.openProfileMenu(actor, httpClientHolder.getClient(), platform, cache, localeManager, actualPlayerQuery,
+                (profileResponse, senderName, viewer) -> {
+                    ReportsMenu menu = new ReportsMenu(
+                        platform, httpClientHolder.getClient(), senderUuid, senderName,
+                        profileResponse.getProfile(), null);
+                    MenuAsync.displayWhenLoaded(platform, menu.getDataFuture(), viewer, menu::display);
+                });
+    }
+
+    private void printPlayerReports(CommandActor actor, String playerQuery, int page) {
+
+        PlayerLookupRequest request = PlayerLookupRequest.builder().query(playerQuery).build();
+
+        httpClientHolder.getClient().lookupPlayer(request).thenAccept(response -> {
+            if (response.isSuccess() && response.getData() != null) {
+                String playerName = response.getData().getCurrentUsername();
+                UUID targetUuid = UUID.fromString(response.getData().getMinecraftUuid());
+
+                httpClientHolder.getClient().getPlayerReports(targetUuid, "all").thenAccept(reportsResponse -> {
+                    if (reportsResponse.isSuccess()) {
+                        displayReports(actor, playerName, reportsResponse.getReports(), page);
+                    } else displayReports(actor, playerName, listOf(), page);
+                }).exceptionally(throwable -> {
+                    if (throwable.getCause() instanceof PanelUnavailableException) {
+                        actor.reply(localeManager.getMessage("api_errors.panel_unavailable"));
+                    } else displayReports(actor, playerName, listOf(), page);
+
+                    return null;
+                });
+            } else actor.reply(localeManager.getMessage("general.player_not_found"));
+        }).exceptionally(throwable -> {
+            CommandUtil.handleException(actor, throwable, localeManager);
+            return null;
+        });
+    }
+
+    private static final int ENTRIES_PER_PAGE = 8;
+
+    private void displayReports(CommandActor actor, String playerName, List<ReportsResponse.Report> reports, int page) {
+        actor.reply(localeManager.getMessage("print.reports.header", mapOf("player", playerName)));
+
+        if (reports == null || reports.isEmpty()) actor.reply(localeManager.getMessage("print.reports.empty"));
+        else PaginatedChatPrinter.printPageWithTotal(actor, localeManager, reports, ENTRIES_PER_PAGE, page,
+                "print.reports.total", (index, ordinal) -> replyReportEntry(actor, reports.get(index), ordinal));
+
+        actor.reply(localeManager.getMessage("print.reports.footer"));
+    }
+
+    private void replyReportEntry(CommandActor actor, ReportsResponse.Report report, int ordinal) {
+        String date = localeManager.formatDate(report.getCreatedAt());
+        String id = report.getId() != null ? report.getId() : "?";
+        String status = report.getStatus() != null ? report.getStatus() : localeManager.getUnknownWord();
+        String type = report.getType() != null ? report.getType() : localeManager.getUnknownWord();
+        if ("player".equalsIgnoreCase(type)) type = "gameplay";
+        String reporter = report.getReporterName() != null ? report.getReporterName() : localeManager.getUnknownWord();
+
+        String statusLower = status.toLowerCase(Locale.ROOT);
+        String coloredStatus;
+        if ("open".equals(statusLower)) {
+            coloredStatus = STATUS_OPEN_COLOR + localeManager.getMessage("print.reports.status_open");
+        } else if ("closed".equals(statusLower)) {
+            coloredStatus = STATUS_CLOSED_COLOR + localeManager.getMessage("print.reports.status_closed");
+        } else {
+            coloredStatus = STATUS_DEFAULT_COLOR + status;
+        }
+
+        actor.reply(localeManager.getMessage("print.reports.entry", mapOf(
+                "ordinal", String.valueOf(ordinal),
+                "date", date,
+                "id", id,
+                "status", coloredStatus,
+                "type", type,
+                "reporter", reporter
+        )));
+
+        String content = report.getSubject() != null ? report.getSubject() : (report.getContent() != null ? report.getContent() : null);
+        if (content != null && !content.isEmpty()) {
+            if (content.length() > MAX_CONTENT_LENGTH) {
+                content = content.substring(0, TRUNCATED_LENGTH) + "...";
+            }
+
+            actor.reply(localeManager.getMessage("print.reports.entry_content", mapOf(
+                    "content", content
+            )));
+        }
+    }
+
+    private void openStaffReportsMenu(UUID senderUuid) {
+        boolean isAdmin = cache.hasPermission(senderUuid, Permissions.ADMIN);
+        String senderName = CommandUtil.resolveSenderName(senderUuid, cache, platform);
+
+        StaffReportsMenu menu = new StaffReportsMenu(
+            platform, httpClientHolder.getClient(), senderUuid, senderName,
+            isAdmin, panelUrl, null
+        );
+        CirrusPlayerWrapper player = platform.getPlayerWrapper(senderUuid);
+        if (player != null) MenuAsync.displayWhenLoaded(platform, menu.getDataFuture(), player, menu::display);
+    }
+
+}
+

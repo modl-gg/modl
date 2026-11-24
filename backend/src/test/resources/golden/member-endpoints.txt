@@ -1,0 +1,8 @@
+GET /v2/minecraft/compatibility
+POST /v1/minecraft/punishments/{punishmentId}/stat-wipe-acknowledge
+POST /v1/minecraft/replays/confirm/{replayId}
+POST /v1/minecraft/replays/upload
+POST /v1/minecraft/tickets
+POST /v2/minecraft/startup
+POST /v3/minecraft/punishments/{punishmentId}/stat-wipe-acknowledge
+POST /v3/minecraft/tickets

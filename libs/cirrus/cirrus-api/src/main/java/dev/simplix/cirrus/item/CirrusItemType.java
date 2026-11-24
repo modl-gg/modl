@@ -1,0 +1,138 @@
+package dev.simplix.cirrus.item;
+
+import java.util.Locale;
+import java.util.Objects;
+import lombok.NonNull;
+
+public final class CirrusItemType {
+
+    private final String identifier;
+
+    public static final CirrusItemType AIR = of("minecraft:air");
+    public static final CirrusItemType STONE = of("minecraft:stone");
+    public static final CirrusItemType PLAYER_HEAD = of("minecraft:player_head");
+    public static final CirrusItemType BARRIER = of("minecraft:barrier");
+    public static final CirrusItemType GRAY_STAINED_GLASS_PANE = of("minecraft:gray_stained_glass_pane");
+    public static final CirrusItemType BLACK_STAINED_GLASS_PANE = of("minecraft:black_stained_glass_pane");
+    public static final CirrusItemType WHITE_STAINED_GLASS_PANE = of("minecraft:white_stained_glass_pane");
+    public static final CirrusItemType ARROW = of("minecraft:arrow");
+    public static final CirrusItemType PAPER = of("minecraft:paper");
+    public static final CirrusItemType BOOK = of("minecraft:book");
+    public static final CirrusItemType CHEST = of("minecraft:chest");
+    public static final CirrusItemType ENDER_CHEST = of("minecraft:ender_chest");
+    public static final CirrusItemType DIAMOND = of("minecraft:diamond");
+    public static final CirrusItemType EMERALD = of("minecraft:emerald");
+    public static final CirrusItemType GOLD_INGOT = of("minecraft:gold_ingot");
+    public static final CirrusItemType IRON_INGOT = of("minecraft:iron_ingot");
+    public static final CirrusItemType REDSTONE = of("minecraft:redstone");
+    public static final CirrusItemType COMPASS = of("minecraft:compass");
+    public static final CirrusItemType CLOCK = of("minecraft:clock");
+    public static final CirrusItemType NAME_TAG = of("minecraft:name_tag");
+    public static final CirrusItemType WRITTEN_BOOK = of("minecraft:written_book");
+    public static final CirrusItemType WRITABLE_BOOK = of("minecraft:writable_book");
+    public static final CirrusItemType MAP = of("minecraft:map");
+    public static final CirrusItemType FILLED_MAP = of("minecraft:filled_map");
+    public static final CirrusItemType HOPPER = of("minecraft:hopper");
+    public static final CirrusItemType ENCHANTED_BOOK = of("minecraft:enchanted_book");
+    public static final CirrusItemType EMERALD_BLOCK = of("minecraft:emerald_block");
+    public static final CirrusItemType BONE_BLOCK = of("minecraft:bone_block");
+    public static final CirrusItemType IRON_BLOCK = of("minecraft:iron_block");
+    public static final CirrusItemType FIRE_CORAL_BLOCK = of("minecraft:fire_coral_block");
+    public static final CirrusItemType COPPER_BLOCK = of("minecraft:copper_block");
+    public static final CirrusItemType DARK_OAK_DOOR = of("minecraft:dark_oak_door");
+    public static final CirrusItemType ACACIA_DOOR = of("minecraft:acacia_door");
+    public static final CirrusItemType ITEM_FRAME = of("minecraft:item_frame");
+    public static final CirrusItemType ACACIA_BOAT = of("minecraft:acacia_boat");
+
+    // Beds
+    public static final CirrusItemType RED_BED = of("minecraft:red_bed");
+
+    // Tools & Weapons
+    public static final CirrusItemType ANVIL = of("minecraft:anvil");
+    public static final CirrusItemType BOW = of("minecraft:bow");
+    public static final CirrusItemType IRON_SWORD = of("minecraft:iron_sword");
+    public static final CirrusItemType DIAMOND_SWORD = of("minecraft:diamond_sword");
+    public static final CirrusItemType BLAZE_ROD = of("minecraft:blaze_rod");
+
+    // Armor
+    public static final CirrusItemType LEATHER_BOOTS = of("minecraft:leather_boots");
+    public static final CirrusItemType IRON_CHESTPLATE = of("minecraft:iron_chestplate");
+
+    // Dyes
+    public static final CirrusItemType LIME_DYE = of("minecraft:lime_dye");
+    public static final CirrusItemType GRAY_DYE = of("minecraft:gray_dye");
+
+    // Wool
+    public static final CirrusItemType LIME_WOOL = of("minecraft:lime_wool");
+    public static final CirrusItemType YELLOW_WOOL = of("minecraft:yellow_wool");
+    public static final CirrusItemType RED_WOOL = of("minecraft:red_wool");
+
+    // Nature & Plants
+    public static final CirrusItemType VINE = of("minecraft:vine");
+
+    // Misc Items
+    public static final CirrusItemType ENDER_EYE = of("minecraft:ender_eye");
+    public static final CirrusItemType SKELETON_SKULL = of("minecraft:skeleton_skull");
+    public static final CirrusItemType GOLDEN_APPLE = of("minecraft:golden_apple");
+    public static final CirrusItemType EXPERIENCE_BOTTLE = of("minecraft:experience_bottle");
+    public static final CirrusItemType GLASS_BOTTLE = of("minecraft:glass_bottle");
+
+    // Arrows
+    public static final CirrusItemType SPECTRAL_ARROW = of("minecraft:spectral_arrow");
+
+    // Signs
+    public static final CirrusItemType OAK_SIGN = of("minecraft:oak_sign");
+
+    // Torches
+    public static final CirrusItemType TORCH = of("minecraft:torch");
+    public static final CirrusItemType REDSTONE_TORCH = of("minecraft:redstone_torch");
+
+    // Command Blocks
+    public static final CirrusItemType COMMAND_BLOCK = of("minecraft:command_block");
+
+    private CirrusItemType(@NonNull String identifier) {
+        this.identifier = identifier.toLowerCase(Locale.ROOT);
+        if (!this.identifier.contains(":")) {
+            throw new IllegalArgumentException("Item type identifier must be namespaced (e.g., 'minecraft:stone')");
+        }
+    }
+
+    public static CirrusItemType of(@NonNull String identifier) {
+        if (!identifier.contains(":")) {
+            identifier = "minecraft:" + identifier;
+        }
+        return new CirrusItemType(identifier);
+    }
+
+    public String identifier() {
+        return identifier;
+    }
+
+    public String name() {
+        int colonIndex = identifier.indexOf(':');
+        return identifier.substring(colonIndex + 1).toUpperCase(Locale.ROOT);
+    }
+
+    public String namespace() {
+        int colonIndex = identifier.indexOf(':');
+        return identifier.substring(0, colonIndex);
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        CirrusItemType that = (CirrusItemType) o;
+        return Objects.equals(identifier, that.identifier);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hashCode(identifier);
+    }
+
+    @Override
+    public String toString() {
+        return identifier;
+    }
+}

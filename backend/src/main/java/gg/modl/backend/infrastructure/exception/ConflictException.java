@@ -1,0 +1,17 @@
+package gg.modl.backend.infrastructure.exception;
+
+import org.springframework.http.HttpStatus;
+
+public class ConflictException extends BaseApplicationException {
+    public ConflictException(String message) {
+        super(message, HttpStatus.CONFLICT);
+    }
+
+    public ConflictException(String message, String machineCode) {
+        super(message, HttpStatus.CONFLICT, machineCode);
+    }
+
+    public ConflictException(String message, Throwable cause) {
+        super(message, HttpStatus.CONFLICT, cause);
+    }
+}

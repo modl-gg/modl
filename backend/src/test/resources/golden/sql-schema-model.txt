@@ -1,0 +1,646 @@
+table modl_audit_logs
+  column id BIGINT Long not null
+  column level VARCHAR(16) String not null
+  column source VARCHAR(254) String not null
+  column description CLOB String not null
+  column metadata_json CLOB String null
+  column can_rollback BOOLEAN Boolean not null default TRUE
+  column created_at BIGINT Instant not null
+  primary key pk_modl_audit_logs (id)
+  index modl_idx_audit_logs_source (source, id)
+table modl_auth_codes
+  column email VARCHAR(254) String not null
+  column code_hash VARCHAR(255) String null
+  column failed_attempts INTEGER Integer not null default 0
+  column issued_at BIGINT Instant null
+  column code_expires_at BIGINT Instant null
+  column recent_failures INTEGER Integer not null default 0
+  column failure_window_started_at BIGINT Instant null
+  column expires_at BIGINT Instant not null
+  primary key pk_modl_auth_codes (email)
+  index modl_idx_auth_codes_expires (expires_at)
+table modl_chat_logs
+  column id BIGINT Long not null
+  column player_id VARCHAR(36) String not null
+  column username VARCHAR(64) String null
+  column message CLOB String not null
+  column server_name VARCHAR(64) String not null default ''
+  column sent_at BIGINT Instant not null
+  primary key pk_modl_chat_logs (id)
+  index modl_idx_chat_logs_player (player_id, sent_at)
+table modl_command_logs
+  column id BIGINT Long not null
+  column player_id VARCHAR(36) String not null
+  column username VARCHAR(64) String null
+  column command CLOB String not null
+  column server_name VARCHAR(64) String not null default ''
+  column sent_at BIGINT Instant not null
+  primary key pk_modl_command_logs (id)
+  index modl_idx_command_logs_player (player_id, sent_at)
+table modl_database_departure
+  column id INTEGER Integer not null
+  column move_token VARCHAR(64) String not null
+  column moved_to VARCHAR(512) String not null
+  column moved_at BIGINT Instant not null
+  primary key pk_modl_database_departure (id)
+  check (id = 1)
+table modl_evidence_upload_tokens
+  column token_hash VARCHAR(255) String not null
+  column punishment_id VARCHAR(64) String not null
+  column player_uuid VARCHAR(36) String not null
+  column issuer_name VARCHAR(100) String null
+  column created_at BIGINT Instant not null
+  column expires_at BIGINT Instant not null
+  primary key pk_modl_evidence_upload_tokens (token_hash)
+  index modl_idx_evidence_upload_tokens_expires (expires_at)
+table modl_homepage_cards
+  column id VARCHAR(36) String not null
+  column title VARCHAR(255) String not null
+  column description CLOB String null
+  column icon VARCHAR(128) String null
+  column icon_color VARCHAR(32) String null
+  column action_type VARCHAR(64) String null
+  column action_url CLOB String null
+  column action_button_text VARCHAR(255) String null
+  column category_id VARCHAR(36) String null
+  column background_color VARCHAR(32) String null
+  column ordinal INTEGER Integer not null default 0
+  column is_enabled BOOLEAN Boolean not null default TRUE
+  column created_at BIGINT Instant not null
+  column updated_at BIGINT Instant not null
+  primary key pk_modl_homepage_cards (id)
+  index modl_idx_homepage_cards_category (category_id)
+  foreign key modl_fk_homepage_cards_category (category_id) references modl_knowledgebase_categories (id) on delete SET_NULL
+table modl_import_jobs
+  column id VARCHAR(36) String not null
+  column type VARCHAR(32) String null
+  column status VARCHAR(32) String not null
+  column progress_message CLOB String null
+  column records_processed INTEGER Integer null
+  column records_skipped INTEGER Integer null
+  column total_records INTEGER Integer null
+  column error_message CLOB String null
+  column started_from VARCHAR(64) String null
+  column started_address VARCHAR(45) String null
+  column end_reason VARCHAR(32) String null
+  column export_failed INTEGER Integer null
+  column export_skipped INTEGER Integer null
+  column scoped_punishments VARCHAR(16) String null
+  column ip_history VARCHAR(16) String null
+  column started_at BIGINT Instant null
+  column last_progress_at BIGINT Instant null
+  column completed_at BIGINT Instant null
+  primary key pk_modl_import_jobs (id)
+  index modl_idx_import_jobs_status (status, started_at)
+table modl_instance
+  column id INTEGER Integer not null
+  column server_name VARCHAR(100) String not null
+  column admin_email VARCHAR(254) String null
+  column api_key VARCHAR(255) String null
+  column public_url VARCHAR(2048) String null
+  column setup_started_at BIGINT Instant null
+  column setup_owner_signed_in_at BIGINT Instant null
+  column setup_completed_at BIGINT Instant null
+  column staff_permissions_updated_at BIGINT Instant null
+  column punishment_types_updated_at BIGINT Instant null
+  column created_at BIGINT Instant not null
+  column updated_at BIGINT Instant not null
+  primary key pk_modl_instance (id)
+  check (id = 1)
+table modl_instance_secrets
+  column id INTEGER Integer not null
+  column auth_code_hash_secret VARCHAR(255) String not null
+  column storage_signing_key VARCHAR(255) String not null
+  column setup_code_hash VARCHAR(255) String null
+  column setup_code_expires_at BIGINT Instant null
+  column setup_code_issued_at BIGINT Instant null
+  column setup_code_failed_attempts INTEGER Integer not null default 0
+  column created_at BIGINT Instant not null
+  primary key pk_modl_instance_secrets (id)
+  check (id = 1)
+table modl_instance_state
+  column id INTEGER Integer not null
+  column last_run_version VARCHAR(64) String not null
+  column version_changed_at BIGINT Instant not null
+  column checks_enabled BOOLEAN Boolean not null default TRUE
+  column include_prereleases BOOLEAN Boolean not null default FALSE
+  column last_check_at BIGINT Instant null
+  column last_check_outcome VARCHAR(24) String null
+  column check_failures INTEGER Integer not null default 0
+  column next_check_at BIGINT Instant null
+  column stable_release_json CLOB String null
+  column stable_etag VARCHAR(255) String null
+  column prerelease_release_json CLOB String null
+  column prerelease_etag VARCHAR(255) String null
+  column notified_version VARCHAR(64) String null
+  column dismissed_version VARCHAR(64) String null
+  column dismissed_by VARCHAR(254) String null
+  primary key pk_modl_instance_state (id)
+  check (id = 1)
+table modl_invitations
+  column id VARCHAR(36) String not null
+  column email VARCHAR(254) String not null
+  column role_id VARCHAR(64) String null
+  column token_hash VARCHAR(255) String not null
+  column expires_at BIGINT Instant not null
+  column created_at BIGINT Instant not null
+  column updated_at BIGINT Instant not null
+  primary key pk_modl_invitations (id)
+  index modl_idx_invitations_email (email)
+  index modl_idx_invitations_expires (expires_at)
+  unique index modl_uq_invitations_token_hash (token_hash)
+table modl_ip_lookups
+  column ip VARCHAR(45) String not null
+  column provider VARCHAR(16) String not null
+  column country VARCHAR(100) String null
+  column region VARCHAR(128) String null
+  column asn VARCHAR(128) String null
+  column vpn VARCHAR(8) String not null
+  column is_hosting BOOLEAN Boolean not null default FALSE
+  column looked_up_at BIGINT Instant not null
+  primary key pk_modl_ip_lookups (ip)
+  index modl_idx_ip_lookups_looked_up (looked_up_at, ip)
+  check (vpn in ('YES', 'NO', 'UNKNOWN'))
+table modl_knowledgebase_articles
+  column id VARCHAR(36) String not null
+  column category_id VARCHAR(36) String not null
+  column title VARCHAR(256) String not null
+  column slug VARCHAR(255) String not null
+  column content CLOB String null
+  column ordinal INTEGER Integer not null default 0
+  column is_visible BOOLEAN Boolean not null default TRUE
+  column created_at BIGINT Instant not null
+  column updated_at BIGINT Instant not null
+  column is_starter BOOLEAN Boolean not null default FALSE
+  primary key pk_modl_knowledgebase_articles (id)
+  index modl_idx_knowledgebase_articles_category (category_id, ordinal)
+  unique index modl_uq_knowledgebase_articles_slug (slug)
+  foreign key modl_fk_knowledgebase_articles_category (category_id) references modl_knowledgebase_categories (id) on delete CASCADE
+table modl_knowledgebase_categories
+  column id VARCHAR(36) String not null
+  column name VARCHAR(255) String not null
+  column slug VARCHAR(255) String not null
+  column description CLOB String null
+  column ordinal INTEGER Integer not null default 0
+  column is_visible BOOLEAN Boolean not null default TRUE
+  column created_at BIGINT Instant not null
+  column updated_at BIGINT Instant not null
+  primary key pk_modl_knowledgebase_categories (id)
+  unique index modl_uq_knowledgebase_categories_slug (slug)
+table modl_minecraft_link_codes
+  column id VARCHAR(36) String not null
+  column code_hash VARCHAR(255) String not null
+  column identity_email VARCHAR(254) String not null
+  column expires_at BIGINT Instant not null
+  column created_at BIGINT Instant not null
+  primary key pk_modl_minecraft_link_codes (id)
+  index modl_idx_minecraft_link_codes_expires (expires_at)
+  unique index modl_uq_minecraft_link_codes_code_hash (code_hash)
+  unique index modl_uq_minecraft_link_codes_identity (identity_email)
+table modl_panel_login_tokens
+  column id VARCHAR(36) String not null
+  column token_hash VARCHAR(255) String not null
+  column identity_email VARCHAR(254) String not null
+  column minecraft_uuid VARCHAR(36) String null
+  column expires_at BIGINT Instant not null
+  column created_at BIGINT Instant not null
+  primary key pk_modl_panel_login_tokens (id)
+  index modl_idx_panel_login_tokens_expires (expires_at)
+  index modl_idx_panel_login_tokens_identity (identity_email)
+  unique index modl_uq_panel_login_tokens_token_hash (token_hash)
+table modl_panel_sessions
+  column id_hash VARCHAR(64) String not null
+  column email VARCHAR(254) String not null
+  column session_key_hash VARCHAR(255) String not null
+  column ip_address VARCHAR(45) String null
+  column user_agent CLOB String null
+  column created_at BIGINT Instant not null
+  column expires_at BIGINT Instant not null
+  column auth_method VARCHAR(16) String not null default 'EMAIL_CODE'
+  column second_factor_verified BOOLEAN Boolean not null default FALSE
+  primary key pk_modl_panel_sessions (id_hash)
+  index modl_idx_panel_sessions_email (email)
+  index modl_idx_panel_sessions_expires (expires_at)
+table modl_password_reset_tokens
+  column email VARCHAR(254) String not null
+  column token_hash VARCHAR(255) String not null
+  column created_at BIGINT Instant not null
+  column expires_at BIGINT Instant not null
+  primary key pk_modl_password_reset_tokens (email)
+  index modl_idx_password_reset_tokens_expires (expires_at)
+  unique index modl_uq_password_reset_tokens_token_hash (token_hash)
+table modl_player_ips
+  column player_id VARCHAR(36) String not null
+  column ip VARCHAR(45) String not null
+  column country VARCHAR(100) String null
+  column region VARCHAR(128) String null
+  column asn VARCHAR(128) String null
+  column is_proxy BOOLEAN Boolean not null default FALSE
+  column is_hosting BOOLEAN Boolean not null default FALSE
+  column first_seen_at BIGINT Instant not null
+  column last_seen_at BIGINT Instant not null
+  column login_count BIGINT Long not null default 1
+  column retained_until_at BIGINT Instant null
+  primary key pk_modl_player_ips (player_id, ip)
+  index modl_idx_player_ips_ip (ip, player_id)
+  index modl_idx_player_ips_retained (retained_until_at, player_id, ip)
+  foreign key modl_fk_player_ips_player (player_id) references modl_players (id) on delete CASCADE
+table modl_player_links
+  column player_id VARCHAR(36) String not null
+  column linked_player_id VARCHAR(36) String not null
+  column linked_at BIGINT Instant not null
+  column shared_clean_address BOOLEAN Boolean not null default FALSE
+  primary key pk_modl_player_links (player_id, linked_player_id)
+  index modl_idx_player_links_linked (linked_player_id, player_id)
+  foreign key modl_fk_player_links_linked (linked_player_id) references modl_players (id) on delete CASCADE
+  foreign key modl_fk_player_links_player (player_id) references modl_players (id) on delete CASCADE
+table modl_player_notes
+  column player_id VARCHAR(36) String not null
+  column seq INTEGER Integer not null
+  column id VARCHAR(100) String not null
+  column body CLOB String not null
+  column kind VARCHAR(8) String not null default 'NOTE'
+  column issuer_name VARCHAR(100) String null
+  column issuer_id VARCHAR(64) String null
+  column created_at BIGINT Instant not null
+  primary key pk_modl_player_notes (player_id, seq)
+  foreign key modl_fk_player_notes_player (player_id) references modl_players (id) on delete CASCADE
+table modl_player_notifications
+  column player_id VARCHAR(36) String not null
+  column id VARCHAR(64) String not null
+  column payload_json CLOB String not null
+  column created_at BIGINT Instant not null
+  column expires_at BIGINT Instant not null
+  primary key pk_modl_player_notifications (player_id, id)
+  index modl_idx_player_notifications_expires (expires_at, player_id, id)
+  foreign key modl_fk_player_notifications_player (player_id) references modl_players (id) on delete CASCADE
+table modl_player_usernames
+  column player_id VARCHAR(36) String not null
+  column username_lower VARCHAR(200) String not null
+  column username VARCHAR(100) String not null
+  column first_seen_at BIGINT Instant null
+  column last_seen_at BIGINT Instant not null
+  primary key pk_modl_player_usernames (player_id, username_lower)
+  index modl_idx_player_usernames_lookup (username_lower, player_id)
+  foreign key modl_fk_player_usernames_player (player_id) references modl_players (id) on delete CASCADE
+table modl_players
+  column id VARCHAR(36) String not null
+  column minecraft_uuid VARCHAR(36) String not null
+  column username VARCHAR(100) String not null
+  column username_lower VARCHAR(200) String not null
+  column is_online BOOLEAN Boolean not null default FALSE
+  column first_join_at BIGINT Instant null
+  column last_login_at BIGINT Instant null
+  column last_logout_at BIGINT Instant null
+  column last_server_name VARCHAR(64) String null
+  column total_playtime_seconds BIGINT Long not null default 0
+  column last_skin_hash VARCHAR(128) String null
+  column last_linked_update_at BIGINT Instant null
+  column extra_json CLOB String null
+  column created_at BIGINT Instant not null
+  primary key pk_modl_players (id)
+  index modl_idx_players_first_join (first_join_at)
+  index modl_idx_players_online (is_online, last_server_name)
+  unique index modl_uq_players_minecraft_uuid (minecraft_uuid)
+table modl_punishment_evidence
+  column punishment_id VARCHAR(64) String not null
+  column seq INTEGER Integer not null
+  column type VARCHAR(100) String not null
+  column body CLOB String null
+  column url CLOB String null
+  column uploaded_by VARCHAR(100) String null
+  column uploaded_by_id VARCHAR(100) String null
+  column file_name VARCHAR(500) String null
+  column file_type VARCHAR(128) String null
+  column file_size BIGINT Long null
+  column uploaded_at BIGINT Instant not null
+  primary key pk_modl_punishment_evidence (punishment_id, seq)
+  foreign key modl_fk_punishment_evidence_punishment (punishment_id) references modl_punishments (id) on delete CASCADE
+table modl_punishment_modifications
+  column punishment_id VARCHAR(64) String not null
+  column seq INTEGER Integer not null
+  column id VARCHAR(100) String not null
+  column type VARCHAR(64) String not null
+  column issuer_name VARCHAR(254) String null
+  column issuer_id VARCHAR(100) String null
+  column reason CLOB String not null
+  column effective_duration_ms BIGINT Long null
+  column appeal_ticket_id VARCHAR(100) String null
+  column data_json CLOB String null
+  column created_at BIGINT Instant not null
+  primary key pk_modl_punishment_modifications (punishment_id, seq)
+  foreign key modl_fk_punishment_modifications_punishment (punishment_id) references modl_punishments (id) on delete CASCADE
+table modl_punishment_notes
+  column punishment_id VARCHAR(64) String not null
+  column seq INTEGER Integer not null
+  column id VARCHAR(36) String not null
+  column body CLOB String not null
+  column issuer_name VARCHAR(254) String null
+  column issuer_id VARCHAR(64) String null
+  column created_at BIGINT Instant not null
+  primary key pk_modl_punishment_notes (punishment_id, seq)
+  foreign key modl_fk_punishment_notes_punishment (punishment_id) references modl_punishments (id) on delete CASCADE
+table modl_punishment_tickets
+  column punishment_id VARCHAR(64) String not null
+  column ticket_id VARCHAR(64) String not null
+  primary key pk_modl_punishment_tickets (punishment_id, ticket_id)
+  index modl_idx_punishment_tickets_ticket (ticket_id, punishment_id)
+  foreign key modl_fk_punishment_tickets_punishment (punishment_id) references modl_punishments (id) on delete CASCADE
+table modl_punishments
+  column id VARCHAR(64) String not null
+  column player_id VARCHAR(36) String not null
+  column type_ordinal INTEGER Integer not null
+  column issuer_name VARCHAR(100) String null
+  column issuer_name_lower VARCHAR(200) String null
+  column issuer_id VARCHAR(64) String null
+  column issued_at BIGINT Instant not null
+  column started_at BIGINT Instant null
+  column status VARCHAR(32) String null
+  column duration_ms BIGINT Long null
+  column reason CLOB String null
+  column severity VARCHAR(32) String null
+  column offense_level VARCHAR(32) String null
+  column enforcement_category VARCHAR(8) String not null
+  column alt_blocking BOOLEAN Boolean not null default FALSE
+  column wipe_after_expiry BOOLEAN Boolean not null default FALSE
+  column stat_wipe_completed_at BIGINT Instant null
+  column linked_ban_id VARCHAR(64) String null
+  column linked_ban_parent_uuid VARCHAR(36) String null
+  column blocked_name VARCHAR(100) String null
+  column blocked_skin VARCHAR(128) String null
+  column appeal_outcome VARCHAR(32) String null
+  column appeal_ticket_id VARCHAR(64) String null
+  column extra_json CLOB String null
+  column active_until_at BIGINT Instant not null
+  column modified_at BIGINT Instant null
+  column version INTEGER Integer not null default 0
+  column issuer_kind VARCHAR(16) String not null default 'UNKNOWN'
+  primary key pk_modl_punishments (id)
+  index modl_idx_punishments_active (active_until_at, enforcement_category)
+  index modl_idx_punishments_issued (issued_at, active_until_at)
+  index modl_idx_punishments_issued_id (issued_at, id)
+  index modl_idx_punishments_issuer_id (issuer_id, issued_at)
+  index modl_idx_punishments_issuer_name (issuer_name_lower, issued_at)
+  index modl_idx_punishments_linked_ban (linked_ban_id)
+  index modl_idx_punishments_player (player_id, issued_at)
+  foreign key modl_fk_punishments_player (player_id) references modl_players (id) on delete CASCADE
+table modl_replays
+  column id VARCHAR(64) String not null
+  column mc_version VARCHAR(32) String null
+  column target_uuid VARCHAR(36) String null
+  column target_name VARCHAR(64) String null
+  column file_size BIGINT Long not null default 0
+  column storage_key VARCHAR(512) String null
+  column status VARCHAR(16) String not null
+  column labels_json CLOB String null
+  column created_at BIGINT Instant not null
+  primary key pk_modl_replays (id)
+  index modl_idx_replays_status_created (status, created_at, id)
+  index modl_idx_replays_storage_key (storage_key)
+  index modl_idx_replays_target (target_uuid, created_at)
+  check (status in ('PENDING', 'COMPLETE', 'FAILED'))
+table modl_server_keys
+  column id VARCHAR(36) String not null
+  column name VARCHAR(64) String not null
+  column name_lower VARCHAR(64) String not null
+  column scope VARCHAR(16) String not null
+  column allow_proxy_commands BOOLEAN Boolean not null default FALSE
+  column key_hash VARCHAR(64) String not null
+  column key_hint VARCHAR(16) String not null
+  column created_by_email VARCHAR(254) String null
+  column created_at BIGINT Instant not null
+  column last_seen_at BIGINT Instant null
+  primary key pk_modl_server_keys (id)
+  unique index modl_uq_server_keys_key_hash (key_hash)
+  unique index modl_uq_server_keys_name_lower (name_lower)
+  check (scope in ('FULL', 'BEHIND_PROXY'))
+table modl_settings
+  column type VARCHAR(64) String not null
+  column data_json CLOB String not null
+  column version BIGINT Long not null default 0
+  column updated_at BIGINT Instant not null
+  primary key pk_modl_settings (type)
+table modl_setup_steps
+  column step VARCHAR(32) String not null
+  column status VARCHAR(16) String not null
+  column updated_at BIGINT Instant not null
+  primary key pk_modl_setup_steps (step)
+  check (status in ('PENDING', 'DONE', 'SKIPPED'))
+table modl_staff
+  column id VARCHAR(36) String not null
+  column email VARCHAR(254) String not null
+  column username VARCHAR(64) String not null
+  column role_id VARCHAR(64) String null
+  column assigned_minecraft_uuid VARCHAR(36) String null
+  column assigned_minecraft_username VARCHAR(100) String null
+  column language VARCHAR(16) String not null default 'en'
+  column date_format VARCHAR(32) String not null default 'MMM D, YYYY'
+  column ticket_subscription_settings_json CLOB String null
+  column two_factor_token_hash VARCHAR(255) String null
+  column two_factor_token_ip VARCHAR(64) String null
+  column two_factor_token_created_at BIGINT Instant null
+  column two_factor_pending_delivery BOOLEAN Boolean not null default FALSE
+  column two_factor_session_ip VARCHAR(64) String null
+  column two_factor_session_expires_at BIGINT Instant null
+  column last_seen_at BIGINT Instant null
+  column created_at BIGINT Instant not null
+  column updated_at BIGINT Instant not null
+  primary key pk_modl_staff (id)
+  index modl_idx_staff_role (role_id)
+  unique index modl_uq_staff_assigned_minecraft_uuid (assigned_minecraft_uuid)
+  unique index modl_uq_staff_email (email)
+  unique index modl_uq_staff_two_factor_token_hash (two_factor_token_hash)
+  unique index modl_uq_staff_username (username)
+table modl_staff_credentials
+  column email VARCHAR(254) String not null
+  column password_hash VARCHAR(255) String not null
+  column created_at BIGINT Instant not null
+  column updated_at BIGINT Instant not null
+  primary key pk_modl_staff_credentials (email)
+table modl_staff_recovery_codes
+  column email VARCHAR(254) String not null
+  column code_hash VARCHAR(255) String not null
+  column created_at BIGINT Instant not null
+  primary key pk_modl_staff_recovery_codes (email, code_hash)
+table modl_staff_role_permissions
+  column role_id VARCHAR(64) String not null
+  column permission VARCHAR(128) String not null
+  primary key pk_modl_staff_role_permissions (role_id, permission)
+  foreign key modl_fk_staff_role_permissions_role (role_id) references modl_staff_roles (id) on delete CASCADE
+table modl_staff_roles
+  column id VARCHAR(64) String not null
+  column name VARCHAR(64) String not null
+  column name_lower VARCHAR(64) String not null
+  column description CLOB String null
+  column is_default BOOLEAN Boolean not null default FALSE
+  column sort_order INTEGER Integer not null default 999
+  column created_at BIGINT Instant not null
+  column updated_at BIGINT Instant not null
+  primary key pk_modl_staff_roles (id)
+  unique index modl_uq_staff_roles_name_lower (name_lower)
+table modl_staff_ticket_subscriptions
+  column staff_id VARCHAR(36) String not null
+  column ticket_id VARCHAR(64) String not null
+  column subscribed_at BIGINT Instant not null
+  column last_read_at BIGINT Instant null
+  primary key pk_modl_staff_ticket_subscriptions (staff_id, ticket_id)
+  index modl_idx_staff_ticket_subscriptions_ticket (ticket_id, staff_id)
+  foreign key modl_fk_staff_ticket_subscriptions_staff (staff_id) references modl_staff (id) on delete CASCADE
+  foreign key modl_fk_staff_ticket_subscriptions_ticket (ticket_id) references modl_tickets (id) on delete CASCADE
+table modl_staff_totp
+  column email VARCHAR(254) String not null
+  column totp_secret VARCHAR(64) String null
+  column last_used_step BIGINT Long null
+  column enabled_at BIGINT Instant null
+  column pending_totp_secret VARCHAR(64) String null
+  column pending_expires_at BIGINT Instant null
+  column updated_at BIGINT Instant not null
+  primary key pk_modl_staff_totp (email)
+table modl_storage_files
+  column storage_key VARCHAR(512) String not null
+  column file_name VARCHAR(255) String null
+  column size_bytes BIGINT Long not null
+  column content_type VARCHAR(127) String null
+  column category VARCHAR(32) String null
+  column unattached_expires_at BIGINT Instant null
+  column created_at BIGINT Instant not null
+  column origin VARCHAR(16) String not null
+  primary key pk_modl_storage_files (storage_key)
+  index modl_idx_storage_files_origin_created (origin, created_at)
+  index modl_idx_storage_files_unattached (unattached_expires_at)
+table modl_storage_reservations
+  column storage_key VARCHAR(512) String not null
+  column reserved_bytes BIGINT Long not null
+  column is_landed BOOLEAN Boolean not null default FALSE
+  column settle_after_at BIGINT Instant not null
+  column created_at BIGINT Instant not null
+  column origin VARCHAR(16) String not null
+  primary key pk_modl_storage_reservations (storage_key)
+  index modl_idx_storage_reservations_settle (settle_after_at)
+table modl_storage_transfers
+  column id VARCHAR(36) String not null
+  column source_backend VARCHAR(8) String not null
+  column target_backend VARCHAR(8) String not null
+  column state VARCHAR(16) String not null
+  column copied_objects BIGINT Long not null default 0
+  column copied_bytes BIGINT Long not null default 0
+  column skipped_objects BIGINT Long not null default 0
+  column failed_objects BIGINT Long not null default 0
+  column last_error VARCHAR(1000) String null
+  column started_at BIGINT Instant not null
+  column updated_at BIGINT Instant not null
+  column finished_at BIGINT Instant null
+  primary key pk_modl_storage_transfers (id)
+  index modl_idx_storage_transfers_started (started_at, id)
+  check (state in ('RUNNING', 'FAILED', 'DONE'))
+table modl_ticket_assignees
+  column ticket_id VARCHAR(64) String not null
+  column assignee VARCHAR(512) String not null
+  primary key pk_modl_ticket_assignees (ticket_id, assignee)
+  index modl_idx_ticket_assignees_assignee (assignee, ticket_id)
+  foreign key modl_fk_ticket_assignees_ticket (ticket_id) references modl_tickets (id) on delete CASCADE
+table modl_ticket_notes
+  column ticket_id VARCHAR(64) String not null
+  column seq INTEGER Integer not null
+  column body CLOB String not null
+  column issuer_name VARCHAR(100) String null
+  column issuer_avatar CLOB String null
+  column attachments_json CLOB String null
+  column created_at BIGINT Instant not null
+  primary key pk_modl_ticket_notes (ticket_id, seq)
+  foreign key modl_fk_ticket_notes_ticket (ticket_id) references modl_tickets (id) on delete CASCADE
+table modl_ticket_replies
+  column ticket_id VARCHAR(64) String not null
+  column seq INTEGER Integer not null
+  column id VARCHAR(36) String not null
+  column author_name VARCHAR(254) String null
+  column author_name_lower VARCHAR(508) String null
+  column avatar CLOB String null
+  column content CLOB String null
+  column type VARCHAR(32) String null
+  column is_staff BOOLEAN Boolean not null default FALSE
+  column action VARCHAR(64) String null
+  column attachments_json CLOB String null
+  column creator_identifier VARCHAR(256) String null
+  column created_at BIGINT Instant not null
+  primary key pk_modl_ticket_replies (ticket_id, seq)
+  index modl_idx_ticket_replies_author (author_name_lower, created_at)
+  index modl_idx_ticket_replies_staff (is_staff, created_at)
+  foreign key modl_fk_ticket_replies_ticket (ticket_id) references modl_tickets (id) on delete CASCADE
+table modl_ticket_tags
+  column ticket_id VARCHAR(64) String not null
+  column tag VARCHAR(64) String not null
+  primary key pk_modl_ticket_tags (ticket_id, tag)
+  index modl_idx_ticket_tags_tag (tag, ticket_id)
+  foreign key modl_fk_ticket_tags_ticket (ticket_id) references modl_tickets (id) on delete CASCADE
+table modl_ticket_verifications
+  column id VARCHAR(36) String not null
+  column ticket_id VARCHAR(64) String not null
+  column token_hash VARCHAR(64) String null
+  column code_hash VARCHAR(255) String null
+  column email VARCHAR(254) String null
+  column failed_attempts INTEGER Integer not null default 0
+  column expires_at BIGINT Instant not null
+  primary key pk_modl_ticket_verifications (id)
+  index modl_idx_ticket_verifications_expires (expires_at)
+  index modl_idx_ticket_verifications_ticket (ticket_id)
+  foreign key modl_fk_ticket_verifications_ticket (ticket_id) references modl_tickets (id) on delete CASCADE
+table modl_tickets
+  column id VARCHAR(64) String not null
+  column type VARCHAR(16) String not null
+  column subject CLOB String null
+  column status VARCHAR(16) String not null
+  column priority VARCHAR(8) String not null default 'normal'
+  column creator_uuid VARCHAR(36) String null
+  column creator_name VARCHAR(100) String null
+  column creator_avatar CLOB String null
+  column reported_player_name VARCHAR(100) String null
+  column reported_player_uuid VARCHAR(36) String null
+  column is_locked BOOLEAN Boolean not null default FALSE
+  column is_hidden BOOLEAN Boolean not null default FALSE
+  column email_auth_enabled BOOLEAN Boolean not null default FALSE
+  column appeal_workflow_status VARCHAR(32) String null
+  column appeal_punishment_id VARCHAR(64) String null
+  column replay_url CLOB String null
+  column replay_id VARCHAR(64) String null
+  column public_access_key VARCHAR(128) String not null
+  column form_data_json CLOB String null
+  column data_json CLOB String null
+  column chat_messages_json CLOB String null
+  column ai_analysis_json CLOB String null
+  column reply_count INTEGER Integer not null default 0
+  column created_at BIGINT Instant not null
+  column updated_at BIGINT Instant not null
+  column version INTEGER Integer not null default 0
+  primary key pk_modl_tickets (id)
+  index modl_idx_tickets_appeal_punishment (appeal_punishment_id)
+  index modl_idx_tickets_created (created_at)
+  index modl_idx_tickets_creator_created (creator_uuid, created_at)
+  index modl_idx_tickets_locked_created (is_locked, created_at)
+  index modl_idx_tickets_replay (replay_id)
+  index modl_idx_tickets_reported_created (reported_player_uuid, created_at)
+  index modl_idx_tickets_status_created (status, created_at)
+  index modl_idx_tickets_type_created (type, created_at)
+  index modl_idx_tickets_updated (updated_at)
+  check (priority in ('low', 'normal', 'high'))
+table modl_webauthn_challenges
+  column id VARCHAR(255) String not null
+  column challenge_json CLOB String not null
+  column email VARCHAR(254) String null
+  column expires_at BIGINT Instant not null
+  primary key pk_modl_webauthn_challenges (id)
+  index modl_idx_webauthn_challenges_expires (expires_at)
+table modl_webauthn_credentials
+  column id VARCHAR(36) String not null
+  column email VARCHAR(254) String not null
+  column credential_id VARCHAR(1400) String not null
+  column public_key_cose BLOB byte[] not null
+  column signature_count BIGINT Long not null default 0
+  column user_handle VARCHAR(255) String null
+  column name VARCHAR(255) String null
+  column created_at BIGINT Instant not null
+  column last_used_at BIGINT Instant null
+  primary key pk_modl_webauthn_credentials (id)
+  index modl_idx_webauthn_credentials_email (email)
+  index modl_idx_webauthn_credentials_user_handle (user_handle)
+  unique index modl_uq_webauthn_credentials_credential_id (credential_id)

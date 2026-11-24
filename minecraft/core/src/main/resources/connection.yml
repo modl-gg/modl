@@ -1,0 +1,35 @@
+# Restart the server after editing.
+#   embedded      run the panel inside this server or proxy
+#   remote        use a panel hosted elsewhere (Docker or modl-server.jar)
+#   behind-proxy  Paper server behind a proxy that runs modl; uses remote: below
+mode: embedded
+
+embedded:
+  port: 8080
+  bind-address: "0.0.0.0"
+  public-url: ""             # optional, such as https://panel.example.com
+  admin-email: ""            # optional, claims the panel for this email
+  trust-proxy-headers: false # true only behind a reverse proxy or tunnel
+  trusted-proxy: "private"   # private (any private address) or loopback (a proxy or tunnel agent on this machine)
+  download-url: ""           # optional mirror with the GitHub release layout, for the panel download and updates
+  database:                  # optional, an empty url uses the built-in SQLite database
+    url: ""                  # jdbc:mysql://, jdbc:mariadb:// or jdbc:postgresql://, without user name or password
+    username: ""
+    password: ""
+    sqlite-native-dir: ""    # only when plugins/modl/data is mounted noexec
+  ai:                        # optional, can also be set in the panel
+    provider: ""             # openai, anthropic, gemini, openrouter, deepseek, qwen, moonshot, zhipu, minimax, ollama, lm-studio, custom
+    api-key: ""
+    model: ""                # model id at the provider
+    base-url: ""             # optional override; plain http only for local and private addresses
+  smtp:                      # optional, can also be set in the panel; without it, login codes go to the console
+    host: ""
+    port: 587
+    username: ""
+    password: ""
+    from: ""
+    starttls: true
+
+remote:
+  url: "http://localhost:8080"   # address of the panel
+  api-key: ""                    # from Panel > Settings > General > Minecraft servers; behind-proxy needs a "Behind a proxy" key

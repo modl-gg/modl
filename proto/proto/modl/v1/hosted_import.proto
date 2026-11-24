@@ -1,0 +1,231 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+enum HostedImportStatus {
+  HOSTED_IMPORT_STATUS_UNSPECIFIED = 0;
+  HOSTED_IMPORT_STATUS_NONE = 1;
+  HOSTED_IMPORT_STATUS_RECEIVING = 2;
+  HOSTED_IMPORT_STATUS_DOWNLOADING = 3;
+  HOSTED_IMPORT_STATUS_VERIFYING = 4;
+  HOSTED_IMPORT_STATUS_REVIEW = 5;
+  HOSTED_IMPORT_STATUS_APPLYING = 6;
+  HOSTED_IMPORT_STATUS_PAUSED = 7;
+  HOSTED_IMPORT_STATUS_COMPLETED = 8;
+  HOSTED_IMPORT_STATUS_ABANDONED = 9;
+  HOSTED_IMPORT_STATUS_FAILED = 10;
+}
+
+enum HostedImportPhase {
+  HOSTED_IMPORT_PHASE_UNSPECIFIED = 0;
+  HOSTED_IMPORT_PHASE_VERIFY = 1;
+  HOSTED_IMPORT_PHASE_BEGIN = 2;
+  HOSTED_IMPORT_PHASE_CONFIGURATION = 3;
+  HOSTED_IMPORT_PHASE_FILES = 4;
+  HOSTED_IMPORT_PHASE_PLAYERS = 6;
+  HOSTED_IMPORT_PHASE_LINKS = 7;
+  HOSTED_IMPORT_PHASE_TICKETS = 8;
+  HOSTED_IMPORT_PHASE_REPLAYS = 9;
+  HOSTED_IMPORT_PHASE_CHAT_LOGS = 10;
+  HOSTED_IMPORT_PHASE_COMMAND_LOGS = 11;
+  HOSTED_IMPORT_PHASE_AUDIT_LOGS = 12;
+  HOSTED_IMPORT_PHASE_ACCESS = 13;
+  HOSTED_IMPORT_PHASE_SUBSCRIPTIONS = 14;
+  HOSTED_IMPORT_PHASE_FINISH = 15;
+
+  reserved 5;
+  reserved "HOSTED_IMPORT_PHASE_FILE_RECORDS";
+}
+
+enum HostedImportRetention {
+  HOSTED_IMPORT_RETENTION_UNSPECIFIED = 0;
+  HOSTED_IMPORT_RETENTION_KEEP_HISTORY = 1;
+  HOSTED_IMPORT_RETENTION_STANDARD = 2;
+}
+
+enum HostedImportSeverity {
+  HOSTED_IMPORT_SEVERITY_UNSPECIFIED = 0;
+  HOSTED_IMPORT_SEVERITY_INFO = 1;
+  HOSTED_IMPORT_SEVERITY_CHANGED = 2;
+  HOSTED_IMPORT_SEVERITY_LOST = 3;
+  HOSTED_IMPORT_SEVERITY_ACTION = 4;
+}
+
+message HostedImportState {
+  HostedImportStatus status = 1;
+  string import_id = 2 [json_name = "importId"];
+  bool eligible = 3;
+  repeated string blockers = 4;
+  HostedImportPhase phase = 5;
+  int64 received_bytes = 6 [json_name = "receivedBytes"];
+  int64 total_bytes = 7 [json_name = "totalBytes"];
+  int64 phase_done = 8 [json_name = "phaseDone"];
+  int64 phase_total = 9 [json_name = "phaseTotal"];
+  string reason_code = 10 [json_name = "reasonCode"];
+  int64 required_bytes = 11 [json_name = "requiredBytes"];
+  string archive_sha256 = 12 [json_name = "archiveSha256"];
+  bool can_discard = 13 [json_name = "canDiscard"];
+  bool can_resume = 14 [json_name = "canResume"];
+  bool can_abandon = 15 [json_name = "canAbandon"];
+  int32 max_chunk_bytes = 16 [json_name = "maxChunkBytes"];
+  google.protobuf.Timestamp updated_at = 17 [json_name = "updatedAt"];
+  string file_name = 18 [json_name = "fileName"];
+  bool can_finish = 19 [json_name = "canFinish"];
+}
+
+message BeginHostedImportUploadRequest {
+  int64 size_bytes = 1 [
+    json_name = "sizeBytes",
+    (buf.validate.field).int64 = {
+      gt: 0
+      lte: 107374182400
+    }
+  ];
+  string file_name = 2 [
+    json_name = "fileName",
+    (buf.validate.field).string.max_len = 255
+  ];
+  optional string expected_sha256 = 3 [
+    json_name = "expectedSha256",
+    (buf.validate.field).string.pattern = "^[0-9a-fA-F]{64}$"
+  ];
+}
+
+message StartHostedImportDownloadRequest {
+  string url = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 4096
+  }];
+  optional string expected_sha256 = 2 [
+    json_name = "expectedSha256",
+    (buf.validate.field).string.pattern = "^[0-9a-fA-F]{64}$"
+  ];
+}
+
+message HostedImportActionRequest {
+  string import_id = 1 [
+    json_name = "importId",
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 36
+    }
+  ];
+}
+
+message HostedImportCount {
+  string subject = 1;
+  int64 total = 2;
+  int64 imported = 3;
+  int64 changed = 4;
+  int64 skipped = 5;
+}
+
+message HostedImportIssue {
+  string code = 1;
+  HostedImportSeverity severity = 2;
+  int64 count = 3;
+  repeated string samples = 4;
+}
+
+message HostedImportRetentionPlan {
+  HostedImportRetention option = 1;
+  int32 chat_log_days = 2 [json_name = "chatLogDays"];
+  int32 audit_log_days = 3 [json_name = "auditLogDays"];
+  bool replay_retention_enabled = 4 [json_name = "replayRetentionEnabled"];
+  int32 replay_days = 5 [json_name = "replayDays"];
+  int64 rows_not_kept = 6 [json_name = "rowsNotKept"];
+  int64 estimated_bytes = 7 [json_name = "estimatedBytes"];
+  bool keeps_ip_history = 8 [json_name = "keepsIpHistory"];
+  int32 ip_history_days = 9 [json_name = "ipHistoryDays"];
+  int64 replays_not_kept = 10 [json_name = "replaysNotKept"];
+  int64 required_bytes = 11 [json_name = "requiredBytes"];
+}
+
+message HostedImportPreview {
+  string import_id = 1 [json_name = "importId"];
+  string server_name = 2 [json_name = "serverName"];
+  string subdomain = 3;
+  google.protobuf.Timestamp exported_at = 4 [json_name = "exportedAt"];
+  string archived_owner_email = 5 [json_name = "archivedOwnerEmail"];
+  string local_owner_email = 6 [json_name = "localOwnerEmail"];
+  bool owner_emails_match = 7 [json_name = "ownerEmailsMatch"];
+  repeated HostedImportCount counts = 8;
+  repeated HostedImportIssue issues = 9;
+  repeated HostedImportRetentionPlan retention = 10;
+  int64 required_bytes = 11 [json_name = "requiredBytes"];
+  int64 available_bytes = 12 [json_name = "availableBytes"];
+  int32 staff_total = 13 [json_name = "staffTotal"];
+  string archived_owner_minecraft_username = 14 [json_name = "archivedOwnerMinecraftUsername"];
+  bool archived_owner_has_staff_record = 15 [json_name = "archivedOwnerHasStaffRecord"];
+}
+
+message HostedImportStaffCandidate {
+  string source_id = 1 [json_name = "sourceId"];
+  string email = 2;
+  string username = 3;
+  string role_name = 4 [json_name = "roleName"];
+  repeated string permissions = 5;
+  string minecraft_uuid = 6 [json_name = "minecraftUuid"];
+  string minecraft_username = 7 [json_name = "minecraftUsername"];
+  bool selectable = 8;
+  string blocked_code = 9 [json_name = "blockedCode"];
+}
+
+message HostedImportStaffPage {
+  repeated HostedImportStaffCandidate staff = 1;
+  string next_cursor = 2 [json_name = "nextCursor"];
+}
+
+message StartHostedImportRequest {
+  string import_id = 1 [
+    json_name = "importId",
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 36
+    }
+  ];
+  repeated string staff_ids = 2 [
+    json_name = "staffIds",
+    (buf.validate.field).repeated = {
+      max_items: 5000
+      items: {
+        string: {
+          min_len: 1
+          max_len: 64
+        }
+      }
+    }
+  ];
+  bool merge_archived_owner = 3 [json_name = "mergeArchivedOwner"];
+  HostedImportRetention retention = 4 [(buf.validate.field).enum = {
+    defined_only: true
+    in: [
+      1,
+      2
+    ]
+  }];
+  bool confirmed = 5 [(buf.validate.field).bool.const = true];
+}
+
+message HostedImportExclusion {
+  string name = 1;
+  string reason = 2;
+  int64 approximate_count = 3 [json_name = "approximateCount"];
+}
+
+message HostedImportReport {
+  string import_id = 1 [json_name = "importId"];
+  HostedImportStatus status = 2;
+  string export_id = 3 [json_name = "exportId"];
+  string source_version = 4 [json_name = "sourceVersion"];
+  google.protobuf.Timestamp exported_at = 5 [json_name = "exportedAt"];
+  google.protobuf.Timestamp finished_at = 6 [json_name = "finishedAt"];
+  repeated HostedImportCount counts = 7;
+  repeated HostedImportIssue issues = 8;
+  repeated HostedImportExclusion excluded_collections = 9 [json_name = "excludedCollections"];
+  repeated HostedImportExclusion skipped_objects = 10 [json_name = "skippedObjects"];
+  repeated string follow_up_codes = 11 [json_name = "followUpCodes"];
+  HostedImportRetention retention = 12;
+}

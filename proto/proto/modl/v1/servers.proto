@@ -1,0 +1,74 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "modl/v1/common.proto";
+
+enum ServerCompatibility {
+  SERVER_COMPATIBILITY_UNSPECIFIED = 0;
+  SERVER_COMPATIBILITY_COMPATIBLE = 1;
+  SERVER_COMPATIBILITY_PLUGIN_OLDER = 2;
+  SERVER_COMPATIBILITY_SERVER_OLDER = 3;
+  SERVER_COMPATIBILITY_UNKNOWN = 4;
+}
+
+message ConnectedServer {
+  reserved 8, 9;
+  reserved "bridge_servers", "bridge_port";
+  string instance_id = 1 [json_name = "instanceId"];
+  string name = 2;
+  string platform = 3;
+  string plugin_version = 4 [json_name = "pluginVersion"];
+  string server_version = 5 [json_name = "serverVersion"];
+  int32 online_players = 6 [json_name = "onlinePlayers"];
+  google.protobuf.Timestamp last_seen = 7 [json_name = "lastSeen"];
+  ServerRole role = 10;
+  optional string key_name = 11 [json_name = "keyName"];
+  bool hub_connected = 12 [json_name = "hubConnected"];
+  ServerCompatibility compatibility = 13;
+}
+
+message ConnectedServersResponse {
+  repeated ConnectedServer servers = 1;
+  string modl_version = 2 [json_name = "modlVersion"];
+}
+
+enum ServerKeyScope {
+  SERVER_KEY_SCOPE_UNSPECIFIED = 0;
+  SERVER_KEY_SCOPE_FULL = 1;
+  SERVER_KEY_SCOPE_BEHIND_PROXY = 2;
+}
+
+message ServerKey {
+  string id = 1;
+  string name = 2;
+  ServerKeyScope scope = 3;
+  string key_hint = 4 [json_name = "keyHint"];
+  google.protobuf.Timestamp created_at = 5 [json_name = "createdAt"];
+  optional google.protobuf.Timestamp last_seen_at = 6 [json_name = "lastSeenAt"];
+  optional string created_by = 7 [json_name = "createdBy"];
+  bool connected = 8;
+  bool allow_proxy_commands = 9 [json_name = "allowProxyCommands"];
+}
+
+message ServerKeysResponse {
+  repeated ServerKey keys = 1;
+  int32 limit = 2;
+}
+
+message CreateServerKeyRequest {
+  string name = 1 [(buf.validate.field).string.pattern = "^[A-Za-z0-9_.-]{1,64}$"];
+  ServerKeyScope scope = 2 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
+  bool allow_proxy_commands = 3 [json_name = "allowProxyCommands"];
+}
+
+message UpdateServerKeyRequest {
+  bool allow_proxy_commands = 1 [json_name = "allowProxyCommands"];
+}
+
+message CreateServerKeyResponse {
+  ServerKey key = 1;
+  string secret = 2;
+  string panel_url = 3 [json_name = "panelUrl"];
+}

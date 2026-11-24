@@ -1,0 +1,1495 @@
+# modl in-game messages, ru_RU. Colors, placeholders and overrides: https://github.com/modl-gg/modl/wiki/Placeholders
+
+messages:
+  cannot_report_self: "&cВы не можете пожаловаться на самого себя."
+  player_not_online: "&cЭтот игрок не в сети."
+  submitting: "&eОтправка ({type})..."
+  creating: "&eСоздание ({type})..."
+  success: "&aОтправлено: {type}."
+  created: "&aСоздано: {type}."
+  ticket_id: "&7ID тикета: &f{ticketId}"
+  view_ticket: "&7Посмотреть ваш тикет: &b{url}"
+  complete_form: "&7Заполните форму ({type}): &b{url}"
+  form_title_note: "&7Вы можете изменить заголовок '&f{title}&7' в форме перед отправкой."
+  failed_submit: "&cНе удалось отправить ({type}): {error}"
+  failed_create: "&cНе удалось создать ({type}): {error}"
+  try_again: "&cПопробуйте позже или обратитесь к персоналу напрямую."
+  unknown_error: "Неизвестная ошибка"
+  no_details: "Дополнительные подробности не указаны"
+  no_chat_logs_available: "&cУ {player} нет недавних сообщений в чате для жалобы."
+  view_ticket_label: "Посмотреть ваш тикет"
+  complete_form_label: "Заполните форму ({type})"
+  click_to_view: "[Нажмите, чтобы посмотреть]"
+  click_to_view_hover: "Нажмите, чтобы посмотреть тикет {ticketId}"
+  console_ticket_url: "&6{message}: &b{url}"
+  claiming_ticket: "&eПривязка тикета &f{ticketId}&e к вашему аккаунту..."
+  ticket_claimed_success: "&aТикет &f{ticketId}&a привязан к вашему аккаунту."
+  ticket_claim_failed: "&cНе удалось привязать тикет: {error}"
+  ticket_cooldown: "&cПодождите {seconds} с, прежде чем открывать ещё один тикет этого типа."
+  report_gui_title: "&fЖалоба на {player}"
+  report_skull_chat_log:
+    - "&bЖалоба на {player}"
+    - "&7Приложить логи чата?"
+  report_skull_details:
+    - "&bЖалоба на {player}"
+    - "&7Добавить подробности?"
+  report_skull_confirm:
+    - "&bЖалоба на {player}"
+    - "&7Подтвердить жалобу?"
+  report_skull_replay:
+    - "&bЖалоба на {player}"
+    - "&7Приложить реплей?"
+  report_skull_evidence:
+    - "&bЖалоба на {player}"
+    - "&7Приложить логи чата или реплей?"
+  report_attach_chat: "&aПриложить лог чата"
+  report_attach_chat_lore: []
+  report_skip_chat: "&cПропустить лог чата"
+  report_skip_chat_lore: []
+  report_chat_attached: "&aЛог чата будет приложен"
+  report_chat_click_to_attach: "&7Нажмите, чтобы приложить лог чата"
+  report_capture_replay: "&aСохранить реплей"
+  report_capture_replay_lore: []
+  report_replay_attached: "&aРеплей будет сохранён"
+  report_replay_not_attached: "&cРеплей НЕ будет сохранён"
+  report_skip_replay: "&cПропустить"
+  report_skip_replay_lore: []
+  report_continue: "&aПродолжить"
+  report_continue_lore: []
+  report_add_details: "&aДобавить подробности"
+  report_add_details_lore: []
+  report_skip_details: "&cПропустить подробности"
+  report_skip_details_lore: []
+  report_confirm: "&aПодтвердить жалобу"
+  report_cancel: "&cОтменить жалобу"
+  report_cancel_lore: []
+  report_summary_reason: "&7Причина: &f{reason}"
+  report_summary_details: "&7Подробности: &f{details}"
+  report_summary_chat_log: "&7Лог чата: &fПриложен"
+  report_summary_replay: "&7Реплей: &aБудет сохранён"
+  report_attach_replay: "&eПриложить реплей"
+  report_close: "&cЗакрыть"
+  report_close_lore: []
+  report_details_prompt: "Введите дополнительные подробности для вашей жалобы на игрока {player}:"
+  report_submitted: "&aЖалоба отправлена."
+  # Ticket kinds shown as {type} in ticket messages: "name" starts a sentence, "inline" appears mid-sentence
+  ticket_types:
+    report:
+      name: "Жалоба"
+      inline: "жалоба"
+    chat_report:
+      name: "Жалоба на чат"
+      inline: "жалоба на чат"
+    support:
+      name: "Запрос в поддержку"
+      inline: "запрос в поддержку"
+    bug:
+      name: "Сообщение об ошибке"
+      inline: "сообщение об ошибке"
+    application:
+      name: "Заявка в персонал"
+      inline: "заявка в персонал"
+
+general:
+  players_only: "&cЭту команду могут использовать только игроки."
+  local_console_only: "&cВыполните эту команду в консоли самого этого сервера."
+  no_permission: "&cУ вас нет прав на использование этой команды."
+  no_permission_punishment: "&cУ вас нет прав на выдачу наказаний типа '{type}'."
+  no_permission_reload: "&cУ вас нет прав на перезагрузку данных о наказаниях."
+  invalid_syntax: "&cНеверный синтаксис команды. Проверьте правильность ввода."
+  gui_requires_player: "&cЭта команда открывает меню и может быть выполнена только игроком. Используйте &f-p &cдля вывода текстом."
+  gui_unavailable: "&cМеню недоступны на этом прокси-сервере."
+
+  unknown: "Неизвестно"
+  staff: "Персонал"
+  answer_yes: "Да"
+  answer_no: "Нет"
+  not_available: "Н/Д"
+  never: "Никогда"
+  permanent: "Навсегда"
+  loading: "Загрузка..."
+  no_reason: "Без причины"
+  console: "Консоль"
+  player_not_found: "&cИгрок не найден."
+  punishment_error: "&cОшибка при создании наказания: {error}"
+  punishment_types_not_loaded: "&cТипы наказаний не загружены. Попробуйте &f/modl reload&c или обратитесь к администратору."
+  invalid_punishment_type: "&cНеверный тип наказания. Доступные типы: {types}"
+  invalid_duration: "&cНеверный формат длительности. Примеры: 1d, 2h, 30m, 1w"
+  cannot_punish_self: "&cВы не можете наказать самого себя."
+  target_immune: "&cВы не можете наказать игрока {target}, так как у него есть иммунитет."
+
+  punishment_issued: "&aНаказание {type} выдано игроку &f{target}&a."
+  punishment_issued_duration: "&aНаказание {type} выдано игроку &f{target}&a ({duration})."
+
+  reloading: "&eПерезагрузка..."
+  reload_success: "&aПерезагрузка завершена."
+  reload_error: "&cОшибка при перезагрузке: {error}"
+
+command_errors:
+  unknown_command: "&cНеизвестная команда: &f{input}"
+  unknown_command_suggestions: "&cНеизвестная команда: &f{input}&c. Возможно, вы имели в виду &f{suggestions}&c?"
+  unknown_subcommand: "&cНет команды, соответствующей &f/{input}&c. Возможно, вы имели в виду:"
+  suggestion: "&7- &f/{command}"
+  expected_literal: "&cОжидалось &f{expected}&c, но введено &f'{input}'&c."
+  missing_argument: "&cНе указан аргумент &f{parameter}&c. Использование: &f/{usage}"
+  too_many_arguments: "&cСлишком много аргументов. Лишний ввод: &f{input}"
+  invalid_choice: "&cНеверный вариант: &f{input}&c. Укажите один из доступных вариантов."
+  value_not_allowed: "&cНедопустимое значение: &f{input}&c. Допустимые значения: &f{allowed}"
+  invalid_boolean: "&cОжидалось &ftrue&c или &ffalse&c, но введено &f{input}&c."
+  invalid_number: "&cНеверное число: &f{input}"
+  invalid_integer: "&cНеверное целое число: &f{input}"
+  invalid_uuid: "&cНеверный UUID: &f{input}"
+  number_too_small: "&cЗначение &f{value}&c слишком мало. Минимум: &f{minimum}&c."
+  number_too_large: "&cЗначение &f{value}&c слишком велико. Максимум: &f{maximum}&c."
+  text_too_short: "&cСлишком короткий текст. Минимальное число символов: &f{minimum}"
+  text_too_long: "&cСлишком длинный текст. Максимальное число символов: &f{maximum}"
+  too_few_values: "&cСлишком мало значений. Минимум: &f{minimum}&c."
+  too_many_values: "&cСлишком много значений. Максимум: &f{maximum}&c."
+  invalid_escape: "&cНеверный символ экранирования. Используйте &f\\\\&c, чтобы ввести обратную косую черту."
+  unclosed_quote: "&cКавычки не закрыты. Закройте все открытые кавычки."
+  expected_space: "&cРазделяйте аргументы пробелом."
+  unknown_flag: "&cНеизвестный параметр: &f{input}"
+  unknown_short_flag: "&cНеизвестный короткий параметр: &f{input}"
+  invalid_help_page: "&cНеверная страница справки: &f{page}&c. Последняя страница: &f{pages}&c."
+  cooldown: "&cДо повторного использования этой команды осталось: &f{time}"
+  failed: "&cНе удалось выполнить команду. Ошибка записана в консоль сервера."
+  console_only: "&cЭту команду можно использовать только из консоли."
+  invalid_player: "&cНеверный игрок: &f{input}"
+  invalid_world: "&cНеверный мир: &f{input}"
+  missing_coordinate: "&cНе указана координата: &f{axis}"
+  invalid_selector: "&cНеверный селектор сущностей: &f{input}"
+  selector_players_only: "&cСелектор &f{input}&c может выбирать только игроков."
+  selector_too_many: "&cСелектор должен выбирать только одну сущность."
+  selector_empty: "&cСущности не найдены."
+
+validation:
+  single_severity_error: "&cНевозможно указать степень тяжести для типа наказания '{type}' с единственной степенью. У этого типа наказания только один уровень тяжести."
+  permanent_skin_change_error: "&cНевозможно указать степень тяжести для типа наказания '{type}', действующего до смены скина."
+  permanent_username_change_error: "&cНевозможно указать степень тяжести для типа наказания '{type}', действующего до смены никнейма."
+  alt_blocking_not_supported: "&cФлаг блокировки альт-аккаунтов не поддерживается типом наказания '{type}'."
+  stat_wiping_not_supported: "&cФлаг сброса статистики не поддерживается типом наказания '{type}'."
+
+# Words substituted into punishment messages.
+punishment_words:
+  # {tense}, as in "You {tense} banned"
+  tense_default: "были"
+  tense_active: "сейчас"
+  # {tense2}, as in "Your account {tense2} restricted"
+  tense2_default: "был"
+  tense2_active: "сейчас"
+  # {temp}, as in "You have been {temp} banned"
+  temporarily: "временно"
+  permanently: "навсегда"
+  # Expiry texts of timed punishments; {type} is type_ban, type_mute or type_punishment
+  will_expire: "\n&7Срок действия ({type}) истечёт через &f{duration}&7."
+  duration_formatted: "\n&7Срок действия ({type}) истечёт через {duration}"
+  mute_duration_formatted: " на {duration}"
+  # {for_duration} on timed mutes; keep the leading space
+  for_duration: " на {duration}"
+  type_ban: "бан"
+  type_mute: "мут"
+  type_punishment: "наказание"
+  # {duration} of permanent punishments; config.yml locale_config.duration_format.permanent overrides it when set
+  duration_permanent: "навсегда"
+
+punishments:
+  public_notification:
+    ban_default: "&cИгрок {target} забанен."
+    mute_default: "&cИгрок {target} замучен."
+    kick_default: "&cИгрок {target} кикнут."
+    default: "&cИгрок {target} наказан."
+  mute_fallback: "&cВы замучены."
+  player_notification:
+    ban_default: "&cВы {tense} забанены (#{id})."
+    mute_default: "&cВы {tense} замучены (#{id})."
+    kick_default: "&cВы были кикнуты (#{id})."
+    default: "&cВы {tense} наказаны (#{id})."
+
+# punishment_types.ordinal_<n>: public_notification is broadcast, player_notification lines go to the punished player.
+# Types without an entry use the punishments section. Placeholders: https://github.com/modl-gg/modl/wiki/Placeholders#punishment-messages
+punishment_types:
+  ordinal_0: # Kick
+    public_notification: "&cИгрок {target} кикнут."
+    player_notification:
+      - "&c&lВы были кикнуты с сервера."
+      - "&f{reason} &7(#{id})"
+
+  ordinal_1: # Manual Mute
+    public_notification: "&cИгрок {target} замучен."
+    player_notification:
+      - ""
+      - "&cВы {tense} {temp} замучены{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{reason}"
+      - ""
+
+  ordinal_2: # Manual Ban
+    public_notification: "&cИгрок {target} забанен."
+    player_notification:
+      - "&c&lВы {tense} {temp} забанены за:"
+      - ""
+      - "&f{reason}"
+      - "&7{will_expire}"
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}."
+
+  ordinal_3: # Security Ban
+    public_notification: "&cИгрок {target} забанен."
+    player_notification:
+      - "&c&lВаш аккаунт {tense2} ограничен из соображений безопасности."
+      - "&fНа вашем аккаунте обнаружена подозрительная активность. Защитите свой аккаунт и подайте апелляцию на {appeal_url}, указав ID #{id}."
+
+  ordinal_4: # Linked Ban
+    public_notification: "&cИгрок {target} забанен."
+    player_notification:
+      - "&c&lВаш аккаунт {tense2} связан с забаненным аккаунтом."
+      - ""
+      - "&fОбход банов через альтернативные аккаунты или передача своего аккаунта другим строго запрещены."
+      - ""
+      - "&7Этот бан будет автоматически снят по истечении связанного бана."
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}"
+
+  ordinal_5: # Blacklist
+    public_notification: "&cИгрок {target} внесён в чёрный список."
+    player_notification:
+      - "&cВы {tense} внесены в чёрный список"
+      - "&7ID: #{id}"
+
+  ordinal_6: # Chat Abuse
+    public_notification: "&cИгрок {target} замучен за нарушения в чате."
+    player_notification:
+      - ""
+      - "&cВы {tense} {temp} замучены{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+  ordinal_7: # Anti-Social
+    public_notification: "&cИгрок {target} замучен за антисоциальное поведение."
+    player_notification:
+      - ""
+      - "&cВы {tense} {temp} замучены{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+
+  ordinal_8: # Targeting
+    public_notification: "&cИгрок {target} забанен за травлю."
+    player_notification:
+      - "&c&lВы {tense} {temp} забанены за:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}."
+
+  ordinal_9: # Bad Content
+    public_notification: "&cИгрок {target} забанен за неприемлемый контент."
+    player_notification:
+      - "&c&lВы {tense} {temp} забанены за:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}."
+
+  ordinal_10: # Bad Username
+    public_notification: "&cИгрок {target} забанен."
+    player_notification:
+      - "&c&lВы {tense} забанены из-за вашего никнейма в Minecraft."
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7Этот бан будет автоматически снят после смены никнейма."
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}"
+
+  ordinal_11: # Bad Skin
+    public_notification: "&cИгрок {target} забанен."
+    player_notification:
+      - "&c&lВы {tense} забанены из-за вашего скина в Minecraft."
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7Этот бан будет автоматически снят после смены скина."
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}"
+
+  ordinal_12: # Team Abuse
+    public_notification: "&cИгрок {target} забанен за нарушения в командной игре."
+    player_notification:
+      - "&c&lВы {tense} {temp} забанены за:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}."
+
+  ordinal_13: # Game Abuse
+    public_notification: "&cИгрок {target} забанен за нарушения игрового процесса."
+    player_notification:
+      - "&c&lВы {tense} {temp} забанены за:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}."
+
+  ordinal_14: # Cheating
+    public_notification: "&cИгрок {target} забанен за читы."
+    player_notification:
+      - "&c&lВы {tense} {temp} забанены за:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}."
+
+  ordinal_15: # Game Trading
+    public_notification: "&cИгрок {target} забанен за торговлю игровыми ценностями."
+    player_notification:
+      - "&c&lВы {tense} {temp} забанены за:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}."
+
+  ordinal_16: # Account Abuse
+    public_notification: "&cИгрок {target} забанен за нарушения, связанные с аккаунтом."
+    player_notification:
+      - "&c&lВы {tense} {temp} забанены за:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}."
+
+  ordinal_17: # Systems Abuse
+    public_notification: "&cИгрок {target} забанен за злоупотребление системами сервера."
+    player_notification:
+      - "&c&lВы {tense} {temp} забанены за:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Считаете это ошибкой? Подайте апелляцию на {appeal_url}, указав ID #{id}."
+
+notification:
+  ticket_reply: "&6[Тикет] &f{message}"
+  ticket_reply_with_link: "&6[Тикет] &f{message} &b[Нажмите, чтобы посмотреть]"
+  ticket_click_action: "&7Нажмите, чтобы посмотреть тикет {ticketId}"
+  ticket_prefix: "[Тикет] "
+
+iammuted:
+  only_players: "&cЭту команду могут использовать только игроки."
+  not_muted: "&cВы можете использовать эту команду, только пока вы замучены."
+  player_not_online: "&cЭтот игрок не в сети."
+  cannot_message_self: "&cВы не можете отправить это сообщение самому себе."
+  cooldown_message: "&cПодождите {minutes} мин. и {seconds} сек., прежде чем снова использовать эту команду."
+  notification_to_target: "&6[Замученный игрок] &f{sender} &7сейчас замучен и не может отвечать в чате."
+  success_message: "&aИгрок &f{target}&a уведомлён о том, что вы замучены."
+
+standing:
+  error: "&cНе удалось загрузить ваш статус. Попробуйте позже."
+  cooldown: "&cПодождите {seconds} с, прежде чем снова использовать эту команду."
+
+player_lookup:
+  error: "&cОшибка при поиске игрока: {error}"
+  uuid: "&7UUID: &f{uuid}"
+  currently_banned: "&7Сейчас забанен: {status}"
+  currently_muted: "&7Сейчас замучен: {status}"
+  staff_notes_label: "&7Заметки персонала:"
+  staff_note_format: "  &8• &f{text} &7- {issuer}"
+  no_staff_notes: "  &8Заметок персонала нет"
+  total_punishments: "&7Всего наказаний: &f{count}"
+  linked_accounts_label: "&7Связанные аккаунты:"
+  linked_account_format: "  &8• &f{username}{status}"
+  linked_account_more: "  &8... и ещё {count}"
+  no_linked_accounts: "  &8Связанных аккаунтов нет"
+  total_tickets: "&7Всего тикетов: &f{count}"
+  profile_fallback: "&6Профиль: &b{url}"
+
+  status:
+    banned_and_muted: " &c(сейчас забанен и замучен)"
+    banned: " &c(сейчас забанен)"
+    muted: " &e(сейчас замучен)"
+    no_punishments: " &7(активных наказаний нет)"
+
+print:
+  inspect:
+    header: ""
+    uuid: "&fИнформация об игроке {player} &7({uuid})"
+    currently_banned: "&eЗабанен: {status}"
+    currently_muted: "&eЗамучен: {status}"
+    notes_label: "&eЗаметки персонала:"
+    note_entry: "&6{ordinal}. &f{text} &eот {issuer}"
+    no_notes: "&7Заметок персонала нет"
+    total_punishments: "&eВсего наказаний: &f{count}"
+    linked_accounts_label: "&eСвязанные аккаунты:"
+    linked_account_entry: "&6{ordinal}. &e{username} ({status}&e)"
+    linked_account_more: "&e... и ещё {count}"
+    no_linked_accounts: "&7Связанных аккаунтов нет"
+    total_tickets: "&eВсего тикетов: &f{count}"
+    profile_fallback: "&eПрофиль: &b{url}"
+    web_profile_link: "Открыть веб-профиль"
+    web_profile_hover: "Нажмите, чтобы посмотреть профиль игрока {player}"
+    footer: ""
+
+  punishment_detail:
+    not_found: "&cНаказание #{id} не найдено."
+    header: " "
+    type: "&eТип: &f{type}"
+    player: "&eИгрок: &f{player}"
+    issuer: "&eВыдал: &f{issuer}"
+    date: "&eДата: &f{date}"
+    status: "&eСтатус: {status}"
+    duration: "&eДлительность: &f{duration}"
+    reason: "&eПричина: &f{reason}"
+    evidence: "&eДоказательства: &f{count} файл(ов)"
+    notes: "&eЗаметки: &f{count}"
+    modifications: "&eИзменения: &f{count}"
+    status_active: "Активно"
+    status_pardoned: "Снято"
+    status_rolled_back: "Отменено"
+    status_inactive: "Неактивно"
+    footer: " "
+
+  history:
+    header: ""
+    entry_kick: "&6{ordinal}. &7#{id} &e{date} &f{type} &eот {issuer} за &f{reason}"
+    entry_active: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &eот {issuer} за &f{reason} &7(истекает через {expiry})"
+    entry_permanent: "&6{ordinal}. &c#{id} &e{date} &f{type} (навсегда) &eот {issuer} за &f{reason}"
+    entry_unstarted: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &eот {issuer} за &f{reason} &7(ещё не началось)"
+    entry_expired: "&6{ordinal}. &7#{id} &e{date} &f{type} ({duration}) &eот {issuer} за &f{reason} &7(истекло {expired_ago} назад)"
+    entry_pardoned: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &eот {issuer} за &f{reason} &7(снято {pardoned_ago} назад)"
+    entry_rolled_back: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &eот {issuer} за &f{reason} &7(отменено {rolled_back_ago} назад)"
+    total: "&eСтраница {page}/{total_pages} (всего {count})"
+    empty: "&7Игрок ни разу не был наказан."
+    footer: ""
+
+  notes:
+    header: ""
+    entry: "&6{ordinal}. &e{date} {author}: &f{content}"
+    warning_badge: "&c&l[Предупреждение]&r&f "
+    total: "&eСтраница {page}/{total_pages} (всего {count})"
+    empty: "&7Заметок персонала не найдено."
+    footer: ""
+
+  alts:
+    header: ""
+    entry: "&6{ordinal}. {color}{username} &e({status}&e)"
+    status_banned: "&cЗабанен"
+    status_muted: "&eЗамучен"
+    status_banned_and_muted: "&cЗабанен и замучен"
+    status_clean: "&aЧисто"
+    total: "&eСтраница {page}/{total_pages} (всего {count})"
+    total_truncated: "&eСтраница {page}/{total_pages} (последние {count})"
+    empty: "&7Связанных аккаунтов не найдено."
+    footer: ""
+
+  reports:
+    header: ""
+    entry: "&6{ordinal}. &e#{id} {date} ({status}&e) &fжалоба ({type}) &eот {reporter}"
+    entry_content: " &f{content}"
+    status_open: "Открыта"
+    status_closed: "Закрыта"
+    total: "&eСтраница {page}/{total_pages} (всего {count})"
+    empty: "&7Жалоб не найдено."
+    footer: ""
+
+  staff_list:
+    header: ""
+    entry: "&6 - &e{player} ({in-game-name}) &7[{role}] &eна &f{server}{v}"
+    vanish: " &7[V]"
+    empty: "&7Персонала в сети нет."
+    total: "&eСтраница {page}/{total_pages} (всего {count})"
+
+punishment_commands:
+  invalid_severity: "&cНеверная степень тяжести. Допустимые значения: lenient, regular, severe"
+  warning_message: "&c{username} получил наказание: {punishment_type}."
+
+api_errors:
+  panel_unavailable: "&cСейчас панель недоступна; попробуйте чуть позже."
+  connection_failed: "&cНе удалось подключиться к панели. Повторите попытку через мгновение."
+  startup_failed: "&cСистема модерации этого сервера сейчас не работает. Пожалуйста, попробуйте позже."
+  version_mismatch: "&cСистема модерации этого сервера обновляется. Пожалуйста, попробуйте позже."
+  database_moving: "&cСистема модерации этого сервера переходит на новую базу данных. Пожалуйста, попробуйте позже."
+  packetevents_required: "&cЭтот сервер не может принимать игроков, пока не установлен PacketEvents {version} или новее."
+  ban_check_failed: "&cНе удалось проверить статус бана. Вход временно ограничен в целях безопасности."
+  invalid_name: "&cВаш ник недопустим на этом сервере. Ник может содержать только буквы, цифры и подчёркивания (до 16 символов)."
+  login_check_skipped: "&cНе удалось проверить ваш вход по банам этого сервера. Обратитесь к администрации сервера."
+  shortening_needs_pardon: "&cЧтобы наказание закончилось раньше, нужны права менять его срок и снимать наказания."
+
+pardon:
+  success_id: "&aНаказание &e#{id}&a снято."
+  success_player: "&aСнято наказаний у игрока {player}: {count} ({type})."
+  already_pardoned_id: "&7Наказание &e#{id}&7 уже неактивно или было снято."
+  no_active_punishment: "&7У игрока {player} нет активного наказания типа {type} для снятия."
+  error: "&cНе удалось снять наказание: {error}"
+  error_player: "&cНе удалось снять наказание ({type}) у игрока {player}: {error}"
+  error_wrong_type_ban: "&cНаказание &e#{id}&c не является баном. Используйте &e/pardon {id}&c, чтобы снять наказание любого типа."
+  error_wrong_type_mute: "&cНаказание &e#{id}&c не является мутом. Используйте &e/pardon {id}&c, чтобы снять наказание любого типа."
+  staff_notification_id: "&7&o[{issuer}: снял наказание #{id}&7&o]"
+  staff_notification_player: "&7&o[{issuer}: снял наказание ({type}) у {player}&7&o]"
+
+warn:
+  player_message: "&c&lВы получили предупреждение от {issuer}.\n&fПричина: &7{reason}"
+  success: "&aИгроку &f{target}&a выдано предупреждение за: &7{reason}"
+  staff_notification: "&7&o[{issuer}: выдал предупреждение {target} за {reason}&7&o]"
+  error: "&cНе удалось создать предупреждение: {error}"
+
+menus:
+  common:
+    action_failed: "&cНе получилось. Повторите попытку чуть позже."
+    saved_but_incomplete: "&eИзменение сохранено, но меню не удалось обновить. Откройте его снова, чтобы проверить."
+    back: "&cНазад"
+    back_lore: []
+    previous_page: "&eПредыдущая страница"
+    next_page: "&eСледующая страница"
+    filter: "&6Фильтр"
+    sort: "&6Сортировка"
+    filter_by_type: "&7Фильтр по типу:"
+    sort_by: "&7Сортировать по:"
+    option_selected: "&a▸ {option}"
+    option_unselected: "&7  {option}"
+    cycle_filters: "&eНажмите, чтобы сменить фильтр"
+    cycle_sort: "&eНажмите, чтобы сменить сортировку"
+    # {status} is status_open or status_closed, {items} is items_reports or items_tickets
+    status_showing: "&7Показаны: &a{status} {items}"
+    status_click_toggle: "&eНажмите, чтобы показать только {status} {items}"
+    status_right_click_toggle: "&eПКМ, чтобы показать только {status} {items}"
+    click_to_toggle: "&eНажмите, чтобы переключить"
+    status_open: "открытые"
+    status_closed: "закрытые"
+    items_reports: "жалобы"
+    items_tickets: "тикеты"
+    report_filters:
+      all: "все"
+      gameplay: "игровые"
+      chat: "чат"
+    report_status_open: "&aОТКРЫТА"
+    report_status_closed: "&cЗАКРЫТА"
+    enabled: "&aВключено"
+    disabled: "&cВыключено"
+    no_permission: "&cНет прав"
+    no_permission_modify: "&cНет прав на изменение"
+    load_profile_failed: "&cНе удалось загрузить профиль игрока"
+    load_profile_error: "&cНе удалось загрузить профиль игрока: {error}"
+    no_reported_player: "&cНевозможно проверить: у этой жалобы нет UUID игрока."
+    dismissing_report: "&eОтклонение жалобы..."
+    report_dismissed: "&aЖалоба отклонена."
+    dismiss_report_failed: "&cНе удалось отклонить жалобу: {error}"
+    ticket_link_label: "Тикет #{id}: "
+    open_in_browser: "Нажмите, чтобы открыть в браузере"
+    presence: "{time}"
+    presence_on_server: "{time} на {server}"
+
+  titles:
+    inspect: "Проверка: {player}"
+    notes: "Заметки: {player}"
+    alts: "Альт-аккаунты: {player}"
+    history: "История: {player}"
+    reports: "Жалобы: {player}"
+    punish: "Наказать: {player}"
+    punish_type: "Наказание: {type}"
+    modify_punishment: "Изменение наказания"
+    link_reports: "Привязка жалоб: {player}"
+    linked_tickets: "Связанные тикеты"
+    staff_panel: "Панель персонала"
+    online_players: "Игроки в сети"
+    staff_reports: "Жалобы"
+    recent_punishments: "Последние наказания"
+    support_tickets: "Тикеты поддержки"
+    staff_members: "Персонал"
+    manage_staff: "Управление персоналом"
+    edit_roles: "Редактирование ролей"
+    edit_role: "Изменение: {role}"
+
+  # Staff menu tab bar (compact_lore is used in compact headers)
+  staff_tabs:
+    online_players:
+      name: "&6Игроки в сети"
+      lore: []
+      compact_lore: []
+    reports:
+      name: "&6Жалобы"
+      lore: []
+      compact_lore: []
+    punishments:
+      name: "&6Последние наказания"
+      lore: []
+      compact_lore: []
+    tickets:
+      name: "&6Тикеты поддержки"
+      lore: []
+      compact_lore: []
+    panel:
+      name: "&6Перейти в панель"
+      lore: []
+      compact_lore: []
+    settings:
+      name: "&6Настройки"
+      lore: []
+      compact_lore: []
+    panel_link_label: "Панель персонала: "
+
+  inspect_tabs:
+    notes:
+      name: "&6Заметки"
+      lore:
+        - "&7Заметки персонала ({count})"
+      compact_lore:
+        - "&7Заметки персонала ({count})"
+    alts:
+      name: "&6Альт-аккаунты"
+      lore: []
+      compact_lore: []
+    history:
+      name: "&6История"
+      lore:
+        - "&7Наказания ({count})"
+      compact_lore:
+        - "&7Наказания ({count})"
+    reports:
+      name: "&6Жалобы"
+      lore: []
+      compact_lore: []
+    punish:
+      name: "&cНаказать"
+      lore: []
+      compact_lore: []
+  player_head:
+    title: "&6Информация об игроке {player_name}"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7Первый вход: &f{first_login}"
+      - "&7В сети: {is_online} ({presence})"
+      - "&7Время игры: &f{playtime}"
+      - "&7Реальный IP записан: &f{real_ip_logged}"
+      - "&7Регион: &f{location}"
+      - "&7Забанен: &f{is_banned}"
+      - "&7Замучен: &f{is_muted}"
+      - ""
+      - "&eЛКМ, чтобы выбрать целью {player_name}"
+
+  history_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7Сервер: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&eНажмите, чтобы изменить это наказание"
+    status_active: "&7Истекает через {expiry}"
+    status_inactive: "&7Истекло {expired} назад"
+    status_pardoned: "&7Снято {pardoned} назад"
+    status_rolled_back: "&7Отменено {rolled_back} назад"
+    status_permanent: "&7Никогда не истекает"
+    status_unstarted: "&7Наказание ещё не началось"
+    note_format: "&e{note_date} {note_issuer}&f: {note}"
+
+  recent_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7Игрок: &f{player}"
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7Сервер: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&eНажмите, чтобы изменить это наказание"
+
+  note_item:
+    title: "&e{date} {author}"
+    lore:
+      - "&f{content}"
+      - "&f "
+      - "&eНажмите, чтобы увидеть заметку в чате"
+
+  report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7Жалоба от &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eЛКМ, чтобы проверить игрока"
+      - "&eПКМ, чтобы отклонить жалобу"
+
+  alt_item:
+    title: "{color}{player_name}"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7В сети: {is_online} ({presence})"
+      - "&7Реальный IP записан: {real_ip}"
+      - "&7Первый вход: &f{first_login}"
+      - "&7{punishments}"
+      - "&f "
+      - "&eНажмите, чтобы проверить {player_name}"
+    punishment_line_active_true:
+      - "&7Активные наказания ({active_count}): &f"
+      - "{active_punishment_list}"
+    punishment_line_active_false:
+      - "&7Активные наказания: &f0"
+      - "&7Неактивные наказания: &f{inactive_count}"
+    active_punishment_format: "&7- &e#{punishment_id} {punishment_date}: {punishment_type} ({punishment_remaining})"
+
+  empty:
+    history: "История наказаний пуста"
+    notes: "Заметок персонала нет"
+    reports: "Жалоб не подано"
+    alts: "Связанных аккаунтов нет"
+    tickets: "Тикетов нет"
+    staff_reports: "Жалоб нет"
+    punishments: "Наказаний нет"
+    linked_tickets: "Связанных тикетов нет"
+    online_players: "Игроков в сети нет"
+    staff_members: "Персонала нет"
+    staff_online: "Персонала в сети нет"
+    staff_offline: "Персонала вне сети нет"
+    roles: "Ролей нет"
+    permissions: "Прав нет"
+
+  ticket_item:
+    title: "&6Тикет #{id}"
+    lore:
+      - "&7Игрок: &f{player}"
+      - "&7Заголовок: &f{title}"
+      - "&7Создан: &f{date}"
+      - "&7Статус: {status}"
+      - "&f "
+      - "&eНажмите, чтобы открыть в панели"
+    no_title: "Без заголовка"
+
+  staff_report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&cЖалоба на {reported}&7 от &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eЛКМ, чтобы проверить игрока"
+      - "&eПКМ, чтобы отклонить жалобу"
+  linked_ticket_item:
+    no_subject: "Без темы"
+    click_to_view: "&eНажмите, чтобы посмотреть в панели"
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7{title}"
+      - "&f "
+      - "{content}"
+  link_report_item_unselected:
+    title: "&e{date} {id}"
+    lore:
+      - "&7Жалоба от &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eНажмите, чтобы выбрать"
+  link_report_item_selected:
+    title: "&a{date} {id}"
+    lore:
+      - "&7Жалоба от &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eНажмите, чтобы снять выбор"
+
+  staff_members:
+    title: "&e{panel_name}"
+    lore:
+      - "&7Роль: &f{role}"
+      - "&7Minecraft: &f{minecraft_username}"
+      - ""
+      - "&7В сети: {is_online} ({presence})"
+      - "&7Время игры: &f{playtime}"
+      - "&7Выдано наказаний: &f{punishments_count}"
+    not_linked: "Не привязан"
+    filters:
+      online: "В сети"
+      offline: "Не в сети"
+      all: "Все"
+
+  notes:
+    created: "&aЗаметка создана."
+    create_failed: "&cНе удалось создать заметку: {error}"
+    cancelled: "&7Создание заметки отменено."
+    create: "&aСоздать заметку"
+    create_lore: []
+    prompt: "Введите текст заметки об игроке {player}:"
+    chat_label: "Заметка: "
+  modify_punishment:
+    no_changes: "&7Связанные тикеты не изменились."
+    tickets_updated: "&aСвязанные тикеты обновлены."
+    tickets_update_error: "&cНе удалось обновить связанные тикеты: {error}"
+    current_state: "&7Текущее состояние: {state}"
+    add_note:
+      name: "&eДобавить заметку"
+      name_locked: "&7Добавить заметку"
+      lore: []
+      prompt: "Введите заметку для этого наказания:"
+      added: "&aЗаметка добавлена."
+      failed: "&cНе удалось добавить заметку: {error}"
+      cancelled: "&7Добавление заметки отменено."
+    evidence:
+      name: "&bДоказательства"
+      name_locked: "&7Доказательства"
+      none: "&8(Доказательства не приложены)"
+      header: "&7Текущие доказательства ({count}):"
+      entry: "&f- {evidence}"
+      more: "&8... и ещё {count}"
+      left_click_add: "&eЛКМ, чтобы добавить доказательства"
+      right_click_view: "&eПКМ, чтобы посмотреть в чате"
+      no_evidence: "&7К этому наказанию не приложены доказательства."
+      chat_header: "&6Доказательства для наказания #{id}:"
+      chat_entry: "&f{index}. {evidence}"
+      chat_added_by: "&7   Добавил: {uploader}, {date}"
+      prompt: "Введите ссылку на доказательства:"
+      added: "&aДоказательства добавлены."
+      failed: "&cНе удалось добавить доказательства: {error}"
+      cancelled: "&7Добавление доказательств отменено."
+    pardon:
+      name: "&aСнять наказание"
+      name_locked: "&7Снять наказание"
+      lore:
+        - "&7Снять наказание и обнулить"
+        - "&7связанные с ним очки"
+      success: "&aНаказание снято."
+      already_inactive: "&7Наказание уже неактивно или было снято."
+      failed: "&cНе удалось снять наказание: {error}"
+    duration:
+      name: "&6Изменить длительность"
+      name_locked: "&7Изменить длительность"
+      current: "&7Текущая длительность: &f{duration}"
+      # {permanent_keyword} is the literal word players type for a permanent duration; keep it as is
+      prompt: "Введите новую длительность (например, 30d, 2h, 30m, 1d2h30m или '{permanent_keyword}' для бессрочного наказания):"
+      invalid: "&cНеверный формат длительности. Примеры: 30d, 2h, 30m, 1d2h30m"
+      changed: "&aДлительность изменена."
+      failed: "&cНе удалось изменить длительность: {error}"
+      lengthen_only: "&7Это наказание можно только продлить: чтобы сократить его, нужно право снимать наказания."
+      needs_pardon: "&cЧтобы сократить это наказание, нужно право снимать наказания."
+      cancelled: "&7Изменение длительности отменено."
+    linked_tickets:
+      name: "&6Связанные тикеты"
+      none: "&8(Связанных тикетов нет)"
+      header: "&7Связанные тикеты ({count}):"
+      entry: "&f- {ticket}"
+      more: "&8... и ещё {count}"
+      left_click_view: "&eЛКМ, чтобы посмотреть тикеты"
+      right_click_link: "&eПКМ, чтобы привязать жалобы"
+    stat_wipe:
+      name: "&6Переключить сброс статистики"
+      name_locked: "&7Переключить сброс статистики"
+      enable_lore: "&7Включить сброс статистики для этого бана"
+      disable_lore: "&7Выключить сброс статистики для этого бана"
+      enabled: "&aСброс статистики включён."
+      disabled: "&aСброс статистики выключен."
+      failed: "&cНе удалось переключить сброс статистики: {error}"
+    alt_block:
+      name: "&6Переключить блокировку альт-аккаунтов"
+      name_locked: "&7Переключить блокировку альт-аккаунтов"
+      enable_lore: "&7Включить блокировку альт-аккаунтов для этого бана"
+      disable_lore: "&7Выключить блокировку альт-аккаунтов для этого бана"
+      enabled: "&aБлокировка альт-аккаунтов включена."
+      disabled: "&aБлокировка альт-аккаунтов выключена."
+      failed: "&cНе удалось переключить блокировку альт-аккаунтов: {error}"
+
+  online_players:
+    title: "&6{player_name}"
+    lore:
+      - "&7Сессия: &f{session_duration}"
+      - "&7Всего наиграно: &f{total_playtime}"
+      - ""
+      - "&7Жалобы ({report_count}):"
+      - "{report-list}"
+      - ""
+      - "&eЛКМ, чтобы проверить"
+      - "&eПКМ, чтобы выбрать целью"
+    report_entry: " &6- &e{date} {reporter}: &f{details}"
+    reports_more: " &e... и ещё {count}"
+    sorts:
+      least_playtime: "Наименьшее время игры"
+      recent_gameplay_reports: "Недавние игровые жалобы"
+      longest_session: "Самая долгая сессия"
+
+  settings:
+    title: "Настройки"
+    information:
+      name: "&6Информация"
+      username: "&7Никнейм: &f{username}"
+      role: "&7Роль: &f{role}"
+      role_admin: "Super Admin"
+      role_staff: "Персонал"
+      permissions_header: "&7Права:"
+      permission_modify_settings: "&a  ✓ &7Изменение настроек"
+      permission_manage_staff: "&a  ✓ &7Управление персоналом"
+    staff_list:
+      name: "&6Список персонала"
+      lore: []
+    manage_staff:
+      name: "&6Управление персоналом"
+      lore: []
+    edit_roles:
+      name: "&6Редактирование ролей"
+      lore: []
+    reload:
+      name: "&cПерезагрузить modl"
+      lore:
+        - "&7Перезагрузка файлов конфигурации и локализации"
+
+  punish:
+    no_types: "&cНет типов наказаний"
+    no_types_lore:
+      - "&7Не удалось загрузить типы"
+      - "&7наказаний из API"
+    click_to_issue: "&eНажмите, чтобы выдать наказание"
+    click_to_select_severity: "&eНажмите, чтобы выбрать степень тяжести"
+    no_permission_lore:
+      - "&cНет прав"
+    type_not_found: "&cТип наказания не найден"
+    ordinal: "&7Порядковый номер: {ordinal}"
+
+  # Punishment severity menu. {state} is menus.common.enabled or menus.common.disabled
+  punish_severity:
+    severities:
+      lenient:
+        title: "&aМягкое"
+      regular:
+        title: "&eОбычное"
+      aggravated:
+        title: "&cСтрогое"
+    issue_punishment: "&eВыдать наказание"
+    preview_duration: "&7Наказание: &f{duration}"
+    preview_duration_permanent: "&7Наказание: &f{duration} &c(Навсегда)"
+    preview_type: "&7Тип: &f{type}"
+    preview_points: "&7Очки: &e+{points}"
+    offender_level: "&7Уровень нарушителя: {current}&7 → {next}"
+    restricted_until_username:
+      - "&eИгрок будет ограничен, пока"
+      - "&eне сменит никнейм"
+    restricted_until_skin:
+      - "&eИгрок будет ограничен, пока"
+      - "&eне сменит скин"
+    click_to_issue: "&eНажмите, чтобы выдать наказание"
+    click_to_issue_silent: "&eНажмите, чтобы выдать тихое наказание"
+    single_click_to_issue: "&aНажмите, чтобы выдать наказание"
+    single_click_to_issue_silent: "&aНажмите, чтобы выдать тихое наказание"
+    link_reports: "&6Привязать жалобы"
+    link_reports_selected: "&6Привязать жалобы&a ({count})"
+    select_reports: "&eНажмите, чтобы выбрать жалобы"
+    linked_reports_header: "&aПривязанные жалобы:"
+    linked_report_entry: "&7  - &f{id}"
+    modify_selection: "&eНажмите, чтобы изменить выбор"
+    silent_mode: "&6Тихий режим: {state}"
+    silent_on: "&aНаказание будет тихим"
+    silent_off: "&7Наказание будет публичным"
+    alt_blocking: "&6Блокировка альт-аккаунтов: {state}"
+    alt_blocking_on: "&aАльт-аккаунты будут заблокированы"
+    alt_blocking_off: "&7Альт-аккаунты смогут заходить"
+    stat_wipe: "&6Сброс статистики: {state}"
+    stat_wipe_on: "&aСтатистика будет сброшена"
+    stat_wipe_off: "&7Статистика будет сохранена"
+    reason_prompt: "Введите причину наказания для игрока {player}:"
+    reports_resolved: "&aРассмотрено привязанных жалоб: {count}."
+    reports_not_resolved: "&cНе удалось рассмотреть привязанные жалобы ({count}): {reports}"
+    reports_resolve_error: "&cПричина: {error}"
+    issue_failed: "&cНе удалось выдать наказание: {error}"
+    cancelled: "&7Выдача наказания отменена."
+
+  staff_list:
+    no_permission_lore:
+      - "&7У вас нет прав на"
+      - "&7управление персоналом"
+    role: "&7Роль: &f{role}"
+    super_admin_locked: "&cСупер-администраторов нельзя изменять"
+    self_locked: "&cВы не можете изменить свою роль"
+    rank_locked:
+      - "&cВы не можете изменять персонал"
+      - "&cс таким же или более высоким рангом"
+    roles_header: "&7Роли:"
+    role_current: "&a  &l{role} &r&7(текущая)"
+    role_selected: "&a  {role} &7(выбрана)"
+    role_option: "&7  {role}"
+    cycle_roles: "&eПКМ, чтобы переключить роль"
+    apply_role: "&eЛКМ, чтобы применить выбранную роль"
+    no_roles: "&cНет доступных ролей."
+    role_chosen: "&eВыбрана роль: &a{role}&7 (ЛКМ, чтобы применить)"
+    already_current: "&7Это уже текущая роль игрока {player}."
+    applying: "&eНазначение роли &a{role}&e игроку {player}..."
+    updated: "&aРоль обновлена."
+    update_failed: "&cНе удалось обновить роль: {error}"
+
+  roles:
+    no_permission_lore:
+      - "&7У вас нет прав на"
+      - "&7редактирование ролей"
+    permission_count: "&7Права: &f{count}"
+    click_to_edit: "&eНажмите, чтобы изменить права"
+    cannot_edit_own: "&cВы не можете изменить свою роль."
+
+  role_permissions:
+    apply_changes: "&aПрименить изменения"
+    apply_changes_lore: "&eНажмите, чтобы сохранить изменения прав"
+    no_changes: "&7Нет изменений"
+    no_changes_lore: "&8Переключите права, затем нажмите, чтобы сохранить"
+    no_permission_lore:
+      - "&7У вас нет прав на"
+      - "&7изменение прав ролей"
+    auto_granted: "&8Выдано автоматически через родительское право"
+    nothing_to_save: "&7Нет изменений для сохранения."
+    saving: "&eСохранение прав для роли {role}..."
+    saved: "&aПрава сохранены."
+    save_failed: "&cНе удалось сохранить: {error}"
+
+  link_reports:
+    apply: "&aПрименить выбор"
+    apply_lore:
+      - "&7Сохранить выбор и вернуться"
+      - ""
+      - "&eВыбрано жалоб: {count}"
+    select_all: "&aВыбрать все"
+    select_all_lore:
+      - "&7Переключить все отфильтрованные жалобы"
+
+  punishment_kind:
+    kick: "Кик"
+    ban: "бан"
+    mute: "мут"
+    details: " &f({details})"
+
+  # Chat input prompts opened from menus. {cancel} is the literal word that cancels the prompt; keep it as is
+  chat_input:
+    prompt: "&6&l» &e{prompt}"
+    hint: "&7Напишите ответ в чат или введите &c{cancel} &7для отмены."
+    timed_out: "&cВремя ввода истекло. Попробуйте ещё раз."
+
+# Set usage to "" to hide a command from the help list.
+help:
+  header: "&a&lmodl &av{version} &f- &eСписок команд"
+  entry: "&f/{command} &7- {description}"
+  footer: "&eСтраница {page}/{total_pages}. Используйте &a/modl help {next_page}&e для следующей страницы."
+  no_more_pages: "&7Больше страниц нет."
+  version_header: "&a&lmodl&a v{version}&f - &eСистема управления модерацией и поддержкой"
+  version_footer: "&7Свободное ПО под GNU AGPLv3. Используйте /modl help для справки по командам."
+  player_commands:
+    iammuted:
+      usage: "iammuted <игрок>"
+      description: "Сообщить кому-либо, что вы замучены"
+    standing:
+      usage: "standing"
+      description: "Посмотреть свой статус нарушений"
+    report:
+      usage: "report <игрок>"
+      description: "Пожаловаться на игрока"
+    chatreport:
+      usage: "chatreport <игрок>"
+      description: "Пожаловаться на чат игрока"
+    claimticket:
+      usage: "claimticket <id> <ключ>"
+      description: "Привязать тикет к своему аккаунту"
+    apply:
+      usage: "apply"
+      description: "Подать заявку в персонал"
+    bugreport:
+      usage: "bugreport"
+      description: "Сообщить об ошибке"
+    support:
+      usage: "support"
+      description: "Открыть тикет в поддержку"
+    link:
+      usage: "modl link <код>"
+      description: "Привязать аккаунт Minecraft к панели"
+    panel:
+      usage: "modl panel"
+      description: "Получить одноразовую ссылку для входа в панель"
+  staff_commands:
+    staffmenu:
+      usage: "staffmenu"
+      description: "Открыть меню персонала"
+    inspect:
+      usage: "inspect <игрок> [-p]"
+      description: "Открыть меню проверки игрока (-p для текста)"
+    history:
+      usage: "history <игрок> [-p [страница]]"
+      description: "Открыть историю игрока (-p для текста)"
+    notes:
+      usage: "notes <игрок> [-p [страница]]"
+      description: "Открыть заметки об игроке (-p для текста)"
+    alts:
+      usage: "alts <игрок> [-p [страница]]"
+      description: "Открыть альт-аккаунты игрока (-p для текста)"
+    reports:
+      usage: "reports [игрок] [-p [страница]]"
+      description: "Открыть меню жалоб (-p для текста)"
+    punish:
+      usage: "punish <игрок> [тип] [причина]"
+      description: "Выдать наказание"
+    ban:
+      usage: "ban <игрок> [длительность] [причина]"
+      description: "Забанить игрока"
+    mute:
+      usage: "mute <игрок> [длительность] [причина]"
+      description: "Замутить игрока"
+    kick:
+      usage: "kick <игрок> [причина]"
+      description: "Кикнуть игрока"
+    blacklist:
+      usage: "blacklist <игрок> [причина]"
+      description: "Внести игрока в чёрный список"
+    pardon:
+      usage: "pardon <игрок>"
+      description: "Снять все активные и ожидающие наказания"
+    unban:
+      usage: "unban <игрок>"
+      description: "Снять все активные и ожидающие баны"
+    unmute:
+      usage: "unmute <игрок>"
+      description: "Снять все активные и ожидающие муты"
+    replay:
+      usage: "replay <status|capture> [игрок]"
+      description: "Управление записями реплеев"
+    modl_reload:
+      usage: "modl reload"
+      description: "Перезагрузить конфигурацию"
+    modl_import:
+      usage: "modl import"
+      description: "Импорт из LiteBans (только консоль)"
+    modl_status:
+      usage: "modl status"
+      description: "Показать отчёт для поддержки, которым можно безопасно поделиться (только консоль)"
+
+stat_wipe:
+  kick_message: "&cПожалуйста, перезайдите на сервер. Ваша статистика сбрасывается в связи с недавно истёкшим баном."
+
+staff_chat:
+  enabled: "&eЧат персонала &aвключён&e. Сообщения по умолчанию будут отправляться в чат персонала."
+  disabled: "&eЧат персонала &cвыключен&e. Сообщения по умолчанию будут отправляться в локальный чат."
+  feature_disabled: "&cЧат персонала не включён на этом сервере."
+  already_normal: "&cВы уже находитесь в режиме локального чата."
+  mode_lost: "&cВам больше недоступен чат персонала, поэтому вы возвращены в локальный чат. Ваше сообщение не отправлено."
+  format: "&b[ПЕРСОНАЛ] &e{panel-name}&f: {message}"
+  local_chat_enabled: "&eЧат персонала &cвыключен&e. Сообщения по умолчанию будут отправляться в локальный чат."
+
+chat_management:
+  chat_toggled_on: "&7&o[{staff}: включил чат]"
+  chat_toggled_off: "&7&o[{staff}: выключил чат]"
+  chat_disabled: "&cЧат сейчас отключён."
+  chat_cleared: "&7&o[{staff}: очистил чат]"
+  slow_mode_enabled: "&7&o[{staff}: включил медленный режим чата - {seconds}с]"
+  slow_mode_disabled: "&7&o[{staff}: выключил медленный режим]"
+  slow_mode_wait: "&cПодождите {seconds} сек., прежде чем снова писать в чат."
+  invalid_seconds: "&cВведите корректное количество секунд."
+  usage_toggle: "&fИспользование: &a/chat &ftoggle"
+  usage_clear: "&fИспользование: &a/chat &fclear"
+  usage_slow: "&fИспользование: &a/chat &fslow <секунды|off>"
+  help:
+    header: "&eКоманды чата:"
+    staff: "&f/chat staff &7- Переключить режим чата персонала"
+    toggle: "&f/chat toggle &7- Включить/выключить публичный чат"
+    clear: "&f/chat clear [количество] &7- Очистить чат"
+    slow: "&f/chat slow <секунды|off> &7- Включить/выключить медленный режим"
+
+staff_notifications:
+  join: "&7&o[{staff}: зашёл]"
+  verified: "&7&o[{staff}: подтвердил личность]"
+  leave: "&7&o[{staff}: вышел]"
+  switch: "&7&o[{staff}: подключился к {server}]"
+  generic: "&7&o[{message}]"
+  click_to_target: "Нажмите, чтобы выбрать целью {player}"
+
+staff_2fa:
+  not_verified: "&cВы должны подтвердить свою личность перед использованием команд персонала. Используйте &f/verify"
+  verify_prompt: "&aНажмите на ссылку для подтверждения: &f{url}"
+  verify_success: "&aЛичность подтверждена."
+  verify_error: "&cНе удалось создать ссылку для подтверждения. Попробуйте ещё раз."
+  auto_verified: "&aАвтоматически подтверждено по доверенному IP."
+
+verify:
+  only_players: "&cЭту команду могут использовать только игроки."
+  disabled: "&c2FA для персонала не включена на этом сервере."
+  already_verified: "&aВы уже подтвердили свою личность."
+  header: ""
+  instructions: "&aНажмите на ссылку ниже, чтобы подтвердить свою личность:"
+  click_here: "Нажмите здесь для подтверждения"
+  click_here_hover: "Нажмите, чтобы открыть страницу подтверждения"
+  error: "&cНе удалось создать ссылку для подтверждения. Попробуйте ещё раз."
+  footer: "&eСрок действия ссылки скоро истечёт."
+
+panel_account:
+  link_success: "&aВаш аккаунт Minecraft теперь привязан к вашему аккаунту панели."
+  link_invalid_code: "&cЭтот код недействителен или срок его действия истёк. Создайте новый в панели в разделе «Настройки аккаунта»."
+  link_already_linked: "&cЭтот аккаунт Minecraft уже привязан к другой учётной записи панели. Сначала отвяжите его там, затем попробуйте снова."
+  link_error: "&cСейчас не удалось привязать аккаунт. Повторите попытку через мгновение."
+  login_offline_mode: "&cВход в панель из игры отключён, так как этот сервер не проверяет аккаунты игроков."
+  login_not_linked: "&cВаш аккаунт Minecraft не привязан к аккаунту панели. Создайте код в панели в разделе «Настройки аккаунта», затем выполните &e/modl link <код>&c."
+  login_not_online: "&cПанель пока не видит вас в сети. Повторите попытку через мгновение."
+  login_error: "&cСейчас не удалось создать ссылку для входа в панель. Повторите попытку через мгновение."
+  login_link: "Открыть панель"
+  login_link_hover: "Одноразовая ссылка, истекает через {minutes} мин."
+  rate_limited: "&cВы делаете это слишком часто. Подождите немного и повторите попытку."
+
+maintenance:
+  enabled: "&7&o[{staff}: включил режим техработ]"
+  disabled: "&7&o[{staff}: выключил режим техработ]"
+  already_enabled: "&cРежим техработ уже включён."
+  already_disabled: "&cРежим техработ уже выключен."
+  status_enabled: "&eРежим техработ сейчас включён."
+  status_disabled: "&eРежим техработ сейчас выключен."
+  login_denied: "&cНа сервере идут технические работы. Попробуйте позже."
+  kick_message: "&cНа сервере начались технические работы. Попробуйте позже."
+  usage: "&fИспользование: &a/maintenance&f <on|off>"
+
+freeze:
+  frozen_message: "&cВы заморожены. Не выходите с сервера."
+  staff_notification_freeze: "&7&o[{staff}: заморозил {player}]"
+  staff_notification_unfreeze: "&7&o[{staff}: разморозил {player}]"
+  unfrozen: "&aВы разморожены."
+  logout_notification: "&c&l{player} вышел во время заморозки."
+  frozen_chat: "&b[ЗАМОРОЖЕН] &e{player}&f: {message}"
+  command_blocked: "&cВы не можете использовать команды во время заморозки."
+  target_offline: "&c{player} не в сети на этом сервере, поэтому его нельзя заморозить."
+  not_enforced: "&e{player} заморожен, но его сервер ещё не подключён к modl, поэтому движение не будет заблокировано, пока сервер не подключится."
+  limit_reached: "&cСейчас заморожено слишком много игроков."
+
+intercept_chat:
+  enabled: "&aПерехват сетевого чата включён"
+  disabled: "&aПерехват сетевого чата выключен"
+  format: "&8[G-{server}] &e{player}&f: {message}"
+
+intercept:
+  message: "&8[Перехват] &f{player}: &7{message}"
+
+chat_logs:
+  header: ""
+  entry: "&7[{timestamp}] &8[{server}] &f{message}"
+  empty: "&7Логи чата для этого игрока не найдены."
+  footer: "&eСтраница {page}/{total_pages} (всего {total})"
+  error: "&cНе удалось загрузить логи чата."
+  usage: "&fИспользование: &a/chatlogs&f <игрок>"
+
+command_logs:
+  header: ""
+  entry: "&7[{timestamp}] &e{player}&7: &f/{command}"
+  empty: "&7Логи команд для этого игрока не найдены."
+  footer: "&eСтраница {page}/{total_pages} (всего {total})"
+  error: "&cНе удалось загрузить логи команд."
+  usage: "&fИспользование: &a/commandlogs&f <игрок>"
+
+staff_mode:
+  enabled: "&aРежим персонала включён"
+  disabled: "&aРежим персонала выключен"
+  enabled_broadcast: "&7&o[{staff}: вошёл в режим персонала]"
+  disabled_broadcast: "&7&o[{staff}: вышел из режима персонала]"
+  limit_reached: "&cСейчас слишком много сотрудников в режиме персонала."
+
+vanish:
+  enabled: "&aВы стали невидимы"
+  disabled: "&aВы снова видимы"
+  enabled_broadcast: "&7&o[{staff}: включил невидимость]"
+  disabled_broadcast: "&7&o[{staff}: выключил невидимость]"
+
+target:
+  targeting: "&eТекущая цель: &f{player}"
+  cleared: "&aЦель сброшена."
+  usage: "&fИспользование: &a/target&f <игрок>"
+  connecting: "&eПодключение к &f{server}&e, чтобы выбрать целью &f{player}&e..."
+  cannot_target_self: "&cВы не можете выбрать целью самого себя."
+  not_online: "&cИгрок не в сети."
+  target_left: "&c{player} покинул сеть. Возврат в режим персонала."
+
+network:
+  action_unavailable: "&cЭто действие сейчас недоступно."
+
+replay:
+  usage:
+    - "&f/replay status [игрок] &7- Проверить статус записи"
+    - "&f/replay capture [игрок] &7- Сохранить и загрузить реплей"
+  not_available: "&cЗапись реплеев недоступна на этом сервере."
+  status_recording: "&aИгрок {player} сейчас записывается"
+  status_not_recording: "&cИгрок {player} не записывается"
+  no_server_connected: "&cНет подключённого сервера для сохранения реплея."
+  no_active_recording: "&cНет активной записи для игрока {player}"
+  capturing: "&aСохранение и загрузка реплея для игрока {player}..."
+  capture_success: "&aРеплей для игрока {player} сохранён"
+  capture_link: "&b{url}"
+  capture_failed: "&cНе удалось сохранить реплей для игрока {player}"
+  click_to_view: "[Нажмите, чтобы посмотреть реплей]"
+  click_to_view_hover: "Открыть просмотрщик реплеев"
+  console_specify_player: "&cУкажите имя игрока при запуске из консоли."
+
+standing_gui:
+  title: "&fВаш статус"
+  social_status:
+    title: "&eСоциальный статус: {status}"
+    description:
+      Low:
+        - "&7Наказания в этой категории остаются мягкими."
+      Medium:
+        - "&7Наказания в этой категории строже."
+      Habitual:
+        - "&7Наказания в этой категории очень строгие."
+  gameplay_status:
+    title: "&eИгровой статус: {status}"
+    description:
+      Low:
+        - "&7Наказания в этой категории остаются мягкими."
+      Medium:
+        - "&7Наказания в этой категории строже."
+      Habitual:
+        - "&7Наказания в этой категории очень строгие."
+  status_display:
+    Low: "&aНизкий"
+    Medium: "&6Средний"
+    Habitual: "&cСистематический"
+  punishment_item:
+    status_pardoned: "снято {duration} назад"
+    status_rolled_back: "отменено {duration} назад"
+    status_queued: "в очереди"
+    status_permanent: "навсегда"
+    status_expires: "истекает через {duration}"
+    status_expired_ago: "истекло {duration} назад"
+    status_expired: "истекло"
+    title: "&e#{id} {date}"
+    lore:
+      - "&7{duration} {type} ({status})"
+      - ""
+      - "&f{reason}"
+
+punishment_action:
+  unknown_action: "&cНеизвестное действие: {action}"
+  enter_evidence_url: "&7Введите ссылку на доказательства для наказания #{id}:"
+  no_url: "&cСсылка не указана."
+  evidence_linked: "&aДоказательства привязаны к наказанию #{id}"
+  evidence_link_failed: "&cНе удалось привязать доказательства: {error}"
+  evidence_cancelled: "&7Привязка доказательств отменена."
+  generating_upload: "&7Создание ссылки для загрузки..."
+  upload_failed: "&cНе удалось создать ссылку для загрузки."
+  upload_link: "Нажмите здесь, чтобы загрузить доказательства"
+  upload_link_hover: "Откроется в вашем браузере"
+  buttons:
+    label: "Наказание #{id}: "
+    modify: "[Изменить]"
+    modify_hover: "Нажмите, чтобы изменить это наказание"
+    link_evidence: "[Привязать доказательства]"
+    link_evidence_hover: "Нажмите, чтобы привязать ссылку как доказательство"
+    upload_evidence: "[Загрузить доказательства]"
+    upload_evidence_hover: "Нажмите, чтобы загрузить файлы как доказательства"
+
+import:
+  usage: "Использование: /modl import <source>, затем /modl import <source> confirm <widen|skip> <keep|standard>. Также: /modl import status, /modl import cancel."
+  detected: "Найдено здесь: {detected}. Поддерживаются: {supported}."
+  nothing_detected: "Здесь не найдено данных ни одного поддерживаемого плагина. Поддерживаются: {supported}."
+  unknown_source: "{source} не является поддерживаемым источником. Поддерживаются: {supported}."
+  litebans_missing: "LiteBans не работает на этом сервере. Установите и включите его здесь (в сети - на прокси), подключив к вашей базе данных LiteBans, перезапустите сервер и повторите команду."
+  source_missing: "На этом сервере не найдено данных {source}. Выполните команду на сервере, где они есть (в сети это прокси, на котором работает modl)."
+  source_locked: "{source} запущен и держит файл своей базы данных открытым. Удалите его jar (папку оставьте), перезапустите сервер и повторите команду."
+  database_failed: "Не удалось прочитать данные {source}: {error}"
+  no_space: "Недостаточно свободного места на диске, чтобы скопировать базу данных {source}: {error}"
+  nothing_to_import: "В {source} нет игроков или наказаний для импорта."
+  nothing_left: "С этим выбором импортировать нечего."
+  setup_required: "Сначала завершите настройку modl в панели."
+  busy: "Здесь уже идёт проверка или импорт. См. /modl import status."
+  already_running: "Идёт импорт, запущенный на {server} ({address}). См. /modl import status или остановите его командой /modl import cancel."
+  ip_history_release_running: "История IP, сохранённая предыдущим импортом, ещё освобождается. Повторите попытку позже."
+  storage_moving: "Загруженные файлы переносятся в другое хранилище. Повторите попытку после завершения переноса."
+  database_moving: "modl переходит на другую базу данных. Повторите попытку после завершения переноса."
+  confirm_first: "Сначала выполните /modl import {source_id}, затем подтвердите в течение 60 секунд."
+  choices_required: "Нужны оба параметра: /modl import {source_id} confirm <widen|skip> <keep|standard>"
+  preview:
+    counts: "В {source} банов: {bans}, мутов: {mutes}, предупреждений: {warnings}, киков: {kicks}, заметок: {notes}, игроков: {players}."
+    not_imported: "Не импортируются: наказания без аккаунта игрока ({without_account})."
+    scoped: "Наказаний по IP: {ip_wide}, ограниченных сервером: {server_scoped}. widen: они действуют на аккаунт на всех серверах, а баны по IP также блокируют его альт-аккаунты. skip: они пропускаются."
+    ip_history: "Записей истории IP старше {days} дн.: {old_entries} (около {old_megabytes} МБ). keep: сохраняется импортированная история IP. standard: история IP старше {days} дн. удаляется."
+    ip_history_kept: "Предыдущий импорт сохраняет старую историю IP. standard отменяет это и удаляет её."
+    backup: "Сначала сделайте резервную копию modl. При отмене импортированное остаётся, а повторный импорт только добавляет."
+    confirm: "Для запуска выполните в течение 60 секунд: /modl import {source_id} confirm <widen|skip> <keep|standard>"
+  started: "Импорт из {source} запущен ({scoped_choice}, {history_choice})."
+  exporting: "Чтение {source}: игроков {processed} из {total}."
+  uploading: "Отправка экспорта в modl."
+  processing_started: "modl получил экспорт и импортирует его."
+  completed: "Импорт из {source} завершён: игроков импортировано {processed}, пропущено {skipped}, наказаний не включено {not_imported}."
+  completed_partly: "Импорт из {source} завершён с проблемами: игроков импортировано {processed}, не прочитано {failed}, пропущено {skipped}, наказаний не включено {not_imported}. Устраните проблемы и повторите."
+  cancelling: "Остановка импорта."
+  cancel_keeps_imported: "Уже импортированные записи остаются."
+  nothing_to_cancel: "Импорт не выполняется."
+  job_gone: "Сервер modl больше не знает об этом импорте."
+  too_many_players: "В {source} слишком много игроков для одного импорта (предел 1 000 000): {error}"
+  every_player_failed: "Не удалось прочитать ни одного игрока из {source}: {error}"
+  file_failed: "Не удалось записать файл экспорта: {error}"
+  upload_blocked: "Обратный прокси или CDN перед modl отклонил файл как слишком большой: {error}"
+  upload_failed: "Не удалось отправить экспорт в modl: {error}"
+  unreachable: "Не удалось связаться с modl: {error}"
+  request_failed: "Запрос импорта не выполнен: {error}"
+  status:
+    none: "Импорт ещё не выполнялся."
+    building_json: "Чтение {source}: игроков {processed} из {total}."
+    uploading_json: "Экспорт ожидает отправки."
+    receiving_file: "modl принимает экспорт."
+    processing_data: "Импорт: игроков {processed} из {total}, пропущено {skipped}."
+    details: "Импорт из {source} запущен с {server} ({address}), параметры {scoped_choice} и {history_choice}."
+  ended:
+    cancelled: "Импорт отменён."
+    timed_out: "Импорт перестал отвечать, время истекло. Запустите его снова."
+    interrupted: "Импорт прерван перезапуском. Запустите его снова."
+    export_failed: "Экспорт из {source} не выполнен. Запустите его снова."
+    upload_failed: "Отправка экспорта не удалась. Запустите её снова."
+    file_too_large: "Экспорт превышает предел импорта."
+    invalid_file: "modl не смог прочитать экспорт: {error}"
+    import_failed: "Импорт не выполнен: {error}"
+
+server_features:
+  staff_mode:
+    random_teleport:
+      no_players: "&cНет игроков, к которым можно телепортироваться."
+      teleported: "&aВы телепортированы к &f{player}&a."
+    teleport:
+      teleported: "&aВы телепортированы к &f{player}&f."
+      target_offline: "&cЦель больше не в сети."
+    custody:
+      not_saved: "&cРежим персонала не включён: ваши вещи не удалось надёжно сохранить. Всё остаётся у вас. Выключите режим персонала и попросите владельца сервера проверить консоль."
+      kept_changing: "&cРежим персонала не включён: ваш инвентарь постоянно менялся. Всё остаётся у вас. Выключите режим персонала, постойте на месте и попробуйте снова."
+      unresolved: "&cРежим персонала не включён: предыдущее сохранение ваших вещей не завершено. Попросите владельца сервера проверить консоль, затем перезайдите."
+      held: "&cВаши вещи пока не удалось вернуть. modl надёжно их хранит, а предметы останутся заблокированными до возврата. Попросите владельца сервера проверить консоль."
+      record_missing: "&cmodl не нашёл сохранённых вещей вашей сессии в режиме персонала. Попросите владельца сервера проверить консоль."
+    unknown_player: "Неизвестно"
+    scoreboard:
+      vanish_on: "&aВКЛ"
+      vanish_off: "&cВЫКЛ"
+      vanished: "Невидим"
+      visible: "Виден"
+      frozen_yes: "&cДа"
+      frozen_no: "&aНет"
+      target_offline: "Не в сети"
+      no_target: "Нет"
+      not_available: "Н/Д"
+    silent_container:
+      block_title: "&8Просмотр: {container}"
+      inventory_title: "&8Просмотр: инвентарь {player}"
+  freeze:
+    frozen: "&c&lВас заморозил сотрудник. Не отключайтесь."
+    unfrozen: "&aВы разморожены."
+    chat: "&b[Заморожен] &e{player}&f: {message}"
+    no_commands: "&cПока вы заморожены, команды недоступны."
+  command:
+    modlserver:
+      usage: "Использование: &a/modlserver reload"
+      no_permission: "&cУ вас нет прав на эту команду."
+      reloading: "&eПерезагрузка настроек серверных функций modl..."
+      reloaded: "&aНастройки серверных функций перезагружены."
+      reload_failed: "&cПерезагружено с ошибками в: &f{files}&c. Подробности в консоли."
+      restart_required: "&eЭти настройки применятся только после перезапуска: &f{keys}"
+    proxycmd:
+      console_only: "&cЭту команду можно выполнить только из консоли."
+      usage: "Использование: &a/proxycmd &f<команда>"
+      not_connected: "&cНет подключения к прокси. Проверьте настройки подключения в connection.yml."
+      sent: "&aОтправлено на прокси: {command}"
+      refused: "&cПрокси выполняет только команды modl; {command} отклонена."
+      disabled: "&c/proxycmd отключена для ключа этого сервера. Владелец может разрешить её в Panel > Настройки > Общие > Серверы Minecraft; до тех пор выполняйте команду в консоли прокси."
+      no_answer: "&cПрокси не ответил вовремя."
+      rate_limited: "&cСейчас слишком много команд прокси; повторите через мгновение."
+      invalid: "&cПрокси не удалось выполнить {command}."
+  network:
+    unavailable: "&cСейчас прокси недоступен; попробуйте чуть позже."
+
+support_status:
+  header: "==== Состояние modl: скопируйте всё до последней строки в запрос в поддержку ===="
+  footer: "==== Конец состояния modl ===="
+  collecting: "Сбор состояния modl..."
+  backend_unavailable: "modl не подключён к своему серверу, поэтому показана только часть плагина. Причина указана в строках консоли выше."
+  backend_failed: "Сервер modl не ответил, поэтому показана только часть плагина."

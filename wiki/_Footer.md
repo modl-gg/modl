@@ -1,0 +1,1 @@
+modl is free software under the [AGPL-3.0](https://github.com/modl-gg/modl/blob/main/LICENSE). [Source and releases](https://github.com/modl-gg/modl), [issues](https://github.com/modl-gg/modl/issues).

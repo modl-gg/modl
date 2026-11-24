@@ -1,0 +1,248 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+enum AiProviderGroup {
+  AI_PROVIDER_GROUP_UNSPECIFIED = 0;
+  AI_PROVIDER_GROUP_CLOUD = 1;
+  AI_PROVIDER_GROUP_GATEWAY = 2;
+  AI_PROVIDER_GROUP_LOCAL = 3;
+  AI_PROVIDER_GROUP_CUSTOM = 4;
+}
+
+enum AiEndpointRegion {
+  AI_ENDPOINT_REGION_UNSPECIFIED = 0;
+  AI_ENDPOINT_REGION_GLOBAL = 1;
+  AI_ENDPOINT_REGION_CHINA = 2;
+  AI_ENDPOINT_REGION_SINGAPORE = 3;
+  AI_ENDPOINT_REGION_US = 4;
+}
+
+enum AiReadiness {
+  AI_READINESS_UNSPECIFIED = 0;
+  AI_READINESS_READY = 1;
+  AI_READINESS_NOT_CONFIGURED = 2;
+  AI_READINESS_KEY_MISSING = 3;
+  AI_READINESS_MODEL_MISSING = 4;
+  AI_READINESS_BASE_URL_INVALID = 5;
+  AI_READINESS_CONFIG_PROVIDER_MISSING = 6;
+  AI_READINESS_CONFIG_PROVIDER_UNKNOWN = 7;
+}
+
+enum AiOutputMode {
+  AI_OUTPUT_MODE_UNSPECIFIED = 0;
+  AI_OUTPUT_MODE_SCHEMA = 1;
+  AI_OUTPUT_MODE_JSON_OBJECT = 2;
+  AI_OUTPUT_MODE_PROMPT_ONLY = 3;
+}
+
+enum AiFailure {
+  AI_FAILURE_UNSPECIFIED = 0;
+  AI_FAILURE_AUTH = 1;
+  AI_FAILURE_PERMISSION = 2;
+  AI_FAILURE_QUOTA = 3;
+  AI_FAILURE_RATE_LIMITED = 4;
+  AI_FAILURE_MODEL_NOT_FOUND = 5;
+  AI_FAILURE_INVALID_REQUEST = 6;
+  AI_FAILURE_CONNECT = 7;
+  AI_FAILURE_TLS = 8;
+  AI_FAILURE_TIMEOUT = 9;
+  AI_FAILURE_BLOCKED_ADDRESS = 10;
+  AI_FAILURE_REDIRECT = 11;
+  AI_FAILURE_RESPONSE_TOO_LARGE = 12;
+  AI_FAILURE_INVALID_RESPONSE = 13;
+  AI_FAILURE_PROVIDER_ERROR = 14;
+  AI_FAILURE_TRUNCATED = 15;
+  AI_FAILURE_REFUSED = 16;
+  AI_FAILURE_FILTERED = 17;
+  AI_FAILURE_LIST_UNSUPPORTED = 18;
+  AI_FAILURE_BUSY = 19;
+  AI_FAILURE_HOURLY_BUDGET = 20;
+  AI_FAILURE_DAILY_BUDGET = 21;
+  AI_FAILURE_REPORTER_LIMIT = 22;
+}
+
+enum AiModelWarning {
+  AI_MODEL_WARNING_UNSPECIFIED = 0;
+  AI_MODEL_WARNING_DEPRECATED = 1;
+  AI_MODEL_WARNING_RETIRING = 2;
+  AI_MODEL_WARNING_NOT_LISTED = 3;
+}
+
+message AiLimits {
+  int32 calls_per_hour = 1 [
+    json_name = "callsPerHour",
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 10000
+    }
+  ];
+  int32 calls_per_day = 2 [
+    json_name = "callsPerDay",
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 100000
+    }
+  ];
+  int32 reports_per_reporter_per_hour = 3 [
+    json_name = "reportsPerReporterPerHour",
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 1000
+    }
+  ];
+  int32 concurrent_calls = 4 [
+    json_name = "concurrentCalls",
+    (buf.validate.field).int32 = {
+      gte: 1
+      lte: 16
+    }
+  ];
+  int32 max_output_tokens = 5 [
+    json_name = "maxOutputTokens",
+    (buf.validate.field).int32 = {
+      gte: 256
+      lte: 32768
+    }
+  ];
+}
+
+message UpdateAiSettingsRequest {
+  optional string active_provider = 1 [
+    json_name = "activeProvider",
+    (buf.validate.field).string.max_len = 32
+  ];
+  AiLimitsUpdate limits_update = 3 [json_name = "limitsUpdate"];
+}
+
+message AiLimitsUpdate {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  AiLimits limits = 2 [(buf.validate.field).required = true];
+}
+
+message SaveAiConnectionRequest {
+  optional string base_url = 1 [
+    json_name = "baseUrl",
+    (buf.validate.field).string.max_len = 2048
+  ];
+  optional string api_key = 2 [
+    json_name = "apiKey",
+    (buf.validate.field).string.max_len = 512
+  ];
+  optional string model = 3 [(buf.validate.field).string.max_len = 200];
+  bool activate = 4;
+}
+
+message AiConnectionDraft {
+  string provider = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }];
+  optional string base_url = 2 [
+    json_name = "baseUrl",
+    (buf.validate.field).string.max_len = 2048
+  ];
+  optional string api_key = 3 [
+    json_name = "apiKey",
+    (buf.validate.field).string.max_len = 512
+  ];
+  optional string model = 4 [(buf.validate.field).string.max_len = 200];
+}
+
+message ListAiModelsRequest {
+  AiConnectionDraft connection = 1 [(buf.validate.field).required = true];
+  bool refresh = 2;
+}
+
+message TestAiConnectionRequest {
+  AiConnectionDraft connection = 1 [(buf.validate.field).required = true];
+}
+
+message AiEndpoint {
+  AiEndpointRegion region = 1;
+  string base_url = 2 [json_name = "baseUrl"];
+}
+
+message AiProviderInfo {
+  string id = 1;
+  string display_name = 2 [json_name = "displayName"];
+  AiProviderGroup group = 3;
+  repeated AiEndpoint endpoints = 4;
+  bool base_url_editable = 5 [json_name = "baseUrlEditable"];
+  bool api_key_required = 6 [json_name = "apiKeyRequired"];
+  optional string key_page_url = 7 [json_name = "keyPageUrl"];
+}
+
+message AiConnectionInfo {
+  string provider = 1;
+  string base_url = 2 [json_name = "baseUrl"];
+  bool has_api_key = 3 [json_name = "hasApiKey"];
+  optional string model = 4;
+  AiOutputMode output_mode = 5 [json_name = "outputMode"];
+  google.protobuf.Timestamp verified_at = 6 [json_name = "verifiedAt"];
+}
+
+message AiManagedFields {
+  bool provider = 1;
+  bool api_key = 2 [json_name = "apiKey"];
+  bool model = 3;
+  bool base_url = 4 [json_name = "baseUrl"];
+}
+
+message AiHealth {
+  google.protobuf.Timestamp last_success_at = 1 [json_name = "lastSuccessAt"];
+  AiFailure last_failure = 2 [json_name = "lastFailure"];
+  google.protobuf.Timestamp last_failure_at = 3 [json_name = "lastFailureAt"];
+  google.protobuf.Timestamp paused_until = 4 [json_name = "pausedUntil"];
+  int32 calls_this_hour = 5 [json_name = "callsThisHour"];
+  int32 calls_today = 6 [json_name = "callsToday"];
+  AiModelWarning model_warning = 7 [json_name = "modelWarning"];
+  google.protobuf.Timestamp model_retires_at = 8 [json_name = "modelRetiresAt"];
+}
+
+message AiSettingsResponse {
+  repeated AiProviderInfo providers = 1;
+  optional string active_provider = 2 [json_name = "activeProvider"];
+  repeated AiConnectionInfo connections = 3;
+  AiManagedFields managed = 4;
+  AiReadiness readiness = 5;
+  AiLimits limits = 6;
+  AiHealth health = 7;
+  int64 limits_version = 8 [json_name = "limitsVersion"];
+}
+
+message AiStatusResponse {
+  bool ready = 1;
+  AiReadiness readiness = 2;
+  optional string provider_name = 3 [json_name = "providerName"];
+  optional string model = 4;
+}
+
+message AiModel {
+  string id = 1;
+  optional string display_name = 2 [json_name = "displayName"];
+  bool chat_capable = 3 [json_name = "chatCapable"];
+  bool deprecated = 4;
+  google.protobuf.Timestamp retires_at = 5 [json_name = "retiresAt"];
+  optional bool structured_outputs = 6 [json_name = "structuredOutputs"];
+}
+
+message AiModelsResponse {
+  repeated AiModel models = 1;
+  bool stale = 2;
+  google.protobuf.Timestamp fetched_at = 3 [json_name = "fetchedAt"];
+  AiFailure failure = 4;
+}
+
+message AiTestResponse {
+  bool success = 1;
+  AiFailure failure = 2;
+  AiOutputMode output_mode = 3 [json_name = "outputMode"];
+  int64 latency_ms = 4 [json_name = "latencyMs"];
+  optional int32 upstream_status = 5 [json_name = "upstreamStatus"];
+}

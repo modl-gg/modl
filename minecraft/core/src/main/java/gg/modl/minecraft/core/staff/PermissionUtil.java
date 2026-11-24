@@ -1,0 +1,56 @@
+package gg.modl.minecraft.core.staff;
+
+import org.jspecify.annotations.Nullable;
+import revxrsal.commands.command.CommandActor;
+import gg.modl.minecraft.api.http.response.SyncResponse;
+import gg.modl.minecraft.core.cache.Cache;
+import gg.modl.minecraft.core.util.CommandUtil;
+import gg.modl.minecraft.core.cache.CachedProfile;
+import gg.modl.minecraft.core.util.Permissions;
+
+import java.util.UUID;
+
+public final class PermissionUtil {
+    private PermissionUtil() {}
+    public static boolean hasPermission(CommandActor actor, Cache cache, String permission) {
+        if (CommandUtil.isConsole(actor)) return true;
+        return cache.hasPermission(actor.uniqueId(), permission);
+    }
+
+    public static boolean hasAnyPermission(CommandActor actor, Cache cache, String... permissions) {
+        if (CommandUtil.isConsole(actor)) return true;
+        for (String permission : permissions) {
+            if (hasPermission(actor, cache, permission)) return true;
+        }
+        return false;
+    }
+
+    public static SyncResponse.@Nullable ActiveStaffMember getStaffMember(CommandActor actor, Cache cache) {
+        if (CommandUtil.isConsole(actor)) return null;
+        CachedProfile profile = cache.getPlayerProfile(actor.uniqueId());
+        return profile != null ? profile.getStaffMember() : null;
+    }
+
+    public static boolean isStaff(CommandActor actor, Cache cache) {
+        if (CommandUtil.isConsole(actor)) return false;
+        return isStaff(actor.uniqueId(), cache);
+    }
+
+    public static boolean isStaff(UUID playerUuid, Cache cache) {
+        if (cache == null) return false;
+        if (cache.isStaffMemberByPermissions(playerUuid)) return true;
+        CachedProfile profile = cache.getPlayerProfile(playerUuid);
+        return profile != null && profile.getStaffMember() != null;
+    }
+
+    public static boolean canViewPlayers(UUID playerUuid, Cache cache) {
+        return cache.hasPermission(playerUuid, Permissions.PUNISHMENT_VIEW)
+                || cache.hasPermission(playerUuid, Permissions.PUNISHMENT_MODIFY)
+                || cache.hasAnyPermissionWithPrefix(playerUuid, Permissions.PUNISHMENT_APPLY_PREFIX);
+    }
+
+    public static String punishmentApplyPermission(int typeOrdinal) {
+        return Permissions.PUNISHMENT_APPLY_PREFIX + typeOrdinal;
+    }
+}
+

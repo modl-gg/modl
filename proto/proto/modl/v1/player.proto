@@ -1,0 +1,418 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/struct.proto";
+import "modl/v1/common.proto";
+import "modl/v1/punishment.proto";
+
+// --- Shared data types ---
+
+message UsernameEntry {
+  string username = 1;
+  string date = 2;
+}
+
+message IPEntry {
+  optional string ip_address = 1 [json_name = "ipAddress"];
+  optional string country = 2;
+  optional string region = 3;
+  optional string asn = 4;
+  bool proxy = 5;
+  bool hosting = 6;
+  string first_login = 7 [json_name = "firstLogin"];
+  repeated string logins = 8;
+  string last_login = 9 [json_name = "lastLogin"];
+  int64 login_count = 10 [json_name = "loginCount"];
+  VpnStatus vpn_status = 11 [json_name = "vpnStatus"];
+}
+
+enum VpnStatus {
+  VPN_STATUS_UNSPECIFIED = 0;
+  VPN_STATUS_YES = 1;
+  VPN_STATUS_NO = 2;
+  VPN_STATUS_UNKNOWN = 3;
+}
+
+message NoteEntry {
+  string text = 1;
+  string date = 2;
+  string issuer_name = 3 [json_name = "issuerName"];
+  string issuer_id = 4 [json_name = "issuerId"];
+  string id = 5;
+  PlayerNoteKind kind = 6;
+}
+
+message BackendNoteEntry {
+  string id = 1;
+  string text = 2;
+  string date = 3;
+  string issuer_name = 4 [json_name = "issuerName"];
+  string issuer_id = 5 [json_name = "issuerId"];
+  PlayerNoteKind kind = 6;
+}
+
+message Account {
+  string id = 1 [json_name = "_id"];
+  string minecraft_uuid = 2 [json_name = "minecraftUuid"];
+  repeated UsernameEntry usernames = 3;
+  repeated NoteEntry notes = 4;
+  repeated IPEntry ip_addresses = 5 [json_name = "ipAddresses"];
+  repeated PunishmentResponse punishments = 6;
+  repeated google.protobuf.Struct pending_notifications = 7 [json_name = "pendingNotifications"];
+  google.protobuf.Struct data = 8;
+}
+
+message SimplePunishment {
+  string type = 1;
+  optional string category = 2;
+  optional int64 expiration = 3;
+  string description = 4;
+  string id = 5;
+  optional string issuer_name = 6 [json_name = "issuerName"];
+  optional int64 issued_at = 7 [json_name = "issuedAt"];
+  optional string player_description = 8 [json_name = "playerDescription"];
+  bool started = 9;
+  int32 ordinal = 10;
+  bool silent = 11;
+}
+
+// --- Requests ---
+
+message CreatePlayerRequest {
+  string minecraft_uuid = 1 [
+    json_name = "minecraftUuid",
+    (buf.validate.field).string = {
+      min_len: 1
+      pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+    }
+  ];
+  string username = 2 [(buf.validate.field).string = {
+    min_len: 1
+    pattern: "^([A-Za-z0-9_]{1,16}|[.*+][A-Za-z0-9_]{1,15})$"
+  }];
+}
+
+message PlayerLoginRequest {
+  string minecraft_uuid = 1 [
+    json_name = "minecraftUUID",
+    (buf.validate.field).string.min_len = 1
+  ];
+  string username = 2 [(buf.validate.field).string.min_len = 1];
+  optional string ip_address = 3 [json_name = "ip"];
+  optional string skin_hash = 4 [json_name = "skinHash"];
+  optional string server_name = 5 [json_name = "serverName"];
+  reserved 6;
+  reserved "ip_info";
+  optional string server_instance_id = 7 [json_name = "serverInstanceId"];
+}
+
+message PlayerDisconnectRequest {
+  string minecraft_uuid = 1 [json_name = "minecraftUuid"];
+  int64 session_duration_ms = 2 [json_name = "sessionDurationMs"];
+  optional string server_instance_id = 3 [json_name = "serverInstanceId"];
+}
+
+message PlayerLookupRequest {
+  string query = 1;
+  optional bool query_mojang = 2 [json_name = "queryMojang"];
+}
+
+message AddPlayerIpRequest {
+  string ip_address = 1 [
+    json_name = "ipAddress",
+    (buf.validate.field).string.min_len = 1
+  ];
+}
+
+message AddPlayerUsernameRequest {
+  string username = 1 [(buf.validate.field).string = {
+    min_len: 1
+    pattern: "^([A-Za-z0-9_]{1,16}|[.*+][A-Za-z0-9_]{1,15})$"
+  }];
+}
+
+enum PlayerNoteKind {
+  PLAYER_NOTE_KIND_UNSPECIFIED = 0;
+  PLAYER_NOTE_KIND_NOTE = 1;
+  PLAYER_NOTE_KIND_WARNING = 2;
+}
+
+message CreatePlayerNoteRequest {
+  string text = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 4000
+  }];
+  optional string issuer_name = 2 [
+    json_name = "issuerName",
+    (buf.validate.field).string.max_len = 64
+  ];
+  optional string issuer_id = 3 [
+    json_name = "issuerId",
+    (buf.validate.field).string.max_len = 64
+  ];
+  optional string date = 4;
+  bool console = 5;
+  PlayerNoteKind kind = 6;
+}
+
+message UpdatePlayerServerRequest {
+  string minecraft_uuid = 1 [json_name = "minecraftUuid"];
+  string server_name = 2 [json_name = "serverName"];
+  optional string server_instance_id = 3 [json_name = "serverInstanceId"];
+}
+
+// --- Chat & Command Logs ---
+
+message ChatLogEntry {
+  string uuid = 1 [(buf.validate.field).string = {
+    min_len: 1
+    pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  }];
+  string username = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 16
+    pattern: "^([A-Za-z0-9_]{1,16}|[.*+][A-Za-z0-9_]{1,15})$"
+  }];
+  string message = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 512
+    pattern: "(?s).*\\S.*"
+  }];
+  string server = 4 [(buf.validate.field).string.max_len = 64];
+  int64 timestamp = 5 [(buf.validate.field).int64.gte = 0];
+}
+
+message ChatLogBatchRequest {
+  repeated ChatLogEntry entries = 1 [(buf.validate.field).repeated = {
+    min_items: 1
+    max_items: 500
+  }];
+}
+
+message CommandLogEntry {
+  string uuid = 1 [(buf.validate.field).string = {
+    min_len: 1
+    pattern: "^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$"
+  }];
+  string username = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 16
+    pattern: "^([A-Za-z0-9_]{1,16}|[.*+][A-Za-z0-9_]{1,15})$"
+  }];
+  string command = 3 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 512
+    pattern: "(?s).*\\S.*"
+  }];
+  string server = 4 [(buf.validate.field).string.max_len = 64];
+  int64 timestamp = 5 [(buf.validate.field).int64.gte = 0];
+}
+
+message CommandLogBatchRequest {
+  repeated CommandLogEntry entries = 1 [(buf.validate.field).repeated = {
+    min_items: 1
+    max_items: 500
+  }];
+}
+
+// --- Responses ---
+
+message PlayerLoginResponse {
+  repeated SimplePunishment active_punishments = 1 [json_name = "activePunishments"];
+  repeated google.protobuf.Struct pending_notifications = 2 [json_name = "pendingNotifications"];
+  reserved 3;
+  reserved "pending_ip_lookups";
+  repeated PendingStatWipe pending_stat_wipes = 4 [json_name = "pendingStatWipes"];
+  int32 status = 5;
+}
+
+message PlayerGetResponse {
+  string message = 1;
+  Account player = 2;
+  int32 status = 3;
+}
+
+message PlayerNameResponse {
+  string message = 1;
+  Account player = 2;
+  int32 status = 3;
+}
+
+message PlayerLookupResponse {
+  string message = 1;
+  PlayerLookupData data = 2;
+  int32 status = 3;
+
+  message PlayerLookupData {
+    reserved 9;
+    reserved "punishments_url";
+
+    string minecraft_uuid = 1 [json_name = "minecraftUuid"];
+    string current_username = 2 [json_name = "currentUsername"];
+    string first_seen = 3 [json_name = "firstSeen"];
+    string last_seen = 4 [json_name = "lastSeen"];
+    string current_server = 5 [json_name = "currentServer"];
+    string ip_address = 6 [json_name = "ipAddress"];
+    string country = 7;
+    string profile_url = 8 [json_name = "profileUrl"];
+    string tickets_url = 10 [json_name = "ticketsUrl"];
+    repeated string previous_usernames = 11 [json_name = "previousUsernames"];
+    PlayerLookupPunishmentStats punishment_stats = 12 [json_name = "punishmentStats"];
+    repeated PlayerLookupRecentPunishment recent_punishments = 13 [json_name = "recentPunishments"];
+    repeated PlayerLookupRecentTicket recent_tickets = 14 [json_name = "recentTickets"];
+    bool is_online = 15 [json_name = "isOnline"];
+  }
+
+  message PlayerLookupPunishmentStats {
+    string status = 1;
+    int32 total_punishments = 2 [json_name = "totalPunishments"];
+    int32 active_punishments = 3 [json_name = "activePunishments"];
+    int32 bans = 4;
+    int32 mutes = 5;
+    int32 kicks = 6;
+    int32 warnings = 7;
+    int32 points = 8;
+  }
+
+  message PlayerLookupRecentPunishment {
+    string id = 1;
+    string type = 2;
+    string issuer = 3;
+    string issued_at = 4 [json_name = "issuedAt"];
+    string expires_at = 5 [json_name = "expiresAt"];
+    bool is_active = 6 [json_name = "isActive"];
+  }
+
+  message PlayerLookupRecentTicket {
+    string id = 1;
+    string title = 2;
+    string category = 3;
+    string status = 4;
+    string created_at = 5 [json_name = "createdAt"];
+    string last_updated = 6 [json_name = "lastUpdated"];
+  }
+}
+
+message PlayerProfileResponse {
+  Account profile = 1;
+  int32 status = 2;
+  optional int32 punishment_count = 3 [json_name = "punishmentCount"];
+  optional int32 note_count = 4 [json_name = "noteCount"];
+}
+
+message PlayerNoteCreateResponse {
+  string message = 1;
+  int32 status = 2;
+  bool success = 3;
+}
+
+message PaginatedNotesResponse {
+  repeated NoteEntry notes = 1;
+  int32 total_count = 2 [json_name = "totalCount"];
+  int32 page = 3;
+  bool has_more = 4 [json_name = "hasMore"];
+  int32 status = 5;
+}
+
+message OnlinePlayersResponse {
+  repeated OnlinePlayer players = 1;
+  int32 status = 2;
+  optional string next_cursor = 3 [json_name = "nextCursor"];
+
+  message OnlinePlayer {
+    string uuid = 1;
+    string username = 2;
+    string joined_at = 3 [json_name = "joinedAt"];
+    optional int64 total_playtime_ms = 4 [json_name = "totalPlaytimeMs"];
+  }
+}
+
+message LinkedAccountsResponse {
+  repeated Account linked_accounts = 1 [json_name = "linkedAccounts"];
+  int32 status = 2;
+  optional int32 total_count = 3 [json_name = "totalCount"];
+  int32 page = 4;
+  bool has_more = 5 [json_name = "hasMore"];
+  bool truncated = 6;
+}
+
+// --- Backend-specific DTOs ---
+
+message PlayerDetailResponse {
+  string id = 1;
+  string minecraft_uuid = 2 [json_name = "minecraftUuid"];
+  repeated UsernameEntry usernames = 3;
+  repeated BackendNoteEntry notes = 4;
+  repeated IPEntry ip_addresses = 5 [json_name = "ipAddresses"];
+  repeated PunishmentResponse punishments = 6;
+  google.protobuf.Struct data = 7;
+  string social = 8;
+  string gameplay = 9;
+  int32 social_points = 10 [json_name = "socialPoints"];
+  int32 gameplay_points = 11 [json_name = "gameplayPoints"];
+  optional IPEntry latest_ip_data = 12 [json_name = "latestIPData"];
+  optional string last_server = 13 [json_name = "lastServer"];
+  double playtime_hours = 14 [json_name = "playtimeHours"];
+}
+
+message PlayerSearchResult {
+  string uuid = 1;
+  string username = 2;
+  string status = 3;
+  string last_online = 4 [json_name = "lastOnline"];
+  bool is_online = 5 [json_name = "isOnline"];
+}
+
+message LinkedAccountResponse {
+  string minecraft_uuid = 1 [json_name = "minecraftUuid"];
+  string username = 2;
+  int32 active_bans = 3 [json_name = "activeBans"];
+  int32 active_mutes = 4 [json_name = "activeMutes"];
+  optional string last_linked_update = 5 [json_name = "lastLinkedUpdate"];
+}
+
+message PanelLinkedAccountsResponse {
+  repeated LinkedAccountResponse linked_accounts = 1 [json_name = "linkedAccounts"];
+}
+
+message PanelFindAndLinkAccountsResponse {
+  bool success = 1;
+  string message = 2;
+  int32 linked_accounts_found = 3 [json_name = "linkedAccountsFound"];
+}
+
+message PanelLinkedBanEntry {
+  string punishment_id = 1 [json_name = "punishmentId"];
+  string player_uuid = 2 [json_name = "playerUuid"];
+  string player_name = 3 [json_name = "playerName"];
+  bool active = 4;
+}
+
+message PanelLinkedBansResponse {
+  repeated PanelLinkedBanEntry linked_bans = 1 [json_name = "linkedBans"];
+}
+
+message PlayerReplayResponse {
+  string replay_id = 1 [json_name = "replayId"];
+  string target_uuid = 2 [json_name = "targetUuid"];
+  string target_name = 3 [json_name = "targetName"];
+  string mc_version = 4 [json_name = "mcVersion"];
+  int64 file_size = 5 [json_name = "fileSize"];
+  int64 created_at = 6 [json_name = "createdAt"];
+  string status = 7;
+  string replay_url = 8 [json_name = "replayUrl"];
+  string match_source = 9 [json_name = "matchSource"];
+}
+
+message PlayerReplaysResponse {
+  repeated PlayerReplayResponse items = 1;
+}
+
+message ActivePunishmentsResponse {
+  repeated PunishmentResponse items = 1;
+}
+
+message PlayerSearchResultsResponse {
+  repeated PlayerSearchResult items = 1;
+}

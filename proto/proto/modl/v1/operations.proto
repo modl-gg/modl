@@ -1,0 +1,285 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+enum OperatorLimitKey {
+  OPERATOR_LIMIT_KEY_UNSPECIFIED = 0;
+  OPERATOR_LIMIT_KEY_MAX_UPLOAD_MB = 1;
+  OPERATOR_LIMIT_KEY_MAX_STORAGE_GB = 2;
+  OPERATOR_LIMIT_KEY_BACKUP_KEEP = 3;
+  OPERATOR_LIMIT_KEY_BACKUP_HOUR = 4;
+  OPERATOR_LIMIT_KEY_IP_HISTORY_DAYS = 5;
+  OPERATOR_LIMIT_KEY_NOTIFICATION_DAYS = 6;
+}
+
+enum StorageBackendKind {
+  STORAGE_BACKEND_KIND_UNSPECIFIED = 0;
+  STORAGE_BACKEND_KIND_LOCAL = 1;
+  STORAGE_BACKEND_KIND_S3 = 2;
+}
+
+enum StorageTransferState {
+  STORAGE_TRANSFER_STATE_UNSPECIFIED = 0;
+  STORAGE_TRANSFER_STATE_RUNNING = 1;
+  STORAGE_TRANSFER_STATE_FAILED = 2;
+  STORAGE_TRANSFER_STATE_DONE = 3;
+}
+
+enum DatabaseKind {
+  DATABASE_KIND_UNSPECIFIED = 0;
+  DATABASE_KIND_SQLITE = 1;
+  DATABASE_KIND_MYSQL = 2;
+  DATABASE_KIND_MARIADB = 3;
+  DATABASE_KIND_POSTGRESQL = 4;
+}
+
+enum DatabaseMovePhase {
+  DATABASE_MOVE_PHASE_UNSPECIFIED = 0;
+  DATABASE_MOVE_PHASE_CHECKING = 1;
+  DATABASE_MOVE_PHASE_PAUSING_WRITES = 2;
+  DATABASE_MOVE_PHASE_COPYING = 3;
+  DATABASE_MOVE_PHASE_VERIFYING = 4;
+  DATABASE_MOVE_PHASE_RESTARTING = 5;
+  DATABASE_MOVE_PHASE_WAITING_FOR_RESTART = 6;
+  DATABASE_MOVE_PHASE_FAILED = 7;
+}
+
+enum DatabaseRestartMode {
+  DATABASE_RESTART_MODE_UNSPECIFIED = 0;
+  DATABASE_RESTART_MODE_IN_PLACE = 1;
+  DATABASE_RESTART_MODE_EXIT = 2;
+  DATABASE_RESTART_MODE_MANUAL = 3;
+}
+
+enum DatabaseWarningKind {
+  DATABASE_WARNING_KIND_UNSPECIFIED = 0;
+  DATABASE_WARNING_KIND_SETTING = 1;
+  DATABASE_WARNING_KIND_NOT_STRICT = 2;
+  DATABASE_WARNING_KIND_JOURNAL_MODE = 3;
+  DATABASE_WARNING_KIND_SYNCHRONOUS = 4;
+  DATABASE_WARNING_KIND_NOT_ENCRYPTED = 5;
+  DATABASE_WARNING_KIND_NO_NIGHTLY_BACKUPS = 6;
+}
+
+enum StatusLevel {
+  STATUS_LEVEL_UNSPECIFIED = 0;
+  STATUS_LEVEL_OK = 1;
+  STATUS_LEVEL_WARNING = 2;
+  STATUS_LEVEL_PROBLEM = 3;
+}
+
+message OperatorLimit {
+  OperatorLimitKey key = 1;
+  int32 value = 2;
+  int32 min = 3;
+  int32 max = 4;
+  int32 default_value = 5 [json_name = "defaultValue"];
+  bool managed = 6;
+  string environment_variable = 7 [json_name = "environmentVariable"];
+}
+
+message OperatorLimitValue {
+  OperatorLimitKey key = 1 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+  int32 value = 2;
+}
+
+message PatchOperatorLimitsRequest {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  repeated OperatorLimitValue limits = 2 [(buf.validate.field).repeated.max_items = 16];
+}
+
+message OperatorLimitsResponse {
+  repeated OperatorLimit limits = 1;
+  int64 limits_version = 2 [json_name = "limitsVersion"];
+}
+
+message S3ConnectionInput {
+  string endpoint = 1 [(buf.validate.field).string.max_len = 2048];
+  string region = 2 [(buf.validate.field).string.max_len = 64];
+  string bucket = 3 [(buf.validate.field).string.max_len = 255];
+  string access_key = 4 [
+    json_name = "accessKey",
+    (buf.validate.field).string.max_len = 256
+  ];
+  optional string secret_key = 5 [
+    json_name = "secretKey",
+    (buf.validate.field).string.max_len = 512
+  ];
+  string public_url = 6 [
+    json_name = "publicUrl",
+    (buf.validate.field).string.max_len = 2048
+  ];
+}
+
+message S3ConnectionView {
+  string endpoint = 1;
+  string region = 2;
+  string bucket = 3;
+  string access_key = 4 [json_name = "accessKey"];
+  bool has_secret_key = 5 [json_name = "hasSecretKey"];
+  string public_url = 6 [json_name = "publicUrl"];
+}
+
+message StorageBackendView {
+  StorageBackendKind active = 1;
+  bool managed = 2;
+  S3ConnectionView s3 = 3;
+  bool s3_configured = 4 [json_name = "s3Configured"];
+  repeated StorageBackendKind old_copies = 5 [json_name = "oldCopies"];
+  bool removing_old_copies = 6 [json_name = "removingOldCopies"];
+}
+
+message StorageTransferView {
+  string id = 1;
+  StorageTransferState state = 2;
+  StorageBackendKind source = 3;
+  StorageBackendKind target = 4;
+  int64 copied_objects = 5 [json_name = "copiedObjects"];
+  int64 copied_bytes = 6 [json_name = "copiedBytes"];
+  int64 skipped_objects = 7 [json_name = "skippedObjects"];
+  int64 failed_objects = 8 [json_name = "failedObjects"];
+  string last_error = 9 [json_name = "lastError"];
+  google.protobuf.Timestamp started_at = 10 [json_name = "startedAt"];
+  google.protobuf.Timestamp updated_at = 11 [json_name = "updatedAt"];
+  google.protobuf.Timestamp finished_at = 12 [json_name = "finishedAt"];
+}
+
+message StorageSettingsResponse {
+  repeated OperatorLimit limits = 1;
+  int64 limits_version = 2 [json_name = "limitsVersion"];
+  StorageBackendView backend = 3;
+  optional StorageTransferView transfer = 4;
+  int64 used_bytes = 5 [json_name = "usedBytes"];
+  repeated StorageUsageGroupView usage = 6;
+  int64 capacity_bytes = 7 [json_name = "capacityBytes"];
+}
+
+enum StorageUsageGroupKind {
+  STORAGE_USAGE_GROUP_KIND_UNSPECIFIED = 0;
+  STORAGE_USAGE_GROUP_KIND_REPLAYS = 1;
+  STORAGE_USAGE_GROUP_KIND_EVIDENCE = 2;
+  STORAGE_USAGE_GROUP_KIND_TICKETS = 3;
+  STORAGE_USAGE_GROUP_KIND_ARTICLES = 4;
+  STORAGE_USAGE_GROUP_KIND_ICONS = 5;
+  STORAGE_USAGE_GROUP_KIND_OTHER = 6;
+}
+
+message StorageUsageGroupView {
+  StorageUsageGroupKind group = 1;
+  int64 files = 2;
+  int64 bytes = 3;
+}
+
+message SaveS3ConnectionRequest {
+  S3ConnectionInput connection = 1 [(buf.validate.field).required = true];
+}
+
+message TestS3ConnectionRequest {
+  S3ConnectionInput connection = 1 [(buf.validate.field).required = true];
+}
+
+message TestS3ConnectionResponse {
+  bool ok = 1;
+  string code = 2;
+  string message = 3;
+}
+
+message SwitchStorageBackendRequest {
+  StorageBackendKind target = 1 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+}
+
+message DatabaseConnectionInput {
+  DatabaseKind kind = 1 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+  string host = 2 [(buf.validate.field).string.max_len = 253];
+  int32 port = 3 [(buf.validate.field).int32 = {
+    gte: 0
+    lte: 65535
+  }];
+  string database = 4 [(buf.validate.field).string.max_len = 64];
+  string username = 5 [(buf.validate.field).string.max_len = 128];
+  string password = 6 [(buf.validate.field).string.max_len = 512];
+  bool tls = 7;
+}
+
+message DatabaseConnectionView {
+  DatabaseKind kind = 1;
+  string host = 2;
+  int32 port = 3;
+  string database = 4;
+  string username = 5;
+  bool tls = 6;
+}
+
+message DatabaseMoveView {
+  DatabaseMovePhase phase = 1;
+  DatabaseConnectionView target = 2;
+  string error_code = 3 [json_name = "errorCode"];
+  string error = 4;
+  int64 copied_tables = 5 [json_name = "copiedTables"];
+  int64 copied_rows = 6 [json_name = "copiedRows"];
+  google.protobuf.Timestamp started_at = 7 [json_name = "startedAt"];
+  google.protobuf.Timestamp updated_at = 8 [json_name = "updatedAt"];
+  string error_detail = 9 [json_name = "errorDetail"];
+}
+
+message DatabaseSettingsResponse {
+  DatabaseConnectionView current = 1;
+  bool managed = 2;
+  optional DatabaseMoveView move = 3;
+  DatabaseRestartMode restart_mode = 4 [json_name = "restartMode"];
+}
+
+message TestDatabaseConnectionRequest {
+  DatabaseConnectionInput connection = 1 [(buf.validate.field).required = true];
+}
+
+message DatabaseWarning {
+  DatabaseWarningKind kind = 1;
+  string setting = 2;
+  string value = 3;
+  string expected = 4;
+  string host = 5;
+}
+
+message TestDatabaseConnectionResponse {
+  bool ok = 1;
+  string code = 2;
+  string message = 3;
+  string detail = 4;
+  string server_version = 5 [json_name = "serverVersion"];
+  bool replaces_copy = 6 [json_name = "replacesCopy"];
+  repeated DatabaseWarning warnings = 7;
+}
+
+message MoveDatabaseRequest {
+  DatabaseConnectionInput connection = 1 [(buf.validate.field).required = true];
+  bool manual_restart_acknowledged = 2 [json_name = "manualRestartAcknowledged"];
+}
+
+message StatusEntry {
+  string key = 1;
+  string section = 2;
+  string label = 3;
+  string value = 4;
+  StatusLevel level = 5;
+}
+
+message StatusReportResponse {
+  repeated StatusEntry entries = 1;
+  string report = 2;
+  google.protobuf.Timestamp generated_at = 3 [json_name = "generatedAt"];
+}

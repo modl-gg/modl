@@ -1,0 +1,79 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+message PlayerAddressSettingsResponse {
+  repeated string providers = 1;
+  optional string provider = 2;
+  repeated string providers_with_keys = 3 [json_name = "providersWithKeys"];
+  bool lookups_active = 4 [json_name = "lookupsActive"];
+  int32 shared_account_limit = 5 [json_name = "sharedAccountLimit"];
+  int32 min_shared_account_limit = 6 [json_name = "minSharedAccountLimit"];
+  int32 max_shared_account_limit = 7 [json_name = "maxSharedAccountLimit"];
+  ForwardingNoticeView forwarding_notice = 8 [json_name = "forwardingNotice"];
+  repeated string keyless_providers = 9 [json_name = "keylessProviders"];
+  bool lookup_choice_pending = 10 [json_name = "lookupChoicePending"];
+}
+
+message ForwardingNoticeView {
+  bool showing = 1;
+  string reason = 2;
+  optional string server_name = 3 [json_name = "serverName"];
+  optional google.protobuf.Timestamp detected_at = 4 [json_name = "detectedAt"];
+}
+
+message UpdatePlayerAddressSettingsRequest {
+  optional string provider = 1 [(buf.validate.field).string.max_len = 32];
+  optional int32 shared_account_limit = 2 [
+    json_name = "sharedAccountLimit",
+    (buf.validate.field).int32 = {
+      gte: 2
+      lte: 1000
+    }
+  ];
+}
+
+message SavePlayerAddressKeyRequest {
+  string api_key = 1 [
+    json_name = "apiKey",
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 256
+    }
+  ];
+}
+
+message TestPlayerAddressLookupRequest {
+  string provider = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }];
+  optional string api_key = 2 [
+    json_name = "apiKey",
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 256
+    }
+  ];
+}
+
+enum PlayerAddressLookupTestOutcome {
+  PLAYER_ADDRESS_LOOKUP_TEST_OUTCOME_UNSPECIFIED = 0;
+  PLAYER_ADDRESS_LOOKUP_TEST_OUTCOME_WORKING = 1;
+  PLAYER_ADDRESS_LOOKUP_TEST_OUTCOME_NO_VERDICT = 2;
+  PLAYER_ADDRESS_LOOKUP_TEST_OUTCOME_REFUSED = 3;
+  PLAYER_ADDRESS_LOOKUP_TEST_OUTCOME_DAILY_LIMIT_REACHED = 4;
+  PLAYER_ADDRESS_LOOKUP_TEST_OUTCOME_UNEXPECTED_ANSWER = 5;
+  PLAYER_ADDRESS_LOOKUP_TEST_OUTCOME_UNREACHABLE = 6;
+  PLAYER_ADDRESS_LOOKUP_TEST_OUTCOME_BUSY = 7;
+}
+
+message PlayerAddressLookupTestResponse {
+  PlayerAddressLookupTestOutcome outcome = 1;
+  string test_address = 2 [json_name = "testAddress"];
+  int64 latency_ms = 3 [json_name = "latencyMs"];
+  optional int32 upstream_status = 4 [json_name = "upstreamStatus"];
+  bool key_checked = 5 [json_name = "keyChecked"];
+}

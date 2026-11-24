@@ -1,0 +1,18 @@
+{
+  "name": "@modl-gg/proto-tools",
+  "version": "1.0.0",
+  "private": true,
+  "type": "module",
+  "scripts": {
+    "setup": "npm ci --no-audit --no-fund",
+    "generate": "buf generate --clean --include-imports",
+    "lint": "buf lint",
+    "format": "buf format -w"
+  },
+  "devDependencies": {
+    "@bufbuild/buf": "1.75.0"
+  },
+  "allowScripts": {
+    "@bufbuild/buf": false
+  }
+}

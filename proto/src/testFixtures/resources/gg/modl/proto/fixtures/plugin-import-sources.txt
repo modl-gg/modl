@@ -1,0 +1,6 @@
+litebans	LiteBans
+advancedban	AdvancedBan
+libertybans	LibertyBans
+banmanager	BanManager
+bansystem	BanSystem
+vanilla	Vanilla and EssentialsX

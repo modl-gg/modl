@@ -1,0 +1,52 @@
+{
+  "provider": "proxycheck_nokey",
+  "source": "https://proxycheck.io/api/",
+  "observed": "2026-11-22: https://proxycheck.io/v2/1.1.1.1?vpn=1&asn=1 without a key answered as below; https://proxycheck.io/v2/203.0.113.7?vpn=1&asn=1 answered status error, No valid IP Addresses supplied.",
+  "cases": [
+    {
+      "name": "a public address answered without a key",
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "1.1.1.1": {
+          "asn": "AS13335",
+          "range": "1.1.1.0/24",
+          "provider": "Cloudflare, Inc.",
+          "organisation": "Cloudflare, Inc.",
+          "country": "Australia",
+          "isocode": "AU",
+          "region": "New South Wales",
+          "proxy": "no",
+          "type": "Business"
+        }
+      },
+      "outcome": "FOUND",
+      "expected": { "country": "AU", "region": "New South Wales", "asn": "AS13335 Cloudflare, Inc.", "vpn": "NO", "hosting": false }
+    },
+    {
+      "name": "a VPN exit answered without a key",
+      "status": 200,
+      "body": { "status": "ok", "37.60.48.2": { "proxy": "yes", "type": "VPN" } },
+      "outcome": "FOUND",
+      "expected": { "country": null, "region": null, "asn": null, "vpn": "YES", "hosting": false }
+    },
+    {
+      "name": "the 100 daily queries without a key are used up",
+      "status": 200,
+      "body": { "status": "denied", "message": "100 queries exhausted, if you sign up for a free API key you'll be able to make 1,000 free queries per day." },
+      "outcome": "REFUSED"
+    },
+    {
+      "name": "the daily limit answered with 429",
+      "status": 429,
+      "body": { "status": "denied" },
+      "outcome": "REFUSED"
+    },
+    {
+      "name": "a documentation address is not a valid address to proxycheck.io",
+      "status": 200,
+      "body": { "status": "error", "message": "No valid IP Addresses supplied." },
+      "outcome": "FAILED"
+    }
+  ]
+}

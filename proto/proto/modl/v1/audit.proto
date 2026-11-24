@@ -1,0 +1,174 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/struct.proto";
+import "google/protobuf/timestamp.proto";
+
+message RollbackRequest {
+  optional string reason = 1;
+}
+
+message DateRangeRollbackRequest {
+  google.protobuf.Timestamp start_date = 1;
+  google.protobuf.Timestamp end_date = 2;
+  optional string reason = 3;
+}
+
+message BulkPunishmentActionRequest {
+  repeated int32 type_ordinals = 1 [(buf.validate.field).repeated.max_items = 64];
+  string reason = 2;
+  optional int64 new_duration_ms = 3 [(buf.validate.field).int64.lte = 31557600000000];
+}
+
+message StaffPerformanceResponse {
+  string id = 1;
+  string username = 2;
+  string role = 3;
+  int32 total_actions = 4;
+  int32 ticket_responses = 5;
+  int32 punishments_issued = 6;
+  int32 avg_response_time = 7;
+  google.protobuf.Timestamp last_active = 8;
+}
+
+message StaffDetailsResponse {
+  string username = 1;
+  string period = 2;
+  repeated PunishmentDetail punishments = 3;
+  repeated TicketDetail tickets = 4;
+  repeated DailyActivity daily_activity = 5;
+  repeated PunishmentTypeBreakdown punishment_type_breakdown = 6;
+  reserved 7;
+  reserved "evidence_uploads";
+  Summary summary = 8;
+
+  message PunishmentDetail {
+    string id = 1;
+    string player_id = 2;
+    string player_name = 3;
+    string type = 4;
+    string reason = 5;
+    string duration = 6;
+    google.protobuf.Timestamp issued = 7;
+    bool active = 8;
+    bool rolled_back = 9;
+    optional string effective_category = 10;
+  }
+
+  message TicketDetail {
+    string id = 1;
+    string subject = 2;
+    string category = 3;
+    string status = 4;
+    google.protobuf.Timestamp last_activity = 5;
+    int32 response_time = 6;
+  }
+
+  message DailyActivity {
+    string date = 1;
+    int32 punishments = 2;
+    int32 tickets = 3;
+    reserved 4;
+    reserved "evidence";
+  }
+
+  message PunishmentTypeBreakdown {
+    string type = 1;
+    int32 count = 2;
+  }
+
+  message Summary {
+    int32 total_punishments = 1;
+    int32 total_tickets = 2;
+    int32 avg_response_time = 3;
+    int32 evidence_uploads = 4;
+  }
+}
+
+enum AuditPunishmentPhase {
+  AUDIT_PUNISHMENT_PHASE_UNSPECIFIED = 0;
+  AUDIT_PUNISHMENT_PHASE_ACTIVE = 1;
+  AUDIT_PUNISHMENT_PHASE_UNSTARTED = 2;
+  AUDIT_PUNISHMENT_PHASE_ENDED = 3;
+}
+
+message AuditPunishment {
+  string id = 1;
+  string player_id = 2;
+  string player_name = 3;
+  string type = 4;
+  int32 type_ordinal = 5;
+  string category = 6;
+  string staff_name = 7;
+  string reason = 8;
+  optional int64 duration = 9;
+  google.protobuf.Timestamp issued = 10;
+  google.protobuf.Timestamp started = 11;
+  google.protobuf.Timestamp expires = 12;
+  reserved 13;
+  reserved "active";
+  bool has_evidence = 14;
+  int32 evidence_count = 15;
+  repeated EvidenceItem evidence = 16;
+  repeated string attached_ticket_ids = 17;
+  optional string effective_category = 18;
+  AuditPunishmentPhase phase = 19;
+
+  message EvidenceItem {
+    string text = 1;
+    string url = 2;
+    string type = 3;
+    string file_name = 4;
+  }
+}
+
+message StaffPerformanceListResponse {
+  repeated StaffPerformanceResponse staff = 1;
+}
+
+message AuditPunishmentsResponse {
+  repeated AuditPunishment punishments = 1;
+  optional string next_cursor = 2 [json_name = "nextCursor"];
+  bool has_more = 3 [json_name = "hasMore"];
+}
+
+message AuditPunishmentTypesResponse {
+  repeated TypeEntry types = 1;
+
+  message TypeEntry {
+    int32 ordinal = 1;
+    string name = 2;
+    int32 active_count = 3;
+  }
+}
+
+message AuditRollbackResponse {
+  bool success = 1;
+  string message = 2;
+}
+
+message AuditBulkOperationResponse {
+  bool success = 1;
+  int32 count = 2;
+  string message = 3;
+}
+
+message AuditDatabaseTableResponse {
+  repeated google.protobuf.Struct data = 1;
+  int64 total = 2;
+  int32 limit = 3;
+  int32 skip = 4;
+}
+
+message PanelLogResponse {
+  string id = 1;
+  string description = 2;
+  string level = 3;
+  string source = 4;
+  google.protobuf.Timestamp created = 5;
+}
+
+message PanelLogsResponse {
+  repeated PanelLogResponse logs = 1;
+}

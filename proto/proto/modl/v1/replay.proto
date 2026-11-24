@@ -1,0 +1,41 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+
+message SubmitReplayLabelsRequest {
+  repeated ReplayLabel players = 1 [(buf.validate.field).repeated.max_items = 20];
+
+  message ReplayLabel {
+    string uuid = 1;
+    string player_name = 2;
+    string verdict = 3;
+    int32 confidence = 4;
+    repeated CheatDetail cheats = 5;
+    string notes = 6;
+
+    message CheatDetail {
+      string type = 1;
+      repeated TimeRange time_ranges = 2;
+    }
+
+    message TimeRange {
+      int64 start_ms = 1;
+      int64 end_ms = 2;
+    }
+  }
+}
+
+message PublicReplayResponse {
+  string replay_id = 1;
+  string mc_version = 2;
+  int64 file_size = 3;
+  int64 timestamp = 4;
+  string replay_url = 5;
+  string status = 6;
+  bool labeled = 7;
+}
+
+message ReplayLabelResponse {
+  string status = 1;
+}

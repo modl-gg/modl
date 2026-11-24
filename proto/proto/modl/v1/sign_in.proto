@@ -1,0 +1,196 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+
+enum SignInMethod {
+  SIGN_IN_METHOD_UNSPECIFIED = 0;
+  SIGN_IN_METHOD_EMAIL_CODE = 1;
+  SIGN_IN_METHOD_PASSWORD = 2;
+}
+
+enum SecondFactorMethod {
+  SECOND_FACTOR_METHOD_UNSPECIFIED = 0;
+  SECOND_FACTOR_METHOD_TOTP = 1;
+  SECOND_FACTOR_METHOD_RECOVERY_CODE = 2;
+  SECOND_FACTOR_METHOD_PASSKEY = 3;
+}
+
+enum SecondFactorState {
+  SECOND_FACTOR_STATE_UNSPECIFIED = 0;
+  SECOND_FACTOR_STATE_SATISFIED = 1;
+  SECOND_FACTOR_STATE_ENROLLMENT_REQUIRED = 2;
+  SECOND_FACTOR_STATE_VERIFICATION_REQUIRED = 3;
+}
+
+message PendingSecondFactor {
+  string challenge = 1;
+  int64 expires_in_seconds = 2 [json_name = "expiresInSeconds"];
+  repeated SecondFactorMethod methods = 3;
+  string email = 4;
+}
+
+message CredentialProof {
+  optional string current_password = 1 [
+    json_name = "currentPassword",
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 1024
+    }
+  ];
+  optional string code = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }];
+}
+
+message PanelPasswordLoginRequest {
+  string email = 1 [(buf.validate.field).string = {
+    email: true
+    min_len: 1
+    max_len: 254
+  }];
+  string password = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 1024
+  }];
+}
+
+message CompleteSecondFactorRequest {
+  string challenge = 1 [(buf.validate.field).string = {
+    min_len: 16
+    max_len: 256
+  }];
+  string code = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }];
+}
+
+message InspectPasswordResetRequest {
+  string token = 1 [(buf.validate.field).string = {
+    min_len: 16
+    max_len: 256
+  }];
+}
+
+message InspectPasswordResetResponse {
+  string email = 1;
+  google.protobuf.Timestamp expires_at = 2 [json_name = "expiresAt"];
+}
+
+message ResetPasswordRequest {
+  string token = 1 [(buf.validate.field).string = {
+    min_len: 16
+    max_len: 256
+  }];
+  string password = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 1024
+  }];
+}
+
+message SetPasswordRequest {
+  string new_password = 1 [
+    json_name = "newPassword",
+    (buf.validate.field).string = {
+      min_len: 1
+      max_len: 1024
+    }
+  ];
+  CredentialProof proof = 2;
+}
+
+message AccountSecurityResponse {
+  SignInMethod method = 1;
+  bool has_password = 2 [json_name = "hasPassword"];
+  bool totp_enabled = 3 [json_name = "totpEnabled"];
+  optional google.protobuf.Timestamp totp_enabled_at = 4 [json_name = "totpEnabledAt"];
+  int32 recovery_codes_remaining = 5 [json_name = "recoveryCodesRemaining"];
+  int32 passkey_count = 6 [json_name = "passkeyCount"];
+  bool second_factor_required = 7 [json_name = "secondFactorRequired"];
+  bool session_verified = 8 [json_name = "sessionVerified"];
+  SecondFactorState state = 9;
+}
+
+message StartTotpEnrollmentRequest {
+  CredentialProof proof = 1;
+}
+
+message TotpEnrollmentResponse {
+  string secret = 1;
+  string key_uri = 2 [json_name = "keyUri"];
+  int64 expires_in_seconds = 3 [json_name = "expiresInSeconds"];
+}
+
+message ConfirmTotpRequest {
+  string code = 1 [(buf.validate.field).string = {
+    min_len: 6
+    max_len: 16
+  }];
+}
+
+message DisableTotpRequest {
+  CredentialProof proof = 1;
+}
+
+message RegenerateRecoveryCodesRequest {
+  CredentialProof proof = 1;
+}
+
+message RecoveryCodesResponse {
+  repeated string codes = 1;
+}
+
+message SignInSettingsResponse {
+  SignInMethod method = 1;
+  bool second_factor_required = 2 [json_name = "secondFactorRequired"];
+  int64 version = 3;
+  int32 account_count = 4 [json_name = "accountCount"];
+  int32 without_password_count = 5 [json_name = "withoutPasswordCount"];
+  int32 without_second_factor_count = 6 [json_name = "withoutSecondFactorCount"];
+}
+
+message UpdateSignInSettingsRequest {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  SignInMethod method = 2 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+  bool second_factor_required = 3 [json_name = "secondFactorRequired"];
+}
+
+message StaffSecurityEntry {
+  optional string staff_id = 1 [json_name = "staffId"];
+  string email = 2;
+  bool has_password = 3 [json_name = "hasPassword"];
+  bool totp_enabled = 4 [json_name = "totpEnabled"];
+  bool has_passkey = 5 [json_name = "hasPasskey"];
+  bool owner = 6;
+}
+
+message StaffSecurityListResponse {
+  repeated StaffSecurityEntry entries = 1;
+}
+
+message PasswordResetLinkResponse {
+  string url = 1;
+  string email = 2;
+  google.protobuf.Timestamp expires_at = 3 [json_name = "expiresAt"];
+}
+
+message InspectInvitationRequest {
+  string token = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+  }];
+}
+
+message InspectInvitationResponse {
+  string email = 1;
+  SignInMethod method = 2;
+}

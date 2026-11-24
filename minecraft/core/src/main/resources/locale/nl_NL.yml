@@ -1,0 +1,1495 @@
+# modl in-game messages, nl_NL. Colors, placeholders and overrides: https://github.com/modl-gg/modl/wiki/Placeholders
+
+messages:
+  cannot_report_self: "&cJe kunt jezelf niet rapporteren."
+  player_not_online: "&cDie speler is niet online."
+  submitting: "&e{type} wordt ingediend..."
+  creating: "&e{type} wordt aangemaakt..."
+  success: "&a{type} ingediend."
+  created: "&a{type} aangemaakt."
+  ticket_id: "&7Ticket-ID: &f{ticketId}"
+  view_ticket: "&7Bekijk je ticket: &b{url}"
+  complete_form: "&7Vul je {type} in: &b{url}"
+  form_title_note: "&7Je kunt de titel '&f{title}&7' in het formulier wijzigen voordat je het indient."
+  failed_submit: "&cKon {type} niet indienen: {error}"
+  failed_create: "&cKon {type} niet aanmaken: {error}"
+  try_again: "&cProbeer het later opnieuw of neem rechtstreeks contact op met het personeel."
+  unknown_error: "Onbekende fout"
+  no_details: "Geen aanvullende details opgegeven"
+  no_chat_logs_available: "&c{player} heeft geen recente chatberichten om te rapporteren."
+  view_ticket_label: "Bekijk je ticket"
+  complete_form_label: "Vul je {type} in"
+  click_to_view: "[Klik om te bekijken]"
+  click_to_view_hover: "Klik om ticket {ticketId} te bekijken"
+  console_ticket_url: "&6{message}: &b{url}"
+  claiming_ticket: "&eTicket &f{ticketId}&e wordt aan je account gekoppeld..."
+  ticket_claimed_success: "&aTicket &f{ticketId}&a is aan je account gekoppeld."
+  ticket_claim_failed: "&cKon ticket niet koppelen: {error}"
+  ticket_cooldown: "&cJe moet {seconds}s wachten voordat je nog een ticket van dit type kunt openen."
+  report_gui_title: "&f{player} rapporteren"
+  report_skull_chat_log:
+    - "&b{player} rapporteren"
+    - "&7Chatlogboek toevoegen?"
+  report_skull_details:
+    - "&b{player} rapporteren"
+    - "&7Meer details toevoegen?"
+  report_skull_confirm:
+    - "&b{player} rapporteren"
+    - "&7Rapport bevestigen?"
+  report_skull_replay:
+    - "&b{player} rapporteren"
+    - "&7Replay toevoegen?"
+  report_skull_evidence:
+    - "&b{player} rapporteren"
+    - "&7Chatlogboek of replay toevoegen?"
+  report_attach_chat: "&aChatlogboek toevoegen"
+  report_attach_chat_lore: []
+  report_skip_chat: "&cChatlogboek overslaan"
+  report_skip_chat_lore: []
+  report_chat_attached: "&aChatlogboek wordt toegevoegd"
+  report_chat_click_to_attach: "&7Klik om chatlogboek toe te voegen"
+  report_capture_replay: "&aReplay opnemen"
+  report_capture_replay_lore: []
+  report_replay_attached: "&aReplay wordt opgenomen"
+  report_replay_not_attached: "&cReplay wordt NIET opgenomen"
+  report_skip_replay: "&cOverslaan"
+  report_skip_replay_lore: []
+  report_continue: "&aDoorgaan"
+  report_continue_lore: []
+  report_add_details: "&aDetails toevoegen"
+  report_add_details_lore: []
+  report_skip_details: "&cDetails overslaan"
+  report_skip_details_lore: []
+  report_confirm: "&aRapport bevestigen"
+  report_cancel: "&cRapport annuleren"
+  report_cancel_lore: []
+  report_summary_reason: "&7Reden: &f{reason}"
+  report_summary_details: "&7Details: &f{details}"
+  report_summary_chat_log: "&7Chatlogboek: &fToegevoegd"
+  report_summary_replay: "&7Replay: &aWordt opgenomen"
+  report_attach_replay: "&eReplay toevoegen"
+  report_close: "&cSluiten"
+  report_close_lore: []
+  report_details_prompt: "Voer aanvullende details in voor je rapport tegen {player}:"
+  report_submitted: "&aRapport ingediend."
+  # Tickettypes getoond als {type} in ticketberichten: "name" staat aan het begin van een zin, "inline" midden in een zin
+  ticket_types:
+    report:
+      name: "Rapport"
+      inline: "rapport"
+    chat_report:
+      name: "Chatrapport"
+      inline: "chatrapport"
+    support:
+      name: "Supportverzoek"
+      inline: "supportverzoek"
+    bug:
+      name: "Bugrapport"
+      inline: "bugrapport"
+    application:
+      name: "Personeelssollicitatie"
+      inline: "personeelssollicitatie"
+
+general:
+  players_only: "&cDit commando kan alleen door spelers worden gebruikt."
+  local_console_only: "&cVoer dit commando uit in de eigen console van deze server."
+  no_permission: "&cJe hebt geen toestemming om dit commando te gebruiken."
+  no_permission_punishment: "&cJe hebt geen toestemming om '{type}'-straffen toe te passen."
+  no_permission_reload: "&cJe hebt geen toestemming om strafgegevens te herladen."
+  invalid_syntax: "&cOngeldige commandosyntax. Controleer je gebruik."
+  gui_requires_player: "&cDit commando opent een GUI en kan alleen door een speler worden uitgevoerd. Gebruik &f-p &cvoor tekstuitvoer."
+  gui_unavailable: "&cGUI-menu's zijn niet beschikbaar op deze proxy."
+
+  unknown: "Onbekend"
+  staff: "Personeel"
+  answer_yes: "Ja"
+  answer_no: "Nee"
+  not_available: "N.v.t."
+  never: "Nooit"
+  permanent: "Permanent"
+  loading: "Laden..."
+  no_reason: "Geen reden"
+  console: "Console"
+  player_not_found: "&cSpeler niet gevonden."
+  punishment_error: "&cFout bij het aanmaken van straf: {error}"
+  punishment_types_not_loaded: "&cStraftypes niet geladen. Probeer &f/modl reload&c of neem contact op met een beheerder."
+  invalid_punishment_type: "&cOngeldig straftype. Beschikbare types: {types}"
+  invalid_duration: "&cOngeldige duurnotatie. Voorbeelden: 1d, 2h, 30m, 1w"
+  cannot_punish_self: "&cJe kunt jezelf niet straffen."
+  target_immune: "&cJe kunt {target} niet straffen omdat deze immuniteit heeft."
+
+  punishment_issued: "&a{type} opgelegd aan &f{target}&a."
+  punishment_issued_duration: "&a{type} opgelegd aan &f{target}&a ({duration})."
+
+  reloading: "&eHerladen..."
+  reload_success: "&aHerladen voltooid."
+  reload_error: "&cFout bij herladen: {error}"
+
+command_errors:
+  unknown_command: "&cOnbekend commando: &f{input}"
+  unknown_command_suggestions: "&cOnbekend commando: &f{input}&c. Bedoelde je &f{suggestions}&c?"
+  unknown_subcommand: "&cGeen commando komt overeen met &f/{input}&c. Bedoelde je:"
+  suggestion: "&7- &f/{command}"
+  expected_literal: "&f{expected}&c werd verwacht, maar &f'{input}'&c werd ingevoerd."
+  missing_argument: "&cArgument &f{parameter}&c ontbreekt. Gebruik: &f/{usage}"
+  too_many_arguments: "&cTe veel argumenten. Onverwachte invoer: &f{input}"
+  invalid_choice: "&cOngeldige keuze: &f{input}&c. Voer een van de beschikbare opties in."
+  value_not_allowed: "&cOngeldige waarde: &f{input}&c. Toegestane waarden: &f{allowed}"
+  invalid_boolean: "&ftrue&c of &ffalse&c werd verwacht, maar &f{input}&c werd ingevoerd."
+  invalid_number: "&cOngeldig getal: &f{input}"
+  invalid_integer: "&cOngeldig geheel getal: &f{input}"
+  invalid_uuid: "&cOngeldige UUID: &f{input}"
+  number_too_small: "&cDe waarde &f{value}&c is te klein. Het minimum is &f{minimum}&c."
+  number_too_large: "&cDe waarde &f{value}&c is te groot. Het maximum is &f{maximum}&c."
+  text_too_short: "&cDe tekst is te kort. Minimaal aantal tekens: &f{minimum}"
+  text_too_long: "&cDe tekst is te lang. Maximaal aantal tekens: &f{maximum}"
+  too_few_values: "&cTe weinig waarden. Het minimum is &f{minimum}&c."
+  too_many_values: "&cTe veel waarden. Het maximum is &f{maximum}&c."
+  invalid_escape: "&cOngeldig escapeteken. Gebruik &f\\\\&c om een backslash te typen."
+  unclosed_quote: "&cEen aanhalingsteken is niet gesloten. Sluit elk geopend aanhalingsteken."
+  expected_space: "&cZet een spatie tussen de argumenten."
+  unknown_flag: "&cOnbekende optie: &f{input}"
+  unknown_short_flag: "&cOnbekende korte optie: &f{input}"
+  invalid_help_page: "&cOngeldige helppagina: &f{page}&c. De laatste pagina is &f{pages}&c."
+  cooldown: "&cJe moet &f{time}&c wachten voordat je dit commando opnieuw gebruikt."
+  failed: "&cHet commando is mislukt. De fout is vastgelegd in de serverconsole."
+  console_only: "&cDit commando kan alleen vanuit de console worden gebruikt."
+  invalid_player: "&cOngeldige speler: &f{input}"
+  invalid_world: "&cOngeldige wereld: &f{input}"
+  missing_coordinate: "&cOntbrekende coördinaat: &f{axis}"
+  invalid_selector: "&cOngeldige entiteitselector: &f{input}"
+  selector_players_only: "&cDe selector &f{input}&c mag alleen spelers selecteren."
+  selector_too_many: "&cDe selector moet één entiteit selecteren."
+  selector_empty: "&cGeen entiteiten gevonden."
+
+validation:
+  single_severity_error: "&cKan ernst niet instellen op straftype '{type}' met één ernstniveau. Dit straftype heeft slechts één ernstniveau."
+  permanent_skin_change_error: "&cKan ernst niet instellen op permanent-tot-skinwijziging straftype '{type}'."
+  permanent_username_change_error: "&cKan ernst niet instellen op permanent-tot-gebruikersnaamwijziging straftype '{type}'."
+  alt_blocking_not_supported: "&cAlt-blokkering wordt niet ondersteund voor straftype '{type}'."
+  stat_wiping_not_supported: "&cStat-reset wordt niet ondersteund voor straftype '{type}'."
+
+# Words substituted into punishment messages.
+punishment_words:
+  # {tense}, as in "You {tense} banned"
+  tense_default: "bent"
+  tense_active: "bent"
+  # {tense2}, as in "Your account {tense2} restricted"
+  tense2_default: "is"
+  tense2_active: "is"
+  # {temp}, as in "You have been {temp} banned"
+  temporarily: "tijdelijk"
+  permanently: "permanent"
+  # Expiry texts of timed punishments; {type} is type_ban, type_mute or type_punishment
+  will_expire: "\n&7Deze {type} verloopt over &f{duration}&7."
+  duration_formatted: "\n&7Deze {type} verloopt over {duration}"
+  mute_duration_formatted: " voor {duration}"
+  # {for_duration} on timed mutes; keep the leading space
+  for_duration: " voor {duration}"
+  type_ban: "ban"
+  type_mute: "mute"
+  type_punishment: "straf"
+  # {duration} of permanent punishments; config.yml locale_config.duration_format.permanent overrides it when set
+  duration_permanent: "permanent"
+
+# punishment_types.ordinal_<n>: public_notification is broadcast, player_notification lines go to the punished player.
+# Types without an entry use the punishments section. Placeholders: https://github.com/modl-gg/modl/wiki/Placeholders#punishment-messages
+punishment_types:
+  ordinal_0: # Kick
+    public_notification: "&c{target} is van de server gekickt."
+    player_notification:
+      - "&c&lJe bent van de server gekickt."
+      - "&f{reason} &7(#{id})"
+
+  ordinal_1: # Manual Mute
+    public_notification: "&c{target} is gedempt."
+    player_notification:
+      - ""
+      - "&cJe {tense} {temp} gedempt{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{reason}"
+      - ""
+
+  ordinal_2: # Manual Ban
+    public_notification: "&c{target} is verbannen."
+    player_notification:
+      - "&c&lJe {tense} {temp} verbannen voor:"
+      - ""
+      - "&f{reason}"
+      - "&7{will_expire}"
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}."
+
+  ordinal_3: # Security Ban
+    public_notification: "&c{target} is verbannen."
+    player_notification:
+      - "&c&lJe account {tense2} beperkt vanwege beveiligingsproblemen."
+      - "&fVerdachte activiteit is gedetecteerd op je account. Beveilig je account en dien een beroep in op {appeal_url} met ID #{id}."
+
+  ordinal_4: # Linked Ban
+    public_notification: "&c{target} is verbannen."
+    player_notification:
+      - "&c&lJe account {tense2} gekoppeld aan een verbannen account."
+      - ""
+      - "&fHet ontwijken van bans door het gebruik van alternatieve accounts of het delen van je account is strikt verboden."
+      - ""
+      - "&7Deze ban wordt automatisch opgeheven wanneer de gekoppelde ban verloopt."
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}"
+
+  ordinal_5: # Blacklist
+    public_notification: "&c{target} is op de zwarte lijst geplaatst."
+    player_notification:
+      - "&cJe {tense} op de zwarte lijst geplaatst"
+      - "&7ID: #{id}"
+
+  ordinal_6: # Chat Abuse
+    public_notification: "&c{target} is gedempt wegens chatmisbruik."
+    player_notification:
+      - ""
+      - "&cJe {tense} {temp} gedempt{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+  ordinal_7: # Anti-Social
+    public_notification: "&c{target} is gedempt wegens antisociaal gedrag."
+    player_notification:
+      - ""
+      - "&cJe {tense} {temp} gedempt{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+
+  ordinal_8: # Targeting
+    public_notification: "&c{target} is verbannen wegens targeting."
+    player_notification:
+      - "&c&lJe {tense} {temp} verbannen voor:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}."
+
+  ordinal_9: # Bad Content
+    public_notification: "&c{target} is verbannen wegens ongepaste inhoud."
+    player_notification:
+      - "&c&lJe {tense} {temp} verbannen voor:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}."
+
+  ordinal_10: # Bad Username
+    public_notification: "&c{target} is verbannen."
+    player_notification:
+      - "&c&lJe {tense} verbannen vanwege je Minecraft-gebruikersnaam."
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7Deze ban wordt automatisch opgeheven wanneer je je gebruikersnaam wijzigt."
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}"
+
+  ordinal_11: # Bad Skin
+    public_notification: "&c{target} is verbannen."
+    player_notification:
+      - "&c&lJe {tense} verbannen vanwege je Minecraft-skin."
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7Deze ban wordt automatisch opgeheven wanneer je je skin wijzigt."
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}"
+
+  ordinal_12: # Team Abuse
+    public_notification: "&c{target} is verbannen wegens teammisbruik."
+    player_notification:
+      - "&c&lJe {tense} {temp} verbannen voor:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}."
+
+  ordinal_13: # Game Abuse
+    public_notification: "&c{target} is verbannen wegens spelmisbruik."
+    player_notification:
+      - "&c&lJe {tense} {temp} verbannen voor:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}."
+
+  ordinal_14: # Cheating
+    public_notification: "&c{target} is verbannen wegens valsspelen."
+    player_notification:
+      - "&c&lJe {tense} {temp} verbannen voor:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}."
+
+  ordinal_15: # Game Trading
+    public_notification: "&c{target} is verbannen wegens spelhandel."
+    player_notification:
+      - "&c&lJe {tense} {temp} verbannen voor:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}."
+
+  ordinal_16: # Account Abuse
+    public_notification: "&c{target} is verbannen wegens accountmisbruik."
+    player_notification:
+      - "&c&lJe {tense} {temp} verbannen voor:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}."
+
+  ordinal_17: # Systems Abuse
+    public_notification: "&c{target} is verbannen wegens systeemmisbruik."
+    player_notification:
+      - "&c&lJe {tense} {temp} verbannen voor:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7Is dit een fout? Dien een beroep in op {appeal_url} met ID #{id}."
+
+notification:
+  ticket_reply: "&6[Ticket] &f{message}"
+  ticket_reply_with_link: "&6[Ticket] &f{message} &b[Klik om te bekijken]"
+  ticket_click_action: "&7Klik om ticket {ticketId} te bekijken"
+  ticket_prefix: "[Ticket] "
+
+iammuted:
+  only_players: "&cDit commando kan alleen door spelers worden gebruikt."
+  not_muted: "&cJe kunt dit commando alleen gebruiken terwijl je gedempt bent."
+  player_not_online: "&cDie speler is niet online."
+  cannot_message_self: "&cJe kunt dit bericht niet naar jezelf sturen."
+  cooldown_message: "&cJe moet {minutes} minuten en {seconds} seconden wachten voordat je dit commando opnieuw kunt gebruiken."
+  notification_to_target: "&6[Gedempte Speler] &f{sender} &7is momenteel gedempt en kan niet reageren in de chat."
+  success_message: "&aJe gedempte status is doorgegeven aan &f{target}&a."
+
+standing:
+  error: "&cKon je standing niet laden. Probeer het later opnieuw."
+  cooldown: "&cWacht {seconds}s voordat je dit commando opnieuw gebruikt."
+
+player_lookup:
+  error: "&cFout bij het opzoeken van speler: {error}"
+  uuid: "&7UUID: &f{uuid}"
+  currently_banned: "&7Momenteel verbannen: {status}"
+  currently_muted: "&7Momenteel gedempt: {status}"
+  staff_notes_label: "&7Personeelsnotities:"
+  staff_note_format: "  &8• &f{text} &7- {issuer}"
+  no_staff_notes: "  &8Geen personeelsnotities"
+  total_punishments: "&7Totaal aantal straffen: &f{count}"
+  linked_accounts_label: "&7Gekoppelde accounts:"
+  linked_account_format: "  &8• &f{username}{status}"
+  linked_account_more: "  &8... en {count} meer"
+  no_linked_accounts: "  &8Geen gekoppelde accounts"
+  total_tickets: "&7Totaal aantal tickets: &f{count}"
+  profile_fallback: "&6Profiel: &b{url}"
+
+  status:
+    banned_and_muted: " &c(momenteel verbannen & gedempt)"
+    banned: " &c(momenteel verbannen)"
+    muted: " &e(momenteel gedempt)"
+    no_punishments: " &7(geen actieve straffen)"
+
+print:
+  inspect:
+    header: ""
+    uuid: "&f{player}'s Info &7({uuid})"
+    currently_banned: "&eVerbannen: {status}"
+    currently_muted: "&eGedempt: {status}"
+    notes_label: "&ePersoneelsnotities:"
+    note_entry: "&6{ordinal}. &f{text} &edoor {issuer}"
+    no_notes: "&7Geen personeelsnotities"
+    total_punishments: "&eTotaal aantal straffen: &f{count}"
+    linked_accounts_label: "&eGekoppelde accounts:"
+    linked_account_entry: "&6{ordinal}. &e{username} ({status}&e)"
+    linked_account_more: "&e... en {count} meer"
+    no_linked_accounts: "&7Geen gekoppelde accounts"
+    total_tickets: "&eTotaal aantal tickets: &f{count}"
+    profile_fallback: "&eProfiel: &b{url}"
+    web_profile_link: "Bekijk webprofiel"
+    web_profile_hover: "Klik om het profiel van {player} te bekijken"
+    footer: ""
+
+  punishment_detail:
+    not_found: "&cStraf #{id} niet gevonden."
+    header: " "
+    type: "&eType: &f{type}"
+    player: "&eSpeler: &f{player}"
+    issuer: "&eUitgegeven door: &f{issuer}"
+    date: "&eDatum: &f{date}"
+    status: "&eStatus: {status}"
+    duration: "&eDuur: &f{duration}"
+    reason: "&eReden: &f{reason}"
+    evidence: "&eBewijs: &f{count} bestand(en)"
+    notes: "&eNotities: &f{count}"
+    modifications: "&eWijzigingen: &f{count}"
+    status_active: "Actief"
+    status_pardoned: "Kwijtgescholden"
+    status_rolled_back: "Teruggedraaid"
+    status_inactive: "Inactief"
+    footer: " "
+
+  history:
+    header: ""
+    entry_kick: "&6{ordinal}. &7#{id} &e{date} &f{type} &edoor {issuer} wegens &f{reason}"
+    entry_active: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &edoor {issuer} wegens &f{reason} &7(verloopt over {expiry})"
+    entry_permanent: "&6{ordinal}. &c#{id} &e{date} &f{type} (permanent) &edoor {issuer} wegens &f{reason}"
+    entry_unstarted: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &edoor {issuer} wegens &f{reason} &7(nog niet gestart)"
+    entry_expired: "&6{ordinal}. &7#{id} &e{date} &f{type} ({duration}) &edoor {issuer} wegens &f{reason} &7({expired_ago} geleden verlopen)"
+    entry_pardoned: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &edoor {issuer} wegens &f{reason} &7({pardoned_ago} geleden kwijtgescholden)"
+    entry_rolled_back: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &edoor {issuer} wegens &f{reason} &7({rolled_back_ago} geleden teruggedraaid)"
+    total: "&ePagina {page}/{total_pages} ({count} totaal)"
+    empty: "&7Speler is nooit bestraft."
+    footer: ""
+
+  notes:
+    header: ""
+    entry: "&6{ordinal}. &e{date} {author}: &f{content}"
+    warning_badge: "&c&l[Waarschuwing]&r&f "
+    total: "&ePagina {page}/{total_pages} ({count} totaal)"
+    empty: "&7Geen personeelsnotities gevonden."
+    footer: ""
+
+  alts:
+    header: ""
+    entry: "&6{ordinal}. {color}{username} &e({status}&e)"
+    status_banned: "&cVerbannen"
+    status_muted: "&eGedempt"
+    status_banned_and_muted: "&cVerbannen & Gedempt"
+    status_clean: "&aSchoon"
+    total: "&ePagina {page}/{total_pages} ({count} totaal)"
+    total_truncated: "&ePagina {page}/{total_pages} ({count} meest recent)"
+    empty: "&7Geen gekoppelde accounts gevonden."
+    footer: ""
+
+  reports:
+    header: ""
+    entry: "&6{ordinal}. &e#{id} {date} ({status}&e) &f{type} &edoor {reporter}"
+    entry_content: " &f{content}"
+    status_open: "Open"
+    status_closed: "Gesloten"
+    total: "&ePagina {page}/{total_pages} ({count} totaal)"
+    empty: "&7Geen rapporten gevonden."
+    footer: ""
+
+  staff_list:
+    header: ""
+    entry: "&6 - &e{player} ({in-game-name}) &7[{role}] &eop &f{server}{v}"
+    vanish: " &7[V]"
+    empty: "&7Geen personeelsleden online."
+    total: "&ePagina {page}/{total_pages} ({count} totaal)"
+
+punishment_commands:
+  invalid_severity: "&cOngeldige ernst. Geldige ernstniveaus: lenient, regular, severe"
+  warning_message: "&c{username} is {punishment_type}."
+
+api_errors:
+  panel_unavailable: "&cHet paneel is nu niet bereikbaar; probeer het zo opnieuw."
+  connection_failed: "&cVerbinding met het paneel mislukt. Probeer het zo opnieuw."
+  startup_failed: "&cHet moderatiesysteem van deze server draait niet. Probeer het later opnieuw."
+  version_mismatch: "&cHet moderatiesysteem van deze server wordt bijgewerkt. Probeer het later opnieuw."
+  database_moving: "&cHet moderatiesysteem van deze server verhuist naar een nieuwe database. Probeer het later opnieuw."
+  packetevents_required: "&cDeze server kan geen spelers toelaten totdat PacketEvents {version} of nieuwer is geïnstalleerd."
+  ban_check_failed: "&cKan banstatus niet verifiëren. Inloggen is tijdelijk beperkt voor de veiligheid."
+  invalid_name: "&cJe spelersnaam is niet geldig op deze server. Namen mogen alleen letters, cijfers en underscores bevatten (maximaal 16 tekens)."
+  login_check_skipped: "&cJe login kon niet worden gecontroleerd tegen de bans van deze server. Neem contact op met het serverteam."
+  shortening_needs_pardon: "&cEen straf eerder laten eindigen vereist de rechten om de duur te wijzigen en om kwijt te schelden."
+
+pardon:
+  success_id: "&aStraf &e#{id}&a kwijtgescholden."
+  success_player: "&a{count} {type}(s) van {player} kwijtgescholden."
+  already_pardoned_id: "&7Straf &e#{id}&7 is al inactief of kwijtgescholden."
+  no_active_punishment: "&7{player} heeft geen actieve {type} om kwijt te schelden."
+  error: "&cKwijtschelding mislukt: {error}"
+  error_player: "&cKwijtschelding van {player}'s {type} mislukt: {error}"
+  error_wrong_type_ban: "&cStraf &e#{id}&c is geen ban. Gebruik &e/pardon {id}&c om elk straftype kwijt te schelden."
+  error_wrong_type_mute: "&cStraf &e#{id}&c is geen mute. Gebruik &e/pardon {id}&c om elk straftype kwijt te schelden."
+  staff_notification_id: "&7&o[{issuer}: straf #{id} kwijtgescholden&7&o]"
+  staff_notification_player: "&7&o[{issuer}: {player}'s {type} kwijtgescholden&7&o]"
+
+warn:
+  player_message: "&c&lJe hebt een waarschuwing ontvangen van {issuer}.\n&fReden: &7{reason}"
+  success: "&a&f{target}&a gewaarschuwd voor: &7{reason}"
+  staff_notification: "&7&o[{issuer}: {target} gewaarschuwd voor {reason}&7&o]"
+  error: "&cWaarschuwing aanmaken mislukt: {error}"
+
+menus:
+  common:
+    action_failed: "&cDat is niet gelukt. Probeer het zo meteen opnieuw."
+    saved_but_incomplete: "&eDe wijziging is opgeslagen, maar het menu kon niet worden bijgewerkt. Open het opnieuw om te controleren."
+    back: "&cTerug"
+    back_lore: []
+    previous_page: "&eVorige pagina"
+    next_page: "&eVolgende pagina"
+    filter: "&6Filter"
+    sort: "&6Sorteren"
+    filter_by_type: "&7Filteren op type:"
+    sort_by: "&7Sorteren op:"
+    option_selected: "&a▸ {option}"
+    option_unselected: "&7  {option}"
+    cycle_filters: "&eKlik om van filter te wisselen"
+    cycle_sort: "&eKlik om van sortering te wisselen"
+    # {status} is status_open of status_closed, {items} is items_reports of items_tickets
+    status_showing: "&7Getoond: &a{status} {items}"
+    status_click_toggle: "&eKlik om alleen {status} {items} te tonen"
+    status_right_click_toggle: "&eRechtsklik om alleen {status} {items} te tonen"
+    click_to_toggle: "&eKlik om aan/uit te zetten"
+    status_open: "open"
+    status_closed: "gesloten"
+    items_reports: "rapporten"
+    items_tickets: "tickets"
+    report_filters:
+      all: "alle"
+      gameplay: "gameplay"
+      chat: "chat"
+    report_status_open: "&aOPEN"
+    report_status_closed: "&cGESLOTEN"
+    enabled: "&aIngeschakeld"
+    disabled: "&cUitgeschakeld"
+    no_permission: "&cGeen toestemming"
+    no_permission_modify: "&cGeen toestemming om te wijzigen"
+    load_profile_failed: "&cKon spelersprofiel niet laden"
+    load_profile_error: "&cKon spelersprofiel niet laden: {error}"
+    no_reported_player: "&cKan niet inspecteren: geen speler-UUID voor dit rapport."
+    dismissing_report: "&eRapport wordt afgewezen..."
+    report_dismissed: "&aRapport afgewezen."
+    dismiss_report_failed: "&cKon rapport niet afwijzen: {error}"
+    ticket_link_label: "Ticket #{id}: "
+    open_in_browser: "Klik om in de browser te openen"
+    presence: "{time}"
+    presence_on_server: "{time} op {server}"
+
+  titles:
+    inspect: "Inspecteren: {player}"
+    notes: "Notities: {player}"
+    alts: "Alts: {player}"
+    history: "Geschiedenis: {player}"
+    reports: "Rapporten: {player}"
+    punish: "Bestraffen: {player}"
+    punish_type: "Bestraffen: {type}"
+    modify_punishment: "Straf wijzigen"
+    link_reports: "Rapporten koppelen: {player}"
+    linked_tickets: "Gekoppelde tickets"
+    staff_panel: "Personeelsmenu"
+    online_players: "Online spelers"
+    staff_reports: "Rapporten"
+    recent_punishments: "Recente straffen"
+    support_tickets: "Supporttickets"
+    staff_members: "Personeelsleden"
+    manage_staff: "Personeel beheren"
+    edit_roles: "Rollen bewerken"
+    edit_role: "Bewerken: {role}"
+
+  # Tabbalk van het personeelsmenu (compact_lore wordt gebruikt in compacte kopteksten)
+  staff_tabs:
+    online_players:
+      name: "&6Online spelers"
+      lore: []
+      compact_lore: []
+    reports:
+      name: "&6Rapporten"
+      lore: []
+      compact_lore: []
+    punishments:
+      name: "&6Recente straffen"
+      lore: []
+      compact_lore: []
+    tickets:
+      name: "&6Supporttickets"
+      lore: []
+      compact_lore: []
+    panel:
+      name: "&6Naar het paneel"
+      lore: []
+      compact_lore: []
+    settings:
+      name: "&6Instellingen"
+      lore: []
+      compact_lore: []
+    panel_link_label: "Personeelspaneel: "
+
+  inspect_tabs:
+    notes:
+      name: "&6Notities"
+      lore:
+        - "&7Personeelsnotities ({count})"
+      compact_lore:
+        - "&7Personeelsnotities ({count})"
+    alts:
+      name: "&6Alts"
+      lore: []
+      compact_lore: []
+    history:
+      name: "&6Geschiedenis"
+      lore:
+        - "&7Straffen ({count})"
+      compact_lore:
+        - "&7Straffen ({count})"
+    reports:
+      name: "&6Rapporten"
+      lore: []
+      compact_lore: []
+    punish:
+      name: "&cBestraffen"
+      lore: []
+      compact_lore: []
+
+  player_head:
+    title: "&6Informatie van {player_name}"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7Eerste login: &f{first_login}"
+      - "&7Online: {is_online} ({presence})"
+      - "&7Speeltijd: &f{playtime}"
+      - "&7Echt IP gelogd: &f{real_ip_logged}"
+      - "&7Regio: &f{location}"
+      - "&7Verbannen: &f{is_banned}"
+      - "&7Gedempt: &f{is_muted}"
+      - ""
+      - "&eLinksklik om op {player_name} te richten"
+
+  history_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7Server: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&eKlik om deze straf te wijzigen"
+    status_active: "&7Verloopt over {expiry}"
+    status_inactive: "&7Verlopen {expired} geleden"
+    status_pardoned: "&7Kwijtgescholden {pardoned} geleden"
+    status_rolled_back: "&7Teruggedraaid {rolled_back} geleden"
+    status_permanent: "&7Verloopt nooit"
+    status_unstarted: "&7Straf nog niet gestart"
+    note_format: "&e{note_date} {note_issuer}&f: {note}"
+  recent_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7Speler: &f{player}"
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7Server: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&eKlik om deze straf te wijzigen"
+
+  note_item:
+    title: "&e{date} {author}"
+    lore:
+      - "&f{content}"
+      - "&f "
+      - "&eKlik om notitie in chat te bekijken"
+
+  report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7Gerapporteerd door &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eLinksklik om speler te inspecteren"
+      - "&eRechtsklik om rapport af te wijzen"
+
+  alt_item:
+    title: "{color}{player_name}"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7Online: {is_online} ({presence})"
+      - "&7Echt IP gelogd: {real_ip}"
+      - "&7Eerste login: &f{first_login}"
+      - "&7{punishments}"
+      - "&f "
+      - "&eKlik om {player_name} te inspecteren"
+    punishment_line_active_true:
+      - "&7Actieve straffen ({active_count}): &f"
+      - "{active_punishment_list}"
+    punishment_line_active_false:
+      - "&7Actieve straffen: &f0"
+      - "&7Inactieve straffen: &f{inactive_count}"
+    active_punishment_format: "&7- &e#{punishment_id} {punishment_date}: {punishment_type} ({punishment_remaining})"
+
+  empty:
+    history: "Geen strafgeschiedenis"
+    notes: "Geen personeelsnotities"
+    reports: "Geen rapporten ingediend"
+    alts: "Geen gekoppelde accounts"
+    tickets: "Geen tickets"
+    staff_reports: "Geen rapporten"
+    punishments: "Geen straffen"
+    linked_tickets: "Geen gekoppelde tickets"
+    online_players: "Geen online spelers"
+    staff_members: "Geen personeelsleden"
+    staff_online: "Geen personeel online"
+    staff_offline: "Geen personeel offline"
+    roles: "Geen rollen"
+    permissions: "Geen rechten"
+
+  ticket_item:
+    title: "&6Ticket #{id}"
+    lore:
+      - "&7Speler: &f{player}"
+      - "&7Titel: &f{title}"
+      - "&7Aangemaakt: &f{date}"
+      - "&7Status: {status}"
+      - "&f "
+      - "&eKlik om in paneel te openen"
+    no_title: "Geen titel"
+
+  staff_report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&c{reported}&7 gerapporteerd door &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eLinksklik om speler te inspecteren"
+      - "&eRechtsklik om rapport af te wijzen"
+  linked_ticket_item:
+    no_subject: "Geen onderwerp"
+    click_to_view: "&eKlik om in het paneel te bekijken"
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7{title}"
+      - "&f "
+      - "{content}"
+  link_report_item_unselected:
+    title: "&e{date} {id}"
+    lore:
+      - "&7Gerapporteerd door &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eKlik om te selecteren"
+  link_report_item_selected:
+    title: "&a{date} {id}"
+    lore:
+      - "&7Gerapporteerd door &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eKlik om te deselecteren"
+
+  staff_members:
+    title: "&e{panel_name}"
+    lore:
+      - "&7Rol: &f{role}"
+      - "&7Minecraft: &f{minecraft_username}"
+      - ""
+      - "&7Online: {is_online} ({presence})"
+      - "&7Speeltijd: &f{playtime}"
+      - "&7Straffen uitgedeeld: &f{punishments_count}"
+    not_linked: "Niet gekoppeld"
+    filters:
+      online: "Online"
+      offline: "Offline"
+      all: "Alle"
+
+  online_players:
+    title: "&6{player_name}"
+    lore:
+      - "&7Sessie: &f{session_duration}"
+      - "&7Totale Speeltijd: &f{total_playtime}"
+      - ""
+      - "&7Rapporten ({report_count}):"
+      - "{report-list}"
+      - ""
+      - "&eLinksklik om te inspecteren"
+      - "&eRechtsklik om te richten"
+    report_entry: " &6- &e{date} {reporter}: &f{details}"
+    reports_more: " &e... en {count} meer"
+    sorts:
+      least_playtime: "Minste speeltijd"
+      recent_gameplay_reports: "Recente gameplayrapporten"
+      longest_session: "Langste sessie"
+
+  notes:
+    created: "&aNotitie aangemaakt."
+    create_failed: "&cKon notitie niet aanmaken: {error}"
+    cancelled: "&7Notitie aanmaken geannuleerd."
+    create: "&aNotitie aanmaken"
+    create_lore: []
+    prompt: "Voer de inhoud van de notitie in voor {player}:"
+    chat_label: "Notitie: "
+  modify_punishment:
+    no_changes: "&7Geen wijzigingen aan gekoppelde tickets."
+    tickets_updated: "&aGekoppelde tickets bijgewerkt."
+    tickets_update_error: "&cKon gekoppelde tickets niet bijwerken: {error}"
+    current_state: "&7Huidig: {state}"
+    add_note:
+      name: "&eNotitie toevoegen"
+      name_locked: "&7Notitie toevoegen"
+      lore: []
+      prompt: "Voer de notitie in die je aan deze straf wilt toevoegen:"
+      added: "&aNotitie toegevoegd."
+      failed: "&cKon notitie niet toevoegen: {error}"
+      cancelled: "&7Notitie toevoegen geannuleerd."
+    evidence:
+      name: "&bBewijs"
+      name_locked: "&7Bewijs"
+      none: "&8(Geen bewijs toegevoegd)"
+      header: "&7Huidig bewijs ({count}):"
+      entry: "&f- {evidence}"
+      more: "&8... en {count} meer"
+      left_click_add: "&eLinksklik om bewijs toe te voegen"
+      right_click_view: "&eRechtsklik om in de chat te bekijken"
+      no_evidence: "&7Er is geen bewijs aan deze straf toegevoegd."
+      chat_header: "&6Bewijs voor straf #{id}:"
+      chat_entry: "&f{index}. {evidence}"
+      chat_added_by: "&7   Toegevoegd door {uploader} op {date}"
+      prompt: "Voer de bewijs-URL in:"
+      added: "&aBewijs toegevoegd."
+      failed: "&cKon bewijs niet toevoegen: {error}"
+      cancelled: "&7Bewijs toevoegen geannuleerd."
+    pardon:
+      name: "&aStraf kwijtschelden"
+      name_locked: "&7Straf kwijtschelden"
+      lore:
+        - "&7Verwijder de straf en wis"
+        - "&7de bijbehorende punten"
+      success: "&aStraf kwijtgescholden."
+      already_inactive: "&7Straf is al inactief of kwijtgescholden."
+      failed: "&cKon straf niet kwijtschelden: {error}"
+    duration:
+      name: "&6Duur wijzigen"
+      name_locked: "&7Duur wijzigen"
+      current: "&7Huidig: &f{duration}"
+      # {permanent_keyword} is het letterlijke woord dat spelers typen voor een permanente duur; laat het ongewijzigd
+      prompt: "Voer de nieuwe duur in (bijv. 30d, 2h, 30m, 1d2h30m, of '{permanent_keyword}' voor permanent):"
+      invalid: "&cOngeldige duurnotatie. Voorbeelden: 30d, 2h, 30m, 1d2h30m"
+      changed: "&aDuur gewijzigd."
+      failed: "&cKon duur niet wijzigen: {error}"
+      lengthen_only: "&7Je kunt deze straf alleen verlengen: inkorten vereist het recht om kwijt te schelden."
+      needs_pardon: "&cDeze straf inkorten vereist het recht om kwijt te schelden."
+      cancelled: "&7Duurwijziging geannuleerd."
+    linked_tickets:
+      name: "&6Gekoppelde tickets"
+      none: "&8(Geen gekoppelde tickets)"
+      header: "&7Gekoppelde tickets ({count}):"
+      entry: "&f- {ticket}"
+      more: "&8... en {count} meer"
+      left_click_view: "&eLinksklik om tickets te bekijken"
+      right_click_link: "&eRechtsklik om rapporten te koppelen"
+    stat_wipe:
+      name: "&6Stat-reset aan/uit"
+      name_locked: "&7Stat-reset aan/uit"
+      enable_lore: "&7Schakel stat-reset in voor deze ban"
+      disable_lore: "&7Schakel stat-reset uit voor deze ban"
+      enabled: "&aStat-reset ingeschakeld."
+      disabled: "&aStat-reset uitgeschakeld."
+      failed: "&cKon stat-reset niet wijzigen: {error}"
+    alt_block:
+      name: "&6Alt-blokkering aan/uit"
+      name_locked: "&7Alt-blokkering aan/uit"
+      enable_lore: "&7Schakel alt-blokkering in voor deze ban"
+      disable_lore: "&7Schakel alt-blokkering uit voor deze ban"
+      enabled: "&aAlt-blokkering ingeschakeld."
+      disabled: "&aAlt-blokkering uitgeschakeld."
+      failed: "&cKon alt-blokkering niet wijzigen: {error}"
+
+  settings:
+    title: "Instellingen"
+    information:
+      name: "&6Informatie"
+      username: "&7Gebruikersnaam: &f{username}"
+      role: "&7Rol: &f{role}"
+      role_admin: "Super Admin"
+      role_staff: "Personeelslid"
+      permissions_header: "&7Rechten:"
+      permission_modify_settings: "&a  ✓ &7Instellingen wijzigen"
+      permission_manage_staff: "&a  ✓ &7Personeel beheren"
+    staff_list:
+      name: "&6Personeelslijst"
+      lore: []
+    manage_staff:
+      name: "&6Personeel beheren"
+      lore: []
+    edit_roles:
+      name: "&6Rollen bewerken"
+      lore: []
+    reload:
+      name: "&cHerlaad modl"
+      lore:
+        - "&7Herlaad configuratie- en taalbestanden"
+
+  punish:
+    no_types: "&cGeen straftypes"
+    no_types_lore:
+      - "&7Kon straftypes niet laden"
+      - "&7vanuit de API"
+    click_to_issue: "&eKlik om straf op te leggen"
+    click_to_select_severity: "&eKlik om ernst te kiezen"
+    no_permission_lore:
+      - "&cGeen toestemming"
+    type_not_found: "&cStraftype niet gevonden"
+    ordinal: "&7Ordinaal: {ordinal}"
+
+  # Menu voor strafernst. {state} is menus.common.enabled of menus.common.disabled
+  punish_severity:
+    severities:
+      lenient:
+        title: "&aMild"
+      regular:
+        title: "&eNormaal"
+      aggravated:
+        title: "&cVerzwaard"
+    issue_punishment: "&eStraf opleggen"
+    preview_duration: "&7Straf: &f{duration}"
+    preview_duration_permanent: "&7Straf: &f{duration} &c(Permanent)"
+    preview_type: "&7Type: &f{type}"
+    preview_points: "&7Punten: &e+{points}"
+    offender_level: "&7Overtredersniveau: {current}&7 → {next}"
+    restricted_until_username:
+      - "&eSpeler blijft beperkt totdat"
+      - "&ede gebruikersnaam is gewijzigd"
+    restricted_until_skin:
+      - "&eSpeler blijft beperkt totdat"
+      - "&ede skin is gewijzigd"
+    click_to_issue: "&eKlik om straf op te leggen"
+    click_to_issue_silent: "&eKlik om stille straf op te leggen"
+    single_click_to_issue: "&aKlik om straf op te leggen"
+    single_click_to_issue_silent: "&aKlik om stille straf op te leggen"
+    link_reports: "&6Rapporten koppelen"
+    link_reports_selected: "&6Rapporten koppelen&a ({count})"
+    select_reports: "&eKlik om rapporten te selecteren"
+    linked_reports_header: "&aGekoppelde rapporten:"
+    linked_report_entry: "&7  - &f{id}"
+    modify_selection: "&eKlik om selectie te wijzigen"
+    silent_mode: "&6Stille modus: {state}"
+    silent_on: "&aStraf wordt stil opgelegd"
+    silent_off: "&7Straf wordt openbaar opgelegd"
+    alt_blocking: "&6Alt-blokkering: {state}"
+    alt_blocking_on: "&aAlt-accounts worden geblokkeerd"
+    alt_blocking_off: "&7Alt-accounts kunnen nog steeds inloggen"
+    stat_wipe: "&6Stat-reset: {state}"
+    stat_wipe_on: "&aStatistieken worden gereset"
+    stat_wipe_off: "&7Statistieken blijven behouden"
+    reason_prompt: "Voer de strafreden in voor {player}:"
+    reports_resolved: "&a{count} gekoppelde rapport(en) afgehandeld."
+    reports_not_resolved: "&c{count} gekoppelde rapport(en) konden niet worden afgehandeld: {reports}"
+    reports_resolve_error: "&cReden: {error}"
+    issue_failed: "&cKon straf niet opleggen: {error}"
+    cancelled: "&7Straf geannuleerd."
+
+  staff_list:
+    no_permission_lore:
+      - "&7Je hebt geen toestemming"
+      - "&7om personeelsleden te beheren"
+    role: "&7Rol: &f{role}"
+    super_admin_locked: "&cSuperbeheerders kunnen niet worden gewijzigd"
+    self_locked: "&cJe kunt je eigen rol niet wijzigen"
+    rank_locked:
+      - "&cJe kunt geen personeel wijzigen met"
+      - "&ceen gelijke of hogere rang"
+    roles_header: "&7Rollen:"
+    role_current: "&a  &l{role} &r&7(huidig)"
+    role_selected: "&a  {role} &7(geselecteerd)"
+    role_option: "&7  {role}"
+    cycle_roles: "&eRechtsklik om van rol te wisselen"
+    apply_role: "&eLinksklik om de geselecteerde rol toe te passen"
+    no_roles: "&cGeen rollen beschikbaar."
+    role_chosen: "&eGeselecteerde rol: &a{role}&7 (linksklik om toe te passen)"
+    already_current: "&7Dit is al de huidige rol van {player}."
+    applying: "&eRol &a{role}&e wordt toegepast op {player}..."
+    updated: "&aRol bijgewerkt."
+    update_failed: "&cKon rol niet bijwerken: {error}"
+
+  roles:
+    no_permission_lore:
+      - "&7Je hebt geen toestemming"
+      - "&7om rollen te bewerken"
+    permission_count: "&7Rechten: &f{count}"
+    click_to_edit: "&eKlik om rechten te bewerken"
+    cannot_edit_own: "&cJe kunt je eigen rol niet bewerken."
+
+  role_permissions:
+    apply_changes: "&aWijzigingen toepassen"
+    apply_changes_lore: "&eKlik om de gewijzigde rechten op te slaan"
+    no_changes: "&7Geen wijzigingen"
+    no_changes_lore: "&8Wijzig rechten en klik dan om op te slaan"
+    no_permission_lore:
+      - "&7Je hebt geen toestemming"
+      - "&7om rolrechten te bewerken"
+    auto_granted: "&8Automatisch toegekend via bovenliggend recht"
+    nothing_to_save: "&7Geen wijzigingen om op te slaan."
+    saving: "&eRechten voor {role} worden opgeslagen..."
+    saved: "&aRechten opgeslagen."
+    save_failed: "&cOpslaan mislukt: {error}"
+
+  link_reports:
+    apply: "&aSelectie toepassen"
+    apply_lore:
+      - "&7Selectie opslaan en teruggaan"
+      - ""
+      - "&e{count} rapport(en) geselecteerd"
+    select_all: "&aAlles selecteren"
+    select_all_lore:
+      - "&7Alle gefilterde rapporten (de)selecteren"
+
+  punishment_kind:
+    kick: "Kick"
+    ban: "Ban"
+    mute: "Mute"
+    details: " &f({details})"
+
+  # Chatinvoer geopend vanuit menu's. {cancel} is het letterlijke woord waarmee de invoer wordt geannuleerd; laat het ongewijzigd
+  chat_input:
+    prompt: "&6&l» &e{prompt}"
+    hint: "&7Typ je antwoord in de chat, of typ &c{cancel} &7om te annuleren."
+    timed_out: "&cInvoer is verlopen. Probeer het opnieuw."
+
+standing_gui:
+  title: "&fJouw Reputatie"
+  social_status:
+    title: "&eSociale Reputatie: {status}"
+    description:
+      Low:
+        - "&7Straffen in deze categorie blijven mild."
+      Medium:
+        - "&7Straffen in deze categorie zijn zwaarder."
+      Habitual:
+        - "&7Straffen in deze categorie zijn zeer zwaar."
+  gameplay_status:
+    title: "&eGameplay Reputatie: {status}"
+    description:
+      Low:
+        - "&7Straffen in deze categorie blijven mild."
+      Medium:
+        - "&7Straffen in deze categorie zijn zwaarder."
+      Habitual:
+        - "&7Straffen in deze categorie zijn zeer zwaar."
+  status_display:
+    Low: "&aLaag"
+    Medium: "&6Gemiddeld"
+    Habitual: "&cGewoonlijk"
+  punishment_item:
+    status_pardoned: "{duration} geleden kwijtgescholden"
+    status_rolled_back: "{duration} geleden teruggedraaid"
+    status_queued: "in de wachtrij"
+    status_permanent: "permanent"
+    status_expires: "verloopt over {duration}"
+    status_expired_ago: "{duration} geleden verlopen"
+    status_expired: "verlopen"
+    title: "&e#{id} {date}"
+    lore:
+      - "&7{duration} {type} ({status})"
+      - ""
+      - "&f{reason}"
+
+punishment_action:
+  unknown_action: "&cOnbekende actie: {action}"
+  enter_evidence_url: "&7Voer de bewijs-URL in voor straf #{id}:"
+  no_url: "&cGeen URL opgegeven."
+  evidence_linked: "&aBewijs gekoppeld aan straf #{id}"
+  evidence_link_failed: "&cKon bewijs niet koppelen: {error}"
+  evidence_cancelled: "&7Bewijskoppeling geannuleerd."
+  generating_upload: "&7Upload-link wordt gegenereerd..."
+  upload_failed: "&cKon upload-link niet genereren."
+  upload_link: "Klik hier om bewijs te uploaden"
+  upload_link_hover: "Opent in je browser"
+  buttons:
+    label: "Straf #{id}: "
+    modify: "[Wijzigen]"
+    modify_hover: "Klik om deze straf te wijzigen"
+    link_evidence: "[Bewijs koppelen]"
+    link_evidence_hover: "Klik om een URL als bewijs te koppelen"
+    upload_evidence: "[Bewijs uploaden]"
+    upload_evidence_hover: "Klik om bestanden als bewijs te uploaden"
+
+punishments:
+  public_notification:
+    ban_default: "&c{target} is verbannen."
+    mute_default: "&c{target} is gedempt."
+    kick_default: "&c{target} is van de server gekickt."
+    default: "&c{target} is bestraft."
+  mute_fallback: "&cJe bent gedempt."
+  player_notification:
+    ban_default: "&cJe {tense} verbannen (#{id})."
+    mute_default: "&cJe {tense} gedempt (#{id})."
+    kick_default: "&cJe bent gekickt (#{id})."
+    default: "&cJe {tense} bestraft (#{id})."
+
+# Set usage to "" to hide a command from the help list.
+help:
+  header: "&a&lmodl &av{version} &f- &eCommandolijst"
+  entry: "&f/{command} &7- {description}"
+  footer: "&ePagina {page}/{total_pages}. Gebruik &a/modl help {next_page}&e voor de volgende pagina."
+  no_more_pages: "&7Geen verdere pagina's."
+  version_header: "&a&lmodl&a v{version}&f - &eModeratie- en supportbeheersysteem"
+  version_footer: "&7Vrije software onder GNU AGPLv3. Gebruik /modl help voor informatie over commando's."
+  player_commands:
+    iammuted:
+      usage: "iammuted <speler>"
+      description: "Vertel iemand dat je gedempt bent"
+    standing:
+      usage: "standing"
+      description: "Bekijk je strafstatus"
+    report:
+      usage: "report <speler>"
+      description: "Rapporteer een speler"
+    chatreport:
+      usage: "chatreport <speler>"
+      description: "Rapporteer de chat van een speler"
+    claimticket:
+      usage: "claimticket <id> <sleutel>"
+      description: "Koppel een ticket aan je account"
+    apply:
+      usage: "apply"
+      description: "Solliciteer als personeelslid"
+    bugreport:
+      usage: "bugreport"
+      description: "Meld een bug"
+    support:
+      usage: "support"
+      description: "Open een supportticket"
+    link:
+      usage: "modl link <code>"
+      description: "Koppel je Minecraft-account aan het paneel"
+    panel:
+      usage: "modl panel"
+      description: "Ontvang een eenmalige inloglink voor het paneel"
+  staff_commands:
+    staffmenu:
+      usage: "staffmenu"
+      description: "Open personeelsmenu"
+    inspect:
+      usage: "inspect <speler> [-p]"
+      description: "Open inspectie menu (-p voor tekst)"
+    history:
+      usage: "history <speler> [-p [pagina]]"
+      description: "Open spelersgeschiedenis (-p voor tekst)"
+    notes:
+      usage: "notes <speler> [-p [pagina]]"
+      description: "Open spelersnotities (-p voor tekst)"
+    alts:
+      usage: "alts <speler> [-p [pagina]]"
+      description: "Open alt-accounts (-p voor tekst)"
+    reports:
+      usage: "reports [speler] [-p [pagina]]"
+      description: "Open rapportenmenu (-p voor tekst)"
+    punish:
+      usage: "punish <speler> [type] [reden]"
+      description: "Leg een straf op"
+    ban:
+      usage: "ban <speler> [duur] [reden]"
+      description: "Verban een speler"
+    mute:
+      usage: "mute <speler> [duur] [reden]"
+      description: "Demp een speler"
+    kick:
+      usage: "kick <speler> [reden]"
+      description: "Kick een speler"
+    blacklist:
+      usage: "blacklist <speler> [reden]"
+      description: "Zet een speler op de zwarte lijst"
+    pardon:
+      usage: "pardon <speler>"
+      description: "Scheld alle actieve en wachtende straffen kwijt"
+    unban:
+      usage: "unban <speler>"
+      description: "Scheld alle actieve en wachtende bans kwijt"
+    unmute:
+      usage: "unmute <speler>"
+      description: "Scheld alle actieve en wachtende mutes kwijt"
+    replay:
+      usage: "replay <status|capture> [speler]"
+      description: "Beheer replay-opnames"
+    modl_reload:
+      usage: "modl reload"
+      description: "Herlaad configuratie"
+    modl_import:
+      usage: "modl import"
+      description: "Importeren uit LiteBans (alleen console)"
+    modl_status:
+      usage: "modl status"
+      description: "Een supportrapport tonen dat veilig gedeeld kan worden (alleen console)"
+
+stat_wipe:
+  kick_message: "&cLog alsjeblieft even opnieuw in. Je statistieken worden gereset vanwege een recent verlopen ban."
+
+staff_chat:
+  enabled: "&ePersoneelschat &aactiveerd&e. Berichten gaan standaard naar personeelschat."
+  disabled: "&ePersoneelschat &cuitgeschakeld&e. Berichten gaan standaard naar lokale chat."
+  feature_disabled: "&cPersoneelschat is niet ingeschakeld op deze server."
+  already_normal: "&cJe bent al in lokale chatmodus."
+  mode_lost: "&cJe kunt de personeelschat niet meer gebruiken en bent terug in de lokale chat. Je bericht is niet verzonden."
+  format: "&b[PERSONEEL] &e{panel-name}&f: {message}"
+  local_chat_enabled: "&ePersoneelschat &cuitgeschakeld&e. Berichten gaan standaard naar lokale chat."
+
+chat_management:
+  chat_toggled_on: "&7&o[{staff}: chat ingeschakeld]"
+  chat_toggled_off: "&7&o[{staff}: chat uitgeschakeld]"
+  chat_disabled: "&cChat is momenteel uitgeschakeld."
+  chat_cleared: "&7&o[{staff}: chat gewist]"
+  slow_mode_enabled: "&7&o[{staff}: chat vertraagd naar {seconds}s]"
+  slow_mode_disabled: "&7&o[{staff}: trage modus uitgeschakeld]"
+  slow_mode_wait: "&cWacht alsjeblieft {seconds} seconden voordat je weer chat."
+  invalid_seconds: "&cVoer alsjeblieft een geldig aantal seconden in."
+  usage_toggle: "&fGebruik: &a/chat &ftoggle"
+  usage_clear: "&fGebruik: &a/chat &fclear"
+  usage_slow: "&fGebruik: &a/chat &fslow <seconden|off>"
+  help:
+    header: "&eChatcommando's:"
+    staff: "&f/chat staff &7- Wissel personeelschat modus"
+    toggle: "&f/chat toggle &7- Schakel openbare chat in/uit"
+    clear: "&f/chat clear [aantal] &7- Wis chat"
+    slow: "&f/chat slow <seconden|off> &7- Stel trage modus in/uit"
+
+staff_notifications:
+  join: "&7&o[{staff}: is ingelogd]"
+  verified: "&7&o[{staff}: geverifieerd]"
+  leave: "&7&o[{staff}: is uitgelogd]"
+  switch: "&7&o[{staff}: verbonden met {server}]"
+  generic: "&7&o[{message}]"
+  click_to_target: "Klik om op {player} te richten"
+
+staff_2fa:
+  not_verified: "&cJe moet je identiteit verifiëren voordat je personeelscommando's kunt gebruiken. Gebruik &f/verify"
+  verify_prompt: "&aKlik op de link om te verifiëren: &f{url}"
+  verify_success: "&aIdentiteit geverifieerd."
+  verify_error: "&cVerificatielink genereren mislukt. Probeer het opnieuw."
+  auto_verified: "&aAutomatisch geverifieerd via vertrouwd IP."
+
+verify:
+  only_players: "&cDit commando kan alleen door spelers worden gebruikt."
+  disabled: "&cPersoneel 2FA is niet ingeschakeld op deze server."
+  already_verified: "&aJe bent al geverifieerd."
+  header: ""
+  instructions: "&aKlik op de onderstaande link om je identiteit te verifiëren:"
+  click_here: "Klik hier om te verifiëren"
+  click_here_hover: "Klik om de verificatiepagina te openen"
+  error: "&cVerificatielink genereren mislukt. Probeer het opnieuw."
+  footer: "&eDeze link verloopt binnenkort."
+
+panel_account:
+  link_success: "&aJe Minecraft-account is nu gekoppeld aan je paneelaccount."
+  link_invalid_code: "&cDie code is ongeldig of verlopen. Maak een nieuwe aan in het paneel onder Accountinstellingen."
+  link_already_linked: "&cDit Minecraft-account is al gekoppeld aan een ander panelaccount. Ontkoppel het daar eerst en probeer het dan opnieuw."
+  link_error: "&cKon je account nu niet koppelen. Probeer het zo opnieuw."
+  login_offline_mode: "&cInloggen op het paneel vanuit de game is uitgeschakeld omdat deze server spelersaccounts niet verifieert."
+  login_not_linked: "&cJe Minecraft-account is niet gekoppeld aan een paneelaccount. Maak een code aan in het paneel onder Accountinstellingen en voer daarna &e/modl link <code>&c uit."
+  login_not_online: "&cHet paneel ziet je nog niet als online. Probeer het zo opnieuw."
+  login_error: "&cKon nu geen inloglink voor het paneel aanmaken. Probeer het zo opnieuw."
+  login_link: "Open het paneel"
+  login_link_hover: "Eenmalige link, verloopt over {minutes} minuten"
+  rate_limited: "&cJe doet dat te vaak. Wacht even en probeer het opnieuw."
+
+maintenance:
+  enabled: "&7&o[{staff}: onderhoud ingeschakeld]"
+  disabled: "&7&o[{staff}: onderhoud uitgeschakeld]"
+  already_enabled: "&cOnderhoudsmodus is al ingeschakeld."
+  already_disabled: "&cOnderhoudsmodus is al uitgeschakeld."
+  status_enabled: "&eOnderhoudsmodus is momenteel ingeschakeld."
+  status_disabled: "&eOnderhoudsmodus is momenteel uitgeschakeld."
+  login_denied: "&cServer is momenteel in onderhoud. Probeer het later opnieuw."
+  kick_message: "&cServer is nu in onderhoudsmodus. Probeer het later opnieuw."
+  usage: "&fGebruik: &a/maintenance&f <on|off>"
+
+freeze:
+  frozen_message: "&cJe bent bevroren. Verbreek niet de verbinding."
+  staff_notification_freeze: "&7&o[{staff}: heeft {player} bevroren]"
+  staff_notification_unfreeze: "&7&o[{staff}: heeft {player} ontdooid]"
+  unfrozen: "&aJe bent ontdooid."
+  logout_notification: "&c&l{player} logde uit terwijl bevroren."
+  frozen_chat: "&b[BEVROREN] &e{player}&f: {message}"
+  command_blocked: "&cJe kunt geen commando's gebruiken terwijl je bevroren bent."
+  target_offline: "&c{player} is niet online op deze server en kan dus niet bevroren worden."
+  not_enforced: "&e{player} is bevroren, maar hun server is nog niet met modl verbonden, dus beweging wordt pas geblokkeerd zodra die verbindt."
+  limit_reached: "&cEr zijn nu te veel spelers bevroren."
+
+intercept_chat:
+  enabled: "&aNetwerk chat interceptie ingeschakeld"
+  disabled: "&aNetwerk chat interceptie uitgeschakeld"
+  format: "&8[G-{server}] &e{player}&f: {message}"
+
+intercept:
+  message: "&8[Interceptie] &f{player}: &7{message}"
+
+chat_logs:
+  header: ""
+  entry: "&7[{timestamp}] &8[{server}] &f{message}"
+  empty: "&7Geen chatlogs gevonden voor deze speler."
+  footer: "&ePagina {page}/{total_pages} ({total} totaal)"
+  error: "&cKon chatlogs niet ophalen."
+  usage: "&fGebruik: &a/chatlogs&f <speler>"
+
+command_logs:
+  header: ""
+  entry: "&7[{timestamp}] &e{player}&7: &f/{command}"
+  empty: "&7Geen commandologs gevonden voor deze speler."
+  footer: "&ePagina {page}/{total_pages} ({total} totaal)"
+  error: "&cKon commandologs niet ophalen."
+  usage: "&fGebruik: &a/commandlogs&f <speler>"
+
+staff_mode:
+  enabled: "&aPersoneelsmodus ingeschakeld"
+  disabled: "&aPersoneelsmodus uitgeschakeld"
+  enabled_broadcast: "&7&o[{staff}: personeelsmodus betreden]"
+  disabled_broadcast: "&7&o[{staff}: personeelsmodus verlaten]"
+  limit_reached: "&cEr zijn nu te veel personeelsleden in personeelsmodus."
+
+vanish:
+  enabled: "&aJe bent nu onzichtbaar"
+  disabled: "&aJe bent niet meer onzichtbaar"
+  enabled_broadcast: "&7&o[{staff}: onzichtbaar]"
+  disabled_broadcast: "&7&o[{staff}: zichtbaar]"
+
+target:
+  targeting: "&eRicht nu op &f{player}"
+  cleared: "&aDoel gewist."
+  usage: "&fGebruik: &a/target&f <speler>"
+  connecting: "&eVerbinden met &f{server} &eom &f{player}&e te volgen..."
+  cannot_target_self: "&cJe kunt niet op jezelf richten."
+  not_online: "&cDe speler is niet online."
+  target_left: "&c{player} heeft het netwerk verlaten. Terug naar personeelsmodus."
+
+network:
+  action_unavailable: "&cDie actie is nu niet beschikbaar."
+
+replay:
+  usage:
+    - "&f/replay status [speler] &7- Controleer opnamestatus"
+    - "&f/replay capture [speler] &7- Opnemen en uploaden van replay"
+  not_available: "&cReplay-opname is niet beschikbaar op deze server."
+  status_recording: "&a{player} wordt momenteel opgenomen"
+  status_not_recording: "&c{player} wordt niet opgenomen"
+  no_server_connected: "&cEr is geen server verbonden om een replay op te nemen."
+  no_active_recording: "&cGeen actieve opname voor {player}"
+  capturing: "&aReplay wordt opgenomen en geüpload voor {player}..."
+  capture_success: "&aReplay opgenomen voor {player}"
+  capture_link: "&b{url}"
+  capture_failed: "&cReplay opnemen mislukt voor {player}"
+  click_to_view: "[Klik om replay te bekijken]"
+  click_to_view_hover: "Replay-viewer openen"
+  console_specify_player: "&cGeef een spelernaam op vanuit de console."
+
+import:
+  usage: "Gebruik: /modl import <source>, daarna /modl import <source> confirm <widen|skip> <keep|standard>. Ook: /modl import status, /modl import cancel."
+  detected: "Hier gevonden: {detected}. Ondersteund: {supported}."
+  nothing_detected: "Hier zijn geen gegevens van een ondersteunde plugin gevonden. Ondersteund: {supported}."
+  unknown_source: "{source} is geen ondersteunde bron. Ondersteund: {supported}."
+  litebans_missing: "LiteBans draait niet op deze server. Installeer en activeer het hier (op de proxy bij netwerken), verbonden met je LiteBans-database, herstart en voer dit opnieuw uit."
+  source_missing: "Er zijn op deze server geen gegevens van {source} gevonden. Voer dit uit op de server die ze heeft (in een netwerk de proxy waarop modl draait)."
+  source_locked: "{source} draait en houdt zijn databasebestand open. Verwijder de jar (bewaar de map), herstart en voer dit opnieuw uit."
+  database_failed: "De gegevens van {source} konden niet worden gelezen: {error}"
+  no_space: "Er is niet genoeg vrije schijfruimte om de database van {source} te kopiëren: {error}"
+  nothing_to_import: "{source} heeft geen spelers of straffen om te importeren."
+  nothing_left: "Met deze keuzes blijft er niets over om te importeren."
+  setup_required: "Rond eerst de installatie van modl af in het paneel."
+  busy: "Hier loopt al een controle of import. Zie /modl import status."
+  already_running: "Er loopt een import die op {server} ({address}) is gestart. Zie /modl import status of stop hem met /modl import cancel."
+  ip_history_release_running: "De IP-geschiedenis die een eerdere import bewaarde, wordt nog vrijgegeven. Probeer het later opnieuw."
+  storage_moving: "Geüploade bestanden worden naar een andere opslag verplaatst. Probeer het opnieuw als dat klaar is."
+  database_moving: "modl verhuist naar een andere database. Probeer het opnieuw als dat klaar is."
+  confirm_first: "Voer eerst /modl import {source_id} uit en bevestig binnen 60 seconden."
+  choices_required: "Beide keuzes zijn verplicht: /modl import {source_id} confirm <widen|skip> <keep|standard>"
+  preview:
+    counts: "{source} heeft {bans} bans, {mutes} mutes, {warnings} waarschuwingen, {kicks} kicks en {notes} notities voor {players} spelers."
+    not_imported: "Niet geïmporteerd: {without_account} straffen zonder spelersaccount."
+    scoped: "{ip_wide} IP-brede en {server_scoped} servergebonden straffen. widen: ze gelden voor het account op elke server, en IP-bans blokkeren ook de alt-accounts ervan. skip: ze worden weggelaten."
+    ip_history: "{old_entries} IP-geschiedenisregels (ongeveer {old_megabytes} MB) zijn ouder dan {days} dagen. keep: de geïmporteerde IP-geschiedenis blijft. standard: IP-geschiedenis ouder dan {days} dagen wordt verwijderd."
+    ip_history_kept: "Een eerdere import bewaart oude IP-geschiedenis. standard beëindigt dat en verwijdert die."
+    backup: "Maak eerst een back-up van modl. Geïmporteerde gegevens blijven bij annuleren, en opnieuw importeren voegt alleen toe."
+    confirm: "Voer om te starten binnen 60 seconden uit: /modl import {source_id} confirm <widen|skip> <keep|standard>"
+  started: "Import uit {source} gestart ({scoped_choice}, {history_choice})."
+  exporting: "{source} lezen: {processed} van {total} spelers."
+  uploading: "De export wordt naar modl gestuurd."
+  processing_started: "modl heeft de export ontvangen en importeert deze."
+  completed: "Import uit {source} voltooid: {processed} spelers geïmporteerd, {skipped} overgeslagen, {not_imported} straffen weggelaten."
+  completed_partly: "Import uit {source} voltooid met problemen: {processed} spelers geïmporteerd, {failed} onleesbaar, {skipped} overgeslagen, {not_imported} straffen weggelaten. Los dit op en voer opnieuw uit."
+  cancelling: "De import wordt gestopt."
+  cancel_keeps_imported: "Al geïmporteerde gegevens blijven bewaard."
+  nothing_to_cancel: "Er loopt geen import."
+  job_gone: "De modl-server kent deze import niet meer."
+  too_many_players: "{source} heeft te veel spelers voor één import (limiet 1.000.000): {error}"
+  every_player_failed: "Er kon geen speler uit {source} worden gelezen: {error}"
+  file_failed: "Het exportbestand kon niet worden geschreven: {error}"
+  upload_blocked: "Iets vóór modl (een reverse proxy of CDN) weigerde het bestand als te groot: {error}"
+  upload_failed: "De export kon niet naar modl worden gestuurd: {error}"
+  unreachable: "modl was niet bereikbaar: {error}"
+  request_failed: "Het importverzoek is mislukt: {error}"
+  status:
+    none: "Er is nog geen import uitgevoerd."
+    building_json: "{source} lezen: {processed} van {total} spelers."
+    uploading_json: "De export wacht op verzending."
+    receiving_file: "modl ontvangt de export."
+    processing_data: "Importeren: {processed} van {total} spelers, {skipped} overgeslagen."
+    details: "Import uit {source} gestart vanaf {server} ({address}) met {scoped_choice} en {history_choice}."
+  ended:
+    cancelled: "De import is geannuleerd."
+    timed_out: "De import meldde zich niet meer en is verlopen. Voer hem opnieuw uit."
+    interrupted: "De import is door een herstart onderbroken. Voer hem opnieuw uit."
+    export_failed: "De export uit {source} is mislukt. Voer hem opnieuw uit."
+    upload_failed: "Het versturen van de export is mislukt. Voer het opnieuw uit."
+    file_too_large: "De export is groter dan de importlimiet."
+    invalid_file: "modl kon de export niet lezen: {error}"
+    import_failed: "De import is mislukt: {error}"
+
+server_features:
+  staff_mode:
+    random_teleport:
+      no_players: "&cEr zijn geen spelers om naartoe te teleporteren."
+      teleported: "&aGeteleporteerd naar &f{player}&a."
+    teleport:
+      teleported: "&aGeteleporteerd naar &f{player}&f."
+      target_offline: "&cHet doelwit is niet meer online."
+    custody:
+      not_saved: "&cStaffmodus is niet gestart omdat je spullen niet veilig konden worden opgeslagen. Je houdt alles. Zet staffmodus uit en vraag de servereigenaar de console te controleren."
+      kept_changing: "&cStaffmodus is niet gestart omdat je inventaris bleef veranderen. Je houdt alles. Zet staffmodus uit, blijf stilstaan en probeer het opnieuw."
+      unresolved: "&cStaffmodus is niet gestart omdat een eerdere opslag van je spullen niet is afgerond. Vraag de servereigenaar de console te controleren en verbind daarna opnieuw."
+      held: "&cJe spullen konden nog niet worden teruggegeven. modl bewaart ze veilig en je items blijven vergrendeld tot ze terug zijn. Vraag de servereigenaar de console te controleren."
+      record_missing: "&cmodl heeft geen opgeslagen spullen van je staffmodus-sessie gevonden. Vraag de servereigenaar de console te controleren."
+    unknown_player: "Onbekend"
+    scoreboard:
+      vanish_on: "&aAAN"
+      vanish_off: "&cUIT"
+      vanished: "Onzichtbaar"
+      visible: "Zichtbaar"
+      frozen_yes: "&cJa"
+      frozen_no: "&aNee"
+      target_offline: "Offline"
+      no_target: "Geen"
+      not_available: "N.v.t."
+    silent_container:
+      block_title: "&8Bekijken: {container}"
+      inventory_title: "&8Bekijken: inventaris van {player}"
+  freeze:
+    frozen: "&c&lJe bent bevroren door een staflid. Verbreek de verbinding niet."
+    unfrozen: "&aJe bent niet meer bevroren."
+    chat: "&b[Bevroren] &e{player}&f: {message}"
+    no_commands: "&cJe kunt geen commando's gebruiken terwijl je bevroren bent."
+  command:
+    modlserver:
+      usage: "Gebruik: &a/modlserver reload"
+      no_permission: "&cJe hebt geen toestemming om dit commando te gebruiken."
+      reloading: "&eDe configuratie van de modl-serverfuncties wordt opnieuw geladen..."
+      reloaded: "&aConfiguratie van de serverfuncties opnieuw geladen."
+      reload_failed: "&cOpnieuw geladen met fouten in: &f{files}&c. Bekijk de console voor details."
+      restart_required: "&eDeze instellingen gelden pas na een herstart: &f{keys}"
+    proxycmd:
+      console_only: "&cDit commando kan alleen vanaf de console worden uitgevoerd."
+      usage: "Gebruik: &a/proxycmd &f<commando>"
+      not_connected: "&cNiet verbonden met de proxy. Controleer de verbindingsinstellingen in connection.yml."
+      sent: "&aNaar de proxy gestuurd: {command}"
+      refused: "&cDe proxy voert alleen modl-commando's uit; {command} is geweigerd."
+      disabled: "&c/proxycmd is uitgeschakeld voor de sleutel van deze server. De eigenaar kan het toestaan in Panel > Instellingen > Algemeen > Minecraft-servers; voer het commando tot die tijd uit in de proxyconsole."
+      no_answer: "&cDe proxy antwoordde niet op tijd."
+      rate_limited: "&cTe veel proxyopdrachten op dit moment; probeer het zo opnieuw."
+      invalid: "&cDe proxy kon {command} niet uitvoeren."
+  network:
+    unavailable: "&cDe proxy is nu niet bereikbaar; probeer het zo opnieuw."
+
+support_status:
+  header: "==== modl-status: kopieer alles tot de slotregel in je supportverzoek ===="
+  footer: "==== Einde van de modl-status ===="
+  collecting: "De modl-status wordt verzameld..."
+  backend_unavailable: "modl is niet verbonden met zijn server, dus alleen het plugin-deel wordt getoond. De consoleregels hierboven zeggen waarom."
+  backend_failed: "De modl-server antwoordde niet, dus alleen het plugin-deel wordt getoond."

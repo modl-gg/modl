@@ -1,0 +1,33 @@
+{
+  "provider": "iphub",
+  "source": "https://iphub.info/api",
+  "cases": [
+    {
+      "name": "the documented example is non-residential",
+      "status": 200,
+      "body": { "ip": "8.8.8.8", "countryCode": "US", "countryName": "United States", "asn": 15169, "isp": "GOOGLE", "block": 1 },
+      "outcome": "FOUND",
+      "expected": { "country": "US", "region": null, "asn": "AS15169 GOOGLE", "vpn": "YES", "hosting": false }
+    },
+    {
+      "name": "a residential address is clean",
+      "status": 200,
+      "body": { "ip": "203.0.113.7", "countryCode": "NL", "countryName": "Netherlands", "asn": 64500, "isp": "Example Broadband", "block": 0 },
+      "outcome": "FOUND",
+      "expected": { "country": "NL", "region": null, "asn": "AS64500 Example Broadband", "vpn": "NO", "hosting": false }
+    },
+    {
+      "name": "a low-confidence block is unknown, never clean",
+      "status": 200,
+      "body": { "ip": "203.0.113.8", "countryCode": "NL", "countryName": "Netherlands", "asn": 64500, "isp": "Example Broadband", "block": 2 },
+      "outcome": "FOUND",
+      "expected": { "country": "NL", "region": null, "asn": "AS64500 Example Broadband", "vpn": "UNKNOWN", "hosting": false }
+    },
+    {
+      "name": "rate limited",
+      "status": 429,
+      "body": {},
+      "outcome": "REFUSED"
+    }
+  ]
+}

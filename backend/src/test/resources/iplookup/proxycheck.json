@@ -1,0 +1,60 @@
+{
+  "provider": "proxycheck",
+  "source": "https://proxycheck.io/api/",
+  "cases": [
+    {
+      "name": "a VPN exit",
+      "status": 200,
+      "body": {
+        "status": "ok",
+        "37.60.48.2": {
+          "asn": "AS38019",
+          "provider": "tianjin Mobile Communication Company Limited",
+          "country": "China",
+          "isocode": "CN",
+          "proxy": "yes",
+          "type": "VPN"
+        }
+      },
+      "outcome": "FOUND",
+      "expected": { "country": "CN", "region": null, "asn": "AS38019 tianjin Mobile Communication Company Limited", "vpn": "YES", "hosting": false }
+    },
+    {
+      "name": "a residential address with a warning",
+      "status": 200,
+      "body": {
+        "status": "warning",
+        "message": "You are within 10% of your query limit for the day.",
+        "203.0.113.7": {
+          "asn": "AS64500",
+          "provider": "Example Broadband",
+          "country": "Netherlands",
+          "isocode": "NL",
+          "region": "North Holland",
+          "proxy": "no",
+          "type": "Business"
+        }
+      },
+      "outcome": "FOUND",
+      "expected": { "country": "NL", "region": "North Holland", "asn": "AS64500 Example Broadband", "vpn": "NO", "hosting": false }
+    },
+    {
+      "name": "quota denied in the body",
+      "status": 200,
+      "body": { "status": "denied", "message": "Free queries exhausted." },
+      "outcome": "REFUSED"
+    },
+    {
+      "name": "quota denied by status",
+      "status": 429,
+      "body": { "status": "denied" },
+      "outcome": "REFUSED"
+    },
+    {
+      "name": "an invalid address",
+      "status": 400,
+      "body": { "status": "error", "message": "No valid IP addresses supplied." },
+      "outcome": "FAILED"
+    }
+  ]
+}

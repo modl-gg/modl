@@ -1,0 +1,109 @@
+# Staff mode hotbar
+# Actions: target_selector, vanish_toggle, staff_menu, random_teleport
+staff_hotbar:
+  0:
+    item: "minecraft:lead"
+    name: "&aTarget Player"
+    action: "target_selector"
+    lore:
+      - "&7Right-click to select"
+      - "&7a player to target."
+  4:
+    item: "minecraft:compass"
+    name: "&eRandom Teleport"
+    action: "random_teleport"
+    lore:
+      - "&7Teleport to a random"
+      - "&7online player."
+  7:
+    item: "minecraft:lime_dye"
+    name: "&aVanish: ON"
+    action: "vanish_toggle"
+    toggle_item: "minecraft:gray_dye"
+    toggle_name: "&7Vanish: OFF"
+    lore:
+      - "&7You are currently &ahidden"
+      - "&7from all players."
+    toggle_lore:
+      - "&7You are currently &cvisible"
+      - "&7to all players."
+  8:
+    item: "minecraft:nether_star"
+    name: "&bStaff Menu"
+    action: "staff_menu"
+    lore: []
+
+# Target mode hotbar
+# Actions: freeze_target, stop_target, inspect_target, open_inventory, teleport_to_target, hackreport_target
+target_hotbar:
+  0:
+    item: "minecraft:ender_eye"
+    name: "&eTeleport to Target"
+    action: "teleport_to_target"
+    lore: []
+  1:
+    item: "minecraft:chest"
+    name: "&eOpen Target Inventory"
+    action: "open_inventory"
+    lore: []
+  2:
+    item: "minecraft:blaze_rod"
+    name: "&aInspect Target"
+    action: "inspect_target"
+    lore: []
+  4:
+    item: "minecraft:ice"
+    name: "&bFreeze Target"
+    action: "freeze_target"
+    lore: []
+  6:
+    item: "minecraft:book"
+    name: "&cHack Report"
+    action: "hackreport_target"
+    lore:
+      - "&7Report the targeted player"
+      - "&7for cheating and capture a replay."
+  7:
+    item: "minecraft:lime_dye"
+    name: "&aVanish: ON"
+    action: "vanish_toggle"
+    toggle_item: "minecraft:gray_dye"
+    toggle_name: "&7Vanish: OFF"
+    lore:
+      - "&7You are currently &ahidden"
+      - "&7from all players."
+    toggle_lore:
+      - "&7You are currently &cvisible"
+      - "&7to all players."
+  8:
+    item: "minecraft:red_bed"
+    name: "&cStop Targeting"
+    action: "stop_target"
+    lore:
+      - "&7Stop targeting and"
+      - "&7return to staff mode."
+
+# Shown in staff mode while not targeting
+# Placeholders: {player_name}, {server}, {online}, {max_players}, {vanish_status}, {staff_online}, {date}, {vanished}
+staff_scoreboard:
+  enabled: true
+  vanish: " &7[V]"
+  title: "&b&lMOD MODE{vanish}"
+  lines:
+    - "&7{date} &8{server}"
+    - ""
+    - "&fPlayers: &a{online}"
+    - "&fStaff: &6{staff_online}"
+
+# Shown while targeting a player
+# Placeholders: {player_name}, {target_name}, {target_health}, {target_ping}, {freeze_status}, {server}, {online}, {max_players}, {date}, {vanished}
+target_scoreboard:
+  enabled: true
+  vanish: " &7[V]"
+  title: "&b&lMOD MODE{vanish}"
+  lines:
+    - "&7{date} &8{server}"
+    - ""
+    - "&fTargeting:"
+    - "&a{target_name}"
+    - "&c{target_health} ❤ &7| &b{target_ping}ms"

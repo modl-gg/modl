@@ -1,0 +1,20 @@
+package gg.modl.backend.realtime.transport;
+
+import gg.modl.backend.realtime.rate.RealtimeUnauthenticatedConnectionLimiter;
+import org.jspecify.annotations.Nullable;
+import java.util.concurrent.atomic.AtomicBoolean;
+
+public final class RealtimeUnauthenticatedSlot {
+    private final AtomicBoolean active = new AtomicBoolean(true);
+    private final @Nullable String clientIp;
+
+    public RealtimeUnauthenticatedSlot(@Nullable String clientIp) {
+        this.clientIp = clientIp;
+    }
+
+    public void releaseOnce(RealtimeUnauthenticatedConnectionLimiter limiter) {
+        if (active.compareAndSet(true, false)) {
+            limiter.release(clientIp);
+        }
+    }
+}

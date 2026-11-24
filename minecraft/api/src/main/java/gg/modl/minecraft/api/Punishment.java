@@ -1,0 +1,263 @@
+package gg.modl.minecraft.api;
+
+import com.google.gson.annotations.SerializedName;
+import lombok.AllArgsConstructor;
+import lombok.Builder;
+import lombok.Getter;
+import lombok.NoArgsConstructor;
+import org.jspecify.annotations.Nullable;
+
+import java.time.Instant;
+import java.util.Collections;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.function.Predicate;
+
+@Getter @Builder @NoArgsConstructor @AllArgsConstructor
+public class Punishment {
+    public static final String DATA_KEY_WIPE_AFTER_EXPIRY = "wipeAfterExpiry";
+
+    private static final String UNKNOWN = "Unknown", DEFAULT_REASON = "No reason provided",
+            STATUS_UNSTARTED = "Unstarted", DATA_KEY_ACTIVE = "active", DATA_KEY_STATUS = "status",
+            DATA_KEY_EXPIRES = "expires", DATA_KEY_DURATION = "duration", DATA_KEY_REASON = "reason",
+            DATA_KEY_TYPE_NAME = "typeName";
+
+    private @SerializedName("id") String id;
+    private @SerializedName("issuerName") String issuerName;
+    private @Nullable @SerializedName("issued") Instant issued;
+    private @Nullable @SerializedName("started") Instant started;
+    private @Nullable @SerializedName("type") Type type;
+    private @Nullable @SerializedName("typeOrdinal") Integer typeOrdinal;
+    private @Nullable @SerializedName("modifications") List<Modification> modifications;
+    private @Nullable @SerializedName("notes") List<Note> notes;
+    private @Nullable @SerializedName("evidence") List<Evidence> evidence;
+    private @Nullable @SerializedName("attachedTicketIds") List<String> attachedTicketIds;
+    private @Nullable @SerializedName("data") Map<String, Object> dataMap;
+
+    public Map<String, Object> getDataMap() {
+        return dataMap != null ? dataMap : Collections.emptyMap();
+    }
+
+    public List<Modification> getModifications() {
+        return modifications != null ? modifications : Collections.emptyList();
+    }
+
+    public List<Note> getNotes() {
+        return notes != null ? notes : Collections.emptyList();
+    }
+
+    public List<Note> getStaffNotes() {
+        List<Note> all = getNotes();
+        String reason = getIssuedReason();
+        if (all.isEmpty() || reason == null || !reason.equals(all.get(0).getText())) return all;
+        return all.subList(1, all.size());
+    }
+
+    public List<Evidence> getEvidence() {
+        return evidence != null ? evidence : Collections.emptyList();
+    }
+
+    public List<String> getAttachedTicketIds() {
+        return attachedTicketIds != null ? attachedTicketIds : Collections.emptyList();
+    }
+
+    public int getTypeOrdinal() {
+        if (typeOrdinal != null) return typeOrdinal;
+        return type != null ? type.getValue() : 0;
+    }
+
+    private boolean typeNameContains(String needle) {
+        Object tn = getDataMap().get(DATA_KEY_TYPE_NAME);
+        return tn instanceof String && ((String) tn).toLowerCase(Locale.ROOT).contains(needle);
+    }
+
+    public boolean isBanType() {
+        PunishmentTypeClassifier classifier = PunishmentTypeClassifiers.active();
+        if (classifier.isPopulated()) return classifier.isBan(getTypeOrdinal());
+        int o = getTypeOrdinal();
+        if (o >= PunishmentTypeClassifier.ORDINAL_BAN && o <= PunishmentTypeClassifier.ORDINAL_BLACKLIST) return true;
+        return typeNameContains("ban") || type == Type.BAN || type == Type.SECURITY_BAN
+                || type == Type.LINKED_BAN || type == Type.BLACKLIST;
+    }
+
+    public boolean isMuteType() {
+        PunishmentTypeClassifier classifier = PunishmentTypeClassifiers.active();
+        if (classifier.isPopulated()) return classifier.isMute(getTypeOrdinal());
+        if (getTypeOrdinal() == PunishmentTypeClassifier.ORDINAL_MUTE) return true;
+        return typeNameContains("mute") || type == Type.MUTE;
+    }
+
+    public boolean isKickType() {
+        return PunishmentTypeClassifiers.active().isKick(getTypeOrdinal()) || type == Type.KICK;
+    }
+
+    public String getTypeCategory() {
+        Object typeName = getDataMap().get(DATA_KEY_TYPE_NAME);
+        if (typeName instanceof String && !((String) typeName).isEmpty()) return (String) typeName;
+
+        if (isBanType()) return "Ban";
+        if (isMuteType()) return "Mute";
+        if (isKickType()) return "Kick";
+        return UNKNOWN;
+    }
+
+    public @Nullable String getPlayerFacingReason(@Nullable String typeDescription) {
+        return PlayerFacingReason.of(getTypeOrdinal(), getIssuedReason(), typeDescription);
+    }
+
+    private @Nullable String getIssuedReason() {
+        Object reason = getDataMap().get(DATA_KEY_REASON);
+        return reason instanceof String && !((String) reason).isEmpty() ? (String) reason : null;
+    }
+
+    public String getStaffDisplayReason() {
+        String issuedReason = getIssuedReason();
+        if (issuedReason != null) return issuedReason;
+
+        for (Note note : getNotes()) {
+            String text = note.getText();
+            if (!isAutoGeneratedNote(text)) return text;
+        }
+        return DEFAULT_REASON;
+    }
+
+    private boolean isAutoGeneratedNote(@Nullable String noteText) {
+        if (noteText == null) return true;
+        String lower = noteText.toLowerCase(Locale.ROOT);
+        return lower.equals("issued punishment") ||
+               lower.startsWith("issued ") ||
+               lower.equals("pardoned punishment") ||
+               lower.equals("added evidence") ||
+               lower.startsWith("changed duration to ") ||
+               lower.startsWith("enabled ") ||
+               lower.startsWith("disabled ");
+    }
+
+    public @Nullable Instant getExpires() {
+        Object expires = getDataMap().get(DATA_KEY_EXPIRES);
+        return expires instanceof Number ? Instant.ofEpochMilli(((Number) expires).longValue()) : null;
+    }
+
+    public boolean isActive() {
+        if (isKickType()) return false;
+
+        Map<String, Object> map = getDataMap();
+
+        Object activeFlag = map.get(DATA_KEY_ACTIVE);
+        if (activeFlag instanceof Boolean && !((Boolean) activeFlag)) return false;
+
+        if (STATUS_UNSTARTED.equals(map.get(DATA_KEY_STATUS))) return false;
+
+        if ((isBanType() || isMuteType()) && started == null) return false;
+
+        if (hasEndedEnforcement()) return false;
+
+        Instant expiry = getEffectiveExpiry();
+        return expiry == null || expiry.toEpochMilli() >= System.currentTimeMillis();
+    }
+
+    private boolean hasEndedEnforcement() {
+        for (Modification mod : getModifications()) {
+            if (mod.getType() != null && mod.getType().endsEnforcement()) return true;
+        }
+        return false;
+    }
+
+    public @Nullable Instant getPardonDate() {
+        return getLastModificationDate(Modification.Type::isPardon);
+    }
+
+    public @Nullable Instant getRollbackDate() {
+        return getLastModificationDate(Modification.Type.ROLLBACK::equals);
+    }
+
+    private @Nullable Instant getLastModificationDate(Predicate<Modification.Type> matcher) {
+        Modification modification = getLastModification(matcher);
+        return modification != null ? modification.getIssued() : null;
+    }
+
+    private @Nullable Modification getLastModification(Predicate<Modification.Type> matcher) {
+        Modification last = null;
+        for (Modification mod : getModifications()) {
+            if (mod.getType() != null && matcher.test(mod.getType())) last = mod;
+        }
+        return last;
+    }
+
+    private @Nullable Modification getLastDurationChange() {
+        return getLastModification(Modification.Type::isDurationChange);
+    }
+
+    public boolean isWipeAfterExpiry() {
+        return Boolean.TRUE.equals(getDataMap().get(DATA_KEY_WIPE_AFTER_EXPIRY));
+    }
+
+    public @Nullable Instant getDurationStart() {
+        Instant startedAt = started;
+        if (startedAt == null) return null;
+        Modification change = getLastDurationChange();
+        Instant changedAt = change != null ? change.getIssued() : null;
+        return changedAt != null && changedAt.isAfter(startedAt) ? changedAt : startedAt;
+    }
+
+    public @Nullable Instant getEffectiveExpiry() {
+        Modification change = getLastDurationChange();
+        if (change == null) {
+            Instant recordedExpiry = getExpires();
+            if (recordedExpiry != null) return recordedExpiry;
+        }
+
+        Long duration = getEffectiveDuration();
+        Instant durationStart = getDurationStart();
+        if (duration == null || durationStart == null) return null;
+        return Instant.ofEpochMilli(saturatedPlus(durationStart.toEpochMilli(), duration));
+    }
+
+    public boolean endsEarlierWith(@Nullable Long newDurationMs, long nowMs) {
+        if (isKickType() || hasEndedEnforcement() || newDurationMs == null || newDurationMs <= 0) return false;
+        Modification change = getLastDurationChange();
+        Long currentDuration = change != null ? change.getEffectiveDuration() : getDuration();
+        if (currentDuration == null || currentDuration <= 0) return true;
+        Instant startedAt = started;
+        Instant durationStart = getDurationStart();
+        if (startedAt == null || durationStart == null || STATUS_UNSTARTED.equals(getDataMap().get(DATA_KEY_STATUS))) {
+            return newDurationMs < currentDuration;
+        }
+        long currentEnd = saturatedPlus(durationStart.toEpochMilli(), currentDuration);
+        return saturatedPlus(Math.max(startedAt.toEpochMilli(), nowMs), newDurationMs) < currentEnd;
+    }
+
+    private static long saturatedPlus(long base, long durationMs) {
+        return durationMs > Long.MAX_VALUE - base ? Long.MAX_VALUE : base + durationMs;
+    }
+
+    @Getter
+    public enum Type {
+        KICK(0),
+        MUTE(1),
+        BAN(2),
+        SECURITY_BAN(3),
+        LINKED_BAN(4),
+        BLACKLIST(5);
+
+        private final int value;
+
+        Type(int value) {
+            this.value = value;
+        }
+    }
+
+    public @Nullable Long getDuration() {
+        Object duration = getDataMap().get(DATA_KEY_DURATION);
+        if (duration instanceof Number) return ((Number) duration).longValue();
+        return null;
+    }
+
+    public @Nullable Long getEffectiveDuration() {
+        Modification change = getLastDurationChange();
+        Long duration = change != null ? change.getEffectiveDuration() : getDuration();
+        return duration != null && duration > 0 ? duration : null;
+    }
+
+}

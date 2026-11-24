@@ -1,0 +1,6 @@
+# modl release signing keys: one base64 X.509 DER Ed25519 public key per line, at most two.
+# Create a key pair with: openssl genpkey -algorithm ed25519 -out release.pem
+# Public line: openssl pkey -in release.pem -pubout -outform DER | base64
+# While this file lists no key, release checks and Update now stay off.
+MCowBQYDK2VwAyEAty/i0gd40Or+tW0jX40vWsCv1ICXIRt4wH53Jz5eP4Q=
+MCowBQYDK2VwAyEAF4FOdT/opOKXfZ8ZidHRCBQCR6E9lNh2ctmJNuKCxaI=

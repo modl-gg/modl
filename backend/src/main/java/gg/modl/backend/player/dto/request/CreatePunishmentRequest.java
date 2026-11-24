@@ -1,0 +1,28 @@
+package gg.modl.backend.player.dto.request;
+
+import gg.modl.backend.infrastructure.validation.RequestValidationLimits;
+import gg.modl.backend.player.data.punishment.PunishmentIssuerKind;
+import jakarta.validation.Valid;
+import jakarta.validation.constraints.Max;
+import jakarta.validation.constraints.NotNull;
+import jakarta.validation.constraints.PositiveOrZero;
+import jakarta.validation.constraints.Size;
+import org.jspecify.annotations.Nullable;
+import java.util.List;
+import java.util.Map;
+
+public record CreatePunishmentRequest(
+    @Nullable @Size(max = RequestValidationLimits.PLAYER_ISSUER_NAME_MAX_LENGTH) String issuerName,
+    @Nullable @Size(max = RequestValidationLimits.PLAYER_ISSUER_ID_MAX_LENGTH) String issuerId,
+    @NotNull PunishmentIssuerKind issuerKind,
+    @NotNull @PositiveOrZero Integer typeOrdinal,
+    @Nullable @Size(max = RequestValidationLimits.PLAYER_PUNISHMENT_NOTES_MAX_ENTRIES) List<@Valid CreateNoteRequest> notes,
+    @Nullable @Size(max = RequestValidationLimits.PLAYER_PUNISHMENT_EVIDENCE_MAX_ENTRIES) List<@Valid CreateEvidenceRequest> evidence,
+    @Nullable @Size(max = RequestValidationLimits.PLAYER_PUNISHMENT_TICKETS_MAX_ENTRIES) List<@Size(max = RequestValidationLimits.ID_MAX_LENGTH) String> attachedTicketIds,
+    @Nullable @Size(max = RequestValidationLimits.PLAYER_SEVERITY_MAX_LENGTH) String severity,
+    @Nullable @Size(max = RequestValidationLimits.PLAYER_STATUS_MAX_LENGTH) String status,
+    @Nullable @Size(max = RequestValidationLimits.PLAYER_PUNISHMENT_DATA_MAX_ENTRIES) Map<String, Object> data,
+    @Nullable @Size(max = RequestValidationLimits.PLAYER_PUNISHMENT_REASON_MAX_LENGTH) String reason,
+    @Nullable @PositiveOrZero @Max(RequestValidationLimits.PUNISHMENT_DURATION_MAX_MS) Long duration
+) {
+}

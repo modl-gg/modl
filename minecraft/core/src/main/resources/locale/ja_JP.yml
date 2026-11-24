@@ -1,0 +1,1496 @@
+# modl in-game messages, ja_JP. Colors, placeholders and overrides: https://github.com/modl-gg/modl/wiki/Placeholders
+
+messages:
+  cannot_report_self: "&c自分自身を通報することはできません。"
+  player_not_online: "&cそのプレイヤーはオンラインではありません。"
+  submitting: "&e{type}を送信しています..."
+  creating: "&e{type}を作成しています..."
+  success: "&a{type}を送信しました。"
+  created: "&a{type}を作成しました。"
+  ticket_id: "&7チケットID: &f{ticketId}"
+  view_ticket: "&7チケットはこちら: &b{url}"
+  complete_form: "&7{type}の入力を完了してください: &b{url}"
+  form_title_note: "&7送信前にフォームでタイトル『&f{title}&7』を変更できます。"
+  failed_submit: "&c{type}の送信に失敗しました: {error}"
+  failed_create: "&c{type}の作成に失敗しました: {error}"
+  try_again: "&c後ほど再度お試しいただくか、スタッフに直接ご連絡ください。"
+  unknown_error: "不明なエラー"
+  no_details: "追加の詳細はありません"
+  no_chat_logs_available: "&c{player}には通報できる最近のチャットメッセージがありません。"
+  view_ticket_label: "チケットを表示"
+  complete_form_label: "{type}の入力を完了する"
+  click_to_view: "[クリックして表示]"
+  click_to_view_hover: "クリックしてチケット{ticketId}を表示"
+  console_ticket_url: "&6{message}: &b{url}"
+  claiming_ticket: "&eチケット&f{ticketId}&eをあなたのアカウントに紐付けています..."
+  ticket_claimed_success: "&aチケット&f{ticketId}&aをあなたのアカウントに紐付けました。"
+  ticket_claim_failed: "&cチケットの紐付けに失敗しました: {error}"
+  ticket_cooldown: "&cこの種類のチケットを再度作成するには{seconds}秒お待ちください。"
+  report_gui_title: "&f{player}を通報"
+  report_skull_chat_log:
+    - "&b{player}を通報"
+    - "&7チャットログを添付しますか？"
+  report_skull_details:
+    - "&b{player}を通報"
+    - "&7詳細を追加しますか？"
+  report_skull_confirm:
+    - "&b{player}を通報"
+    - "&7通報内容を確定しますか？"
+  report_skull_replay:
+    - "&b{player}を通報"
+    - "&7リプレイを添付しますか？"
+  report_skull_evidence:
+    - "&b{player}を通報"
+    - "&7チャットログまたはリプレイを添付しますか？"
+  report_attach_chat: "&aチャットログを添付"
+  report_attach_chat_lore: []
+  report_skip_chat: "&cチャットログをスキップ"
+  report_skip_chat_lore: []
+  report_chat_attached: "&aチャットログが添付されます"
+  report_chat_click_to_attach: "&7クリックしてチャットログを添付"
+  report_capture_replay: "&aリプレイを保存"
+  report_capture_replay_lore: []
+  report_replay_attached: "&aリプレイが保存されます"
+  report_replay_not_attached: "&cリプレイは保存されません"
+  report_skip_replay: "&cスキップ"
+  report_skip_replay_lore: []
+  report_continue: "&a続行"
+  report_continue_lore: []
+  report_add_details: "&a詳細を追加"
+  report_add_details_lore: []
+  report_skip_details: "&c詳細をスキップ"
+  report_skip_details_lore: []
+  report_confirm: "&a通報を確定"
+  report_cancel: "&c通報をキャンセル"
+  report_cancel_lore: []
+  report_summary_reason: "&7理由: &f{reason}"
+  report_summary_details: "&7詳細: &f{details}"
+  report_summary_chat_log: "&7チャットログ: &f添付済み"
+  report_summary_replay: "&7リプレイ: &a保存されます"
+  report_attach_replay: "&eリプレイを添付"
+  report_close: "&c閉じる"
+  report_close_lore: []
+  report_details_prompt: "{player}への通報に追加する詳細を入力してください:"
+  report_submitted: "&a通報を送信しました。"
+  # Ticket kinds shown as {type} in ticket messages: "name" starts a sentence, "inline" appears mid-sentence
+  ticket_types:
+    report:
+      name: "通報"
+      inline: "通報"
+    chat_report:
+      name: "チャット通報"
+      inline: "チャット通報"
+    support:
+      name: "サポートリクエスト"
+      inline: "サポートリクエスト"
+    bug:
+      name: "不具合報告"
+      inline: "不具合報告"
+    application:
+      name: "スタッフ応募"
+      inline: "スタッフ応募"
+
+general:
+  players_only: "&cこのコマンドはプレイヤーのみ使用できます。"
+  local_console_only: "&cこのコマンドはこのサーバー自身のコンソールで実行してください。"
+  no_permission: "&cこのコマンドを使用する権限がありません。"
+  no_permission_punishment: "&c『{type}』の処罰を実行する権限がありません。"
+  no_permission_reload: "&c処罰データを再読み込みする権限がありません。"
+  invalid_syntax: "&cコマンドの構文が正しくありません。使い方をご確認ください。"
+  gui_requires_player: "&cこのコマンドはGUIを開くため、プレイヤーのみ実行できます。テキスト出力には&f-p&cを使用してください。"
+  gui_unavailable: "&cこのプロキシではGUIメニューを利用できません。"
+
+  unknown: "不明"
+  staff: "スタッフ"
+  answer_yes: "はい"
+  answer_no: "いいえ"
+  not_available: "該当なし"
+  never: "なし"
+  permanent: "永久"
+  loading: "読み込み中..."
+  no_reason: "理由なし"
+  console: "コンソール"
+  player_not_found: "&cプレイヤーが見つかりません。"
+  punishment_error: "&c処罰の作成中にエラーが発生しました: {error}"
+  punishment_types_not_loaded: "&c処罰タイプが読み込まれていません。&f/modl reload&cを実行するか、管理者にご連絡ください。"
+  invalid_punishment_type: "&c無効な処罰タイプです。利用可能なタイプ: {types}"
+  invalid_duration: "&c期間の形式が正しくありません。例: 1d, 2h, 30m, 1w"
+  cannot_punish_self: "&c自分自身を処罰することはできません。"
+  target_immune: "&c{target}は免除権限を持っているため処罰できません。"
+
+  punishment_issued: "&a{type}を&f{target}&aに実行しました。"
+  punishment_issued_duration: "&a{type}を&f{target}&aに実行しました（{duration}）。"
+
+  reloading: "&e再読み込みしています..."
+  reload_success: "&a再読み込みが完了しました。"
+  reload_error: "&c再読み込み中にエラーが発生しました: {error}"
+
+command_errors:
+  unknown_command: "&c不明なコマンドです: &f{input}"
+  unknown_command_suggestions: "&c不明なコマンドです: &f{input}&c。もしかして: &f{suggestions}"
+  unknown_subcommand: "&f/{input}&cに一致するコマンドはありません。もしかして:"
+  suggestion: "&7- &f/{command}"
+  expected_literal: "&f{expected}&cが必要ですが、&f'{input}'&cが入力されました。"
+  missing_argument: "&c引数&f{parameter}&cが不足しています。使い方: &f/{usage}"
+  too_many_arguments: "&c引数が多すぎます。余分な入力: &f{input}"
+  invalid_choice: "&c無効な選択肢です: &f{input}&c。利用可能な選択肢から入力してください。"
+  value_not_allowed: "&c無効な値です: &f{input}&c。使用できる値: &f{allowed}"
+  invalid_boolean: "&ftrue&cまたは&ffalse&cが必要ですが、&f{input}&cが入力されました。"
+  invalid_number: "&c無効な数値です: &f{input}"
+  invalid_integer: "&c無効な整数です: &f{input}"
+  invalid_uuid: "&c無効なUUIDです: &f{input}"
+  number_too_small: "&c値&f{value}&cは小さすぎます。最小値は&f{minimum}&cです。"
+  number_too_large: "&c値&f{value}&cは大きすぎます。最大値は&f{maximum}&cです。"
+  text_too_short: "&cテキストが短すぎます。最小文字数は&f{minimum}&cです。"
+  text_too_long: "&cテキストが長すぎます。最大文字数は&f{maximum}&cです。"
+  too_few_values: "&c値が少なすぎます。最小数は&f{minimum}&cです。"
+  too_many_values: "&c値が多すぎます。最大数は&f{maximum}&cです。"
+  invalid_escape: "&c無効なエスケープ文字です。バックスラッシュを入力するには&f\\\\&cを使用してください。"
+  unclosed_quote: "&c引用符が閉じられていません。開いた引用符はすべて閉じてください。"
+  expected_space: "&c引数の間にはスペースを入れてください。"
+  unknown_flag: "&c不明なオプションです: &f{input}"
+  unknown_short_flag: "&c不明な短縮オプションです: &f{input}"
+  invalid_help_page: "&c無効なヘルプページです: &f{page}&c。最後のページは&f{pages}&cです。"
+  cooldown: "&cこのコマンドを再度使用するには&f{time}&cお待ちください。"
+  failed: "&cコマンドの実行に失敗しました。エラーはサーバーコンソールに記録されました。"
+  console_only: "&cこのコマンドはコンソールからのみ使用できます。"
+  invalid_player: "&c無効なプレイヤーです: &f{input}"
+  invalid_world: "&c無効なワールドです: &f{input}"
+  missing_coordinate: "&c座標が不足しています: &f{axis}"
+  invalid_selector: "&c無効なエンティティセレクターです: &f{input}"
+  selector_players_only: "&cセレクター&f{input}&cはプレイヤーのみを対象にできます。"
+  selector_too_many: "&cセレクターの対象は1体のエンティティのみにしてください。"
+  selector_empty: "&cエンティティが見つかりません。"
+
+validation:
+  single_severity_error: "&c単一重大度の処罰タイプ『{type}』には重大度を設定できません。この処罰タイプの重大度は1段階のみです。"
+  permanent_skin_change_error: "&cスキン変更まで有効な処罰タイプ『{type}』には重大度を設定できません。"
+  permanent_username_change_error: "&cユーザー名変更まで有効な処罰タイプ『{type}』には重大度を設定できません。"
+  alt_blocking_not_supported: "&c処罰タイプ『{type}』はサブアカウントのブロックに対応していません。"
+  stat_wiping_not_supported: "&c処罰タイプ『{type}』は統計データの初期化に対応していません。"
+
+# Words substituted into punishment messages.
+punishment_words:
+  # {tense}, as in "You {tense} banned"
+  tense_default: "されました"
+  tense_active: "されています"
+  # {tense2}, as in "Your account {tense2} restricted"
+  tense2_default: "されました"
+  tense2_active: "されています"
+  # {temp}, as in "You have been {temp} banned"
+  temporarily: "一時的に"
+  permanently: "永久に"
+  # Expiry texts of timed punishments; {type} is type_ban, type_mute or type_punishment
+  will_expire: "\n&7この{type}はあと&f{duration}&7で解除されます。"
+  duration_formatted: "\n&7この{type}はあと{duration}で解除されます"
+  mute_duration_formatted: "（{duration}）"
+  # {for_duration} on timed mutes; keep the leading space
+  for_duration: "（{duration}）"
+  type_ban: "BAN"
+  type_mute: "ミュート"
+  type_punishment: "処罰"
+  # {duration} of permanent punishments; config.yml locale_config.duration_format.permanent overrides it when set
+  duration_permanent: "永久"
+
+punishments:
+  public_notification:
+    ban_default: "&c{target}がBANされました。"
+    mute_default: "&c{target}がミュートされました。"
+    kick_default: "&c{target}がキックされました。"
+    default: "&c{target}が処罰されました。"
+  mute_fallback: "&cあなたはミュートされています。"
+  player_notification:
+    ban_default: "&cあなたはBAN{tense}（#{id}）。"
+    mute_default: "&cあなたはミュート{tense}（#{id}）。"
+    kick_default: "&cあなたはキックされました（#{id}）。"
+    default: "&cあなたは処罰{tense}（#{id}）。"
+
+# punishment_types.ordinal_<n>: public_notification is broadcast, player_notification lines go to the punished player.
+# Types without an entry use the punishments section. Placeholders: https://github.com/modl-gg/modl/wiki/Placeholders#punishment-messages
+punishment_types:
+  ordinal_0: # Kick
+    public_notification: "&c{target}がキックされました。"
+    player_notification:
+      - "&c&lサーバーからキックされました。"
+      - "&f{reason} &7(#{id})"
+
+  ordinal_1: # Manual Mute
+    public_notification: "&c{target}がミュートされました。"
+    player_notification:
+      - ""
+      - "&cあなたは{temp}ミュート{tense}{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{reason}"
+      - ""
+
+  ordinal_2: # Manual Ban
+    public_notification: "&c{target}がBANされました。"
+    player_notification:
+      - "&c&lあなたは以下の理由により{temp}BAN{tense}:"
+      - ""
+      - "&f{reason}"
+      - "&7{will_expire}"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください。"
+
+  ordinal_3: # Security Ban
+    public_notification: "&c{target}がBANされました。"
+    player_notification:
+      - "&c&lセキュリティ上の懸念により、あなたのアカウントは制限{tense2}。"
+      - "&fあなたのアカウントで不審な活動が検出されました。アカウントの安全を確保したうえで、{appeal_url}にてID #{id}で異議を申し立ててください。"
+
+  ordinal_4: # Linked Ban
+    public_notification: "&c{target}がBANされました。"
+    player_notification:
+      - "&c&lあなたのアカウントとBAN済みアカウントとの関連が検出{tense2}。"
+      - ""
+      - "&fサブアカウントを利用したBAN回避、およびアカウントの共有は固く禁止されています。"
+      - ""
+      - "&7このBANは、関連するBANが解除された時点で自動的に解除されます。"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください"
+
+  ordinal_5: # Blacklist
+    public_notification: "&c{target}がブラックリストに登録されました。"
+    player_notification:
+      - "&cあなたはブラックリストに登録{tense}"
+      - "&7ID: #{id}"
+
+  ordinal_6: # Chat Abuse
+    public_notification: "&c{target}がチャットの悪用によりミュートされました。"
+    player_notification:
+      - ""
+      - "&cあなたは{temp}ミュート{tense}{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+  ordinal_7: # Anti-Social
+    public_notification: "&c{target}が迷惑行為によりミュートされました。"
+    player_notification:
+      - ""
+      - "&cあなたは{temp}ミュート{tense}{for_duration}"
+      - "&7{issued} | #{id} | {appeal_url}"
+      - "&f{player_description}"
+      - ""
+
+  ordinal_8: # Targeting
+    public_notification: "&c{target}が特定プレイヤーへの嫌がらせによりBANされました。"
+    player_notification:
+      - "&c&lあなたは以下の理由により{temp}BAN{tense}:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください。"
+
+  ordinal_9: # Bad Content
+    public_notification: "&c{target}が不適切なコンテンツによりBANされました。"
+    player_notification:
+      - "&c&lあなたは以下の理由により{temp}BAN{tense}:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください。"
+
+  ordinal_10: # Bad Username
+    public_notification: "&c{target}がBANされました。"
+    player_notification:
+      - "&c&lあなたはMinecraftのユーザー名が原因でBAN{tense}。"
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7このBANは、ユーザー名を変更すると自動的に解除されます。"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください"
+
+  ordinal_11: # Bad Skin
+    public_notification: "&c{target}がBANされました。"
+    player_notification:
+      - "&c&lあなたはMinecraftのスキンが原因でBAN{tense}。"
+      - ""
+      - "&f{reason}"
+      - ""
+      - "&7このBANは、スキンを変更すると自動的に解除されます。"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください"
+
+  ordinal_12: # Team Abuse
+    public_notification: "&c{target}がチームに関する不正行為によりBANされました。"
+    player_notification:
+      - "&c&lあなたは以下の理由により{temp}BAN{tense}:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください。"
+
+  ordinal_13: # Game Abuse
+    public_notification: "&c{target}がゲームの不正利用によりBANされました。"
+    player_notification:
+      - "&c&lあなたは以下の理由により{temp}BAN{tense}:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください。"
+
+  ordinal_14: # Cheating
+    public_notification: "&c{target}がチートの使用によりBANされました。"
+    player_notification:
+      - "&c&lあなたは以下の理由により{temp}BAN{tense}:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください。"
+
+  ordinal_15: # Game Trading
+    public_notification: "&c{target}がゲーム内アイテムの不正な取引によりBANされました。"
+    player_notification:
+      - "&c&lあなたは以下の理由により{temp}BAN{tense}:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください。"
+
+  ordinal_16: # Account Abuse
+    public_notification: "&c{target}がアカウントの不正利用によりBANされました。"
+    player_notification:
+      - "&c&lあなたは以下の理由により{temp}BAN{tense}:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください。"
+
+  ordinal_17: # Systems Abuse
+    public_notification: "&c{target}がシステムの不正利用によりBANされました。"
+    player_notification:
+      - "&c&lあなたは以下の理由により{temp}BAN{tense}:"
+      - ""
+      - "&f{player_description}"
+      - "&7{will_expire}"
+      - "&7誤りだと思われる場合は、{appeal_url}にてID #{id}で異議を申し立ててください。"
+
+notification:
+  ticket_reply: "&6[チケット] &f{message}"
+  ticket_reply_with_link: "&6[チケット] &f{message} &b[クリックして表示]"
+  ticket_click_action: "&7クリックしてチケット{ticketId}を表示"
+  ticket_prefix: "[チケット] "
+
+iammuted:
+  only_players: "&cこのコマンドはプレイヤーのみ使用できます。"
+  not_muted: "&cこのコマンドはミュート中のみ使用できます。"
+  player_not_online: "&cそのプレイヤーはオンラインではありません。"
+  cannot_message_self: "&c自分自身にこのメッセージを送ることはできません。"
+  cooldown_message: "&cこのコマンドを再度使用するには{minutes}分{seconds}秒お待ちください。"
+  notification_to_target: "&6[ミュート中のプレイヤー] &f{sender}&7は現在ミュートされているため、チャットで返答できません。"
+  success_message: "&aあなたがミュート中であることを&f{target}&aに伝えました。"
+
+standing:
+  error: "&c素行状況の読み込みに失敗しました。後ほど再度お試しください。"
+  cooldown: "&cこのコマンドを再度使用するには{seconds}秒お待ちください。"
+
+player_lookup:
+  error: "&cプレイヤーの検索中にエラーが発生しました: {error}"
+  uuid: "&7UUID: &f{uuid}"
+  currently_banned: "&7現在BAN中: {status}"
+  currently_muted: "&7現在ミュート中: {status}"
+  staff_notes_label: "&7スタッフメモ:"
+  staff_note_format: "  &8• &f{text} &7- {issuer}"
+  no_staff_notes: "  &8スタッフメモはありません"
+  total_punishments: "&7処罰の合計: &f{count}"
+  linked_accounts_label: "&7関連アカウント:"
+  linked_account_format: "  &8• &f{username}{status}"
+  linked_account_more: "  &8... 他{count}件"
+  no_linked_accounts: "  &8関連アカウントはありません"
+  total_tickets: "&7チケットの合計: &f{count}"
+  profile_fallback: "&6プロフィール: &b{url}"
+
+  status:
+    banned_and_muted: " &c(現在BAN・ミュート中)"
+    banned: " &c(現在BAN中)"
+    muted: " &e(現在ミュート中)"
+    no_punishments: " &7(有効な処罰なし)"
+
+print:
+  inspect:
+    header: ""
+    uuid: "&f{player}の情報 &7({uuid})"
+    currently_banned: "&eBAN: {status}"
+    currently_muted: "&eミュート: {status}"
+    notes_label: "&eスタッフメモ:"
+    note_entry: "&6{ordinal}. &f{text} &e記入者: {issuer}"
+    no_notes: "&7スタッフメモはありません"
+    total_punishments: "&e処罰の合計: &f{count}"
+    linked_accounts_label: "&e関連アカウント:"
+    linked_account_entry: "&6{ordinal}. &e{username} ({status}&e)"
+    linked_account_more: "&e... 他{count}件"
+    no_linked_accounts: "&7関連アカウントはありません"
+    total_tickets: "&eチケットの合計: &f{count}"
+    profile_fallback: "&eプロフィール: &b{url}"
+    web_profile_link: "Webプロフィールを表示"
+    web_profile_hover: "クリックして{player}のプロフィールを表示"
+    footer: ""
+
+  punishment_detail:
+    not_found: "&c処罰 #{id} が見つかりません。"
+    header: " "
+    type: "&eタイプ: &f{type}"
+    player: "&eプレイヤー: &f{player}"
+    issuer: "&e実行者: &f{issuer}"
+    date: "&e日時: &f{date}"
+    status: "&e状態: {status}"
+    duration: "&e期間: &f{duration}"
+    reason: "&e理由: &f{reason}"
+    evidence: "&e証拠: &f{count}件のファイル"
+    notes: "&eメモ: &f{count}"
+    modifications: "&e変更履歴: &f{count}"
+    status_active: "有効"
+    status_pardoned: "解除済み"
+    status_rolled_back: "ロールバック済み"
+    status_inactive: "無効"
+    footer: " "
+
+  history:
+    header: ""
+    entry_kick: "&6{ordinal}. &7#{id} &e{date} &f{type} &e実行者: {issuer} 理由: &f{reason}"
+    entry_active: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &e実行者: {issuer} 理由: &f{reason} &7(あと{expiry}で解除)"
+    entry_permanent: "&6{ordinal}. &c#{id} &e{date} &f{type} (永久) &e実行者: {issuer} 理由: &f{reason}"
+    entry_unstarted: "&6{ordinal}. &c#{id} &e{date} &f{type} ({duration}) &e実行者: {issuer} 理由: &f{reason} &7(未開始)"
+    entry_expired: "&6{ordinal}. &7#{id} &e{date} &f{type} ({duration}) &e実行者: {issuer} 理由: &f{reason} &7({expired_ago}前に期限切れ)"
+    entry_pardoned: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &e実行者: {issuer} 理由: &f{reason} &7({pardoned_ago}前に解除)"
+    entry_rolled_back: "&6{ordinal}. &b#{id} &e{date} &f{type} ({duration}) &e実行者: {issuer} 理由: &f{reason} &7({rolled_back_ago}前にロールバック)"
+    total: "&eページ {page}/{total_pages}（全{count}件）"
+    empty: "&7このプレイヤーに処罰履歴はありません。"
+    footer: ""
+
+  notes:
+    header: ""
+    entry: "&6{ordinal}. &e{date} {author}: &f{content}"
+    warning_badge: "&c&l[警告]&r&f "
+    total: "&eページ {page}/{total_pages}（全{count}件）"
+    empty: "&7スタッフメモが見つかりません。"
+    footer: ""
+
+  alts:
+    header: ""
+    entry: "&6{ordinal}. {color}{username} &e({status}&e)"
+    status_banned: "&cBAN中"
+    status_muted: "&eミュート中"
+    status_banned_and_muted: "&cBAN・ミュート中"
+    status_clean: "&a問題なし"
+    total: "&eページ {page}/{total_pages}（全{count}件）"
+    total_truncated: "&eページ {page}/{total_pages}（最新{count}件）"
+    empty: "&7関連アカウントが見つかりません。"
+    footer: ""
+
+  reports:
+    header: ""
+    entry: "&6{ordinal}. &e#{id} {date} ({status}&e) &f{type}通報 &e通報者: {reporter}"
+    entry_content: " &f{content}"
+    status_open: "未対応"
+    status_closed: "対応済み"
+    total: "&eページ {page}/{total_pages}（全{count}件）"
+    empty: "&7通報が見つかりません。"
+    footer: ""
+
+  staff_list:
+    header: ""
+    entry: "&6 - &e{player} ({in-game-name}) &7[{role}] &e接続先: &f{server}{v}"
+    vanish: " &7[V]"
+    empty: "&7オンラインのスタッフはいません。"
+    total: "&eページ {page}/{total_pages}（全{count}件）"
+
+punishment_commands:
+  invalid_severity: "&c無効な重大度です。有効な重大度: lenient, regular, severe"
+  warning_message: "&c{username}が{punishment_type}されました。"
+
+api_errors:
+  panel_unavailable: "&c現在パネルに接続できません。しばらくしてから再試行してください。"
+  connection_failed: "&cパネルへの接続に失敗しました。しばらくしてから再度お試しください。"
+  startup_failed: "&cこのサーバーのモデレーションシステムは現在動作していません。しばらくしてから再度お試しください。"
+  version_mismatch: "&cこのサーバーのモデレーションシステムは更新中です。しばらくしてから再度お試しください。"
+  database_moving: "&cこのサーバーのモデレーションシステムは新しいデータベースへ移行中です。しばらくしてから再度お試しください。"
+  packetevents_required: "&cPacketEvents {version} 以降がインストールされるまで、このサーバーはプレイヤーを受け入れられません。"
+  ban_check_failed: "&cBAN状態を確認できませんでした。安全のため、ログインを一時的に制限しています。"
+  invalid_name: "&cあなたのプレイヤー名はこのサーバーでは使用できません。名前に使えるのは英字、数字、アンダースコアのみです (16文字まで)。"
+  login_check_skipped: "&cこのサーバーのBAN情報とログインを照合できませんでした。サーバースタッフにお問い合わせください。"
+  shortening_needs_pardon: "&c処罰を早く終わらせるには、期間を変更する権限と赦免する権限の両方が必要です。"
+
+pardon:
+  success_id: "&a処罰 &e#{id}&a を解除しました。"
+  success_player: "&a{player}の{type} {count}件を解除しました。"
+  already_pardoned_id: "&7処罰 &e#{id}&7 はすでに無効、または解除済みです。"
+  no_active_punishment: "&7{player}には解除できる有効な{type}がありません。"
+  error: "&c解除に失敗しました: {error}"
+  error_player: "&c{player}の{type}の解除に失敗しました: {error}"
+  error_wrong_type_ban: "&c処罰 &e#{id}&c はBANではありません。任意の処罰タイプを解除するには &e/pardon {id}&c を使用してください。"
+  error_wrong_type_mute: "&c処罰 &e#{id}&c はミュートではありません。任意の処罰タイプを解除するには &e/pardon {id}&c を使用してください。"
+  staff_notification_id: "&7&o[{issuer}: 処罰 #{id} を解除&7&o]"
+  staff_notification_player: "&7&o[{issuer}: {player}の{type}を解除&7&o]"
+
+warn:
+  player_message: "&c&l{issuer}から警告を受けました。\n&f理由: &7{reason}"
+  success: "&a&f{target}&aに警告を送信しました。理由: &7{reason}"
+  staff_notification: "&7&o[{issuer}: {target}に警告 理由: {reason}&7&o]"
+  error: "&c警告の作成に失敗しました: {error}"
+
+menus:
+  common:
+    action_failed: "&c処理できませんでした。少し待ってから再度お試しください。"
+    saved_but_incomplete: "&e変更は保存されましたが、メニューを更新できませんでした。もう一度開いて確認してください。"
+    back: "&c戻る"
+    back_lore: []
+    previous_page: "&e前のページ"
+    next_page: "&e次のページ"
+    filter: "&6フィルター"
+    sort: "&6並べ替え"
+    filter_by_type: "&7種類で絞り込み:"
+    sort_by: "&7並べ替え:"
+    option_selected: "&a▸ {option}"
+    option_unselected: "&7  {option}"
+    cycle_filters: "&eクリックしてフィルターを切り替え"
+    cycle_sort: "&eクリックして並び順を切り替え"
+    # {status} is status_open or status_closed, {items} is items_reports or items_tickets
+    status_showing: "&7表示中: &a{status}の{items}"
+    status_click_toggle: "&eクリックして{status}の{items}のみ表示"
+    status_right_click_toggle: "&e右クリックで{status}の{items}のみ表示"
+    click_to_toggle: "&eクリックして切り替え"
+    status_open: "未対応"
+    status_closed: "対応済み"
+    items_reports: "通報"
+    items_tickets: "チケット"
+    report_filters:
+      all: "すべて"
+      gameplay: "ゲームプレイ"
+      chat: "チャット"
+    report_status_open: "&a未対応"
+    report_status_closed: "&c対応済み"
+    enabled: "&a有効"
+    disabled: "&c無効"
+    no_permission: "&c権限がありません"
+    no_permission_modify: "&c変更する権限がありません"
+    load_profile_failed: "&cプレイヤープロフィールの読み込みに失敗しました"
+    load_profile_error: "&cプレイヤープロフィールの読み込みに失敗しました: {error}"
+    no_reported_player: "&c調査できません: この通報にはプレイヤーのUUIDがありません。"
+    dismissing_report: "&e通報を却下しています..."
+    report_dismissed: "&a通報を却下しました。"
+    dismiss_report_failed: "&c通報の却下に失敗しました: {error}"
+    ticket_link_label: "チケット #{id}: "
+    open_in_browser: "クリックしてブラウザで開く"
+    presence: "{time}"
+    presence_on_server: "{time} / {server}"
+
+  titles:
+    inspect: "調査: {player}"
+    notes: "メモ: {player}"
+    alts: "関連アカウント: {player}"
+    history: "履歴: {player}"
+    reports: "通報: {player}"
+    punish: "処罰: {player}"
+    punish_type: "処罰: {type}"
+    modify_punishment: "処罰の変更"
+    link_reports: "通報の紐付け: {player}"
+    linked_tickets: "紐付けられたチケット"
+    staff_panel: "スタッフパネル"
+    online_players: "オンラインのプレイヤー"
+    staff_reports: "通報"
+    recent_punishments: "最近の処罰"
+    support_tickets: "サポートチケット"
+    staff_members: "スタッフ一覧"
+    manage_staff: "スタッフ管理"
+    edit_roles: "役職の編集"
+    edit_role: "編集: {role}"
+
+  # Staff menu tab bar (compact_lore is used in compact headers)
+  staff_tabs:
+    online_players:
+      name: "&6オンラインのプレイヤー"
+      lore: []
+      compact_lore: []
+    reports:
+      name: "&6通報"
+      lore: []
+      compact_lore: []
+    punishments:
+      name: "&6最近の処罰"
+      lore: []
+      compact_lore: []
+    tickets:
+      name: "&6サポートチケット"
+      lore: []
+      compact_lore: []
+    panel:
+      name: "&6パネルへ移動"
+      lore: []
+      compact_lore: []
+    settings:
+      name: "&6設定"
+      lore: []
+      compact_lore: []
+    panel_link_label: "スタッフパネル: "
+
+  inspect_tabs:
+    notes:
+      name: "&6メモ"
+      lore:
+        - "&7スタッフメモ ({count}件)"
+      compact_lore:
+        - "&7スタッフメモ ({count}件)"
+    alts:
+      name: "&6関連アカウント"
+      lore: []
+      compact_lore: []
+    history:
+      name: "&6履歴"
+      lore:
+        - "&7処罰 ({count}件)"
+      compact_lore:
+        - "&7処罰 ({count}件)"
+    reports:
+      name: "&6通報"
+      lore: []
+      compact_lore: []
+    punish:
+      name: "&c処罰"
+      lore: []
+      compact_lore: []
+
+  player_head:
+    title: "&6{player_name}の情報"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7初回ログイン: &f{first_login}"
+      - "&7オンライン: {is_online}（{presence}）"
+      - "&7プレイ時間: &f{playtime}"
+      - "&7実IPの記録: &f{real_ip_logged}"
+      - "&7地域: &f{location}"
+      - "&7BAN: &f{is_banned}"
+      - "&7ミュート: &f{is_muted}"
+      - ""
+      - "&e左クリックで{player_name}をターゲットに設定"
+
+  history_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7サーバー: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&eクリックしてこの処罰を変更"
+    status_active: "&7あと{expiry}で解除されます"
+    status_inactive: "&7{expired}前に期限切れ"
+    status_pardoned: "&7{pardoned}前に解除されました"
+    status_rolled_back: "&7{rolled_back}前にロールバックされました"
+    status_permanent: "&7解除されません"
+    status_unstarted: "&7この処罰はまだ開始されていません"
+    note_format: "&e{note_date} {note_issuer}&f: {note}"
+
+  recent_item:
+    title_active: "&f&l{punishment_type}{details}"
+    title_inactive: "&f&l&m{punishment_type}{details}"
+    lore:
+      - "&7プレイヤー: &f{player}"
+      - "&7{status_line}"
+      - "&f "
+      - "{notes}"
+      - "&f "
+      - "&7サーバー: &f{issued_server}"
+      - "&7ID: &f{punishment_id}"
+    click_hint: "&eクリックしてこの処罰を変更"
+
+  note_item:
+    title: "&e{date} {author}"
+    lore:
+      - "&f{content}"
+      - "&f "
+      - "&eクリックしてチャットにメモを表示"
+
+  report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7通報者: &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&e左クリックでプレイヤーを調査"
+      - "&e右クリックで通報を却下"
+
+  alt_item:
+    title: "{color}{player_name}"
+    lore:
+      - "&8{uuid}"
+      - "&f "
+      - "&7オンライン: {is_online}（{presence}）"
+      - "&7実IPの記録: {real_ip}"
+      - "&7初回ログイン: &f{first_login}"
+      - "&7{punishments}"
+      - "&f "
+      - "&eクリックして{player_name}を調査"
+    punishment_line_active_true:
+      - "&7有効な処罰（{active_count}件）: &f"
+      - "{active_punishment_list}"
+    punishment_line_active_false:
+      - "&7有効な処罰: &f0"
+      - "&7無効な処罰: &f{inactive_count}"
+    active_punishment_format: "&7- &e#{punishment_id} {punishment_date}: {punishment_type}（{punishment_remaining}）"
+
+  empty:
+    history: "処罰履歴はありません"
+    notes: "スタッフメモはありません"
+    reports: "通報はありません"
+    alts: "関連アカウントはありません"
+    tickets: "チケットはありません"
+    staff_reports: "通報はありません"
+    punishments: "処罰はありません"
+    linked_tickets: "紐付けられたチケットはありません"
+    online_players: "オンラインのプレイヤーはいません"
+    staff_members: "スタッフはいません"
+    staff_online: "オンラインのスタッフはいません"
+    staff_offline: "オフラインのスタッフはいません"
+    roles: "役職はありません"
+    permissions: "権限はありません"
+
+  ticket_item:
+    title: "&6チケット #{id}"
+    lore:
+      - "&7プレイヤー: &f{player}"
+      - "&7タイトル: &f{title}"
+      - "&7作成日時: &f{date}"
+      - "&7状態: {status}"
+      - "&f "
+      - "&eクリックしてパネルで開く"
+    no_title: "タイトルなし"
+
+  staff_report_item:
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&c{reported}&7 への通報者: &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&e左クリックでプレイヤーを調査"
+      - "&e右クリックで通報を却下"
+  linked_ticket_item:
+    no_subject: "件名なし"
+    click_to_view: "&eクリックしてパネルで表示"
+    title: "&e{date} {id} ({status}&e)"
+    lore:
+      - "&7{title}"
+      - "&f "
+      - "{content}"
+  link_report_item_unselected:
+    title: "&e{date} {id}"
+    lore:
+      - "&7通報者: &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eクリックして選択"
+  link_report_item_selected:
+    title: "&a{date} {id}"
+    lore:
+      - "&7通報者: &a{reporter} &7({type})"
+      - "&f "
+      - "{content}"
+      - "&f "
+      - "&eクリックして選択を解除"
+
+  staff_members:
+    title: "&e{panel_name}"
+    lore:
+      - "&7役職: &f{role}"
+      - "&7Minecraft: &f{minecraft_username}"
+      - ""
+      - "&7オンライン: {is_online}（{presence}）"
+      - "&7プレイ時間: &f{playtime}"
+      - "&7実行した処罰: &f{punishments_count}"
+    not_linked: "紐付けなし"
+    filters:
+      online: "オンライン"
+      offline: "オフライン"
+      all: "すべて"
+
+  notes:
+    created: "&aメモを作成しました。"
+    create_failed: "&cメモの作成に失敗しました: {error}"
+    cancelled: "&7メモの作成をキャンセルしました。"
+    create: "&aメモを作成"
+    create_lore: []
+    prompt: "{player}のメモの内容を入力してください:"
+    chat_label: "メモ: "
+  modify_punishment:
+    no_changes: "&7紐付けられたチケットに変更はありません。"
+    tickets_updated: "&a紐付けられたチケットを更新しました。"
+    tickets_update_error: "&c紐付けられたチケットの更新に失敗しました: {error}"
+    current_state: "&7現在: {state}"
+    add_note:
+      name: "&eメモを追加"
+      name_locked: "&7メモを追加"
+      lore: []
+      prompt: "この処罰に追加するメモを入力してください:"
+      added: "&aメモを追加しました。"
+      failed: "&cメモの追加に失敗しました: {error}"
+      cancelled: "&7メモの追加をキャンセルしました。"
+    evidence:
+      name: "&b証拠"
+      name_locked: "&7証拠"
+      none: "&8(証拠は添付されていません)"
+      header: "&7現在の証拠 ({count}件):"
+      entry: "&f- {evidence}"
+      more: "&8... 他{count}件"
+      left_click_add: "&e左クリックで証拠を追加"
+      right_click_view: "&e右クリックでチャットに表示"
+      no_evidence: "&7この処罰に添付された証拠はありません。"
+      chat_header: "&6処罰 #{id} の証拠:"
+      chat_entry: "&f{index}. {evidence}"
+      chat_added_by: "&7   {date}に{uploader}が追加"
+      prompt: "証拠のURLを入力してください:"
+      added: "&a証拠を追加しました。"
+      failed: "&c証拠の追加に失敗しました: {error}"
+      cancelled: "&7証拠の追加をキャンセルしました。"
+    pardon:
+      name: "&a処罰を解除"
+      name_locked: "&7処罰を解除"
+      lore:
+        - "&7処罰を解除し、関連する"
+        - "&7ポイントを消去します"
+      success: "&a処罰を解除しました。"
+      already_inactive: "&7この処罰はすでに無効、または解除済みです。"
+      failed: "&c処罰の解除に失敗しました: {error}"
+    duration:
+      name: "&6期間を変更"
+      name_locked: "&7期間を変更"
+      current: "&7現在: &f{duration}"
+      # {permanent_keyword} is the literal word players type for a permanent duration; keep it as is
+      prompt: "新しい期間を入力してください (例: 30d, 2h, 30m, 1d2h30m、永久の場合は '{permanent_keyword}'):"
+      invalid: "&c期間の形式が正しくありません。例: 30d, 2h, 30m, 1d2h30m"
+      changed: "&a期間を変更しました。"
+      failed: "&c期間の変更に失敗しました: {error}"
+      lengthen_only: "&7この処罰は延長のみできます。短縮するには赦免の権限が必要です。"
+      needs_pardon: "&cこの処罰を短縮するには赦免の権限が必要です。"
+      cancelled: "&7期間の変更をキャンセルしました。"
+    linked_tickets:
+      name: "&6紐付けられたチケット"
+      none: "&8(紐付けられたチケットはありません)"
+      header: "&7紐付けられたチケット ({count}件):"
+      entry: "&f- {ticket}"
+      more: "&8... 他{count}件"
+      left_click_view: "&e左クリックでチケットを表示"
+      right_click_link: "&e右クリックで通報を紐付け"
+    stat_wipe:
+      name: "&6統計データ初期化の切り替え"
+      name_locked: "&7統計データ初期化の切り替え"
+      enable_lore: "&7このBANの統計データ初期化を有効にする"
+      disable_lore: "&7このBANの統計データ初期化を無効にする"
+      enabled: "&a統計データの初期化を有効にしました。"
+      disabled: "&a統計データの初期化を無効にしました。"
+      failed: "&c統計データ初期化の切り替えに失敗しました: {error}"
+    alt_block:
+      name: "&6サブアカウントブロックの切り替え"
+      name_locked: "&7サブアカウントブロックの切り替え"
+      enable_lore: "&7このBANのサブアカウントブロックを有効にする"
+      disable_lore: "&7このBANのサブアカウントブロックを無効にする"
+      enabled: "&aサブアカウントのブロックを有効にしました。"
+      disabled: "&aサブアカウントのブロックを無効にしました。"
+      failed: "&cサブアカウントブロックの切り替えに失敗しました: {error}"
+
+  online_players:
+    title: "&6{player_name}"
+    lore:
+      - "&7セッション: &f{session_duration}"
+      - "&7総プレイ時間: &f{total_playtime}"
+      - ""
+      - "&7通報（{report_count}件）:"
+      - "{report-list}"
+      - ""
+      - "&e左クリックで調査"
+      - "&e右クリックでターゲットに設定"
+    report_entry: " &6- &e{date} {reporter}: &f{details}"
+    reports_more: " &e... 他{count}件"
+    sorts:
+      least_playtime: "プレイ時間が短い順"
+      recent_gameplay_reports: "最近のゲームプレイ通報"
+      longest_session: "セッションが長い順"
+
+  settings:
+    title: "設定"
+    information:
+      name: "&6情報"
+      username: "&7ユーザー名: &f{username}"
+      role: "&7役職: &f{role}"
+      role_admin: "Super Admin"
+      role_staff: "スタッフ"
+      permissions_header: "&7権限:"
+      permission_modify_settings: "&a  ✓ &7設定の変更"
+      permission_manage_staff: "&a  ✓ &7スタッフの管理"
+    staff_list:
+      name: "&6スタッフ一覧"
+      lore: []
+    manage_staff:
+      name: "&6スタッフ管理"
+      lore: []
+    edit_roles:
+      name: "&6役職の編集"
+      lore: []
+    reload:
+      name: "&cmodlを再読み込み"
+      lore:
+        - "&7設定ファイルと言語ファイルを再読み込み"
+
+  punish:
+    no_types: "&c処罰タイプがありません"
+    no_types_lore:
+      - "&7APIから処罰タイプを"
+      - "&7読み込めませんでした"
+    click_to_issue: "&eクリックして処罰を実行"
+    click_to_select_severity: "&eクリックして重大度を選択"
+    no_permission_lore:
+      - "&c権限なし"
+    type_not_found: "&c処罰タイプが見つかりません"
+    ordinal: "&7序数: {ordinal}"
+
+  # Punishment severity menu. {state} is menus.common.enabled or menus.common.disabled
+  punish_severity:
+    severities:
+      lenient:
+        title: "&a軽度"
+      regular:
+        title: "&e通常"
+      aggravated:
+        title: "&c重度"
+    issue_punishment: "&e処罰を実行"
+    preview_duration: "&7処罰: &f{duration}"
+    preview_duration_permanent: "&7処罰: &f{duration} &c(永久)"
+    preview_type: "&7タイプ: &f{type}"
+    preview_points: "&7ポイント: &e+{points}"
+    offender_level: "&7違反レベル: {current}&7 → {next}"
+    restricted_until_username:
+      - "&eプレイヤーはユーザー名を変更するまで"
+      - "&e制限されます"
+    restricted_until_skin:
+      - "&eプレイヤーはスキンを変更するまで"
+      - "&e制限されます"
+    click_to_issue: "&eクリックして処罰を実行"
+    click_to_issue_silent: "&eクリックしてサイレント処罰を実行"
+    single_click_to_issue: "&aクリックして処罰を実行"
+    single_click_to_issue_silent: "&aクリックしてサイレント処罰を実行"
+    link_reports: "&6通報を紐付け"
+    link_reports_selected: "&6通報を紐付け&a ({count})"
+    select_reports: "&eクリックして通報を選択"
+    linked_reports_header: "&a紐付けた通報:"
+    linked_report_entry: "&7  - &f{id}"
+    modify_selection: "&eクリックして選択を変更"
+    silent_mode: "&6サイレントモード: {state}"
+    silent_on: "&a処罰は公開されません"
+    silent_off: "&7処罰は公開されます"
+    alt_blocking: "&6サブアカウントのブロック: {state}"
+    alt_blocking_on: "&aサブアカウントはブロックされます"
+    alt_blocking_off: "&7サブアカウントは引き続き参加できます"
+    stat_wipe: "&6統計データの初期化: {state}"
+    stat_wipe_on: "&a統計データは初期化されます"
+    stat_wipe_off: "&7統計データは保持されます"
+    reason_prompt: "{player}への処罰の理由を入力してください:"
+    reports_resolved: "&a紐付けられた通報を{count}件解決しました。"
+    reports_not_resolved: "&c紐付けられた通報{count}件を解決できませんでした: {reports}"
+    reports_resolve_error: "&c理由: {error}"
+    issue_failed: "&c処罰の実行に失敗しました: {error}"
+    cancelled: "&7処罰をキャンセルしました。"
+
+  staff_list:
+    no_permission_lore:
+      - "&7スタッフを管理する"
+      - "&7権限がありません"
+    role: "&7役職: &f{role}"
+    super_admin_locked: "&cスーパー管理者は変更できません"
+    self_locked: "&c自分の役職は変更できません"
+    rank_locked:
+      - "&c自分と同じかそれ以上のランクの"
+      - "&cスタッフは変更できません"
+    roles_header: "&7役職:"
+    role_current: "&a  &l{role} &r&7(現在)"
+    role_selected: "&a  {role} &7(選択中)"
+    role_option: "&7  {role}"
+    cycle_roles: "&e右クリックで役職を切り替え"
+    apply_role: "&e左クリックで選択した役職を適用"
+    no_roles: "&c利用できる役職がありません。"
+    role_chosen: "&e選択した役職: &a{role}&7 (左クリックで適用)"
+    already_current: "&7これはすでに{player}の現在の役職です。"
+    applying: "&e{player}に役職&a{role}&eを適用しています..."
+    updated: "&a役職を更新しました。"
+    update_failed: "&c役職の更新に失敗しました: {error}"
+
+  roles:
+    no_permission_lore:
+      - "&7役職を編集する"
+      - "&7権限がありません"
+    permission_count: "&7権限: &f{count}"
+    click_to_edit: "&eクリックして権限を編集"
+    cannot_edit_own: "&c自分の役職は編集できません。"
+
+  role_permissions:
+    apply_changes: "&a変更を適用"
+    apply_changes_lore: "&eクリックして権限の変更を保存"
+    no_changes: "&7変更なし"
+    no_changes_lore: "&8権限を切り替えてからクリックして保存"
+    no_permission_lore:
+      - "&7役職の権限を編集する"
+      - "&7権限がありません"
+    auto_granted: "&8親権限により自動付与"
+    nothing_to_save: "&7保存する変更はありません。"
+    saving: "&e{role}の権限を保存しています..."
+    saved: "&a権限を保存しました。"
+    save_failed: "&c保存に失敗しました: {error}"
+
+  link_reports:
+    apply: "&a選択を適用"
+    apply_lore:
+      - "&7選択を保存して戻ります"
+      - ""
+      - "&e{count}件の通報を選択中"
+    select_all: "&aすべて選択"
+    select_all_lore:
+      - "&7現在絞り込まれているすべての通報を切り替え"
+
+  punishment_kind:
+    kick: "キック"
+    ban: "BAN"
+    mute: "ミュート"
+    details: " &f({details})"
+
+  # Chat input prompts opened from menus. {cancel} is the literal word that cancels the prompt; keep it as is
+  chat_input:
+    prompt: "&6&l» &e{prompt}"
+    hint: "&7チャットに回答を入力するか、&c{cancel} &7と入力してキャンセルしてください。"
+    timed_out: "&c入力の受付時間が過ぎました。再度お試しください。"
+
+# Set usage to "" to hide a command from the help list.
+help:
+  header: "&a&lmodl &av{version} &f- &eコマンド一覧"
+  entry: "&f/{command} &7- {description}"
+  footer: "&eページ {page}/{total_pages}。次のページは &a/modl help {next_page}&e で表示できます。"
+  no_more_pages: "&7これ以上ページはありません。"
+  version_header: "&a&lmodl&a v{version}&f - &eモデレーション・サポート管理システム"
+  version_footer: "&7GNU AGPLv3 フリーソフトウェア。コマンド情報は /modl help を使用してください。"
+  player_commands:
+    iammuted:
+      usage: "iammuted <プレイヤー>"
+      description: "自分がミュート中であることを相手に伝える"
+    standing:
+      usage: "standing"
+      description: "自分の素行状況を表示する"
+    report:
+      usage: "report <プレイヤー>"
+      description: "プレイヤーを通報する"
+    chatreport:
+      usage: "chatreport <プレイヤー>"
+      description: "プレイヤーのチャットを通報する"
+    claimticket:
+      usage: "claimticket <id> <キー>"
+      description: "チケットを自分のアカウントに紐付ける"
+    apply:
+      usage: "apply"
+      description: "スタッフに応募する"
+    bugreport:
+      usage: "bugreport"
+      description: "不具合を報告する"
+    support:
+      usage: "support"
+      description: "サポートチケットを作成する"
+    link:
+      usage: "modl link <コード>"
+      description: "Minecraftアカウントをパネルに紐付ける"
+    panel:
+      usage: "modl panel"
+      description: "ワンタイムのパネルログインリンクを取得する"
+  staff_commands:
+    staffmenu:
+      usage: "staffmenu"
+      description: "スタッフメニューを開く"
+    inspect:
+      usage: "inspect <プレイヤー> [-p]"
+      description: "プレイヤーの調査メニューを開く（-pでテキスト表示）"
+    history:
+      usage: "history <プレイヤー> [-p [ページ]]"
+      description: "プレイヤーの処罰履歴を開く（-pでテキスト表示）"
+    notes:
+      usage: "notes <プレイヤー> [-p [ページ]]"
+      description: "プレイヤーのスタッフメモを開く（-pでテキスト表示）"
+    alts:
+      usage: "alts <プレイヤー> [-p [ページ]]"
+      description: "プレイヤーの関連アカウントを開く（-pでテキスト表示）"
+    reports:
+      usage: "reports [プレイヤー] [-p [ページ]]"
+      description: "通報メニューを開く（-pでテキスト表示）"
+    punish:
+      usage: "punish <プレイヤー> [タイプ] [理由]"
+      description: "処罰を実行する"
+    ban:
+      usage: "ban <プレイヤー> [期間] [理由]"
+      description: "プレイヤーをBANする"
+    mute:
+      usage: "mute <プレイヤー> [期間] [理由]"
+      description: "プレイヤーをミュートする"
+    kick:
+      usage: "kick <プレイヤー> [理由]"
+      description: "プレイヤーをキックする"
+    blacklist:
+      usage: "blacklist <プレイヤー> [理由]"
+      description: "プレイヤーをブラックリストに登録する"
+    pardon:
+      usage: "pardon <プレイヤー>"
+      description: "有効な処罰と待機中の処罰をすべて解除する"
+    unban:
+      usage: "unban <プレイヤー>"
+      description: "有効なBANと待機中のBANをすべて解除する"
+    unmute:
+      usage: "unmute <プレイヤー>"
+      description: "有効なミュートと待機中のミュートをすべて解除する"
+    replay:
+      usage: "replay <status|capture> [プレイヤー]"
+      description: "リプレイ録画を管理する"
+    modl_reload:
+      usage: "modl reload"
+      description: "設定を再読み込みする"
+    modl_import:
+      usage: "modl import"
+      description: "LiteBansからインポート（コンソール専用）"
+    modl_status:
+      usage: "modl status"
+      description: "安全に共有できるサポートレポートを表示（コンソール専用）"
+
+stat_wipe:
+  kick_message: "&c少々お待ちいただき、再度ログインしてください。期限切れとなったBANに伴い、統計データを初期化しています。"
+
+staff_chat:
+  enabled: "&eスタッフチャットを&a有効&eにしました。以降の発言はスタッフチャットに送信されます。"
+  disabled: "&eスタッフチャットを&c無効&eにしました。以降の発言は通常チャットに送信されます。"
+  feature_disabled: "&cこのサーバーではスタッフチャットが有効になっていません。"
+  already_normal: "&cすでに通常チャットモードです。"
+  mode_lost: "&cスタッフチャットを使用できなくなったため、通常チャットに戻りました。メッセージは送信されていません。"
+  format: "&b[STAFF] &e{panel-name}&f: {message}"
+  local_chat_enabled: "&eスタッフチャットを&c無効&eにしました。以降の発言は通常チャットに送信されます。"
+
+chat_management:
+  chat_toggled_on: "&7&o[{staff}: チャットを有効化]"
+  chat_toggled_off: "&7&o[{staff}: チャットを無効化]"
+  chat_disabled: "&c現在チャットは無効になっています。"
+  chat_cleared: "&7&o[{staff}: チャットをクリア]"
+  slow_mode_enabled: "&7&o[{staff}: スローモードを{seconds}秒に設定]"
+  slow_mode_disabled: "&7&o[{staff}: スローモードを無効化]"
+  slow_mode_wait: "&c再度発言するには{seconds}秒お待ちください。"
+  invalid_seconds: "&c有効な秒数を入力してください。"
+  usage_toggle: "&f使い方: &a/chat &ftoggle"
+  usage_clear: "&f使い方: &a/chat &fclear"
+  usage_slow: "&f使い方: &a/chat &fslow <秒数|off>"
+  help:
+    header: "&eチャットコマンド:"
+    staff: "&f/chat staff &7- スタッフチャットモードを切り替える"
+    toggle: "&f/chat toggle &7- 公開チャットの有効/無効を切り替える"
+    clear: "&f/chat clear [件数] &7- チャットをクリアする"
+    slow: "&f/chat slow <秒数|off> &7- スローモードを設定/解除する"
+
+staff_notifications:
+  join: "&7&o[{staff}: 参加]"
+  verified: "&7&o[{staff}: 認証済み]"
+  leave: "&7&o[{staff}: 退出]"
+  switch: "&7&o[{staff}: {server}に接続]"
+  generic: "&7&o[{message}]"
+  click_to_target: "クリックして{player}をターゲットに設定"
+
+staff_2fa:
+  not_verified: "&cスタッフコマンドを使用する前に本人確認が必要です。&f/verify&cを使用してください"
+  verify_prompt: "&aリンクをクリックして認証してください: &f{url}"
+  verify_success: "&a本人確認が完了しました。"
+  verify_error: "&c認証リンクの生成に失敗しました。再度お試しください。"
+  auto_verified: "&a信頼済みIPにより自動で認証されました。"
+
+verify:
+  only_players: "&cこのコマンドはプレイヤーのみ使用できます。"
+  disabled: "&cこのサーバーではスタッフ2段階認証が有効になっていません。"
+  already_verified: "&aすでに認証済みです。"
+  header: ""
+  instructions: "&a下のリンクをクリックして本人確認を行ってください:"
+  click_here: "クリックして認証"
+  click_here_hover: "クリックして認証ページを開く"
+  error: "&c認証リンクの生成に失敗しました。再度お試しください。"
+  footer: "&eこのリンクはまもなく無効になります。"
+
+panel_account:
+  link_success: "&aMinecraftアカウントがパネルアカウントに紐付けられました。"
+  link_invalid_code: "&cこのコードは無効か、有効期限が切れています。パネルのアカウント設定で新しいコードを作成してください。"
+  link_already_linked: "&cこのMinecraftアカウントは既に別のパネルアカウントにリンクされています。先にそちらでリンクを解除してから、もう一度お試しください。"
+  link_error: "&c現在アカウントを紐付けできません。しばらくしてから再度お試しください。"
+  login_offline_mode: "&cこのサーバーはプレイヤーアカウントを認証していないため、ゲーム内からのパネルログインは無効になっています。"
+  login_not_linked: "&cMinecraftアカウントがパネルアカウントに紐付けられていません。パネルのアカウント設定でコードを作成してから、&e/modl link <コード>&cを実行してください。"
+  login_not_online: "&cパネル上でまだオンラインとして認識されていません。しばらくしてから再度お試しください。"
+  login_error: "&c現在パネルログインリンクを作成できません。しばらくしてから再度お試しください。"
+  login_link: "パネルを開く"
+  login_link_hover: "ワンタイムリンク、{minutes}分後に無効になります"
+  rate_limited: "&c操作が多すぎます。しばらく待ってから再度お試しください。"
+
+maintenance:
+  enabled: "&7&o[{staff}: メンテナンスモードを有効化]"
+  disabled: "&7&o[{staff}: メンテナンスモードを無効化]"
+  already_enabled: "&cメンテナンスモードはすでに有効です。"
+  already_disabled: "&cメンテナンスモードはすでに無効です。"
+  status_enabled: "&e現在メンテナンスモードは有効です。"
+  status_disabled: "&e現在メンテナンスモードは無効です。"
+  login_denied: "&cサーバーは現在メンテナンス中です。後ほど再度お試しください。"
+  kick_message: "&cサーバーがメンテナンスモードに入りました。後ほど再度お試しください。"
+  usage: "&f使い方: &a/maintenance&f <on|off>"
+
+freeze:
+  frozen_message: "&cあなたはフリーズされました。切断しないでください。"
+  staff_notification_freeze: "&7&o[{staff}: {player}をフリーズ]"
+  staff_notification_unfreeze: "&7&o[{staff}: {player}のフリーズを解除]"
+  unfrozen: "&aフリーズが解除されました。"
+  logout_notification: "&c&l{player}がフリーズ中に切断しました。"
+  frozen_chat: "&b[FROZEN] &e{player}&f: {message}"
+  command_blocked: "&cフリーズ中はコマンドを使用できません。"
+  target_offline: "&c{player}はこのサーバーにオンラインではないため、フリーズできません。"
+  not_enforced: "&e{player}はフリーズされていますが、そのサーバーはまだmodlに接続されていないため、接続されるまで移動は制限されません。"
+  limit_reached: "&c現在フリーズ中のプレイヤーが多すぎます。"
+
+intercept_chat:
+  enabled: "&aネットワークチャットの傍受を有効にしました"
+  disabled: "&aネットワークチャットの傍受を無効にしました"
+  format: "&8[G-{server}] &e{player}&f: {message}"
+
+intercept:
+  message: "&8[傍受] &f{player}: &7{message}"
+
+chat_logs:
+  header: ""
+  entry: "&7[{timestamp}] &8[{server}] &f{message}"
+  empty: "&7このプレイヤーのチャットログは見つかりませんでした。"
+  footer: "&eページ {page}/{total_pages}（全{total}件）"
+  error: "&cチャットログの取得に失敗しました。"
+  usage: "&f使い方: &a/chatlogs&f <プレイヤー>"
+
+command_logs:
+  header: ""
+  entry: "&7[{timestamp}] &e{player}&7: &f/{command}"
+  empty: "&7このプレイヤーのコマンドログは見つかりませんでした。"
+  footer: "&eページ {page}/{total_pages}（全{total}件）"
+  error: "&cコマンドログの取得に失敗しました。"
+  usage: "&f使い方: &a/commandlogs&f <プレイヤー>"
+
+staff_mode:
+  enabled: "&aスタッフモードを有効にしました"
+  disabled: "&aスタッフモードを無効にしました"
+  enabled_broadcast: "&7&o[{staff}: スタッフモードを開始]"
+  disabled_broadcast: "&7&o[{staff}: スタッフモードを終了]"
+  limit_reached: "&c現在スタッフモード中のスタッフが多すぎます。"
+
+vanish:
+  enabled: "&aバニッシュ状態になりました"
+  disabled: "&aバニッシュ状態を解除しました"
+  enabled_broadcast: "&7&o[{staff}: バニッシュ]"
+  disabled_broadcast: "&7&o[{staff}: バニッシュ解除]"
+
+target:
+  targeting: "&f{player}&eをターゲットに設定しました"
+  cleared: "&aターゲットを解除しました。"
+  usage: "&f使い方: &a/target&f <プレイヤー>"
+  connecting: "&f{player}&eをターゲットにするため&f{server}&eに接続しています..."
+  cannot_target_self: "&c自分自身をターゲットにすることはできません。"
+  not_online: "&cプレイヤーはオンラインではありません。"
+  target_left: "&c{player}がネットワークから退出しました。スタッフモードに戻ります。"
+
+network:
+  action_unavailable: "&cその操作は現在利用できません。"
+
+replay:
+  usage:
+    - "&f/replay status [プレイヤー] &7- 録画状態を確認する"
+    - "&f/replay capture [プレイヤー] &7- リプレイを保存してアップロードする"
+  not_available: "&cこのサーバーではリプレイ録画を利用できません。"
+  status_recording: "&a{player}は現在録画中です"
+  status_not_recording: "&c{player}は録画されていません"
+  no_server_connected: "&cリプレイを保存できるサーバーが接続されていません。"
+  no_active_recording: "&c{player}の録画は実行されていません"
+  capturing: "&a{player}のリプレイを保存してアップロードしています..."
+  capture_success: "&a{player}のリプレイを保存しました"
+  capture_link: "&b{url}"
+  capture_failed: "&c{player}のリプレイの保存に失敗しました"
+  click_to_view: "[クリックしてリプレイを表示]"
+  click_to_view_hover: "リプレイビューアーを開く"
+  console_specify_player: "&cコンソールからはプレイヤー名を指定してください。"
+
+standing_gui:
+  title: "&fあなたの素行状況"
+  social_status:
+    title: "&eコミュニケーション面の素行: {status}"
+    description:
+      Low:
+        - "&7このカテゴリの処罰は軽いままです。"
+      Medium:
+        - "&7このカテゴリの処罰はより重くなります。"
+      Habitual:
+        - "&7このカテゴリの処罰は非常に重くなります。"
+  gameplay_status:
+    title: "&eゲームプレイ面の素行: {status}"
+    description:
+      Low:
+        - "&7このカテゴリの処罰は軽いままです。"
+      Medium:
+        - "&7このカテゴリの処罰はより重くなります。"
+      Habitual:
+        - "&7このカテゴリの処罰は非常に重くなります。"
+  status_display:
+    Low: "&a低"
+    Medium: "&6中"
+    Habitual: "&c常習"
+  punishment_item:
+    status_pardoned: "{duration}前に解除済み"
+    status_rolled_back: "{duration}前にロールバック済み"
+    status_queued: "待機中"
+    status_permanent: "永久"
+    status_expires: "あと{duration}で解除"
+    status_expired_ago: "{duration}前に期限切れ"
+    status_expired: "期限切れ"
+    title: "&e#{id} {date}"
+    lore:
+      - "&7{duration} {type}（{status}）"
+      - ""
+      - "&f{reason}"
+
+punishment_action:
+  unknown_action: "&c不明な操作です: {action}"
+  enter_evidence_url: "&7処罰 #{id} の証拠URLを入力してください:"
+  no_url: "&cURLが入力されていません。"
+  evidence_linked: "&a処罰 #{id} に証拠を紐付けました"
+  evidence_link_failed: "&c証拠の紐付けに失敗しました: {error}"
+  evidence_cancelled: "&7証拠の紐付けをキャンセルしました。"
+  generating_upload: "&7アップロードリンクを生成しています..."
+  upload_failed: "&cアップロードリンクの生成に失敗しました。"
+  upload_link: "クリックして証拠をアップロード"
+  upload_link_hover: "ブラウザで開きます"
+  buttons:
+    label: "処罰 #{id}: "
+    modify: "[変更]"
+    modify_hover: "クリックしてこの処罰を変更"
+    link_evidence: "[証拠を紐付け]"
+    link_evidence_hover: "クリックしてURLを証拠として紐付け"
+    upload_evidence: "[証拠をアップロード]"
+    upload_evidence_hover: "クリックしてファイルを証拠としてアップロード"
+
+import:
+  usage: "使い方: /modl import <source> の後に /modl import <source> confirm <widen|skip> <keep|standard>。ほかに: /modl import status、/modl import cancel。"
+  detected: "ここで見つかったもの: {detected}。対応: {supported}。"
+  nothing_detected: "対応しているプラグインのデータがここで見つかりませんでした。対応: {supported}。"
+  unknown_source: "{source}は対応しているインポート元ではありません。対応: {supported}。"
+  litebans_missing: "このサーバーでLiteBansが動作していません。ここ（ネットワークの場合はプロキシ）にインストールして有効化し、LiteBansのデータベースに接続して再起動後、もう一度実行してください。"
+  source_missing: "このサーバーに{source}のデータが見つかりませんでした。データがあるサーバー（ネットワークの場合はmodlを実行しているプロキシ）で実行してください。"
+  source_locked: "{source}が動作中で、データベースファイルを開いたままにしています。jarを削除し（フォルダーは残してください）、再起動してからもう一度実行してください。"
+  database_failed: "{source}のデータを読み込めませんでした: {error}"
+  no_space: "{source}のデータベースをコピーするための空きディスク容量が足りません: {error}"
+  nothing_to_import: "{source}にインポートするプレイヤーや処罰がありません。"
+  nothing_left: "この選択ではインポートするものがありません。"
+  setup_required: "先にパネルでmodlのセットアップを完了してください。"
+  busy: "ここではすでに確認またはインポートが実行中です。/modl import status を確認してください。"
+  already_running: "{server}（{address}）で開始されたインポートが実行中です。/modl import status で確認するか、/modl import cancel で停止してください。"
+  ip_history_release_running: "以前のインポートで保持した IP 履歴をまだ解放しています。しばらくしてから再試行してください。"
+  storage_moving: "アップロードされたファイルを別のストレージへ移動中です。移動が終わってから再試行してください。"
+  database_moving: "modl は別のデータベースへ移行中です。移行が終わってから再試行してください。"
+  confirm_first: "先に /modl import {source_id} を実行し、60秒以内に確定してください。"
+  choices_required: "両方の選択が必要です: /modl import {source_id} confirm <widen|skip> <keep|standard>"
+  preview:
+    counts: "{source}には{players}人のプレイヤーのBANが{bans}件、ミュートが{mutes}件、警告が{warnings}件、キックが{kicks}件、メモが{notes}件あります。"
+    not_imported: "インポートされないもの: プレイヤーアカウントのない処罰{without_account}件。"
+    scoped: "IP全体の処罰が{ip_wide}件、サーバー限定の処罰が{server_scoped}件あります。widen: 全サーバーでそのアカウントに適用され、IP BANはそのサブアカウントもブロックします。skip: 除外されます。"
+    ip_history: "IP履歴{old_entries}件（約{old_megabytes} MB）が{days}日より前のものです。keep: インポートしたIP履歴を残します。standard: {days}日より前のIP履歴を削除します。"
+    ip_history_kept: "以前のインポートが古いIP履歴を保持しています。standard はそれを終了して削除します。"
+    backup: "先にmodlをバックアップしてください。中止してもインポート済みのデータは残り、再実行では追加のみ行われます。"
+    confirm: "開始するには60秒以内に実行してください: /modl import {source_id} confirm <widen|skip> <keep|standard>"
+  started: "{source}のインポートを開始しました（{scoped_choice}、{history_choice}）。"
+  exporting: "{source}を読み込み中: {total}人中{processed}人。"
+  uploading: "エクスポートをmodlに送信中です。"
+  processing_started: "modlがエクスポートを受信し、インポートしています。"
+  completed: "{source}のインポートが完了しました: {processed}人をインポート、{skipped}件をスキップ、処罰{not_imported}件を除外。"
+  completed_partly: "{source}のインポートは問題ありで完了しました: {processed}人をインポート、{failed}人は読み込めず、{skipped}件をスキップ、処罰{not_imported}件を除外。修正して再実行してください。"
+  cancelling: "インポートを停止しています。"
+  cancel_keeps_imported: "インポート済みのデータは残ります。"
+  nothing_to_cancel: "実行中のインポートはありません。"
+  job_gone: "modlサーバーにこのインポートの記録がありません。"
+  too_many_players: "1回のインポートには{source}のプレイヤーが多すぎます（上限1,000,000）: {error}"
+  every_player_failed: "{source}からプレイヤーを1人も読み込めませんでした: {error}"
+  file_failed: "エクスポートファイルを書き込めませんでした: {error}"
+  upload_blocked: "modlの手前にあるリバースプロキシまたはCDNが、ファイルが大きすぎるとして拒否しました: {error}"
+  upload_failed: "エクスポートをmodlに送信できませんでした: {error}"
+  unreachable: "modlに接続できませんでした: {error}"
+  request_failed: "インポートのリクエストに失敗しました: {error}"
+  status:
+    none: "インポートはまだ実行されていません。"
+    building_json: "{source}を読み込み中: {total}人中{processed}人。"
+    uploading_json: "エクスポートは送信待ちです。"
+    receiving_file: "modlがエクスポートを受信中です。"
+    processing_data: "インポート中: {total}人中{processed}人、{skipped}件をスキップ。"
+    details: "{source}のインポートを{server}（{address}）から {scoped_choice} と {history_choice} で開始。"
+  ended:
+    cancelled: "インポートは中止されました。"
+    timed_out: "インポートからの報告が途絶え、タイムアウトしました。再実行してください。"
+    interrupted: "再起動によりインポートが中断されました。再実行してください。"
+    export_failed: "{source}のエクスポートに失敗しました。再実行してください。"
+    upload_failed: "エクスポートの送信に失敗しました。再実行してください。"
+    file_too_large: "エクスポートがインポートの上限を超えています。"
+    invalid_file: "modlはエクスポートを読み込めませんでした: {error}"
+    import_failed: "インポートに失敗しました: {error}"
+
+server_features:
+  staff_mode:
+    random_teleport:
+      no_players: "&cテレポート先のプレイヤーがいません。"
+      teleported: "&a&f{player}&a にテレポートしました。"
+    teleport:
+      teleported: "&a&f{player}&f にテレポートしました。"
+      target_offline: "&c対象はもうオンラインではありません。"
+    custody:
+      not_saved: "&c所持品を安全に保存できなかったため、スタッフモードを開始しませんでした。所持品はそのままです。スタッフモードをオフにして、サーバー管理者にコンソールの確認を依頼してください。"
+      kept_changing: "&cインベントリが変化し続けたため、スタッフモードを開始しませんでした。所持品はそのままです。スタッフモードをオフにし、動かずにもう一度試してください。"
+      unresolved: "&c以前の所持品の保存が未解決のため、スタッフモードを開始しませんでした。サーバー管理者にコンソールの確認を依頼してから、再接続してください。"
+      held: "&c所持品をまだ返却できませんでした。modl が安全に保管しており、返却されるまでアイテムはロックされます。サーバー管理者にコンソールの確認を依頼してください。"
+      record_missing: "&cスタッフモードのセッションで保存された所持品が見つかりませんでした。サーバー管理者にコンソールの確認を依頼してください。"
+    unknown_player: "不明"
+    scoreboard:
+      vanish_on: "&aオン"
+      vanish_off: "&cオフ"
+      vanished: "透明"
+      visible: "表示中"
+      frozen_yes: "&cはい"
+      frozen_no: "&aいいえ"
+      target_offline: "オフライン"
+      no_target: "なし"
+      not_available: "該当なし"
+    silent_container:
+      block_title: "&8閲覧中: {container}"
+      inventory_title: "&8閲覧中: {player} のインベントリ"
+  freeze:
+    frozen: "&c&lスタッフによってフリーズされました。切断しないでください。"
+    unfrozen: "&aフリーズが解除されました。"
+    chat: "&b[フリーズ] &e{player}&f: {message}"
+    no_commands: "&cフリーズ中はコマンドを使用できません。"
+  command:
+    modlserver:
+      usage: "使い方: &a/modlserver reload"
+      no_permission: "&cこのコマンドを使用する権限がありません。"
+      reloading: "&emodl サーバー機能の設定を再読み込みしています..."
+      reloaded: "&aサーバー機能の設定を再読み込みしました。"
+      reload_failed: "&c次のファイルでエラーがありました: &f{files}&c。詳細はコンソールを確認してください。"
+      restart_required: "&eこれらの設定は再起動後にのみ適用されます: &f{keys}"
+    proxycmd:
+      console_only: "&cこのコマンドはコンソールからのみ実行できます。"
+      usage: "使い方: &a/proxycmd &f<コマンド>"
+      not_connected: "&cプロキシに接続されていません。connection.yml の接続設定を確認してください。"
+      sent: "&aプロキシに送信しました: {command}"
+      refused: "&cプロキシは modl のコマンドのみ実行します。{command} は拒否されました。"
+      disabled: "&cこのサーバーのキーでは /proxycmd が無効です。管理者は Panel > 設定 > 一般 > Minecraft サーバー で許可できます。それまではプロキシのコンソールでコマンドを実行してください。"
+      no_answer: "&cプロキシが時間内に応答しませんでした。"
+      rate_limited: "&c現在プロキシコマンドが多すぎます。少し待ってからもう一度お試しください。"
+      invalid: "&cプロキシで {command} を実行できませんでした。"
+  network:
+    unavailable: "&c現在プロキシに接続できません。しばらくしてから再試行してください。"
+
+support_status:
+  header: "==== modl ステータス: 終了行までをすべてサポート依頼に貼り付けてください ===="
+  footer: "==== modl ステータスここまで ===="
+  collecting: "modl のステータスを収集しています..."
+  backend_unavailable: "modl がサーバーに接続していないため、プラグイン部分のみ表示します。理由は上のコンソール行を確認してください。"
+  backend_failed: "modl サーバーが応答しなかったため、プラグイン部分のみ表示します。"

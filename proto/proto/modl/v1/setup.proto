@@ -1,0 +1,133 @@
+syntax = "proto3";
+package modl.v1;
+
+import "buf/validate/validate.proto";
+
+enum SetupPhase {
+  SETUP_PHASE_UNSPECIFIED = 0;
+  SETUP_PHASE_UNCLAIMED = 1;
+  SETUP_PHASE_OWNER_SIGN_IN = 2;
+  SETUP_PHASE_READY = 3;
+}
+
+enum SetupHost {
+  SETUP_HOST_UNSPECIFIED = 0;
+  SETUP_HOST_PLUGIN = 1;
+  SETUP_HOST_STANDALONE = 2;
+}
+
+message SetupStatusResponse {
+  reserved 4;
+  reserved "code_file";
+
+  bool claimed = 1;
+  SetupPhase phase = 2;
+  SetupHost host = 3;
+}
+
+message SetupOwnerAccount {
+  reserved 2, 3;
+  reserved "sign_in_method", "password";
+
+  string email = 1 [(buf.validate.field).string = {
+    email: true
+    min_len: 1
+    max_len: 254
+  }];
+}
+
+message ClaimSetupRequest {
+  reserved 1, 2, 3;
+  reserved "token", "email", "server_name";
+
+  string public_url = 4 [
+    json_name = "publicUrl",
+    (buf.validate.field).string.max_len = 2048
+  ];
+  string code = 5 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }];
+  SetupOwnerAccount owner = 6 [(buf.validate.field).required = true];
+}
+
+message SetupOwnerSignInRequest {
+  reserved 2, 3;
+  reserved "sign_in_method", "password";
+
+  string code = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }];
+}
+
+enum SetupStep {
+  SETUP_STEP_UNSPECIFIED = 0;
+  SETUP_STEP_ACCOUNT = 1;
+  SETUP_STEP_IDENTITY = 2;
+  SETUP_STEP_ADDRESS = 3;
+  SETUP_STEP_EMAIL = 4;
+  SETUP_STEP_SERVERS = 5;
+  SETUP_STEP_MINECRAFT_ACCOUNT = 6;
+  SETUP_STEP_STAFF = 7;
+  SETUP_STEP_AI = 8;
+  SETUP_STEP_CONTENT = 9;
+  SETUP_STEP_IMPORT = 10;
+  SETUP_STEP_PLAYER_ADDRESSES = 11;
+}
+
+enum SetupStepStatus {
+  SETUP_STEP_STATUS_UNSPECIFIED = 0;
+  SETUP_STEP_STATUS_PENDING = 1;
+  SETUP_STEP_STATUS_DONE = 2;
+  SETUP_STEP_STATUS_SKIPPED = 3;
+}
+
+message SetupStepState {
+  SetupStep step = 1;
+  SetupStepStatus status = 2;
+}
+
+message SetupEnvironment {
+  reserved 3;
+  reserved "server_name_managed";
+
+  SetupHost host = 1;
+  bool reverse_proxy_suspected = 2 [json_name = "reverseProxySuspected"];
+}
+
+message SetupWizardState {
+  bool completed = 1;
+  repeated SetupStepState steps = 2;
+  SetupEnvironment environment = 3;
+}
+
+message UpdateSetupStepRequest {
+  SetupStepStatus status = 1 [(buf.validate.field).enum = {
+    defined_only: true
+    in: [
+      2,
+      3
+    ]
+  }];
+}
+
+message CheckPublicUrlRequest {
+  string url = 1 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 2048
+  }];
+}
+
+enum PublicUrlVerdict {
+  PUBLIC_URL_VERDICT_UNSPECIFIED = 0;
+  PUBLIC_URL_VERDICT_REACHABLE = 1;
+  PUBLIC_URL_VERDICT_UNREACHABLE = 2;
+  PUBLIC_URL_VERDICT_OTHER_SERVICE = 3;
+  PUBLIC_URL_VERDICT_INVALID = 4;
+}
+
+message CheckPublicUrlResponse {
+  PublicUrlVerdict verdict = 1;
+  string normalized_url = 2 [json_name = "normalizedUrl"];
+}

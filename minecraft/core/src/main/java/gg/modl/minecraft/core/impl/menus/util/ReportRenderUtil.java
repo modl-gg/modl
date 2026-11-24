@@ -1,0 +1,266 @@
+package gg.modl.minecraft.core.impl.menus.util;
+
+import gg.modl.minecraft.core.PluginServices;
+import dev.simplix.cirrus.item.CirrusItem;
+import dev.simplix.cirrus.item.CirrusItemType;
+import dev.simplix.cirrus.text.CirrusChatElement;
+import gg.modl.minecraft.api.Account;
+import gg.modl.minecraft.api.AbstractPlayer;
+import gg.modl.minecraft.api.http.ModlHttpClient;
+import gg.modl.minecraft.api.http.response.ReportsResponse;
+import gg.modl.minecraft.core.Platform;
+import gg.modl.minecraft.core.locale.LocaleManager;
+import gg.modl.minecraft.core.util.StringUtil;
+import lombok.Value;
+import org.jspecify.annotations.Nullable;
+
+import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Locale;
+import java.util.Map;
+import java.util.Set;
+import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import static gg.modl.minecraft.core.util.Java8Collections.listOf;
+import static gg.modl.minecraft.core.util.Java8Collections.mapOf;
+
+public final class ReportRenderUtil {
+
+    public static final String ALL_REPORT_TYPES = "all";
+
+    public static final OptionCycle REPORT_TYPE_FILTERS = OptionCycle.of("menus.common.report_filters.",
+            ALL_REPORT_TYPES, "gameplay", "chat");
+
+    private ReportRenderUtil() {}
+
+    public static List<String> replayToggleLore(LocaleManager locale, boolean attached) {
+        return MenuItems.loreSections(
+                listOf(locale.getMessage(attached ? "messages.report_replay_attached" : "messages.report_replay_not_attached")),
+                listOf(locale.getMessage(MenuItems.CLICK_TO_TOGGLE)));
+    }
+
+    @Value
+    public static class LinkableReport {
+        String id;
+        String type;
+        String reporterName;
+        String content;
+        @Nullable Instant date;
+    }
+
+    public static boolean matchesStatusFilter(String statusFilter, String status) {
+        boolean wantOpen = "open".equalsIgnoreCase(statusFilter);
+        boolean isClosed = "closed".equalsIgnoreCase(status);
+        return wantOpen != isClosed;
+    }
+
+    public static CompletableFuture<List<LinkableReport>> loadLinkableReports(ModlHttpClient httpClient, UUID targetUuid) {
+        return httpClient.getPlayerReports(targetUuid, "Open").thenApply(response -> {
+            List<LinkableReport> reports = new ArrayList<>();
+            if (response.isSuccess() && response.getReports() != null) {
+                for (ReportsResponse.Report report : response.getReports()) {
+                    reports.add(new LinkableReport(
+                            report.getId(),
+                            normalizeReportType(report),
+                            report.getReporterName(),
+                            getReportContent(report),
+                            report.getCreatedAt()
+                    ));
+                }
+            }
+            return reports;
+        }).exceptionally(e -> new ArrayList<>());
+    }
+
+    public static List<LinkableReport> filterLinkableReports(List<LinkableReport> reports, String currentFilter) {
+        if (ALL_REPORT_TYPES.equals(currentFilter)) return reports;
+
+        List<LinkableReport> filtered = new ArrayList<>();
+        for (LinkableReport report : reports)
+            if (report.getType() != null && report.getType().equalsIgnoreCase(currentFilter))
+                filtered.add(report);
+        return filtered;
+    }
+
+    public static CirrusItem mapLinkableReport(LinkableReport report, Set<String> selectedReportIds,
+                                               LocaleManager locale) {
+        boolean selected = selectedReportIds.contains(report.getId());
+
+        String unknown = locale.getUnknownWord();
+        Map<String, String> vars = new HashMap<>();
+        vars.put("id", report.getId());
+        vars.put("type", report.getType() != null ? report.getType() : unknown);
+        vars.put("date", report.getDate() != null ? MenuItems.formatDate(report.getDate()) : unknown);
+        vars.put("reporter", report.getReporterName() != null ? report.getReporterName() : unknown);
+        vars.put("content", String.join("\n", processContent(report.getContent())));
+
+        String localeKey = selected ? "menus.link_report_item_selected" : "menus.link_report_item_unselected";
+        List<String> lore = buildLore(locale, localeKey + ".lore", vars);
+        String title = locale.getMessage(localeKey + ".title", vars);
+        CirrusItemType itemType = selected ? CirrusItemType.LIME_DYE : getReportItemType(report.getType());
+
+        return CirrusItem.of(
+                itemType,
+                CirrusChatElement.ofLegacyText(title),
+                MenuItems.lore(lore)
+        ).actionHandler("toggleReport_" + report.getId());
+    }
+
+    public static void toggleReportSelection(Set<String> selectedReportIds, String reportId) {
+        if (selectedReportIds.contains(reportId))
+            selectedReportIds.remove(reportId);
+        else
+            selectedReportIds.add(reportId);
+    }
+
+    public static void toggleFilteredReportSelection(Set<String> selectedReportIds, List<LinkableReport> filtered) {
+        boolean allSelected = true;
+        for (LinkableReport report : filtered) {
+            if (report.getId() != null && !selectedReportIds.contains(report.getId())) {
+                allSelected = false;
+                break;
+            }
+        }
+
+        for (LinkableReport report : filtered) {
+            if (report.getId() == null) continue;
+
+            if (allSelected)
+                selectedReportIds.remove(report.getId());
+            else
+                selectedReportIds.add(report.getId());
+        }
+    }
+
+    public static CirrusItemType getReportItemType(String type) {
+        if (type == null) return CirrusItemType.PAPER;
+        String lower = type.toLowerCase(Locale.ROOT);
+        if ("gameplay".equals(lower)) return CirrusItemType.DIAMOND_SWORD;
+        if ("chat".equals(lower)) return CirrusItemType.WRITABLE_BOOK;
+        return CirrusItemType.PAPER;
+    }
+
+    public static String normalizeReportType(ReportsResponse.Report report) {
+        String type = report.getType() != null ? report.getType() : report.getCategory();
+        if ("player".equalsIgnoreCase(type)) type = "gameplay";
+        return type;
+    }
+
+    public static String getReportContent(ReportsResponse.Report report) {
+        return report.getContent() != null ? report.getContent() : report.getSubject();
+    }
+
+    public static @Nullable UUID parseReportedPlayerUuid(ReportsResponse.Report report) {
+        try {
+            return UUID.fromString(report.getReportedPlayerUuid());
+        } catch (IllegalArgumentException malformed) {
+            return null;
+        }
+    }
+
+    public static List<String> processContent(String content) {
+        if (content == null || content.isEmpty()) return listOf();
+
+        content = StringUtil.unescapeNewlines(content);
+        content = content.replace("**", "").replace("```", "");
+
+        List<String> wrapped = new ArrayList<>();
+        for (String paragraph : content.split("\n"))
+            if (paragraph.trim().isEmpty())
+                wrapped.add("");
+            else
+                wrapped.addAll(MenuItems.wrapText(paragraph.trim(), 7));
+        return wrapped;
+    }
+
+    public static List<String> buildLore(LocaleManager locale, String localeKey, Map<String, String> vars) {
+        List<String> lore = new ArrayList<>();
+        for (String line : locale.getMessageList(localeKey)) {
+            String processed = line;
+            for (Map.Entry<String, String> entry : vars.entrySet()) {
+                processed = processed.replace("{" + entry.getKey() + "}", entry.getValue());
+            }
+            if (processed.contains("\n"))
+                lore.addAll(Arrays.asList(processed.split("\n")));
+            else if (!processed.isEmpty())
+                lore.add(processed);
+        }
+        return lore;
+    }
+
+    public static String statusLabel(LocaleManager locale, String status) {
+        return locale.getMessage("closed".equalsIgnoreCase(status)
+                ? "menus.common.report_status_closed" : "menus.common.report_status_open");
+    }
+
+    public static CirrusItem buildTargetHead(LocaleManager locale, Platform platform, AbstractPlayer target, String localeKey) {
+        List<String> skullLines = locale.getMessageList(localeKey, mapOf("player", target.getUsername()));
+        CirrusItem head = MenuItems.playerHead(
+                skullLines.get(0),
+                skullLines.subList(1, skullLines.size())
+        );
+        return SkinTextureCache.applyCached(head, target.getUuid());
+    }
+
+    public static String playerTitle(String titleKey, Account account) {
+        return PluginServices.locale().getMessage(titleKey, mapOf("player", getPlayerName(account)));
+    }
+
+    public static String getPlayerName(Account account) {
+        if (!account.getUsernames().isEmpty()) {
+            Account.Username latestDated = null;
+            String fallbackName = null;
+
+            for (Account.Username username : account.getUsernames()) {
+                if (username == null || username.getUsername() == null || username.getUsername().isEmpty()) {
+                    continue;
+                }
+
+                fallbackName = username.getUsername();
+                if (username.getDate() == null) {
+                    continue;
+                }
+
+                if (latestDated == null || username.getDate().isAfter(latestDated.getDate())) {
+                    latestDated = username;
+                }
+            }
+
+            if (latestDated != null) {
+                return latestDated.getUsername();
+            }
+            if (fallbackName != null) {
+                return fallbackName;
+            }
+        }
+        return PluginServices.locale().getUnknownWord();
+    }
+
+    public static String extractReportDetails(String content, String subject) {
+        String first = cleanReportLine(content != null ? content : subject);
+        if ("Automated anticheat report.".equals(first) && content != null) {
+            String third = nthReportLine(content, 3);
+            if (third != null) return third;
+        }
+        return first;
+    }
+
+    private static @Nullable String nthReportLine(String text, int n) {
+        String[] lines = text.split("\n");
+        for (int i = 0, found = 0; i < lines.length; i++) {
+            String trimmed = lines[i].trim();
+            if (!trimmed.isEmpty() && ++found == n) return cleanReportLine(trimmed);
+        }
+        return null;
+    }
+
+    private static String cleanReportLine(String text) {
+        if (text == null || text.isEmpty()) return "";
+        int idx = text.indexOf('\n');
+        String line = idx >= 0 ? text.substring(0, idx).trim() : text.trim();
+        return line.replace("**", "").replace("__", "").replace("~~", "");
+    }
+}

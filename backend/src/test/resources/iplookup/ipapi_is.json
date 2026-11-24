@@ -1,0 +1,50 @@
+{
+  "provider": "ipapi_is",
+  "source": "https://ipapi.is/developers.html",
+  "cases": [
+    {
+      "name": "a datacenter VPN",
+      "status": 200,
+      "body": {
+        "ip": "203.0.113.20",
+        "is_bogon": false, "is_mobile": false, "is_satellite": false, "is_anycast": false, "is_crawler": false,
+        "is_datacenter": true, "is_tor": false, "is_proxy": false, "is_vpn": true, "is_abuser": false,
+        "asn": { "asn": 64502, "org": "Example Hosting" },
+        "location": { "country_code": "FR", "state": "Ile-de-France" }
+      },
+      "outcome": "FOUND",
+      "expected": { "country": "FR", "region": "Ile-de-France", "asn": "AS64502 Example Hosting", "vpn": "YES", "hosting": true }
+    },
+    {
+      "name": "a clean address",
+      "status": 200,
+      "body": {
+        "ip": "203.0.113.7",
+        "is_datacenter": false, "is_tor": false, "is_proxy": false, "is_vpn": false,
+        "asn": { "asn": 64500, "org": "Example Broadband" },
+        "location": { "country_code": "NL", "state": "North Holland" }
+      },
+      "outcome": "FOUND",
+      "expected": { "country": "NL", "region": "North Holland", "asn": "AS64500 Example Broadband", "vpn": "NO", "hosting": false }
+    },
+    {
+      "name": "a minimal response without detection flags is unknown",
+      "status": 200,
+      "body": { "ip": "203.0.113.7", "location": { "country_code": "NL" } },
+      "outcome": "FOUND",
+      "expected": { "country": "NL", "region": null, "asn": null, "vpn": "UNKNOWN", "hosting": false }
+    },
+    {
+      "name": "the daily quota is exhausted",
+      "status": 429,
+      "body": { "error": "Quota exceeded", "error_code": "ERR_QUOTA_EXCEEDED", "elapsed_ms": 0.2 },
+      "outcome": "REFUSED"
+    },
+    {
+      "name": "an invalid address",
+      "status": 400,
+      "body": { "error": "Invalid IP Address or AS Number", "error_code": "ERR_INVALID_IP_OR_ASN", "elapsed_ms": 0.16 },
+      "outcome": "FAILED"
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+syntax = "proto3";
+package modl.v1;
+
+message SimpleResponse {
+  bool success = 1;
+}
+
+message PendingStatWipe {
+  string minecraft_uuid = 1;
+  string username = 2;
+  string punishment_id = 3;
+}
+
+enum ServerRole {
+  SERVER_ROLE_UNSPECIFIED = 0;
+  SERVER_ROLE_CORE = 1;
+  SERVER_ROLE_MEMBER = 2;
+}

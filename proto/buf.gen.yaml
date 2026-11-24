@@ -1,0 +1,17 @@
+version: v2
+managed:
+  enabled: true
+  override:
+    - file_option: java_multiple_files
+      value: true
+      module: buf.build/modl-gg/proto
+    - file_option: java_package_prefix
+      value: gg.modl.proto
+      module: buf.build/modl-gg/proto
+plugins:
+  - remote: buf.build/protocolbuffers/java:v36.2
+    out: gen/java
+  - remote: buf.build/bufbuild/es:v2.17.0
+    out: gen/ts
+    opt:
+      - target=ts

@@ -1,0 +1,3 @@
+org.springframework.boot.EnvironmentPostProcessor=\
+gg.modl.backend.infrastructure.config.BlankModlVariableFilter,\
+gg.modl.backend.infrastructure.config.TrustedProxyHeadersPostProcessor

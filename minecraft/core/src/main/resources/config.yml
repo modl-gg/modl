@@ -1,0 +1,163 @@
+server:
+  # Name of this server in chat and command logs, reports and staff lists. The panel's name is set in Panel > Settings > General > Panel.
+  name: "Server 1"
+  # Look up unknown player names at Mojang.
+  query_mojang: false
+
+# en_US, de_DE, es_ES, fr_FR, hi_IN, it_IT, ja_JP, nl_NL, pt_BR, ru_RU or zh_CN
+locale: "en_US"
+
+staff_chat:
+  enabled: true
+  # A message starting with this prefix goes to staff chat.
+  prefix: "!"
+  # Placeholders: {player}, {panel-name}, {message}
+  format: "&b[Staff] &f{player}: &7{message}"
+
+# Staff must confirm a /verify link in the panel before staff commands work. A confirmation lasts 7 days per IP.
+staff_2fa:
+  enabled: false
+
+chat_management:
+  # Blank lines sent by /chat clear, at most 500.
+  clear_lines: 100
+
+# Live updates from the panel. Turn off only to fall back to slow periodic polling.
+realtime:
+  enabled: true
+
+# On a network this applies to every server.
+staff_mode:
+  # Vanish on entering staff mode.
+  vanish_on_enable: true
+
+panel_login:
+  # /modl panel is refused on offline-mode servers without proxy forwarding. Set true only if you trust every player name.
+  allow_offline_mode: false
+
+# Velocity and BungeeCord only.
+proxy:
+  # Packet interception powers proxy menus and signed-chat enforcement. Moderation never depends on it.
+  #   auto     on, unless a plugin that rewrites packets, such as LimboAPI, is detected (with it, players hang on "Encrypting...")
+  #   enabled  always on; with LimboAPI only if it has 'compatibility-mode: true' and 'save-uncompressed-packets: true'
+  #   disabled always off
+  packet_interception: "auto"
+
+update_checker:
+  # One notice at startup when a newer release is out.
+  enabled: true
+
+# Commands muted players cannot use, without the slash. Plugin prefixes (essentials:msg) and aliases are blocked too.
+muted_commands:
+  - "msg"
+  - "tell"
+  - "w"
+  - "whisper"
+  - "m"
+  - "pm"
+  - "message"
+  - "r"
+  - "reply"
+  - "me"
+  - "teammsg"
+  - "tm"
+
+# Extra commands whose arguments are hidden from command logs, without the slash, such as "bank setpin".
+# Auth plugin commands, /modl link and /tclaim are always hidden.
+redacted_commands: []
+
+# Chat and command logs shown in the panel. Chat reports still capture recent chat when chat is off.
+logging:
+  chat: true
+  commands: true
+  # Commands never stored, without the slash.
+  never_logged_commands: []
+
+# Aliases separated by |, the first is the main name. An empty value disables the command. Restart after changing.
+commands:
+  modl: "modl"
+  punish: "punish|p"
+  ban: "ban"
+  mute: "mute"
+  kick: "kick"
+  blacklist: "blacklist"
+  pardon: "pardon"
+  unban: "unban"
+  unmute: "unmute"
+  warn: "warn"
+  inspect: "inspect|ins|check|lookup|i"
+  staffmenu: "staffmenu"
+  history: "history|hist"
+  alts: "alts|alt"
+  notes: "notes"
+  reports: "reports"
+  iammuted: "iammuted"
+  report: "report"
+  chatreport: "chatreport|cr"
+  hackreport: "hackreport|hr"
+  apply: "apply"
+  bugreport: "bugreport"
+  support: "support"
+  tclaim: "tclaim|claimticket"
+  standing: "standing"
+  punishment_action: "modl:punishment-action"
+  staffchat: "staffchat|sc"
+  localchat: "localchat|lc"
+  chat: "chat"
+  stafflist: "stafflist"
+  freeze: "freeze"
+  staffmode: "staffmode|modmode|sm|mm"
+  vanish: "vanish|v"
+  target: "target"
+  verify: "verify"
+  interceptnetworkchat: "interceptnetworkchat|inc"
+  chatlogs: "chatlogs"
+  commandlogs: "commandlogs"
+  replay: "replay"
+
+locale_config:
+  default_reason: "No reason specified"
+
+  # Java SimpleDateFormat pattern.
+  date_format: "MM/dd/yyyy HH:mm"
+
+  # Such as "UTC" or "Europe/London". Empty uses the server time zone.
+  timezone: ""
+
+  duration_format:
+    days: "{days}d"
+    hours: "{hours}h"
+    minutes: "{minutes}m"
+    seconds: "{seconds}s"
+    permanent: "permanent"
+
+# Items of the /standing menu. Its texts are under standing_gui in locale/<locale>.yml.
+standing_gui:
+  social_status:
+    item: "minecraft:creeper_head"
+  gameplay_status:
+    item: "minecraft:tnt"
+
+# Item shown for each punishment type ordinal in history menus.
+punishment_type_items_by_ordinal:
+  0: "minecraft:leather_boots"
+  1: "minecraft:orange_wool"
+  2: "minecraft:red_wool"
+  3: "minecraft:barrier"
+  4: "minecraft:player_head"
+  5: "minecraft:bedrock"
+  6: "minecraft:feather"
+  7: "minecraft:pufferfish"
+  8: "minecraft:creeper_head"
+  9: "minecraft:ink_sac"
+  10: "minecraft:name_tag"
+  11: "minecraft:armor_stand"
+  12: "minecraft:lava_bucket"
+  13: "minecraft:spider_eye"
+  14: "minecraft:diamond_sword"
+  15: "minecraft:gold_ingot"
+  16: "minecraft:experience_bottle"
+  17: "minecraft:barrier"
+
+# Verbose console logging.
+debug: false
