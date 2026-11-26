@@ -37,7 +37,7 @@ If the browser closes before the sign-in method is confirmed, restart for an own
 
 ## Link your Minecraft account
 
-[![Video: Link your Minecraft account](https://img.youtube.com/vi/2FLmXtGNH3M/maxresdefault.jpg)](https://youtu.be/2FLmXtGNH3M)
+https://github.com/user-attachments/assets/079c65cd-9dd9-4781-9b2b-e2874f04b897
 
 In-game staff tools need a linked account.
 

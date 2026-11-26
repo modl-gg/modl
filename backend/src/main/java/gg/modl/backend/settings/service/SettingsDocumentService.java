@@ -40,8 +40,12 @@ public class SettingsDocumentService {
     }
 
     public RawSettingsState updateLatest(String type, UnaryOperator<Map<String, Object>> change) {
-        return unitOfWork.write(() -> write(type, getRawState(type), change)
-            .orElseThrow(() -> new ConcurrentUpdateException("The " + type + " settings changed while they were being updated")));
+        return unitOfWork.write(() -> updateFrom(type, getRawState(type), change));
+    }
+
+    public RawSettingsState updateFrom(String type, RawSettingsState read, UnaryOperator<Map<String, Object>> change) {
+        return write(type, read, change)
+            .orElseThrow(() -> new ConcurrentUpdateException("The " + type + " settings changed while they were being updated"));
     }
 
     public void deleteState(String type) {

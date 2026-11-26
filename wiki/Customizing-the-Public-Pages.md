@@ -2,7 +2,7 @@
 
 The public pages are the homepage, the knowledgebase and its articles, the ticket and appeal forms, the player ticket view, and evidence upload. The staff panel, sign-in, and setup pages always keep the default look.
 
-[![Video: Customize the public pages](https://img.youtube.com/vi/3fGznGXAKZg/maxresdefault.jpg)](https://youtu.be/3fGznGXAKZg)
+https://github.com/user-attachments/assets/db97adcc-5b50-4aef-bc37-4eb4ea7f3427
 
 1. Settings > Public site > Homepage: tagline, server address, cards, and footer links.
 2. Settings > Public site > Theme: colors, font, and corner radius.

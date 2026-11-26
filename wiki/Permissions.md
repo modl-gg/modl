@@ -9,7 +9,7 @@ Permissions belong to roles, edited in Panel > Settings > Staff > Roles or the i
 
 ## Staff team
 
-[![Video: Set up your staff team](https://img.youtube.com/vi/4F8k7IQJkG0/maxresdefault.jpg)](https://youtu.be/4F8k7IQJkG0)
+https://github.com/user-attachments/assets/86094b75-3b7e-4f5d-bbb5-5a3705dfe535
 
 1. Settings > Staff > Members > Invite staff: their email and a role. Without SMTP the invitation link is shown in the panel and printed to the console; it lasts 24 hours.
 2. Settings > Staff > Roles: what each role may do (table below).

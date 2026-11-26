@@ -30,7 +30,7 @@ Ticket commands have a 60 second cooldown per ticket type (`/report` and `/hackr
 
 ## From report to punishment
 
-[![Video: From report to punishment](https://img.youtube.com/vi/p_jYzaaRfc4/maxresdefault.jpg)](https://youtu.be/p_jYzaaRfc4)
+https://github.com/user-attachments/assets/624395db-d5af-4c94-8408-900165f51c13
 
 1. In game: `/report <player>`, pick a reason, and confirm. Cheating reasons can capture a replay (when recording is on, [Replays](Replays)); chat reasons can attach the player's recent chat.
 2. Panel > Tickets: open the new report.

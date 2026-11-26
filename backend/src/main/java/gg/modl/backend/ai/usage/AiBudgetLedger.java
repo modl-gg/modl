@@ -6,6 +6,7 @@ import gg.modl.backend.database.UnitOfWork;
 import gg.modl.backend.settings.data.SettingsType;
 import gg.modl.backend.settings.service.SettingsCodec;
 import gg.modl.backend.settings.service.SettingsDocumentService;
+import gg.modl.backend.settings.service.SettingsDocumentService.RawSettingsState;
 import java.time.Instant;
 import java.util.Optional;
 import org.springframework.stereotype.Component;
@@ -25,9 +26,11 @@ public class AiBudgetLedger {
 
     public Optional<AiFailureKind> tryConsume(AiUsageLimits limits, Instant now) {
         return unitOfWork.write(() -> {
-            Optional<AiFailureKind> refusal = stored().rolledTo(now).refusal(limits);
+            RawSettingsState read = documents.getRawState(SETTINGS_TYPE);
+            AiUsageCounters counters = CODEC.decode(read.data()).rolledTo(now);
+            Optional<AiFailureKind> refusal = counters.refusal(limits);
             if (refusal.isEmpty()) {
-                documents.updateLatest(SETTINGS_TYPE, current -> CODEC.encode(CODEC.decode(current).rolledTo(now).incremented()));
+                documents.updateFrom(SETTINGS_TYPE, read, data -> CODEC.encode(counters.incremented()));
             }
             return refusal;
         });

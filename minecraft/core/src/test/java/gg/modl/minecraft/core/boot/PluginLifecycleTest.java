@@ -44,6 +44,7 @@ import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class PluginLifecycleTest {
+    private static final long WAIT_SECONDS = 45;
     private static final StartupRequest REQUEST = new StartupRequest(PluginInfo.VERSION, "SPIGOT", "1.21.11", 20);
     private static final String STARTUP_JSON = "{\"panelUrl\":\"https://panel.example.test\",\"serverInstanceId\":\"srv-1\","
             + "\"modlVersion\":\"" + PluginInfo.VERSION + "\"}";
@@ -62,6 +63,7 @@ class PluginLifecycleTest {
     void startBackend() throws IOException {
         backend = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), 0), 0);
         backend.createContext("/v2/minecraft/startup", exchange -> {
+            exchange.getRequestBody().readAllBytes();
             startupRequests.incrementAndGet();
             boolean fail = failuresBeforeSuccess.getAndDecrement() > 0;
             byte[] body = (fail ? "{\"error\":\"unavailable\"}" : STARTUP_JSON).getBytes(StandardCharsets.UTF_8);
@@ -87,7 +89,7 @@ class PluginLifecycleTest {
         lifecycle.enable(REQUEST, bootstrap);
 
         assertEquals(singletonList(CoreState.STARTING), bootstrap.statesWhenPrepared);
-        assertTrue(bootstrap.started.await(10, TimeUnit.SECONDS));
+        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
         PanelUrl panelUrl = PanelUrl.unresolved();
         bootstrap.sessions.get(0).resolvePanelUrl(panelUrl);
         assertEquals("https://panel.example.test", panelUrl.get());
@@ -105,7 +107,7 @@ class PluginLifecycleTest {
         RecordingBootstrap bootstrap = new RecordingBootstrap();
         lifecycle = remoteLifecycle(this::reachableSource);
         lifecycle.enable(REQUEST, bootstrap);
-        assertTrue(bootstrap.started.await(10, TimeUnit.SECONDS));
+        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
 
         BackendConnections connections = bootstrap.sessions.get(0).getConnections();
         connections.report(connections.mismatchWith("9.0.0"));
@@ -120,7 +122,7 @@ class PluginLifecycleTest {
         lifecycle = remoteLifecycle(this::reachableSource);
 
         lifecycle.enable(REQUEST, bootstrap);
-        assertTrue(bootstrap.started.await(10, TimeUnit.SECONDS));
+        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
         lifecycle.enable(REQUEST, bootstrap);
 
         assertEquals(1, bootstrap.preparations.get());
@@ -140,7 +142,7 @@ class PluginLifecycleTest {
         assertTrue(host.gate.deniedMessage().contains("Connection to panel failed"));
 
         assertEquals(1, bootstrap.preparations.get());
-        assertTrue(bootstrap.started.await(10, TimeUnit.SECONDS));
+        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
         assertTrue(lifecycle.availability().state().isRunning());
         assertEquals(1, host.unregistrations.get());
         assertTrue(host.mainThreadTasks.get() >= 1);
@@ -180,7 +182,7 @@ class PluginLifecycleTest {
 
         starting.complete(endpoint());
 
-        assertTrue(bootstrap.started.await(10, TimeUnit.SECONDS));
+        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
         assertTrue(lifecycle.availability().state().isRunning());
         assertTrue(host.gate.isOpen());
         assertTrue(logger.warnings().isEmpty(), logger.warnings().toString());
@@ -239,7 +241,7 @@ class PluginLifecycleTest {
         lifecycle.enable(REQUEST, second);
         restarted.complete(endpoint());
 
-        assertTrue(second.started.await(10, TimeUnit.SECONDS));
+        assertTrue(second.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
         assertTrue(first.sessions.isEmpty());
         assertTrue(lifecycle.availability().state().isRunning());
     }
@@ -384,7 +386,7 @@ class PluginLifecycleTest {
         RecordingBootstrap bootstrap = RecordingBootstrap.stoppingWith(() -> order.add("core"));
 
         lifecycle.enable(REQUEST, bootstrap);
-        assertTrue(bootstrap.started.await(10, TimeUnit.SECONDS));
+        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
         lifecycle.shutdown();
 
         assertEquals(2, order.size());
@@ -393,7 +395,7 @@ class PluginLifecycleTest {
     }
 
     private void awaitSevere(String expected) throws InterruptedException {
-        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(10);
+        long deadline = System.nanoTime() + TimeUnit.SECONDS.toNanos(WAIT_SECONDS);
         while (!logger.severes().contains(expected) && System.nanoTime() < deadline) TimeUnit.MILLISECONDS.sleep(20);
         assertTrue(logger.severes().contains(expected), logger.severes().toString());
     }

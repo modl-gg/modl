@@ -1,6 +1,6 @@
 # Single Server
 
-[![Video: Install on one Paper server](https://img.youtube.com/vi/6q6vOZICUq4/maxresdefault.jpg)](https://youtu.be/6q6vOZICUq4)
+https://github.com/user-attachments/assets/903a9387-94e2-41cc-a266-3da109f94688
 
 One Paper, Folia, or Spigot server that runs the panel itself (`mode: embedded`). It needs Java 21, 2 GB of heap, PacketEvents, and one free port ([Requirements](Requirements)).
 

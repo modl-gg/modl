@@ -2,7 +2,9 @@ package gg.modl.minecraft.replay.recording;
 
 import com.github.retrooper.packetevents.PacketEvents;
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
+import com.github.retrooper.packetevents.netty.channel.ChannelHelper;
 import com.github.retrooper.packetevents.protocol.entity.type.EntityTypes;
+import com.github.retrooper.packetevents.protocol.player.User;
 import gg.modl.minecraft.replay.format.ReplayFileFormat;
 import org.jspecify.annotations.Nullable;
 
@@ -13,6 +15,7 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
 import java.util.ArrayList;
+import java.util.Iterator;
 import java.util.Map;
 import java.util.Optional;
 import java.util.UUID;
@@ -58,6 +61,7 @@ public final class ReplayRecorder implements AutoCloseable {
     private final AtomicLong nextCapture = new AtomicLong();
     private @Nullable ScheduledFuture<?> maintenanceTask;
     private volatile boolean closed;
+    private boolean recordsEveryPlayer;
 
     public ReplayRecorder(RecorderSettings settings, ReplayOutput output, Logger logger) {
         this.settings = settings;
@@ -85,7 +89,7 @@ public final class ReplayRecorder implements AutoCloseable {
         new TargetPackets(context).register(handlers);
         new PlayerInfoPackets().register(handlers);
         new ChatPackets().register(handlers);
-        this.tap = new PacketTap(recordings, handlers, failures, this::stop);
+        this.tap = new PacketTap(recordings, handlers, failures, this::stop, this::joining);
     }
 
     public void open() {
@@ -100,6 +104,30 @@ public final class ReplayRecorder implements AutoCloseable {
                 .memoryBudgetBytes(memoryBudgetBytes)
                 .build();
         budget.limit(memoryBudgetBytes);
+    }
+
+    public void recordEveryPlayer(boolean enabled) {
+        synchronized (admission) {
+            recordsEveryPlayer = enabled;
+            if (enabled) return;
+            Iterator<Recording> active = recordings.values().iterator();
+            while (active.hasNext()) {
+                Recording recording = active.next();
+                if (!recording.endIfStartedBy(RecordingCause.AUTO_RECORD)) continue;
+                active.remove();
+                recording.close();
+            }
+        }
+    }
+
+    @Nullable Recording joining(User user) {
+        UUID target = user.getUUID();
+        String name = user.getName();
+        if (target == null || name == null || !ChannelHelper.isOpen(user.getChannel())) return null;
+        synchronized (admission) {
+            Recording existing = recordings.get(target);
+            return existing != null ? existing : startRecording(target, name, RecordingCause.AUTO_RECORD);
+        }
     }
 
     public boolean isRecording(UUID target) {
@@ -139,7 +167,7 @@ public final class ReplayRecorder implements AutoCloseable {
 
     private @Nullable Recording startRecording(UUID target, String name, RecordingCause cause) {
         synchronized (admission) {
-            if (closed) return null;
+            if (closed || (cause == RecordingCause.AUTO_RECORD && !recordsEveryPlayer)) return null;
             Recording existing = recordings.get(target);
             if (existing != null) {
                 existing.raise(cause);

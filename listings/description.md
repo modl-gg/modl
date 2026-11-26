@@ -8,6 +8,8 @@ It runs on **Paper, Folia, Spigot, Velocity, and BungeeCord**, from 1.8.8 to the
 
 [Source code](https://github.com/modl-gg/modl) | [Documentation](https://github.com/modl-gg/modl/wiki) | [Downloads](https://github.com/modl-gg/modl/releases) | [Discord](https://modl.gg/discord) | [Locale file](https://github.com/modl-gg/modl/blob/main/minecraft/core/src/main/resources/locale/en_US.yml) | [Config file](https://github.com/modl-gg/modl/blob/main/minecraft/core/src/main/resources/config.yml)
 
+![The modl panel dashboard](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-dashboard.png)
+
 ## Getting started
 
 1. Put [PacketEvents](https://modrinth.com/plugin/packetevents) and the modl jar in `plugins/` and start the server.
@@ -33,12 +35,20 @@ Built to sanction players fairly and consistently while keeping moderator discre
 - Several bans or mutes run **one after another**, each starting when the previous one ends
 - Classic manual punishments too: ban, tempban, mute, tempmute, kick, and blacklist
 
+![Punishing a player from the in-game menu](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/game-punish-menu.gif)
+
+![Punishing a player from the panel](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-punish.png)
+
 ### Reports and tickets
 
 - In-game `/report`, `/chatreport`, and `/hackreport` that attach the **chat log** or a **replay** of the reported player
 - Ticket forms for support, staff applications, bug reports, and anything else you define
 - Labels, assignees, quick replies, internal staff notes, and Discord webhooks
 - A public page where players follow their ticket or appeal, with email updates when mail is set up
+
+![Reporting a player from the in-game menu](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/game-report-menu.gif)
+
+![A chat report with its chat log in the panel](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-ticket.png)
 
 ### Replays
 
@@ -55,11 +65,15 @@ Built to sanction players fairly and consistently while keeping moderator discre
 - Accounts linked through shared addresses, with optional VPN and proxy lookups from the provider you pick
 - Alt-blocking bans that follow a player to their linked accounts
 
+![Inspecting a player in game](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/game-inspect-menu.gif)
+
 ### Staff tools in game
 
 - Staff mode with vanish, freeze, target, and inspection menus, working across a whole network
 - Staff chat, slow mode, chat and command logs, and network-wide chat interception
 - Punish, inspect, history, notes, and alts menus, plus `/standing` for players
+
+![The in-game staff menu](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/game-staff-menu.gif)
 
 ### The panel
 
@@ -68,6 +82,12 @@ Built to sanction players fairly and consistently while keeping moderator discre
 - Sign in with an emailed code, a password, a passkey, or a one-time link from in game
 - A public homepage and knowledgebase with your theme, fonts and custom CSS
 - Available in 11 languages
+
+![A player profile with full history](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-player.png)
+
+![Analytics in the panel](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-analytics.png)
+
+![The public homepage players see](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/public-homepage.png)
 
 ### Built for self-hosting
 

@@ -36,6 +36,7 @@ export interface PlayerReplaySummary {
 
 export interface PlayerPresence {
   isOnline: boolean;
+  firstJoined: string | null;
   lastSeen: string | null;
 }
 
@@ -43,15 +44,17 @@ const presenceText = z.string().min(1).optional().catch(undefined);
 
 const playerPresenceSchema = z.object({
   isOnline: z.boolean().catch(false),
+  firstJoin: presenceText,
   lastLogout: presenceText,
   lastDisconnect: presenceText,
 });
 
 function playerPresence(data: JsonObject | undefined): PlayerPresence {
   const parsed = playerPresenceSchema.safeParse(data ?? {});
-  if (!parsed.success) return { isOnline: false, lastSeen: null };
+  if (!parsed.success) return { isOnline: false, firstJoined: null, lastSeen: null };
   return {
     isOnline: parsed.data.isOnline,
+    firstJoined: parsed.data.firstJoin ?? null,
     lastSeen: parsed.data.lastLogout ?? parsed.data.lastDisconnect ?? null,
   };
 }

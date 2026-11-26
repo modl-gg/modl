@@ -1,7 +1,13 @@
 package gg.modl.minecraft.replay.recording;
 
 import com.github.retrooper.packetevents.manager.server.ServerVersion;
+import com.github.retrooper.packetevents.protocol.ConnectionState;
+import com.github.retrooper.packetevents.protocol.player.ClientVersion;
+import com.github.retrooper.packetevents.protocol.player.User;
+import com.github.retrooper.packetevents.protocol.player.UserProfile;
 import gg.modl.minecraft.replay.format.ReplayFileFormat;
+import io.netty.channel.ChannelInboundHandlerAdapter;
+import io.netty.channel.embedded.EmbeddedChannel;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -51,9 +57,62 @@ class ReplayRecorderTest {
 
     private static ReplayRecorder recorder(long budgetBytes, ReplayOutput replayOutput) {
         TestPacketEvents.install(ServerVersion.V_1_21_11);
-        return new ReplayRecorder(RecorderSettings.builder().windowSeconds(60).radiusBlocks(64).memoryBudgetBytes(budgetBytes)
+        ReplayRecorder created = new ReplayRecorder(RecorderSettings.builder().windowSeconds(60).radiusBlocks(64).memoryBudgetBytes(budgetBytes)
                 .minecraftVersion("1.21.11").dataVersion(0).serverSoftware("test").recorderVersion("test").build(),
                 replayOutput, Logger.getAnonymousLogger());
+        created.recordEveryPlayer(true);
+        return created;
+    }
+
+    @Test
+    void joiningPlayersAreRecordedFromTheirJoinPacketOnlyWhileEveryPlayerIsRecorded() {
+        User joining = user(target, openChannel());
+        recorder.recordEveryPlayer(false);
+
+        assertNull(recorder.joining(joining));
+        assertFalse(recorder.isRecording(target));
+
+        recorder.recordEveryPlayer(true);
+        assertNotNull(recorder.joining(joining));
+        assertTrue(recorder.isRecording(target));
+    }
+
+    @Test
+    void aJoinPacketReachesTheRecordingTheJoinEventAlreadyStarted() {
+        assertTrue(recorder.start(target, "Steve"));
+
+        assertNotNull(recorder.joining(user(target, openChannel())));
+    }
+
+    @Test
+    void aClosedConnectionIsNeverRecordedAtJoin() {
+        EmbeddedChannel channel = openChannel();
+        channel.close().syncUninterruptibly();
+
+        assertNull(recorder.joining(user(target, channel)));
+        assertFalse(recorder.isRecording(target));
+    }
+
+    @Test
+    void turningRecordEveryPlayerOffEndsEveryAutomaticRecordingButNoOther() {
+        UUID staffed = UUID.randomUUID();
+        assertTrue(recorder.start(target, "Steve"));
+        assertNotNull(recorder.startSeeded(staffed, "Staffed", RecordingCause.STAFF));
+
+        recorder.recordEveryPlayer(false);
+
+        assertFalse(recorder.isRecording(target));
+        assertTrue(recorder.isRecording(staffed));
+        assertFalse(recorder.start(target, "Steve"));
+        assertNull(recorder.startSeeded(target, "Steve", RecordingCause.AUTO_RECORD));
+    }
+
+    private static EmbeddedChannel openChannel() {
+        return new EmbeddedChannel(new ChannelInboundHandlerAdapter());
+    }
+
+    private static User user(UUID uuid, EmbeddedChannel channel) {
+        return new User(channel, ConnectionState.PLAY, ClientVersion.V_1_21_11, new UserProfile(uuid, "Joiner"));
     }
 
     @Test

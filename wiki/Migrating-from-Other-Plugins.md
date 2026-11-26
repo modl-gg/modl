@@ -1,6 +1,6 @@
 # Migrating from Other Plugins
 
-[![Video: Import from LiteBans](https://img.youtube.com/vi/ZgZylJc8abM/maxresdefault.jpg)](https://youtu.be/ZgZylJc8abM)
+https://github.com/user-attachments/assets/0ef54ca4-a983-4cb9-8c16-c79e27d9cae0
 
 Back up first ([Backups and Restore](Backups-and-Restore)). Imported bans and mutes take effect as they are imported.
 

@@ -85,7 +85,7 @@ class AiBudgetLedgerTest {
     void aDatabaseFailureFailsClosed(DialectTarget target) {
         try (InstanceTestKit kit = InstanceTestKit.start(target, dataDirectory)) {
             SettingsDocumentService documents = spy(kit.documents());
-            doThrow(new DatabaseBusyException("busy", Duration.ofSeconds(1))).when(documents).updateLatest(any(), any());
+            doThrow(new DatabaseBusyException("busy", Duration.ofSeconds(1))).when(documents).updateFrom(any(), any(), any());
             AiBudgetLedger ledger = new AiBudgetLedger(documents, kit.unitOfWork());
 
             assertThatThrownBy(() -> ledger.tryConsume(TWO_PER_HOUR, NOON)).isInstanceOf(DatabaseBusyException.class);

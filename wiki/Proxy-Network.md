@@ -1,6 +1,6 @@
 # Proxy Network
 
-[![Video: Connect a Velocity network](https://img.youtube.com/vi/oBUhASI2hiU/maxresdefault.jpg)](https://youtu.be/oBUhASI2hiU)
+https://github.com/user-attachments/assets/9c05b8f2-a327-4b82-bc66-7cfdf72e1dd7
 
 A Velocity or BungeeCord proxy with Paper, Folia, or Spigot servers behind it.
 

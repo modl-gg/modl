@@ -85,6 +85,7 @@ final class SpigotReplays implements ReplayService, Listener {
                 .serverSoftware(Bukkit.getName() + " " + Bukkit.getVersion())
                 .recorderVersion(plugin.getDescription().getVersion())
                 .build(), files, plugin.getLogger());
+        this.recorder.recordEveryPlayer(settings.recordsEveryPlayer());
         this.recorder.open();
     }
 
@@ -110,11 +111,11 @@ final class SpigotReplays implements ReplayService, Listener {
     void retune(FeatureSettings next) {
         FeatureSettings previous = settings;
         settings = next;
+        recorder.recordEveryPlayer(next.recordsEveryPlayer());
         if (!previous.sameRecorderLimits(next)) {
             recorder.retune(next.getWindowSeconds(), next.getRadiusBlocks(), next.memoryBudgetBytes());
         }
         if (!previous.recordsEveryPlayer() && next.recordsEveryPlayer()) recordOnlinePlayers();
-        if (previous.recordsEveryPlayer() && !next.recordsEveryPlayer()) stopAutoRecordings();
     }
 
     void detach() {
@@ -130,12 +131,6 @@ final class SpigotReplays implements ReplayService, Listener {
         for (Player online : Bukkit.getOnlinePlayers()) {
             UUID uuid = online.getUniqueId();
             scheduler.runForPlayer(uuid, () -> startMidSession(uuid, RecordingCause.AUTO_RECORD));
-        }
-    }
-
-    private void stopAutoRecordings() {
-        for (Player online : Bukkit.getOnlinePlayers()) {
-            recorder.stopIfStartedBy(online.getUniqueId(), RecordingCause.AUTO_RECORD);
         }
     }
 
@@ -193,7 +188,7 @@ final class SpigotReplays implements ReplayService, Listener {
     @EventHandler(priority = EventPriority.LOWEST)
     public void onJoin(PlayerJoinEvent event) {
         UUID uuid = event.getPlayer().getUniqueId();
-        if (settings.recordsEveryPlayer()) recorder.start(uuid, event.getPlayer().getName());
+        recorder.start(uuid, event.getPlayer().getName());
         if (!recorder.isRecording(uuid)) return;
         scheduler.runForPlayerLater(uuid, () -> {
             Player player = Bukkit.getPlayer(uuid);

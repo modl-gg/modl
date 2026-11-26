@@ -110,7 +110,7 @@ export function buildPlayerProfile(
     restriction: restrictionOf(player.punishments),
     region: player.latestIPData?.region ?? '',
     country: player.latestIPData?.country ?? '',
-    firstJoined: player.usernames.at(0)?.date || null,
+    firstJoined: player.presence.firstJoined,
     latestIpActivity,
     lastSeen: player.presence.lastSeen ?? latestIpActivity?.lastLogin ?? null,
     lastServer: player.lastServer ?? '',

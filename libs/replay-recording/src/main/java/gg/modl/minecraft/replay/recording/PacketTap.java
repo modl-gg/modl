@@ -5,25 +5,30 @@ import com.github.retrooper.packetevents.event.PacketListenerPriority;
 import com.github.retrooper.packetevents.event.PacketReceiveEvent;
 import com.github.retrooper.packetevents.event.PacketSendEvent;
 import com.github.retrooper.packetevents.event.UserDisconnectEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
 import com.github.retrooper.packetevents.protocol.player.User;
 import org.jspecify.annotations.Nullable;
 
 import java.util.Map;
 import java.util.UUID;
 import java.util.function.Consumer;
+import java.util.function.Function;
 
 final class PacketTap extends PacketListenerAbstract {
     private final Map<UUID, Recording> recordings;
     private final PacketHandlers handlers;
     private final DecodeFailures failures;
     private final Consumer<UUID> disconnected;
+    private final Function<User, @Nullable Recording> joining;
 
-    PacketTap(Map<UUID, Recording> recordings, PacketHandlers handlers, DecodeFailures failures, Consumer<UUID> disconnected) {
+    PacketTap(Map<UUID, Recording> recordings, PacketHandlers handlers, DecodeFailures failures, Consumer<UUID> disconnected,
+              Function<User, @Nullable Recording> joining) {
         super(PacketListenerPriority.MONITOR);
         this.recordings = recordings;
         this.handlers = handlers;
         this.failures = failures;
         this.disconnected = disconnected;
+        this.joining = joining;
     }
 
     @Override
@@ -35,12 +40,15 @@ final class PacketTap extends PacketListenerAbstract {
 
     @Override
     public void onPacketSend(PacketSendEvent event) {
-        if (recordings.isEmpty() || event.isCancelled()) return;
-        Recording recording = recordingOf(event.getUser());
+        if (event.isCancelled()) return;
+        boolean join = event.getPacketType() == PacketType.Play.Server.JOIN_GAME;
+        if (recordings.isEmpty() && !join) return;
+        User user = event.getUser();
+        Recording recording = join ? recordingAtJoin(user) : recordingOf(user);
         if (recording == null) return;
         SendHandler handler = handlers.send(event.getPacketType());
         if (handler == null) return;
-        recording.registries(event.getUser());
+        recording.registries(user);
         try {
             ReadOnlyPacketEventScope.run(event, () -> handler.handle(event, recording, recording.now()));
         } catch (Exception e) {
@@ -60,6 +68,11 @@ final class PacketTap extends PacketListenerAbstract {
         } catch (Exception e) {
             failures.record(String.valueOf(event.getPacketType()), e);
         }
+    }
+
+    private @Nullable Recording recordingAtJoin(@Nullable User user) {
+        Recording recording = recordingOf(user);
+        return recording != null || user == null ? recording : joining.apply(user);
     }
 
     private @Nullable Recording recordingOf(@Nullable User user) {

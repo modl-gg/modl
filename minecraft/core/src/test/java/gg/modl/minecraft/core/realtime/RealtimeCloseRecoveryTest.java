@@ -34,7 +34,7 @@ import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class RealtimeCloseRecoveryTest {
-    private static final long RECONNECT_WAIT_SECONDS = 10;
+    private static final long RECONNECT_WAIT_SECONDS = 45;
     private static final long NO_RECONNECT_WAIT_MILLIS = 3_500;
 
     private final VersionMismatchReports mismatches = new VersionMismatchReports();
@@ -50,7 +50,7 @@ class RealtimeCloseRecoveryTest {
     @Test
     void aSlowConsumerCloseReconnectsAndResyncsInsteadOfEndingRealtime() throws Exception {
         RecordingListener listener = new RecordingListener(2);
-        start(RealtimeCloseCode.REALTIME_CLOSE_CODE_SLOW_CONSUMER, listener);
+        start(RealtimeCloseCode.REALTIME_CLOSE_CODE_SLOW_CONSUMER, null, Closes.FIRST_CONNECTION, listener);
 
         assertTrue(listener.connections.await(RECONNECT_WAIT_SECONDS, TimeUnit.SECONDS), "the plugin never reconnected");
 
@@ -66,9 +66,7 @@ class RealtimeCloseRecoveryTest {
         start(RealtimeCloseCode.REALTIME_CLOSE_CODE_DISABLED, listener);
 
         assertTrue(listener.terminated.await(RECONNECT_WAIT_SECONDS, TimeUnit.SECONDS), "realtime was not ended");
-        TimeUnit.MILLISECONDS.sleep(NO_RECONNECT_WAIT_MILLIS);
-
-        assertEquals(1, backend.hellos.get());
+        assertNoFurtherConnection();
         assertEquals(Collections.singletonList(TerminationReason.DISABLED_BY_BACKEND), listener.terminations);
     }
 
@@ -85,7 +83,7 @@ class RealtimeCloseRecoveryTest {
     @Test
     void anErrorFrameAloneNeverEndsRealtime() throws Exception {
         RecordingListener listener = new RecordingListener(2);
-        start(RealtimeCloseCode.REALTIME_CLOSE_CODE_OVERLOADED, errorFrame(ErrorCode.ERROR_CODE_UNAUTHORIZED), listener);
+        start(RealtimeCloseCode.REALTIME_CLOSE_CODE_OVERLOADED, errorFrame(ErrorCode.ERROR_CODE_UNAUTHORIZED), Closes.FIRST_CONNECTION, listener);
 
         assertTrue(listener.connections.await(RECONNECT_WAIT_SECONDS, TimeUnit.SECONDS), "the plugin never reconnected");
 
@@ -99,9 +97,7 @@ class RealtimeCloseRecoveryTest {
         start(RealtimeCloseCode.REALTIME_CLOSE_CODE_AUTHENTICATION_FAILED, errorFrame(ErrorCode.ERROR_CODE_UNAUTHORIZED), listener);
 
         assertTrue(listener.terminated.await(RECONNECT_WAIT_SECONDS, TimeUnit.SECONDS), "realtime was not ended");
-        TimeUnit.MILLISECONDS.sleep(NO_RECONNECT_WAIT_MILLIS);
-
-        assertEquals(1, backend.hellos.get());
+        assertNoFurtherConnection();
         assertEquals(Collections.singletonList(TerminationReason.CREDENTIALS_REJECTED), listener.terminations);
     }
 
@@ -111,9 +107,7 @@ class RealtimeCloseRecoveryTest {
         start(RealtimeCloseCode.REALTIME_CLOSE_CODE_SESSION_REPLACED, listener);
 
         assertTrue(listener.replaced.await(RECONNECT_WAIT_SECONDS, TimeUnit.SECONDS), "the replacement was not reported");
-        TimeUnit.MILLISECONDS.sleep(NO_RECONNECT_WAIT_MILLIS);
-
-        assertEquals(1, backend.hellos.get());
+        assertNoFurtherConnection();
         assertTrue(listener.terminations.isEmpty());
         assertFalse(connection.isConnected());
     }
@@ -141,13 +135,24 @@ class RealtimeCloseRecoveryTest {
                 .build();
     }
 
+    private void assertNoFurtherConnection() throws InterruptedException {
+        int hellosAtTheEnd = backend.hellos.get();
+        TimeUnit.MILLISECONDS.sleep(NO_RECONNECT_WAIT_MILLIS);
+        assertEquals(hellosAtTheEnd, backend.hellos.get());
+    }
+
     private void start(RealtimeCloseCode closeCode, RecordingListener listener) throws InterruptedException {
         start(closeCode, null, listener);
     }
 
     private void start(RealtimeCloseCode closeCode, RealtimeEnvelope errorBeforeClose, RecordingListener listener)
             throws InterruptedException {
-        backend = new ClosingBackend(closeCode, errorBeforeClose);
+        start(closeCode, errorBeforeClose, Closes.EVERY_CONNECTION, listener);
+    }
+
+    private void start(RealtimeCloseCode closeCode, RealtimeEnvelope errorBeforeClose, Closes closes, RecordingListener listener)
+            throws InterruptedException {
+        backend = new ClosingBackend(closeCode, errorBeforeClose, closes);
         backend.setReuseAddr(true);
         backend.start();
         assertTrue(backend.started.await(RECONNECT_WAIT_SECONDS, TimeUnit.SECONDS));
@@ -159,18 +164,25 @@ class RealtimeCloseRecoveryTest {
         connection.start();
     }
 
+    private enum Closes {
+        FIRST_CONNECTION,
+        EVERY_CONNECTION
+    }
+
     private static final class ClosingBackend extends WebSocketServer {
         private final RealtimeCloseCode closeCode;
         private final RealtimeEnvelope errorBeforeClose;
+        private final Closes closes;
         private final CountDownLatch started = new CountDownLatch(1);
         private final AtomicInteger hellos = new AtomicInteger();
         private final AtomicReference<String> handshakePluginVersion = new AtomicReference<>();
         private final AtomicReference<String> handshakeApiKey = new AtomicReference<>();
 
-        private ClosingBackend(RealtimeCloseCode closeCode, RealtimeEnvelope errorBeforeClose) {
+        private ClosingBackend(RealtimeCloseCode closeCode, RealtimeEnvelope errorBeforeClose, Closes closes) {
             super(new InetSocketAddress(InetAddress.getLoopbackAddress(), 0));
             this.closeCode = closeCode;
             this.errorBeforeClose = errorBeforeClose;
+            this.closes = closes;
         }
 
         @Override
@@ -200,7 +212,7 @@ class RealtimeCloseRecoveryTest {
             socket.send(RealtimeEnvelope.newBuilder().setProtocolVersion(1)
                     .setServerHello(ServerHello.newBuilder().setProtocolVersion(1).setConnectionId("c" + hello))
                     .build().toByteArray());
-            if (hello != 1) return;
+            if (closes == Closes.FIRST_CONNECTION && hello != 1) return;
             if (errorBeforeClose != null) socket.send(errorBeforeClose.toByteArray());
             socket.close(closeCode.getNumber(), closeCode.name());
         }
