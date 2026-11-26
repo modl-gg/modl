@@ -8,7 +8,7 @@ It runs on **Paper, Folia, Spigot, Velocity, and BungeeCord**, from 1.8.8 to the
 
 [Source code](https://github.com/modl-gg/modl) | [Documentation](https://github.com/modl-gg/modl/wiki) | [Downloads](https://github.com/modl-gg/modl/releases) | [Discord](https://modl.gg/discord) | [Locale file](https://github.com/modl-gg/modl/blob/main/minecraft/core/src/main/resources/locale/en_US.yml) | [Config file](https://github.com/modl-gg/modl/blob/main/minecraft/core/src/main/resources/config.yml)
 
-![The modl panel dashboard](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-dashboard.png)
+![Player windows in the panel](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-player.png)
 
 ## Getting started
 
@@ -37,7 +37,7 @@ Built to sanction players fairly and consistently while keeping moderator discre
 
 ![Punishing a player from the in-game menu](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/game-punish-menu.gif)
 
-![Punishing a player from the panel](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-punish.png)
+![Accepting a chat report and punishing from the ticket](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-punish.png)
 
 ### Reports and tickets
 
@@ -48,7 +48,9 @@ Built to sanction players fairly and consistently while keeping moderator discre
 
 ![Reporting a player from the in-game menu](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/game-report-menu.gif)
 
-![A chat report with its chat log in the panel](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-ticket.png)
+![A chat report with its chat log](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-ticket.png)
+
+![A player's appeal on the public page](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/public-appeal.png)
 
 ### Replays
 
@@ -83,9 +85,9 @@ Built to sanction players fairly and consistently while keeping moderator discre
 - A public homepage and knowledgebase with your theme, fonts and custom CSS
 - Available in 11 languages
 
-![A player profile with full history](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-player.png)
+![The panel dashboard](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-dashboard.png)
 
-![Analytics in the panel](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-analytics.png)
+![Punishment analytics](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-analytics.png)
 
 ![The public homepage players see](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/public-homepage.png)
 

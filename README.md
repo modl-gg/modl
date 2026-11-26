@@ -5,8 +5,8 @@ Self-hosted moderation and support panel for Minecraft servers: punishments, rep
 Documentation: the [wiki](https://github.com/modl-gg/modl/wiki).
 
 <p align="center">
-  <img src="listings/images/panel-player.png" alt="A player profile in the panel" width="49%">
-  <img src="listings/images/panel-punish.png" alt="Punishing a player from the panel" width="49%">
+  <img src="listings/images/panel-player.png" alt="Player windows in the panel" width="49%">
+  <img src="listings/images/panel-punish.png" alt="Accepting a chat report and punishing from the ticket" width="49%">
   <img src="listings/images/game-punish-menu.gif" alt="Punishing a player from the in-game menu" width="49%">
   <img src="listings/images/game-report-menu.gif" alt="Reporting a player from the in-game menu" width="49%">
 </p>
