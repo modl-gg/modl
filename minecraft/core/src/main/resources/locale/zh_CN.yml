@@ -1057,6 +1057,7 @@ menus:
   chat_input:
     prompt: "&6&l» &e{prompt}"
     hint: "&7请在聊天中输入你的回复，或输入 &c{cancel} &7以取消。"
+    optional_hint: "&7请在聊天中输入你的回复，输入 &e{skip} &7留空，或输入 &c{cancel} &7以取消。"
     timed_out: "&c输入已超时。请重试。"
 
 # Set usage to "" to hide a command from the help list.

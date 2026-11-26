@@ -17,6 +17,7 @@ import gg.modl.minecraft.core.imports.support.PlayerHistory;
 import gg.modl.minecraft.core.imports.support.PlayerKeySet;
 import gg.modl.minecraft.core.imports.support.PlayerKeys;
 import gg.modl.minecraft.core.imports.support.PlayerLimit;
+import gg.modl.minecraft.core.imports.support.SourceSupport;
 import gg.modl.minecraft.core.util.Constants;
 import org.jspecify.annotations.Nullable;
 
@@ -51,15 +52,13 @@ final class LiteBansReader implements SourceReader {
     private static final String EVERY_SERVER = "*";
 
     private final DatabaseProvider database;
-    private final String defaultReason;
     private final LongSupplier clock;
     private final BooleanSupplier enabled;
     private final CancellableQueries queries = new CancellableQueries();
     private @Nullable Players players;
 
-    LiteBansReader(DatabaseProvider database, String defaultReason, LongSupplier clock, BooleanSupplier enabled) {
+    LiteBansReader(DatabaseProvider database, LongSupplier clock, BooleanSupplier enabled) {
         this.database = database;
-        this.defaultReason = defaultReason;
         this.clock = clock;
         this.enabled = enabled;
     }
@@ -183,7 +182,7 @@ final class LiteBansReader implements SourceReader {
         SourcePunishment.SourcePunishmentBuilder punishment = SourcePunishment.builder()
                 .id(table.importedId(row.getInt("ID")))
                 .kind(table.getKind())
-                .reason(hasText(reason) ? reason : defaultReason)
+                .reason(SourceSupport.trimmedOrNull(reason))
                 .issuerName(hasText(issuer) ? issuer : Constants.DEFAULT_CONSOLE_NAME)
                 .issuedAt(issuedAt);
         if (!table.isRemovable()) return punishment.build();

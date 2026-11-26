@@ -2348,7 +2348,6 @@
     "selectOptions": "Sélectionnez les options de sanction",
     "missingInfo": "Informations manquantes",
     "selectCategory": "Sélectionnez une catégorie de sanction.",
-    "provideReason": "Indiquez un motif pour cette sanction.",
     "selectSeverityLevel": "Sélectionnez un niveau de gravité.",
     "invalidDuration": "Durée invalide",
     "invalidDurationDesc": "Indiquez une durée supérieure à 0 ou sélectionnez 'Permanent'.",

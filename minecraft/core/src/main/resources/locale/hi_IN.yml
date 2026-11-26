@@ -1057,6 +1057,7 @@ menus:
   chat_input:
     prompt: "&6&l» &e{prompt}"
     hint: "&7चैट में अपना जवाब लिखें, या रद्द करने के लिए &c{cancel} &7लिखें।"
+    optional_hint: "&7चैट में अपना जवाब लिखें, इसे खाली छोड़ने के लिए &e{skip} &7लिखें, या रद्द करने के लिए &c{cancel} &7लिखें।"
     timed_out: "&cइनपुट प्रॉम्प्ट का समय समाप्त हो गया। कृपया फिर कोशिश करें।"
 
 # Set usage to "" to hide a command from the help list.

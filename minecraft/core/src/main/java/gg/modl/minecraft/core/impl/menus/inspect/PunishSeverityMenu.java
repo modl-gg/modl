@@ -308,7 +308,7 @@ public class PunishSeverityMenu extends BaseInspectMenu {
         boolean statWipe = options.isStatWipe();
         List<String> linkedReportIds = options.getLinkedReportIds();
 
-        new StaffViewer(platform, viewerUuid).promptFromMenu(click,
+        new StaffViewer(platform, viewerUuid).promptOptionalFromMenu(click,
                 StaffRequirements.applyPunishment(punishmentType.getOrdinal()),
                 localeManager().getMessage(SEVERITY_KEY + "reason_prompt", mapOf("player", targetName)),
                 (issuer, reason) -> {

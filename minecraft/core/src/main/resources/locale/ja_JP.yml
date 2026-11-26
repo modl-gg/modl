@@ -1058,6 +1058,7 @@ menus:
   chat_input:
     prompt: "&6&l» &e{prompt}"
     hint: "&7チャットに回答を入力するか、&c{cancel} &7と入力してキャンセルしてください。"
+    optional_hint: "&7チャットに回答を入力するか、&e{skip} &7と入力して空のままにするか、&c{cancel} &7と入力してキャンセルしてください。"
     timed_out: "&c入力の受付時間が過ぎました。再度お試しください。"
 
 # Set usage to "" to hide a command from the help list.

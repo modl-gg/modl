@@ -614,7 +614,7 @@ public final class SettingsProto extends com.google.protobuf.GeneratedFile {
       "\005 \003(\0132\024.modl.v1.FormSectionB\010\272H\005\222\001\002\0202R\010s" +
       "ections\"\203\004\n\tFormField\022\027\n\002id\030\001 \001(\tB\007\272H\004r\002" +
       "\030@R\002id\022\033\n\004type\030\002 \001(\tB\007\272H\004r\002\030 R\004type\022\036\n\005l" +
-      "abel\030\003 \001(\tB\010\272H\005r\003\030\200\002R\005label\022*\n\013descripti" +
+      "abel\030\003 \001(\tB\010\272H\005r\003\030\350\007R\005label\022*\n\013descripti" +
       "on\030\004 \001(\tB\010\272H\005r\003\030\320\017R\013description\022\032\n\010requi" +
       "red\030\005 \001(\010R\010required\022)\n\007options\030\006 \003(\tB\017\272H" +
       "\014\222\001\t\020d\"\005r\003\030\200\002R\007options\022\024\n\005order\030\007 \001(\005R\005o" +
@@ -752,7 +752,7 @@ public final class SettingsProto extends com.google.protobuf.GeneratedFile {
       "ctionB\010\272H\005\222\001\002\020\024R\010sections\"\203\004\n\017AppealForm" +
       "Field\022\027\n\002id\030\001 \001(\tB\007\272H\004r\002\030@R\002id\022\033\n\004type\030\002" +
       " \001(\tB\007\272H\004r\002\030 R\004type\022\036\n\005label\030\003 \001(\tB\010\272H\005r" +
-      "\003\030\200\002R\005label\022*\n\013description\030\004 \001(\tB\010\272H\005r\003\030" +
+      "\003\030\350\007R\005label\022*\n\013description\030\004 \001(\tB\010\272H\005r\003\030" +
       "\320\017R\013description\022\037\n\010required\030\005 \001(\010H\000R\010req" +
       "uired\210\001\001\022\031\n\005order\030\006 \001(\005H\001R\005order\210\001\001\022&\n\ns" +
       "ection_id\030\007 \001(\tB\007\272H\004r\002\030@R\tsectionId\022)\n\007o" +

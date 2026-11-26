@@ -11,7 +11,7 @@ import java.util.Map;
 public class PunishmentCreateRequest {
     String targetUuid, issuerName;
     transient ActionIssuer issuer;
-    String reason;
+    @Nullable String reason;
     @Nullable String severity, status;
     @SerializedName("type_ordinal") int typeOrdinal;
     @Nullable Long duration;

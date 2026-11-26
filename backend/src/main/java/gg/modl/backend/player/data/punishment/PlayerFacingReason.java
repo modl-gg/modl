@@ -3,8 +3,6 @@ package gg.modl.backend.player.data.punishment;
 import org.jspecify.annotations.Nullable;
 
 public final class PlayerFacingReason {
-    public static final String DEFAULT = "No reason specified";
-
     private static final int LAST_ORDINAL_WRITTEN_FOR_THE_PLAYER = 2;
 
     private PlayerFacingReason() {
@@ -14,10 +12,11 @@ public final class PlayerFacingReason {
         return typeOrdinal >= 0 && typeOrdinal <= LAST_ORDINAL_WRITTEN_FOR_THE_PLAYER;
     }
 
+    @Nullable
     public static String of(int typeOrdinal, @Nullable String issuedReason, @Nullable String playerDescription) {
         if (isWrittenForThePlayer(typeOrdinal) && issuedReason != null && !issuedReason.isBlank()) {
             return issuedReason;
         }
-        return playerDescription != null && !playerDescription.isBlank() ? playerDescription : DEFAULT;
+        return playerDescription != null && !playerDescription.isBlank() ? playerDescription : null;
     }
 }

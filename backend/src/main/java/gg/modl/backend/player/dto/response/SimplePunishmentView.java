@@ -11,7 +11,7 @@ public record SimplePunishmentView(
     int ordinal,
     boolean started,
     @Nullable Long expiration,
-    String description,
+    @Nullable String description,
     String issuerName,
     long issuedAt,
     @Nullable String playerDescription,

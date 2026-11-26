@@ -218,7 +218,7 @@ final class BanSystemReader implements SourceReader {
         history.punished(SourcePunishment.builder()
                 .id(idOf(ban))
                 .kind(kind)
-                .reason(SourceSupport.textOr(ban.reason, context.getDefaultReason().get()))
+                .reason(SourceSupport.trimmedOrNull(ban.reason))
                 .issuerName(issuer(ban.creator))
                 .issuedAt(issued)
                 .duration(permanent ? 0 : ban.duration)
@@ -238,7 +238,7 @@ final class BanSystemReader implements SourceReader {
         return SourcePunishment.builder()
                 .id("bansystem-kick-" + UUID.nameUUIDFromBytes(identity.getBytes(StandardCharsets.UTF_8)))
                 .kind(PunishmentKind.KICK)
-                .reason(SourceSupport.textOr(row.getString(3), context.getDefaultReason().get()))
+                .reason(SourceSupport.trimmedOrNull(row.getString(3)))
                 .issuerName(issuer(row.getString(2)))
                 .issuedAt(issued)
                 .build();

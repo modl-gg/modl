@@ -1,0 +1,6 @@
+tp Armored 7.5 4 25.5 0 0
+replaceitem entity Armored slot.armor.head diamond_helmet
+replaceitem entity Armored slot.armor.chest iron_chestplate
+replaceitem entity Armored slot.armor.legs golden_leggings
+replaceitem entity Armored slot.armor.feet leather_boots
+replaceitem entity Armored slot.hotbar.0 diamond_sword

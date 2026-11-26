@@ -15,7 +15,7 @@ function ChatLine({ line }: { line: PanelTicketChatLine }) {
     <div className="flex gap-2 py-0.5 hover:bg-muted/70 px-1 rounded">
       {timeLabel ? <span className="text-muted-foreground shrink-0">{timeLabel}</span> : null}
       {structured ? <span className="font-semibold text-primary">{line.sender}:</span> : null}
-      <span className="text-foreground break-all">{line.text}</span>
+      <span className="min-w-0 text-foreground wrap-anywhere">{line.text}</span>
     </div>
   );
 }

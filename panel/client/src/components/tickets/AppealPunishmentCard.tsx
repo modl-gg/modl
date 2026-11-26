@@ -13,7 +13,7 @@ import { keyByContent } from '@/components/ui/stable-keys';
 import { usePunishmentById } from '@/hooks/data/punishments';
 import { PERMISSIONS, usePermissions } from '@/hooks/use-permissions';
 import type { mapPunishment } from '@/lib/punishment-mapping';
-import { requiresPlayerFacingReason } from '@/lib/manual-punishments';
+import { acceptsPlayerFacingReason } from '@/lib/manual-punishments';
 import { formatDate, formatDateWithRelative } from '@/utils/date-utils';
 import { derivePunishmentStatus } from '@/utils/punishment-status';
 import { PunishmentEvidenceForm } from '@/components/player/history/PunishmentEvidenceForm';
@@ -187,7 +187,7 @@ function PunishmentDetails({ punishment, punishmentId }: { punishment: AppealPun
 
       <PunishmentBadges punishment={punishment} />
 
-      {punishment.reason && requiresPlayerFacingReason(punishment.type) && (
+      {punishment.reason && acceptsPlayerFacingReason(punishment.type) && (
         <div className="mt-3">
           <div className="text-muted-foreground font-medium text-sm mb-1">{t('ticket.appeal.reason')}:</div>
           <div className="text-sm">{punishment.reason}</div>

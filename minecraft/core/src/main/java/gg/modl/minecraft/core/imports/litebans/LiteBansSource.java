@@ -9,13 +9,11 @@ import lombok.RequiredArgsConstructor;
 
 import java.util.function.BooleanSupplier;
 import java.util.function.LongSupplier;
-import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public final class LiteBansSource implements ImportSource {
     private final BooleanSupplier enabled;
     private final ProviderFactory providers;
-    private final Supplier<String> defaultReason;
     private final LongSupplier clock;
 
     @Override
@@ -42,7 +40,7 @@ public final class LiteBansSource implements ImportSource {
         } catch (Exception | LinkageError unavailable) {
             throw SourceException.failed(unavailable);
         }
-        return new LiteBansReader(database, defaultReason.get(), clock, enabled);
+        return new LiteBansReader(database, clock, enabled);
     }
 
     @FunctionalInterface

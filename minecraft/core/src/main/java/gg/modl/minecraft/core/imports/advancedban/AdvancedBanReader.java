@@ -261,7 +261,7 @@ final class AdvancedBanReader implements SourceReader {
                 .id("advancedban-" + row.id)
                 .kind(kind)
                 .scope(type.getScope())
-                .reason(SourceSupport.textOr(row.reason, context.getDefaultReason().get()))
+                .reason(SourceSupport.trimmedOrNull(row.reason))
                 .issuerName(SourceSupport.issuer(row.operator))
                 .issuedAt(row.start > 0 ? row.start : now)
                 .duration(kind.isTimed() && !permanent ? SourcePunishment.durationBetween(row.start, row.end) : 0)

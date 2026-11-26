@@ -1,5 +1,5 @@
 import { z } from 'zod';
-import { hasStaffChosenDuration, isManualPunishment, playerFacingReason, requiresPlayerFacingReason } from './manual-punishments.ts';
+import { hasStaffChosenDuration, isManualPunishment, playerFacingReason } from './manual-punishments.ts';
 import {
   DURATION_UNIT_MILLIS,
   OFFENSE_LEVELS,
@@ -10,7 +10,6 @@ import {
 
 export type PunishmentFormIssue =
   | 'missingCategory'
-  | 'missingReason'
   | 'missingSeverity'
   | 'invalidDuration'
   | 'unknownType';
@@ -22,7 +21,6 @@ export interface PunishmentFormIssueKeys {
 
 export const PUNISHMENT_FORM_ISSUE_KEYS: Readonly<Record<PunishmentFormIssue, PunishmentFormIssueKeys>> = {
   missingCategory: { title: 'punishment.missingInfo', description: 'punishment.selectCategory' },
-  missingReason: { title: 'punishment.missingInfo', description: 'punishment.provideReason' },
   missingSeverity: { title: 'punishment.missingInfo', description: 'punishment.selectSeverityLevel' },
   invalidDuration: { title: 'punishment.invalidDuration', description: 'punishment.invalidDurationDesc' },
   unknownType: { title: 'punishment.invalidType', description: 'punishment.unknownType' },
@@ -145,10 +143,6 @@ export function isWebUrl(text: string): boolean {
   }
 }
 
-function isBlank(value: string | undefined): boolean {
-  return (value?.trim() ?? '') === '';
-}
-
 function hasValidManualDuration(duration: PunishmentFormDuration | undefined): boolean {
   return duration !== undefined && duration.value > 0 && DURATION_UNIT_MILLIS.has(duration.unit);
 }
@@ -156,7 +150,6 @@ function hasValidManualDuration(duration: PunishmentFormDuration | undefined): b
 export function punishmentFormIssue(form: PunishmentRequestForm, punishmentType: PunishmentRequestType): PunishmentFormIssue | null {
   const category = punishmentType.name;
   const singleSeverity = punishmentType.singleSeverityPunishment === true;
-  if (requiresPlayerFacingReason(category) && isBlank(form.reason)) return 'missingReason';
   if (isPermanentUntilIdentityChange(punishmentType)) return null;
   if (!singleSeverity && form.selectedSeverity === undefined && !isManualPunishment(category)) return 'missingSeverity';
   if (hasStaffChosenDuration(category) && form.isPermanent !== true && !hasValidManualDuration(form.duration)) return 'invalidDuration';

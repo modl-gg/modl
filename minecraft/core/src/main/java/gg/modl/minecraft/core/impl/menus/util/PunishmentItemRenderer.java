@@ -67,7 +67,7 @@ public final class PunishmentItemRenderer {
         vars.put("details", titleDetails(locale, punishment, typeName, isKick));
         vars.put("status_line", statusLine);
         vars.put("notes", notesBuilder.toString());
-        vars.put("reason", punishment.getStaffDisplayReason());
+        vars.put("reason", locale.reasonOrDefault(punishment.getIssuedReason()));
         vars.put("issuer", punishment.getIssuerName());
         vars.put("issued_date", MenuItems.formatDate(punishment.getIssued()));
         Object issuedServerObj = punishment.getDataMap().get("issuedServer");

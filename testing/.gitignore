@@ -1,0 +1,11 @@
+node_modules/
+.cache/
+.dev/
+.staging/
+runtime/
+reports/
+src/staging/
+.env
+.shots/
+runtime-lanes/
+.verify/

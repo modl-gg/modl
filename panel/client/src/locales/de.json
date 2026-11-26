@@ -2340,7 +2340,6 @@
     "selectOptions": "Strafoptionen auswählen",
     "missingInfo": "Fehlende Informationen",
     "selectCategory": "Wähle eine Strafkategorie aus.",
-    "provideReason": "Gib einen Grund für diese Strafe an.",
     "selectSeverityLevel": "Wähle einen Schweregrad aus.",
     "invalidDuration": "Ungültige Dauer",
     "invalidDurationDesc": "Gib eine Dauer größer als 0 an oder wähle 'Permanent'.",

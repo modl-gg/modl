@@ -1,0 +1,5 @@
+name: LiteBans
+main: gg.modl.testing.litebans.LiteBansFixturePlugin
+version: "1.0.0"
+api-version: 1.13
+description: Test fixture that answers the LiteBans database API

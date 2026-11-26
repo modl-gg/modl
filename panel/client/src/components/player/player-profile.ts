@@ -2,7 +2,7 @@ import type { PlayerDetail } from '@/hooks/data/players';
 import type { PlayerTicket } from '@/hooks/data/tickets';
 import type { EvidenceEntry } from '@/components/ui/evidence-list';
 import type { PunishmentTypeConfig } from '@/lib/punishment-preview';
-import { MANUAL_PUNISHMENTS, requiresPlayerFacingReason } from '@/lib/manual-punishments';
+import { MANUAL_PUNISHMENTS } from '@/lib/manual-punishments';
 import type { LinkedAccountResponse } from '@proto/modl/v1/player_pb.ts';
 import { getEffectivePunishmentState, type EffectivePunishmentState } from '@/utils/punishment-status';
 
@@ -146,15 +146,10 @@ export function isRecordedPunishment(entry: PunishmentHistoryEntry): boolean {
   return entry.punishment.id !== '';
 }
 
-export function staffNotesOf(entry: PunishmentHistoryEntry): readonly PlayerPunishmentRecord['notes'][number][] {
-  const { notes } = entry.punishment;
-  return requiresPlayerFacingReason(entry.typeName) ? notes.slice(1) : notes;
-}
-
 export function hasPunishmentDetails(entry: PunishmentHistoryEntry): boolean {
   const { punishment, effectiveState } = entry;
   return punishment.evidence.length > 0
-    || staffNotesOf(entry).length > 0
+    || punishment.notes.length > 0
     || punishment.attachedTicketIds.length > 0
     || (punishment.altBlocking === true && isRecordedPunishment(entry))
     || effectiveState.hasModifications;

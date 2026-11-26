@@ -6,13 +6,13 @@ import { keyByContent } from '@/components/ui/stable-keys';
 import { formatDateWithTime } from '@/utils/date-utils';
 import { modificationRecordLabel } from '@/lib/punishment-modification-labels';
 import { ticketRoutePath } from '@/components/tickets/ticket-view';
-import { isRecordedPunishment, staffNotesOf, toEvidenceEntry, type PunishmentHistoryEntry, type PunishmentModificationRecord } from '../player-profile';
+import { isRecordedPunishment, toEvidenceEntry, type PunishmentHistoryEntry, type PunishmentModificationRecord } from '../player-profile';
 import { formatPunishmentDuration } from '../punishment-timeline';
 import { LinkedBansList } from '../LinkedBansList';
 
 function StaffNotes({ entry }: { readonly entry: PunishmentHistoryEntry }) {
   const { t } = useTranslation();
-  const notes = staffNotesOf(entry);
+  const { notes } = entry.punishment;
   if (notes.length === 0) return null;
   return (
     <div>

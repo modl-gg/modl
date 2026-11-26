@@ -4,6 +4,7 @@ on:
   push:
     branches: [main]
   pull_request:
+  workflow_dispatch:
   workflow_call:
     inputs:
       image-check:
@@ -19,8 +20,33 @@ concurrency:
   cancel-in-progress: ${{ github.event_name == 'pull_request' }}
 
 jobs:
+  changes:
+    name: Changed areas
+    runs-on: ubuntu-latest
+    outputs:
+      java: ${{ steps.areas.outputs.java }}
+      panel: ${{ steps.areas.outputs.panel }}
+      sql: ${{ steps.areas.outputs.sql }}
+      image: ${{ steps.areas.outputs.image }}
+      harness: ${{ steps.areas.outputs.harness }}
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+          fetch-depth: 2
+
+      - name: Detect the changed areas
+        id: areas
+        env:
+          FORCE_ALL: ${{ github.ref_type == 'tag' || github.event_name == 'workflow_dispatch' }}
+          BASE_SHA: ${{ github.event_name == 'pull_request' && 'HEAD^1' || github.event.before }}
+          HEAD_SHA: ${{ github.sha }}
+        run: .github/scripts/changed-areas.sh
+
   java:
     name: Java build and SQLite tests
+    needs: changes
+    if: ${{ needs.changes.outputs.java == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -62,7 +88,8 @@ jobs:
 
   dialects:
     name: SQL tests on ${{ matrix.dialect }}
-    if: ${{ github.event_name != 'pull_request' }}
+    needs: changes
+    if: ${{ github.event_name != 'pull_request' && needs.changes.outputs.sql == 'true' }}
     runs-on: ubuntu-latest
     strategy:
       fail-fast: false
@@ -99,6 +126,8 @@ jobs:
 
   panel:
     name: Panel checks
+    needs: changes
+    if: ${{ needs.changes.outputs.panel == 'true' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
@@ -119,13 +148,184 @@ jobs:
       - name: Check the panel
         run: npm run check
 
+      - name: Build the panel
+        run: npm run build
+
       - name: Lint the proto sources
         run: |
           npm ci --prefix proto --no-audit --no-fund
           npm --prefix proto run lint
 
+  harness:
+    name: Harness checks
+    needs: changes
+    if: ${{ needs.changes.outputs.harness == 'true' }}
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            testing/package-lock.json
+
+      - name: Install the npm projects
+        run: |
+          npm ci --no-audit --no-fund
+          npm ci --prefix testing --no-audit --no-fund
+
+      - name: Check the harness
+        run: npm --prefix testing run check
+
+  scenarios:
+    name: Quick scenarios
+    needs: changes
+    if: ${{ needs.changes.outputs.java == 'true' || needs.changes.outputs.panel == 'true' || needs.changes.outputs.harness == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            testing/package-lock.json
+
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+        with:
+          cache-provider: basic
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            testing/.cache/artifacts
+            testing/.cache/bundler
+          key: harness-artifacts-${{ hashFiles('testing/src/lib/artifacts.ts', 'testing/src/lib/lines.ts') }}
+
+      - name: Build the release artifacts
+        env:
+          MODL_SOURCE_COMMIT: ${{ github.sha }}
+          MODL_SOURCE_REPOSITORY: ${{ github.server_url }}/${{ github.repository }}
+        run: ./gradlew dist
+
+      - name: Install the npm projects
+        run: |
+          npm ci --no-audit --no-fund
+          npm ci --prefix testing --no-audit --no-fund
+
+      - name: Run the quick scenario tier
+        run: npm --prefix testing run cli -- matrix --tier ci --lanes 1
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ !cancelled() }}
+        with:
+          name: scenario-reports
+          path: |
+            testing/reports/matrix
+            testing/reports/scenarios
+            testing/reports/logs
+          retention-days: 14
+
+  panel-e2e:
+    name: Panel screenshots and flows
+    needs: changes
+    if: ${{ needs.changes.outputs.java == 'true' || needs.changes.outputs.panel == 'true' || needs.changes.outputs.harness == 'true' }}
+    runs-on: ubuntu-latest
+    timeout-minutes: 45
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-java@d1374f8ac74474200d16ef8ecee22c7ae7a51880 # v6.3.0
+        with:
+          distribution: temurin
+          java-version: "21"
+
+      - uses: actions/setup-node@949feb2413d6458794dcd2491c4babbbce0c15c1 # v7.1.0
+        with:
+          node-version: "24"
+          cache: npm
+          cache-dependency-path: |
+            package-lock.json
+            testing/package-lock.json
+
+      - uses: gradle/actions/setup-gradle@8da46b539cd8fe6ab27ca75128919a18d757604c # v6.4.1
+        with:
+          cache-provider: basic
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: |
+            testing/.cache/artifacts
+            testing/.cache/bundler
+          key: harness-artifacts-${{ hashFiles('testing/src/lib/artifacts.ts', 'testing/src/lib/lines.ts') }}
+
+      - name: Build the release artifacts
+        env:
+          MODL_SOURCE_COMMIT: ${{ github.sha }}
+          MODL_SOURCE_REPOSITORY: ${{ github.server_url }}/${{ github.repository }}
+        run: ./gradlew dist
+
+      - name: Install the npm projects
+        run: |
+          npm ci --no-audit --no-fund
+          npm ci --prefix testing --no-audit --no-fund
+
+      - name: Compute the screenshot dataset key
+        id: dataset
+        working-directory: testing
+        run: echo "key=$(npx tsx src/shots/cli.ts dataset-key)" >> "$GITHUB_OUTPUT"
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: testing/.shots/datasets
+          key: shots-dataset-${{ steps.dataset.outputs.key }}
+
+      - uses: actions/cache@55cc8345863c7cc4c66a329aec7e433d2d1c52a9 # v6.1.0
+        with:
+          path: ~/.cache/ms-playwright
+          key: playwright-${{ hashFiles('testing/package-lock.json') }}
+
+      - name: Install the headless browser
+        working-directory: testing
+        run: npx playwright-core install --with-deps chromium-headless-shell
+
+      - name: Check that every screen renders
+        run: npm --prefix testing run shots -- --check
+
+      - name: Run the panel flows
+        if: ${{ !cancelled() }}
+        run: npm --prefix testing run flows
+
+      - uses: actions/upload-artifact@cf430e030ddbb5b0abf93d22962f4752f3646cd9 # v7.0.2
+        if: ${{ failure() }}
+        with:
+          name: panel-e2e-reports
+          path: |
+            testing/reports/review
+            testing/reports/flows
+          retention-days: 14
+
   docker:
-    if: ${{ inputs.image-check != false }}
+    name: Docker image smoke test
+    needs: changes
+    if: ${{ needs.changes.outputs.image == 'true' && format('{0}', inputs.image-check) != 'false' }}
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v7.0.1

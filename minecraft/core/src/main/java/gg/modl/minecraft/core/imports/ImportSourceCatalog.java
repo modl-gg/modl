@@ -26,7 +26,7 @@ public final class ImportSourceCatalog {
     static List<ImportSource> sources(SourceContext context) {
         return Arrays.asList(
                 new LiteBansSource(() -> context.getPluginEnabled().test(LITEBANS), LiteBansDatabaseProvider::new,
-                        context.getDefaultReason(), context.getClock()),
+                        context.getClock()),
                 new AdvancedBanSource(context),
                 new LibertyBansSource(context),
                 new BanManagerSource(context),

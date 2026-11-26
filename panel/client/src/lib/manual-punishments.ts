@@ -138,7 +138,7 @@ export function reasonPlaceholderKey(punishmentTypeName: string | undefined): st
   return manualPunishmentOf(punishmentTypeName)?.reasonPlaceholderKey ?? null;
 }
 
-export function requiresPlayerFacingReason(punishmentTypeName: string | undefined): boolean {
+export function acceptsPlayerFacingReason(punishmentTypeName: string | undefined): boolean {
   return reasonPlaceholderKey(punishmentTypeName) !== null;
 }
 
@@ -147,7 +147,7 @@ export function requiresOnlinePlayer(punishmentTypeName: string): boolean {
 }
 
 export function playerFacingReason(punishmentTypeName: string | undefined, reason: string | undefined): string | undefined {
-  if (!requiresPlayerFacingReason(punishmentTypeName)) {
+  if (!acceptsPlayerFacingReason(punishmentTypeName)) {
     return undefined;
   }
   const trimmed = reason?.trim();

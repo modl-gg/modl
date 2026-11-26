@@ -25,8 +25,10 @@ await test('a category that is not a configured type is unknown before anything 
   assert.deepEqual(buildPunishmentRequest({ selectedPunishmentCategory: 'Gone' }, context), { ok: false, issue: 'unknownType' });
 });
 
-await test('manual punishments that are shown to the player need a reason', () => {
-  assert.deepEqual(buildPunishmentRequest({ selectedPunishmentCategory: 'Kick', reason: '  ' }, context), { ok: false, issue: 'missingReason' });
+await test('manual punishments that are shown to the player may go without a reason', () => {
+  const result = buildPunishmentRequest({ selectedPunishmentCategory: 'Kick', reason: '  ' }, context);
+  assert.ok(result.ok);
+  assert.equal(result.request.reason, undefined);
 });
 
 await test('multi severity punishments need a severity', () => {

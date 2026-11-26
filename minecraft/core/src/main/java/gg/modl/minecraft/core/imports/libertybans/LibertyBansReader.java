@@ -251,7 +251,7 @@ final class LibertyBansReader implements SourceReader {
                 .id("libertybans-" + id)
                 .kind(kind)
                 .scope(scopeOf(row.getInt(3), isScoped(row, 10)))
-                .reason(SourceSupport.textOr(row.getString(7), context.getDefaultReason().get()))
+                .reason(SourceSupport.trimmedOrNull(row.getString(7)))
                 .issuerName(issuer)
                 .issuedAt(start > 0 ? start : now)
                 .duration(kind.isTimed() && !permanent ? SourcePunishment.durationBetween(start, end) : 0)

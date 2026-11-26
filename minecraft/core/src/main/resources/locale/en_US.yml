@@ -1057,6 +1057,7 @@ menus:
   chat_input:
     prompt: "&6&l» &e{prompt}"
     hint: "&7Type your response in chat, or type &c{cancel} &7to cancel."
+    optional_hint: "&7Type your response in chat, type &e{skip} &7to leave it empty, or type &c{cancel} &7to cancel."
     timed_out: "&cInput prompt timed out. Please try again."
 
 # Set usage to "" to hide a command from the help list.

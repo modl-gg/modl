@@ -26,6 +26,7 @@ import java.util.UUID;
 import java.util.stream.Collectors;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class StandingMenuTest {
@@ -78,13 +79,19 @@ class StandingMenuTest {
     }
 
     @Test
-    void theStaffDisplayStillFallsBackToTheNote() {
-        assertEquals(STAFF_NOTE, staffPunishment(null).getStaffDisplayReason());
+    void aStaffNoteIsNeverShownAsTheReason() {
+        assertNull(staffPunishment(null).getIssuedReason());
     }
 
     @Test
-    void theStaffDisplayPrefersTheIssuedReason() {
-        assertEquals(ISSUED_REASON, staffPunishment(ISSUED_REASON).getStaffDisplayReason());
+    void theIssuedReasonIsShownToStaff() {
+        assertEquals(ISSUED_REASON, locale.reasonOrDefault(staffPunishment(ISSUED_REASON).getIssuedReason()));
+    }
+
+    @Test
+    void staffSeeTheDefaultReasonWhenNoneOrABlankOneWasGiven() {
+        assertEquals(DEFAULT_REASON, locale.reasonOrDefault(staffPunishment(null).getIssuedReason()));
+        assertEquals(DEFAULT_REASON, locale.reasonOrDefault(staffPunishment("  ").getIssuedReason()));
     }
 
     private void assertShowsStatus(Entry entry, String status) {

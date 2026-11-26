@@ -86,9 +86,8 @@ public class PlayerStandingService {
 
     @Nullable
     private static String reasonOf(Punishment punishment, @Nullable PunishmentType type) {
-        String reason = PlayerFacingReason.of(punishment.getTypeOrdinal(), punishment.data().reason(),
+        return PlayerFacingReason.of(punishment.getTypeOrdinal(), punishment.data().reason(),
             type != null ? type.getPlayerDescription() : null);
-        return PlayerFacingReason.DEFAULT.equals(reason) ? null : reason;
     }
 
     @Nullable

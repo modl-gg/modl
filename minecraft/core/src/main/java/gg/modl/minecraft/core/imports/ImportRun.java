@@ -155,7 +155,7 @@ final class ImportRun {
             long every = runtime.getTimings().getReportEvery().toMillis();
             reports = runtime.getMonitor().scheduleWithFixedDelay(() -> watch(jobId), every, every, TimeUnit.MILLISECONDS);
             Path export = runtime.getFiles().export(jobId);
-            new ImportExporter(source, opened, signal, runtime.getLogger())
+            new ImportExporter(source, opened, signal, runtime.getLogger(), runtime.getWarningText())
                     .export(export, inventory, scopedChoice, maxBytes, progress,
                             Instant.ofEpochMilli(runtime.getClock().getAsLong()));
             beginUpload(jobId);

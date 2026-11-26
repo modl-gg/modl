@@ -5,7 +5,7 @@ import { Dialog, DialogContent, DialogFooter, DialogHeader, DialogTitle } from '
 import { Input } from '@/components/ui/input';
 import { Label } from '@/components/ui/label';
 import { Switch } from '@/components/ui/switch';
-import type { FormSection } from '@/types/forms';
+import { FORM_DESCRIPTION_MAX_LENGTH, FORM_SECTION_TITLE_MAX_LENGTH, type FormSection } from '@/types/forms';
 import { newSettingsEntryId } from '@/lib/settings-ids';
 
 interface FormSectionDialogProps {
@@ -47,6 +47,7 @@ export default function FormSectionDialog({ section, onSubmit, onClose }: FormSe
             <Label htmlFor={`${fieldId}-title`}>{t('settings.tickets.sectionTitle')}</Label>
             <Input
               id={`${fieldId}-title`}
+              maxLength={FORM_SECTION_TITLE_MAX_LENGTH}
               placeholder={t('settings.appealFormEditor.sectionTitlePlaceholder')}
               value={title}
               onChange={(event) => {
@@ -59,6 +60,7 @@ export default function FormSectionDialog({ section, onSubmit, onClose }: FormSe
             <Label htmlFor={`${fieldId}-description`}>{t('settings.tickets.descriptionOptional')}</Label>
             <Input
               id={`${fieldId}-description`}
+              maxLength={FORM_DESCRIPTION_MAX_LENGTH}
               placeholder={t('settings.appealFormEditor.sectionDescriptionPlaceholder')}
               value={sectionDescription}
               onChange={(event) => {

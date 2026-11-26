@@ -136,7 +136,7 @@ public class PunishCommand {
             target.getMinecraftUuid().toString(),
             issuerName,
             issuer.actionIssuer(),
-            punishmentArgs.getReason().isEmpty() ? localeManager.getMessage("config.default_reason") : punishmentArgs.getReason(),
+            punishmentArgs.getReason().isEmpty() ? null : punishmentArgs.getReason(),
             severity,
             null,
             punishmentType.getOrdinal(),

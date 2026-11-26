@@ -8,6 +8,6 @@ The text of modl's pages on plugin marketplaces. Edit here first, then paste int
 | `description.md` | Markdown | Modrinth, Hangar (PaperMC), GitHub release notes intro |
 | `description.bbcode` | BBCode | SpigotMC, BuiltByBit, Polymart |
 
-Images live in `images/` and are linked from the descriptions as `https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/<file>`, so marketplace pages keep working after `cdn.modl.gg` is gone. Never rename or delete a file there: published pages link it. Add a new file instead, and keep GIFs around 3 MB.
+Images live in `images/` and are linked from the descriptions as `https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/<file>`, so marketplace pages keep working after `cdn.modl.gg` is gone. Never rename or delete a file there: published pages link it. Add a new file instead, and keep GIFs around 3 MB. `panel-replay.gif` is recorded by `npm run listing-replay` in `testing/` (bots fight on generated terrain, then the viewer plays the replay); it writes `testing/reports/review/replay-gif/panel-replay.gif` to copy here.
 
 `description.md` and `description.bbcode` carry the same content. Change both in the same commit, and check them against the wiki when a feature, a requirement or a supported platform changes.

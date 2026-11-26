@@ -2348,7 +2348,6 @@
     "selectOptions": "Selecione as opções de punição",
     "missingInfo": "Informações ausentes",
     "selectCategory": "Selecione uma categoria de punição.",
-    "provideReason": "Informe um motivo para esta punição.",
     "selectSeverityLevel": "Selecione um nível de gravidade.",
     "invalidDuration": "Duração inválida",
     "invalidDurationDesc": "Informe uma duração maior que 0 ou selecione 'Permanente'.",

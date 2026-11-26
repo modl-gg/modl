@@ -2340,7 +2340,6 @@
     "selectOptions": "Strafopties selecteren",
     "missingInfo": "Ontbrekende informatie",
     "selectCategory": "Selecteer een strafcategorie.",
-    "provideReason": "Geef een reden op voor deze straf.",
     "selectSeverityLevel": "Selecteer een ernstniveau.",
     "invalidDuration": "Ongeldige duur",
     "invalidDurationDesc": "Geef een duur groter dan 0 op of selecteer 'Permanent'.",

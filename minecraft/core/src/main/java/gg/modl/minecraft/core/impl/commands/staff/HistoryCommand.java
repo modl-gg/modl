@@ -91,7 +91,7 @@ public class HistoryCommand {
 
     private void replyHistoryEntry(CommandActor actor, Punishment punishment, int ordinal) {
         String type = punishmentTypeCache.getNameByOrdinal(punishment.getTypeOrdinal());
-        String reason = punishment.getStaffDisplayReason();
+        String reason = localeManager.reasonOrDefault(punishment.getIssuedReason());
 
         boolean isKick = punishment.isKickType();
 

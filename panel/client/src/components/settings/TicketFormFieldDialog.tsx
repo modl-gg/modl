@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { createLocalId } from '@/lib/local-id';
-import type { FormSection, TicketFormField } from '@/types/forms';
+import { FORM_DESCRIPTION_MAX_LENGTH, FORM_FIELD_LABEL_MAX_LENGTH, FORM_OPTION_MAX_LENGTH, type FormSection, type TicketFormField } from '@/types/forms';
 import { newSettingsEntryId } from '@/lib/settings-ids';
 
 type TicketFieldType = TicketFormField['type'];
@@ -125,6 +125,7 @@ export default function TicketFormFieldDialog({ field, sectionId, sections, onSu
             <Label htmlFor="ticket-field-label">{t('settings.tickets.fieldLabel')}</Label>
             <Input
               id="ticket-field-label"
+              maxLength={FORM_FIELD_LABEL_MAX_LENGTH}
               value={label}
               onChange={(event) => {
                 setLabel(event.target.value);
@@ -156,6 +157,7 @@ export default function TicketFormFieldDialog({ field, sectionId, sections, onSu
             <Label htmlFor="ticket-field-description">{t('settings.tickets.descriptionOptional')}</Label>
             <Input
               id="ticket-field-description"
+              maxLength={FORM_DESCRIPTION_MAX_LENGTH}
               value={description}
               onChange={(event) => {
                 setDescription(event.target.value);
@@ -177,6 +179,7 @@ export default function TicketFormFieldDialog({ field, sectionId, sections, onSu
                   <div key={option.id} className="flex gap-2">
                     <Input
                       value={option.value}
+                      maxLength={FORM_OPTION_MAX_LENGTH}
                       onChange={(event) => {
                         const value = event.target.value;
                         setOptions((current) => current.map((existing) => (existing.id === option.id ? { ...existing, value } : existing)));
@@ -196,6 +199,7 @@ export default function TicketFormFieldDialog({ field, sectionId, sections, onSu
                 <div className="flex gap-2">
                   <Input
                     value={newOption}
+                    maxLength={FORM_OPTION_MAX_LENGTH}
                     onChange={(event) => {
                       setNewOption(event.target.value);
                     }}

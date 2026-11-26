@@ -279,7 +279,7 @@ message TicketForm {
 message FormField {
   string id = 1 [(buf.validate.field).string.max_len = 64];
   string type = 2 [(buf.validate.field).string.max_len = 32];
-  string label = 3 [(buf.validate.field).string.max_len = 256];
+  string label = 3 [(buf.validate.field).string.max_len = 1000];
   string description = 4 [(buf.validate.field).string.max_len = 2000];
   bool required = 5;
   repeated string options = 6 [(buf.validate.field).repeated = {
@@ -507,7 +507,7 @@ message AppealForm {
 message AppealFormField {
   string id = 1 [(buf.validate.field).string.max_len = 64];
   string type = 2 [(buf.validate.field).string.max_len = 32];
-  string label = 3 [(buf.validate.field).string.max_len = 256];
+  string label = 3 [(buf.validate.field).string.max_len = 1000];
   string description = 4 [(buf.validate.field).string.max_len = 2000];
   optional bool required = 5;
   optional int32 order = 6;

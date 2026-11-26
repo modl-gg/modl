@@ -2340,7 +2340,6 @@
     "selectOptions": "选择处罚选项",
     "missingInfo": "信息缺失",
     "selectCategory": "请选择处罚类别。",
-    "provideReason": "请提供处罚原因。",
     "selectSeverityLevel": "请选择严重程度级别。",
     "invalidDuration": "无效时长",
     "invalidDurationDesc": "请指定大于 0 的持续时间，或选择“永久”。",

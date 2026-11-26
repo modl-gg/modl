@@ -1011,6 +1011,7 @@ menus:
   chat_input:
     prompt: "&6&l» &e{prompt}"
     hint: "&7Escribe tu respuesta en el chat, o escribe &c{cancel} &7para cancelar."
+    optional_hint: "&7Escribe tu respuesta en el chat, escribe &e{skip} &7para dejarla vacía, o escribe &c{cancel} &7para cancelar."
     timed_out: "&cSe agotó el tiempo de espera. Por favor inténtalo de nuevo."
 
 standing_gui:

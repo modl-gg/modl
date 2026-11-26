@@ -55,10 +55,10 @@ public abstract class AbstractManualPunishmentCommand {
             .parse(args);
 
         String issuerName = CommandUtil.resolveActorName(actor, cache, platform);
-        String reason = parsed.getReason().isEmpty() ? localeManager.getMessage("config.default_reason") : parsed.getReason();
+        String reason = parsed.getReason().isEmpty() ? null : parsed.getReason();
 
         Map<String, Object> dataMap = new HashMap<>();
-        dataMap.put("reason", reason);
+        if (reason != null) dataMap.put("reason", reason);
         dataMap.put("silent", parsed.isSilent());
         if (supportedFlags.contains(Flag.ALT_BLOCKING)) dataMap.put("altBlocking", parsed.isAltBlocking());
         if (supportedFlags.contains(Flag.STAT_WIPE)) dataMap.put(Punishment.DATA_KEY_WIPE_AFTER_EXPIRY, parsed.isStatWipe());

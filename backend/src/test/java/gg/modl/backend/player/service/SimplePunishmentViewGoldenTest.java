@@ -2,6 +2,7 @@ package gg.modl.backend.player.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.Mockito.mock;
@@ -102,7 +103,7 @@ class SimplePunishmentViewGoldenTest {
 
         assertSameJson(legacy, view);
         assertEquals("OTHER", view.category());
-        assertEquals("No reason specified", view.description());
+        assertNull(view.description());
 
         SimplePunishment proto = MinecraftPlayerProtoMapper.toSimplePunishment(view);
         assertEquals(0L, proto.getExpiration());
@@ -163,8 +164,8 @@ class SimplePunishmentViewGoldenTest {
         result.put("started", punishment.getStarted() != null);
         result.put("expiration", expires != null ? expires.toEpochMilli() : null);
         boolean reasonIsTypedForThePlayer = punishment.getTypeOrdinal() <= 2 && reason != null && !reason.isBlank();
-        String description = playerDescription != null ? playerDescription : "No reason specified";
-        result.put("description", reasonIsTypedForThePlayer ? reason : description);
+        boolean describedForThePlayer = playerDescription != null && !playerDescription.isBlank();
+        result.put("description", reasonIsTypedForThePlayer ? reason : describedForThePlayer ? playerDescription : null);
         result.put("issuerName", PunishmentMapper.resolveIssuer(punishment.getIssuerId(), punishment.getIssuerName(), resolvedIssuers));
         result.put("issuedAt", punishment.getIssued().toEpochMilli());
         result.put("playerDescription", playerDescription);

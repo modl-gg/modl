@@ -1,0 +1,10 @@
+CREATE TABLE IF NOT EXISTS litebans_bans (id INTEGER PRIMARY KEY, uuid TEXT, reason TEXT, banned_by_name TEXT, time INTEGER, until INTEGER, active BOOLEAN, ipban BOOLEAN DEFAULT 0, server_scope TEXT DEFAULT '*', removed_by_uuid TEXT, removed_by_name TEXT, removed_by_date INTEGER);
+CREATE TABLE IF NOT EXISTS litebans_mutes (id INTEGER PRIMARY KEY, uuid TEXT, reason TEXT, banned_by_name TEXT, time INTEGER, until INTEGER, active BOOLEAN, ipban BOOLEAN DEFAULT 0, server_scope TEXT DEFAULT '*', removed_by_uuid TEXT, removed_by_name TEXT, removed_by_date INTEGER);
+CREATE TABLE IF NOT EXISTS litebans_warnings (id INTEGER PRIMARY KEY, uuid TEXT, reason TEXT, banned_by_name TEXT, time INTEGER, until INTEGER, active BOOLEAN, ipban BOOLEAN DEFAULT 0, server_scope TEXT DEFAULT '*', removed_by_uuid TEXT, removed_by_name TEXT, removed_by_date INTEGER, warned BOOLEAN DEFAULT 0);
+CREATE TABLE IF NOT EXISTS litebans_kicks (id INTEGER PRIMARY KEY, uuid TEXT, reason TEXT, banned_by_name TEXT, time INTEGER, until INTEGER, active BOOLEAN, ipban BOOLEAN DEFAULT 0, server_scope TEXT DEFAULT '*');
+CREATE TABLE IF NOT EXISTS litebans_history (id INTEGER PRIMARY KEY, uuid TEXT, name TEXT, ip TEXT, date INTEGER);
+CREATE INDEX IF NOT EXISTS litebans_bans_uuid ON litebans_bans (uuid);
+CREATE INDEX IF NOT EXISTS litebans_mutes_uuid ON litebans_mutes (uuid);
+CREATE INDEX IF NOT EXISTS litebans_warnings_uuid ON litebans_warnings (uuid);
+CREATE INDEX IF NOT EXISTS litebans_kicks_uuid ON litebans_kicks (uuid);
+CREATE INDEX IF NOT EXISTS litebans_history_uuid ON litebans_history (uuid);

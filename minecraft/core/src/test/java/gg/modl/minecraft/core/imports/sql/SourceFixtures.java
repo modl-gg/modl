@@ -51,7 +51,6 @@ public final class SourceFixtures {
                 .connections(connections(root))
                 .pluginEnabled(enabled)
                 .offlineUuids(() -> offlineUuids)
-                .defaultReason(() -> "No reason")
                 .clock(() -> NOW)
                 .logger(new RecordingPluginLogger())
                 .build();

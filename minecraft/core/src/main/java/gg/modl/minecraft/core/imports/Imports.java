@@ -60,6 +60,7 @@ public final class Imports {
                 .timings(timings)
                 .logger(logger)
                 .serverName(serverName)
+                .warningText(() -> localeManager.getMessage("config.default_reason"))
                 .clock(System::currentTimeMillis)
                 .build();
     }

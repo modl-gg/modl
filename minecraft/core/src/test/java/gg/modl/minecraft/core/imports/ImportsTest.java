@@ -51,7 +51,7 @@ class ImportsTest {
     private Imports imports(LiteBansSource.ProviderFactory providers) {
         return Imports.builder()
                 .sources(new ImportSources(Arrays.asList(
-                        new LiteBansSource(() -> enabled, providers, () -> "No reason", System::currentTimeMillis),
+                        new LiteBansSource(() -> enabled, providers, System::currentTimeMillis),
                         new AbsentSource())))
                 .backend(backend)
                 .localeManager(new MapLocaleManager().withFallback(path -> path))

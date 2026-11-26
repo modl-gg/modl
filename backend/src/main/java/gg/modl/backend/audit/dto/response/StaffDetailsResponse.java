@@ -19,7 +19,7 @@ public record StaffDetailsResponse(
         String playerId,
         String playerName,
         String type,
-        String reason,
+        @Nullable String reason,
         @Nullable String duration,
         Instant issued,
         PunishmentPhase phase,

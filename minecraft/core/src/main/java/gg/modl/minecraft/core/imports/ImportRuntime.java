@@ -22,5 +22,6 @@ class ImportRuntime {
     ImportTimings timings;
     PluginLogger logger;
     Supplier<String> serverName;
+    Supplier<String> warningText;
     LongSupplier clock;
 }

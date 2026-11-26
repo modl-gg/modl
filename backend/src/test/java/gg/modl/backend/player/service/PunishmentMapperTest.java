@@ -1,6 +1,7 @@
 package gg.modl.backend.player.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertNull;
 import static org.mockito.Mockito.mock;
 
 import gg.modl.backend.player.data.punishment.PunishmentIssuerKind;
@@ -60,7 +61,7 @@ class PunishmentMapperTest {
 
         SimplePunishmentView simple = PunishmentMapper.toSimplePunishment(punishment, types, statusCalculator, Map.of());
 
-        assertEquals("No reason specified", simple.description());
+        assertNull(simple.description());
     }
 
     @Test
@@ -95,18 +96,18 @@ class PunishmentMapperTest {
 
         SimplePunishmentView simple = PunishmentMapper.toSimplePunishment(punishment, types, statusCalculator, Map.of());
 
-        assertEquals("No reason specified", simple.description());
+        assertNull(simple.description());
     }
 
     @Test
-    void customTypeWithOnlyAutoNoteAndNoReasonGetsDefault() {
+    void customTypeWithOnlyAutoNoteAndNoReasonHasNoDescription() {
         Map<String, Object> data = new HashMap<>();
         data.put("duration", 3600_000L);
         Punishment punishment = punishment(6, List.of(autoNote()), data);
 
         SimplePunishmentView simple = PunishmentMapper.toSimplePunishment(punishment, types, statusCalculator, Map.of());
 
-        assertEquals("No reason specified", simple.description());
+        assertNull(simple.description());
     }
 
     private PunishmentNote autoNote() {

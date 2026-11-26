@@ -512,7 +512,6 @@ public class PluginLoader {
                 .scratch(Imports.scratchFolder(dataFolder))
                 .connections(connections)
                 .pluginEnabled(platform::isPluginEnabled)
-                .defaultReason(() -> localeManager.getMessage("config.default_reason"))
                 .clock(System::currentTimeMillis)
                 .logger(logger)
                 .build();

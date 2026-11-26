@@ -100,11 +100,8 @@ public class InspectCommand {
                     ? TimeUtil.formatTimeMillis(effectiveDuration)
                     : localeManager.getMessage("general.permanent");
 
-            String reason = "";
-            if (data != null && data.containsKey("reason")) {
-                Object r = data.get("reason");
-                if (r != null) reason = r.toString();
-            }
+            Object storedReason = data != null ? data.get("reason") : null;
+            String reason = localeManager.reasonOrDefault(storedReason instanceof String ? (String) storedReason : null);
 
             int evidenceCount = p.getEvidence() != null ? p.getEvidence().size() : 0;
             int notesCount = p.getNotes() != null ? p.getNotes().size() : 0;
@@ -117,7 +114,7 @@ public class InspectCommand {
             actor.reply(localeManager.getMessage("print.punishment_detail.date", mapOf("date", issued)));
             actor.reply(localeManager.getMessage("print.punishment_detail.status", mapOf("status", (active ? COLOR_ACTIVE : COLOR_INACTIVE) + status)));
             actor.reply(localeManager.getMessage("print.punishment_detail.duration", mapOf("duration", duration)));
-            if (!reason.isEmpty()) actor.reply(localeManager.getMessage("print.punishment_detail.reason", mapOf("reason", reason)));
+            actor.reply(localeManager.getMessage("print.punishment_detail.reason", mapOf("reason", reason)));
             actor.reply(localeManager.getMessage("print.punishment_detail.evidence", mapOf("count", String.valueOf(evidenceCount))));
             actor.reply(localeManager.getMessage("print.punishment_detail.notes", mapOf("count", String.valueOf(notesCount))));
             actor.reply(localeManager.getMessage("print.punishment_detail.modifications", mapOf("count", String.valueOf(modsCount))));

@@ -10,7 +10,6 @@ import java.nio.file.Path;
 import java.util.function.BooleanSupplier;
 import java.util.function.LongSupplier;
 import java.util.function.Predicate;
-import java.util.function.Supplier;
 
 @Value
 @Builder
@@ -21,7 +20,6 @@ public class SourceContext {
     JdbcConnections connections;
     Predicate<String> pluginEnabled;
     BooleanSupplier offlineUuids;
-    Supplier<String> defaultReason;
     LongSupplier clock;
     PluginLogger logger;
 

@@ -1057,6 +1057,7 @@ menus:
   chat_input:
     prompt: "&6&l» &e{prompt}"
     hint: "&7Напишите ответ в чат или введите &c{cancel} &7для отмены."
+    optional_hint: "&7Напишите ответ в чат, введите &e{skip}&7, чтобы оставить его пустым, или введите &c{cancel} &7для отмены."
     timed_out: "&cВремя ввода истекло. Попробуйте ещё раз."
 
 # Set usage to "" to hide a command from the help list.

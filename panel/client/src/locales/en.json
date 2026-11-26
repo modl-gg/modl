@@ -2341,7 +2341,6 @@
     "selectOptions": "Select punishment options",
     "missingInfo": "Missing information",
     "selectCategory": "Select a punishment category.",
-    "provideReason": "Enter a reason for this punishment.",
     "selectSeverityLevel": "Select a severity level.",
     "invalidDuration": "Invalid duration",
     "invalidDurationDesc": "Enter a duration greater than 0 or select 'Permanent'.",

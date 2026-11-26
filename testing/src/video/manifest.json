@@ -1,0 +1,281 @@
+{
+  "videos": [
+    {
+      "id": "import-plugins",
+      "title": "Import from LiteBans",
+      "wikiPage": "Migrating-from-Other-Plugins",
+      "modlVersion": "3.0.0-rc.1",
+      "seconds": 50.4,
+      "bytes": 2543775,
+      "sha256": "c64db565b55b0325d2c24e656ea2d25413c7ad80213562e67d7c6c4cb02d2a31",
+      "audio": {
+        "narration": {
+          "engine": "pocket-tts==4.0.1",
+          "model": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/model.safetensors",
+          "modelSha256": "4c56cbd171c63e8a26ea61f5d48b8a0cd8f3c51f4652c0ab9a19bfcced8c931d",
+          "modelLicence": "CC BY 4.0",
+          "voice": "juergen",
+          "voiceSource": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/embeddings/juergen.safetensors",
+          "voiceSha256": "9ef4461c8ba702d1928ae5e75272035a7117efccf6c9fa2378b1da92b252f78f",
+          "voiceLicence": "used with the permission of the modl maintainers (no published licence)"
+        },
+        "music": [
+          {
+            "title": "Gymnopedie No. 1 (Erik Satie)",
+            "author": "Teknopazzo",
+            "licence": "CC0 1.0 (Wikimedia Commons)",
+            "source": "https://commons.wikimedia.org/wiki/File:Gymnopedie_No._1..ogg",
+            "file": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Gymnopedie_No._1..ogg",
+            "sha256": "13e4e03797169392166b9f11d9bf9c421c022b48ad87d9b10bd441ce068502da"
+          }
+        ]
+      }
+    },
+    {
+      "id": "link-account",
+      "title": "Link your Minecraft account",
+      "wikiPage": "First-Run",
+      "modlVersion": "3.0.0-rc.1",
+      "seconds": 55.53,
+      "bytes": 7896887,
+      "sha256": "49b0c016ecf3d09d772e83e1214aa4fae94ef6436781898755e38598e7cfaace",
+      "audio": {
+        "narration": {
+          "engine": "pocket-tts==4.0.1",
+          "model": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/model.safetensors",
+          "modelSha256": "4c56cbd171c63e8a26ea61f5d48b8a0cd8f3c51f4652c0ab9a19bfcced8c931d",
+          "modelLicence": "CC BY 4.0",
+          "voice": "juergen",
+          "voiceSource": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/embeddings/juergen.safetensors",
+          "voiceSha256": "9ef4461c8ba702d1928ae5e75272035a7117efccf6c9fa2378b1da92b252f78f",
+          "voiceLicence": "used with the permission of the modl maintainers (no published licence)"
+        },
+        "music": [
+          {
+            "title": "Gymnopedie No. 1 (Erik Satie)",
+            "author": "Teknopazzo",
+            "licence": "CC0 1.0 (Wikimedia Commons)",
+            "source": "https://commons.wikimedia.org/wiki/File:Gymnopedie_No._1..ogg",
+            "file": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Gymnopedie_No._1..ogg",
+            "sha256": "13e4e03797169392166b9f11d9bf9c421c022b48ad87d9b10bd441ce068502da"
+          }
+        ]
+      }
+    },
+    {
+      "id": "paper-install",
+      "title": "Install on one Paper server",
+      "wikiPage": "Single-Server",
+      "modlVersion": "3.0.0-rc.1",
+      "seconds": 117.97,
+      "bytes": 8057255,
+      "sha256": "acc1b662229fa5afd6208ba7d6264154902ef07651854d51ae6707b0aefa1012",
+      "audio": {
+        "narration": {
+          "engine": "pocket-tts==4.0.1",
+          "model": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/model.safetensors",
+          "modelSha256": "4c56cbd171c63e8a26ea61f5d48b8a0cd8f3c51f4652c0ab9a19bfcced8c931d",
+          "modelLicence": "CC BY 4.0",
+          "voice": "juergen",
+          "voiceSource": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/embeddings/juergen.safetensors",
+          "voiceSha256": "9ef4461c8ba702d1928ae5e75272035a7117efccf6c9fa2378b1da92b252f78f",
+          "voiceLicence": "used with the permission of the modl maintainers (no published licence)"
+        },
+        "music": [
+          {
+            "title": "Gymnopedie No. 1 (Erik Satie)",
+            "author": "Teknopazzo",
+            "licence": "CC0 1.0 (Wikimedia Commons)",
+            "source": "https://commons.wikimedia.org/wiki/File:Gymnopedie_No._1..ogg",
+            "file": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Gymnopedie_No._1..ogg",
+            "sha256": "13e4e03797169392166b9f11d9bf9c421c022b48ad87d9b10bd441ce068502da"
+          }
+        ]
+      }
+    },
+    {
+      "id": "public-pages",
+      "title": "Customize the public pages",
+      "wikiPage": "Customizing-the-Public-Pages",
+      "modlVersion": "3.0.0-rc.1",
+      "seconds": 64.53,
+      "bytes": 4154337,
+      "sha256": "c79b784bbba919f3e37c3238dd3ef13c8e93179a0b90ca03f43dca4a47f5dae1",
+      "audio": {
+        "narration": {
+          "engine": "pocket-tts==4.0.1",
+          "model": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/model.safetensors",
+          "modelSha256": "4c56cbd171c63e8a26ea61f5d48b8a0cd8f3c51f4652c0ab9a19bfcced8c931d",
+          "modelLicence": "CC BY 4.0",
+          "voice": "juergen",
+          "voiceSource": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/embeddings/juergen.safetensors",
+          "voiceSha256": "9ef4461c8ba702d1928ae5e75272035a7117efccf6c9fa2378b1da92b252f78f",
+          "voiceLicence": "used with the permission of the modl maintainers (no published licence)"
+        },
+        "music": [
+          {
+            "title": "Gymnopedie No. 1 (Erik Satie)",
+            "author": "Teknopazzo",
+            "licence": "CC0 1.0 (Wikimedia Commons)",
+            "source": "https://commons.wikimedia.org/wiki/File:Gymnopedie_No._1..ogg",
+            "file": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Gymnopedie_No._1..ogg",
+            "sha256": "13e4e03797169392166b9f11d9bf9c421c022b48ad87d9b10bd441ce068502da"
+          }
+        ]
+      }
+    },
+    {
+      "id": "report-to-replay",
+      "title": "From report to punishment",
+      "wikiPage": "Commands",
+      "modlVersion": "3.0.0-rc.1",
+      "seconds": 74.93,
+      "bytes": 8734772,
+      "sha256": "45d5cc348f5ca1b80d5eec741b92689bdc3a381614695bae4678f89ce741941e",
+      "audio": {
+        "narration": {
+          "engine": "pocket-tts==4.0.1",
+          "model": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/model.safetensors",
+          "modelSha256": "4c56cbd171c63e8a26ea61f5d48b8a0cd8f3c51f4652c0ab9a19bfcced8c931d",
+          "modelLicence": "CC BY 4.0",
+          "voice": "juergen",
+          "voiceSource": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/embeddings/juergen.safetensors",
+          "voiceSha256": "9ef4461c8ba702d1928ae5e75272035a7117efccf6c9fa2378b1da92b252f78f",
+          "voiceLicence": "used with the permission of the modl maintainers (no published licence)"
+        },
+        "music": [
+          {
+            "title": "Gymnopedie No. 1 (Erik Satie)",
+            "author": "Teknopazzo",
+            "licence": "CC0 1.0 (Wikimedia Commons)",
+            "source": "https://commons.wikimedia.org/wiki/File:Gymnopedie_No._1..ogg",
+            "file": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Gymnopedie_No._1..ogg",
+            "sha256": "13e4e03797169392166b9f11d9bf9c421c022b48ad87d9b10bd441ce068502da"
+          }
+        ]
+      }
+    },
+    {
+      "id": "staff-team",
+      "title": "Set up your staff team",
+      "wikiPage": "Permissions",
+      "modlVersion": "3.0.0-rc.1",
+      "seconds": 59.63,
+      "bytes": 4278677,
+      "sha256": "c5bd8fedc0794bbeee51415d154bf1fdef0469811fa4ff14736c2eace9b20be6",
+      "audio": {
+        "narration": {
+          "engine": "pocket-tts==4.0.1",
+          "model": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/model.safetensors",
+          "modelSha256": "4c56cbd171c63e8a26ea61f5d48b8a0cd8f3c51f4652c0ab9a19bfcced8c931d",
+          "modelLicence": "CC BY 4.0",
+          "voice": "juergen",
+          "voiceSource": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/embeddings/juergen.safetensors",
+          "voiceSha256": "9ef4461c8ba702d1928ae5e75272035a7117efccf6c9fa2378b1da92b252f78f",
+          "voiceLicence": "used with the permission of the modl maintainers (no published licence)"
+        },
+        "music": [
+          {
+            "title": "Gymnopedie No. 1 (Erik Satie)",
+            "author": "Teknopazzo",
+            "licence": "CC0 1.0 (Wikimedia Commons)",
+            "source": "https://commons.wikimedia.org/wiki/File:Gymnopedie_No._1..ogg",
+            "file": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Gymnopedie_No._1..ogg",
+            "sha256": "13e4e03797169392166b9f11d9bf9c421c022b48ad87d9b10bd441ce068502da"
+          }
+        ]
+      }
+    },
+    {
+      "id": "teaser-v3",
+      "title": "modl v3",
+      "wikiPage": null,
+      "modlVersion": "3.0.0-rc.1",
+      "seconds": 60,
+      "bytes": 9205750,
+      "sha256": "c35e2b475fc94d62dc603fb2c991af23fb6d12785aaf86e4de11b29dc0057737",
+      "audio": {
+        "narration": null,
+        "music": [
+          {
+            "title": "Sweden",
+            "author": "C418",
+            "licence": "Minecraft soundtrack (Mojang), used with the acceptance of the modl owner",
+            "source": "https://piston-meta.mojang.com/v1/packages/afea8bb2aeb664d53f219ae248248a264afa27c8/34.json (Minecraft 26.3 asset index 34, minecraft/sounds/music/game/sweden.ogg)",
+            "file": "https://resources.download.minecraft.net/be/be9b14926936c4509f7fe5002cdfbba3b2752d82",
+            "sha256": "f5169a831c71ecf5079cc74ba0283b95c068c3324b976e39037faecc7f51cb04"
+          },
+          {
+            "title": "Pigstep",
+            "author": "Lena Raine",
+            "licence": "Minecraft soundtrack (Mojang), used with the acceptance of the modl owner",
+            "source": "https://piston-meta.mojang.com/v1/packages/afea8bb2aeb664d53f219ae248248a264afa27c8/34.json (Minecraft 26.3 asset index 34, minecraft/sounds/records/pigstep.ogg)",
+            "file": "https://resources.download.minecraft.net/12/12174a8a8332a4156d57d57f370932ad28789df0",
+            "sha256": "dcb9467b78c3d635f849306e2068ae7d1b3e22c057baa683b86373da3ffc56a3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "teaser-v3-vertical",
+      "title": "modl v3 (vertical)",
+      "wikiPage": null,
+      "modlVersion": "3.0.0-rc.1",
+      "seconds": 60,
+      "bytes": 8762974,
+      "sha256": "44f858f348583dff60d2a4c698aac2492c8cd34623ac64d380a493e2a5f3ee77",
+      "audio": {
+        "narration": null,
+        "music": [
+          {
+            "title": "Sweden",
+            "author": "C418",
+            "licence": "Minecraft soundtrack (Mojang), used with the acceptance of the modl owner",
+            "source": "https://piston-meta.mojang.com/v1/packages/afea8bb2aeb664d53f219ae248248a264afa27c8/34.json (Minecraft 26.3 asset index 34, minecraft/sounds/music/game/sweden.ogg)",
+            "file": "https://resources.download.minecraft.net/be/be9b14926936c4509f7fe5002cdfbba3b2752d82",
+            "sha256": "f5169a831c71ecf5079cc74ba0283b95c068c3324b976e39037faecc7f51cb04"
+          },
+          {
+            "title": "Pigstep",
+            "author": "Lena Raine",
+            "licence": "Minecraft soundtrack (Mojang), used with the acceptance of the modl owner",
+            "source": "https://piston-meta.mojang.com/v1/packages/afea8bb2aeb664d53f219ae248248a264afa27c8/34.json (Minecraft 26.3 asset index 34, minecraft/sounds/records/pigstep.ogg)",
+            "file": "https://resources.download.minecraft.net/12/12174a8a8332a4156d57d57f370932ad28789df0",
+            "sha256": "dcb9467b78c3d635f849306e2068ae7d1b3e22c057baa683b86373da3ffc56a3"
+          }
+        ]
+      }
+    },
+    {
+      "id": "velocity-network",
+      "title": "Connect a Velocity network",
+      "wikiPage": "Proxy-Network",
+      "modlVersion": "3.0.0-rc.1",
+      "seconds": 85.97,
+      "bytes": 6544857,
+      "sha256": "1913a3856d9da4eba9775a9d793c2f4b512c979c845f961137e9a423cefe51fd",
+      "audio": {
+        "narration": {
+          "engine": "pocket-tts==4.0.1",
+          "model": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/model.safetensors",
+          "modelSha256": "4c56cbd171c63e8a26ea61f5d48b8a0cd8f3c51f4652c0ab9a19bfcced8c931d",
+          "modelLicence": "CC BY 4.0",
+          "voice": "juergen",
+          "voiceSource": "kyutai/pocket-tts-without-voice-cloning@a7056f505a4a8ca72d8b5fb1440071d6f1a35739/languages/english/embeddings/juergen.safetensors",
+          "voiceSha256": "9ef4461c8ba702d1928ae5e75272035a7117efccf6c9fa2378b1da92b252f78f",
+          "voiceLicence": "used with the permission of the modl maintainers (no published licence)"
+        },
+        "music": [
+          {
+            "title": "Gymnopedie No. 1 (Erik Satie)",
+            "author": "Teknopazzo",
+            "licence": "CC0 1.0 (Wikimedia Commons)",
+            "source": "https://commons.wikimedia.org/wiki/File:Gymnopedie_No._1..ogg",
+            "file": "https://upload.wikimedia.org/wikipedia/commons/b/b7/Gymnopedie_No._1..ogg",
+            "sha256": "13e4e03797169392166b9f11d9bf9c421c022b48ad87d9b10bd441ce068502da"
+          }
+        ]
+      }
+    }
+  ]
+}

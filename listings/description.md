@@ -57,6 +57,8 @@ Built to sanction players fairly and consistently while keeping moderator discre
 - Record a player on request or with a report, then watch it in a **3D viewer in the browser**
 - Punish straight from the replay
 
+![Watching a replay in the panel](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-replay.gif)
+
 ### AI moderation
 
 - Chat reports reviewed by the AI provider you choose (OpenAI, Anthropic, Google Gemini, or any OpenAI-compatible endpoint), with your own key

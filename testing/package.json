@@ -1,0 +1,60 @@
+{
+  "name": "modl-testing",
+  "version": "3.0.0",
+  "private": true,
+  "type": "module",
+  "license": "AGPL-3.0-only",
+  "description": "End-to-end harness for modl: Docker Minecraft topologies, Mineflayer bots, scenarios and an MCP server.",
+  "engines": {
+    "node": ">=24"
+  },
+  "scripts": {
+    "cli": "tsx src/cli.ts",
+    "doctor": "tsx src/cli.ts doctor",
+    "up": "tsx src/cli.ts up",
+    "down": "tsx src/cli.ts down",
+    "status": "tsx src/cli.ts status",
+    "dev": "tsx src/devnet/cli.ts",
+    "scenario": "tsx src/cli.ts scenario",
+    "mcp": "tsx src/mcp.ts",
+    "fixture:litebans": "../gradlew -p fixtures/litebans jar",
+    "typecheck": "tsc --noEmit",
+    "lint": "eslint .",
+    "lint:fast": "eslint . --cache --cache-strategy content --cache-location node_modules/.cache/eslint/",
+    "check": "tsc --noEmit && eslint .",
+    "seed": "tsx src/seed/seed.ts",
+    "shots": "tsx src/shots/cli.ts run",
+    "review": "tsx src/shots/cli.ts review",
+    "flows": "tsx src/shots/cli.ts flows",
+    "listing-replay": "MODL_TEST_LANE=listing tsx src/shots/cli.ts replay-gif",
+    "verify": "tsx src/verify.ts"
+  },
+  "dependencies": {
+    "@modelcontextprotocol/server": "2.4.0",
+    "mineflayer": "4.39.0",
+    "prismarine-chat": "1.13.0",
+    "rcon-client": "5.0.0",
+    "yaml": "2.9.1",
+    "yauzl": "3.4.0",
+    "zod": "4.6.7"
+  },
+  "devDependencies": {
+    "@eslint/js": "10.0.1",
+    "@types/node": "24.19.2",
+    "@types/yauzl": "3.4.0",
+    "@typescript/native": "npm:typescript@7.0.2",
+    "eslint": "10.15.0",
+    "globals": "17.14.0",
+    "playwright-core": "1.65.0",
+    "tsx": "4.23.15",
+    "typescript": "npm:@typescript/typescript6@6.0.2",
+    "typescript-eslint": "8.73.0"
+  },
+  "overrides": {
+    "uuid": "14.0.3"
+  },
+  "allowScripts": {
+    "esbuild": false,
+    "fsevents": false
+  }
+}

@@ -42,7 +42,6 @@ import org.springframework.stereotype.Service;
 public class StaffPerformanceService {
     private static final String DEFAULT_ROLE = "User";
     private static final String NO_SUBJECT = "No Subject";
-    private static final String NO_REASON = "No reason provided";
     private static final String UNKNOWN_PLAYER = "Unknown";
 
     private final UnitOfWork unitOfWork;
@@ -152,7 +151,7 @@ public class StaffPerformanceService {
             found.playerMinecraftUuid(),
             Objects.requireNonNullElse(found.playerUsername(), UNKNOWN_PLAYER),
             punishmentTypeService.getPunishmentTypeName(server, punishment.getTypeOrdinal()),
-            Objects.requireNonNullElse(punishment.data().reason(), NO_REASON),
+            punishment.data().reason(),
             duration != null ? duration.toString() : null,
             punishment.getIssued(),
             PunishmentPhase.of(punishment, now),

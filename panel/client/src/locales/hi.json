@@ -2340,7 +2340,6 @@
     "selectOptions": "सजा के विकल्प चुनें",
     "missingInfo": "जानकारी गायब है",
     "selectCategory": "सजा की श्रेणी चुनें।",
-    "provideReason": "इस सजा का कारण बताएं।",
     "selectSeverityLevel": "गंभीरता का स्तर चुनें।",
     "invalidDuration": "अमान्य अवधि",
     "invalidDurationDesc": "0 से अधिक अवधि दर्ज करें या 'स्थायी' चुनें।",

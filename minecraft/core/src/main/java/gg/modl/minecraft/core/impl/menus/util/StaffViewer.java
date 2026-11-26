@@ -7,6 +7,7 @@ import gg.modl.minecraft.core.staff.action.AuthorizedStaff;
 import gg.modl.minecraft.core.staff.action.StaffActor;
 import gg.modl.minecraft.core.staff.action.StaffActors;
 import gg.modl.minecraft.core.staff.action.StaffRequirement;
+import org.jspecify.annotations.Nullable;
 
 import java.util.Optional;
 import java.util.UUID;
@@ -50,6 +51,13 @@ public final class StaffViewer {
         awaitInput(requirement, prompt, onInput, onCancel);
     }
 
+    public void promptOptionalFromMenu(Click click, StaffRequirement requirement, String prompt,
+                                       BiConsumer<AuthorizedStaff, @Nullable String> onInput, Runnable onCancel) {
+        if (!authorize(requirement)) return;
+        click.clickedMenu().close();
+        PluginServices.chatInput().requestOptionalInput(uuid, prompt, this.<@Nullable String>reauthorized(requirement, onInput), onCancel);
+    }
+
     public void prompt(StaffRequirement requirement, String prompt, BiConsumer<AuthorizedStaff, String> onInput,
                        Runnable onCancel) {
         if (authorize(requirement)) awaitInput(requirement, prompt, onInput, onCancel);
@@ -57,7 +65,10 @@ public final class StaffViewer {
 
     private void awaitInput(StaffRequirement requirement, String prompt, BiConsumer<AuthorizedStaff, String> onInput,
                             Runnable onCancel) {
-        PluginServices.chatInput().requestInput(uuid, prompt,
-                input -> authorizeAs(requirement).ifPresent(issuer -> onInput.accept(issuer, input)), onCancel);
+        PluginServices.chatInput().requestInput(uuid, prompt, reauthorized(requirement, onInput), onCancel);
+    }
+
+    private <T extends @Nullable Object> Consumer<T> reauthorized(StaffRequirement requirement, BiConsumer<AuthorizedStaff, T> onInput) {
+        return input -> authorizeAs(requirement).ifPresent(issuer -> onInput.accept(issuer, input));
     }
 }

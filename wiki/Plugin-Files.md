@@ -46,7 +46,7 @@ Servers running the core: standalone servers and proxies (`embedded`, `remote`).
 | `logging.chat`, `logging.commands` | `true` | Store chat and commands for the panel's logs. Chat reports still capture recent chat with chat logging off. |
 | `logging.never_logged_commands` | `[]` | Commands never stored, matched like `muted_commands`. |
 | `commands.<name>` | see [Commands](Commands) | Aliases, separated by `\|`; the first is the main name. Empty disables the command. Restart. |
-| `locale_config.default_reason` | `No reason specified` | Reason used when none is given. |
+| `locale_config.default_reason` | `No reason specified` | Shown in game in place of a missing punishment reason, and the text of an imported warning that has none. |
 | `locale_config.date_format` | `MM/dd/yyyy HH:mm` | Java `SimpleDateFormat` pattern. An invalid one uses the default and logs one warning. |
 | `locale_config.timezone` | server zone | e.g. `UTC`, `Europe/London`, `EST`. An unknown zone uses the server zone and logs one warning. |
 | `locale_config.duration_format.*` | `{days}d` ... `permanent` | Duration words. |

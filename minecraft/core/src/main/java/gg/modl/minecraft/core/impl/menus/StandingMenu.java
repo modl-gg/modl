@@ -87,7 +87,7 @@ public class StandingMenu extends BaseListMenu<Entry> {
                 "type", kindLabel(entry, typeName),
                 "type_name", typeName,
                 "status", buildStatusString(entry),
-                "reason", entry.getReason() != null ? entry.getReason() : localeManager.getMessage("config.default_reason")
+                "reason", localeManager.reasonOrDefault(entry.getReason())
         );
 
         String title = localeManager.getMessage("standing_gui.punishment_item.title", vars);

@@ -2340,7 +2340,6 @@
     "selectOptions": "処罰オプションを選択",
     "missingInfo": "情報が不足しています",
     "selectCategory": "処罰カテゴリを選択してください。",
-    "provideReason": "処罰の理由を入力してください。",
     "selectSeverityLevel": "重要度レベルを選択してください。",
     "invalidDuration": "無効な期間",
     "invalidDurationDesc": "0より大きい期間を指定するか、「永久」を選択してください。",

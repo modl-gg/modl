@@ -1,0 +1,32 @@
+{
+  "extends": "../tsconfig.strict.json",
+  "compilerOptions": {
+    "target": "ES2023",
+    "module": "ESNext",
+    "moduleResolution": "Bundler",
+    "lib": [
+      "ES2023"
+    ],
+    "types": [
+      "node"
+    ],
+    "esModuleInterop": true,
+    "resolveJsonModule": true,
+    "noEmit": true,
+    "erasableSyntaxOnly": false,
+    "paths": {
+      "@proto/*": [
+        "../proto/gen/ts/*"
+      ],
+      "@bufbuild/protobuf": [
+        "../node_modules/@bufbuild/protobuf/dist/esm/index"
+      ],
+      "@bufbuild/protobuf/*": [
+        "../node_modules/@bufbuild/protobuf/dist/esm/*/index"
+      ]
+    }
+  },
+  "include": [
+    "src/**/*.ts"
+  ]
+}

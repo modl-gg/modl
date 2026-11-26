@@ -89,7 +89,7 @@ class PluginLifecycleTest {
         lifecycle.enable(REQUEST, bootstrap);
 
         assertEquals(singletonList(CoreState.STARTING), bootstrap.statesWhenPrepared);
-        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
+        awaitCoreStart(bootstrap);
         PanelUrl panelUrl = PanelUrl.unresolved();
         bootstrap.sessions.get(0).resolvePanelUrl(panelUrl);
         assertEquals("https://panel.example.test", panelUrl.get());
@@ -107,7 +107,7 @@ class PluginLifecycleTest {
         RecordingBootstrap bootstrap = new RecordingBootstrap();
         lifecycle = remoteLifecycle(this::reachableSource);
         lifecycle.enable(REQUEST, bootstrap);
-        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
+        awaitCoreStart(bootstrap);
 
         BackendConnections connections = bootstrap.sessions.get(0).getConnections();
         connections.report(connections.mismatchWith("9.0.0"));
@@ -122,7 +122,7 @@ class PluginLifecycleTest {
         lifecycle = remoteLifecycle(this::reachableSource);
 
         lifecycle.enable(REQUEST, bootstrap);
-        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
+        awaitCoreStart(bootstrap);
         lifecycle.enable(REQUEST, bootstrap);
 
         assertEquals(1, bootstrap.preparations.get());
@@ -142,7 +142,7 @@ class PluginLifecycleTest {
         assertTrue(host.gate.deniedMessage().contains("Connection to panel failed"));
 
         assertEquals(1, bootstrap.preparations.get());
-        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
+        awaitCoreStart(bootstrap);
         assertTrue(lifecycle.availability().state().isRunning());
         assertEquals(1, host.unregistrations.get());
         assertTrue(host.mainThreadTasks.get() >= 1);
@@ -182,7 +182,7 @@ class PluginLifecycleTest {
 
         starting.complete(endpoint());
 
-        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
+        awaitCoreStart(bootstrap);
         assertTrue(lifecycle.availability().state().isRunning());
         assertTrue(host.gate.isOpen());
         assertTrue(logger.warnings().isEmpty(), logger.warnings().toString());
@@ -241,7 +241,7 @@ class PluginLifecycleTest {
         lifecycle.enable(REQUEST, second);
         restarted.complete(endpoint());
 
-        assertTrue(second.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
+        awaitCoreStart(second);
         assertTrue(first.sessions.isEmpty());
         assertTrue(lifecycle.availability().state().isRunning());
     }
@@ -386,7 +386,7 @@ class PluginLifecycleTest {
         RecordingBootstrap bootstrap = RecordingBootstrap.stoppingWith(() -> order.add("core"));
 
         lifecycle.enable(REQUEST, bootstrap);
-        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
+        awaitCoreStart(bootstrap);
         lifecycle.shutdown();
 
         assertEquals(2, order.size());
@@ -505,6 +505,14 @@ class PluginLifecycleTest {
         @Override public void shutdown() {
             endpoint.cancel(false);
             onShutdown.run();
+        }
+    }
+
+    private void awaitCoreStart(RecordingBootstrap bootstrap) throws InterruptedException {
+        assertTrue(bootstrap.started.await(WAIT_SECONDS, TimeUnit.SECONDS));
+        PluginLifecycle starting = lifecycle;
+        synchronized (starting) {
+            assertFalse(bootstrap.sessions.isEmpty());
         }
     }
 

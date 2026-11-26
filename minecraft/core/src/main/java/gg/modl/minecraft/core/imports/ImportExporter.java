@@ -10,6 +10,7 @@ import gg.modl.minecraft.core.imports.source.SourcePunishment;
 import gg.modl.minecraft.core.imports.source.SourceReader;
 import gg.modl.minecraft.core.imports.source.UnreadablePlayerException;
 import gg.modl.minecraft.core.imports.support.PlayerLimit;
+import gg.modl.minecraft.core.imports.support.SourceSupport;
 import gg.modl.minecraft.core.util.PluginLogger;
 import lombok.RequiredArgsConstructor;
 
@@ -17,6 +18,7 @@ import java.io.IOException;
 import java.nio.file.Path;
 import java.time.Instant;
 import java.util.List;
+import java.util.function.Supplier;
 import java.util.stream.Collectors;
 
 @RequiredArgsConstructor
@@ -27,6 +29,7 @@ final class ImportExporter {
     private final SourceReader reader;
     private final ImportSignal signal;
     private final PluginLogger logger;
+    private final Supplier<String> warningText;
 
     void export(Path target, SourceInventory inventory, ScopedPunishmentChoice choice, long maxBytes,
                 ExportProgress progress, Instant importedAt) {
@@ -35,7 +38,8 @@ final class ImportExporter {
             throw new ImportFailure(ImportEnding.EXPORT_FAILED, ImportProblem.TOO_MANY_PLAYERS, players + " players");
         }
         progress.begin(players, inventory.getWithoutAccount());
-        try (ImportExportWriter writer = new ImportExportWriter(source.id(), target, maxBytes, players, importedAt)) {
+        try (ImportExportWriter writer = new ImportExportWriter(source.id(), target, maxBytes, players, importedAt,
+                SourceSupport.plainText(warningText.get()))) {
             writeEverything(writer, choice, progress);
         } catch (IOException failure) {
             throw new ImportFailure(ImportEnding.EXPORT_FAILED, ImportProblem.FILE_FAILED, failure);

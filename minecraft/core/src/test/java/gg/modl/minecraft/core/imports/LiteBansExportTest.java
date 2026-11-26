@@ -40,7 +40,7 @@ class LiteBansExportTest {
     private final ExportProgress progress = new ExportProgress();
     private final RecordingPluginLogger logger = new RecordingPluginLogger();
     private boolean enabled = true;
-    private final LiteBansSource source = new LiteBansSource(() -> enabled, () -> database, () -> "No reason", () -> NOW);
+    private final LiteBansSource source = new LiteBansSource(() -> enabled, () -> database, () -> NOW);
     private SourceReader reader;
 
     @BeforeEach
@@ -292,7 +292,7 @@ class LiteBansExportTest {
     }
 
     private ImportExporter exporter() {
-        return new ImportExporter(source, reader, signal, logger);
+        return new ImportExporter(source, reader, signal, logger, () -> "No reason");
     }
 
     private static JsonObject firstPlayer(JsonObject exported) {

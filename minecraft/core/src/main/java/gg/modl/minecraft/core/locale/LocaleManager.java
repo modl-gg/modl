@@ -168,6 +168,10 @@ public class LocaleManager {
         return LegacyTextRenderer.colorize(message);
     }
 
+    public String reasonOrDefault(@Nullable String reason) {
+        return reason != null && !reason.trim().isEmpty() ? reason : getMessage("config.default_reason");
+    }
+
     public String getPunishmentMessage(String path, Map<String, String> variables) {
         Map<String, String> allVariables = new HashMap<>(variables);
         allVariables.putIfAbsent("default_reason", getMessage("config.default_reason"));

@@ -1,3 +1,8 @@
+export const FORM_FIELD_LABEL_MAX_LENGTH = 1000;
+export const FORM_DESCRIPTION_MAX_LENGTH = 2000;
+export const FORM_OPTION_MAX_LENGTH = 256;
+export const FORM_SECTION_TITLE_MAX_LENGTH = 256;
+
 export interface AppealFormField {
   id: string;
   type: 'text' | 'textarea' | 'dropdown' | 'multiple_choice' | 'checkbox' | 'file_upload' | 'checkboxes';

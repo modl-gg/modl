@@ -1,0 +1,112 @@
+setworldspawn 0 4 0
+difficulty 1
+gamerule doMobSpawning false
+gamerule randomTickSpeed 0
+gamerule doDaylightCycle false
+gamerule mobGriefing false
+gamerule naturalRegeneration false
+gamerule sendCommandFeedback false
+time set 6000
+weather clear 1000000
+kill @e[type=!Player]
+fill -4 4 -4 40 14 30 air
+fill -4 3 -4 40 3 30 grass
+setblock 0 4 0 oak_stairs 3
+setblock 2 4 0 oak_stairs 0
+setblock 4 4 0 oak_stairs 2
+setblock 6 4 0 oak_stairs 1
+setblock 8 4 0 oak_stairs 7
+setblock 10 4 0 stone_brick_stairs 2
+setblock 0 4 2 stone_slab 0
+setblock 2 4 2 stone_slab 8
+setblock 4 4 2 double_stone_slab 0
+setblock 6 4 2 wooden_slab 0
+setblock 8 4 2 stone_slab 0
+setblock 0 4 4 wool 0
+setblock 1 4 4 wool 1
+setblock 2 4 4 wool 2
+setblock 3 4 4 wool 3
+setblock 4 4 4 wool 4
+setblock 5 4 4 wool 5
+setblock 6 4 4 wool 6
+setblock 7 4 4 wool 7
+setblock 8 4 4 wool 8
+setblock 9 4 4 wool 9
+setblock 10 4 4 wool 10
+setblock 11 4 4 wool 11
+setblock 12 4 4 wool 12
+setblock 13 4 4 wool 13
+setblock 14 4 4 wool 14
+setblock 15 4 4 wool 15
+setblock 0 4 6 glass
+setblock 2 4 6 glass_pane
+setblock 3 4 6 glass_pane
+setblock 4 4 6 glass_pane
+setblock 6 4 6 stained_glass 14
+setblock 8 4 6 stained_glass_pane 14
+setblock 10 4 6 iron_bars
+setblock 11 4 6 iron_bars
+setblock 0 4 8 log 0
+setblock 2 4 8 log 4
+setblock 4 4 8 log 8
+setblock 6 4 8 log 2
+setblock 8 4 8 log 1
+setblock 10 4 8 stone
+setblock 11 4 8 cobblestone
+setblock 12 4 8 planks 0
+setblock 13 4 8 brick_block
+setblock 14 4 8 dirt
+setblock 15 4 8 sand
+setblock 0 4 10 fence
+setblock 1 4 10 fence
+setblock 2 4 10 fence
+setblock 3 4 10 fence
+setblock 5 4 10 fence_gate 0
+fill 0 3 12 9 3 14 stone
+fill 0 4 12 9 4 12 stonebrick
+fill 0 4 14 9 4 14 stonebrick
+setblock 0 4 13 stonebrick
+setblock 9 4 13 stonebrick
+setblock 1 4 13 flowing_water 0
+fill 11 3 12 13 3 14 water
+setblock 0 4 16 leaves 4
+setblock 2 4 16 leaves 6
+setblock 4 4 16 leaves 5
+setblock 6 4 16 leaves 7
+setblock 9 4 16 log 0
+setblock 9 5 16 log 0
+setblock 9 6 16 log 0
+fill 8 6 15 10 7 17 leaves 4 keep
+setblock 12 4 16 tallgrass 1
+setblock 13 4 16 red_flower 0
+setblock 14 4 16 yellow_flower 0
+setblock 0 4 19 chest 3
+setblock 5 4 19 torch 5
+setblock 7 4 18 stone
+setblock 7 4 19 torch 3
+setblock 11 4 20 fence
+setblock 11 5 20 fence
+setblock 11 6 20 fence
+setblock 11 6 19 fence
+setblock 13 4 19 wooden_door 1
+setblock 13 5 19 wooden_door 8
+fill 0 4 23 0 6 23 fence
+fill 4 4 23 4 6 23 fence
+fill 0 4 27 0 6 27 fence
+fill 4 4 27 4 6 27 fence
+fill 0 7 23 4 7 27 planks 0
+summon Zombie 2.5 4 25.5 {NoAI:1,PersistenceRequired:1,Silent:1,Rotation:[0f,0f]}
+summon Item 10.5 4 25.5 {Item:{id:minecraft:diamond,Count:1},PickupDelay:32767,Age:-32768}
+summon Item 12.5 4 25.5 {Item:{id:minecraft:log,Count:1,Damage:0},PickupDelay:32767,Age:-32768}
+summon Creeper 15.5 4 25.5 {NoAI:1,PersistenceRequired:1,Silent:1,Rotation:[0f,0f]}
+summon Pig 18.5 4 25.5 {NoAI:1,PersistenceRequired:1,Silent:1,Rotation:[0f,0f]}
+summon Sheep 21.5 4 25.5 {NoAI:1,PersistenceRequired:1,Silent:1,Rotation:[0f,0f],Color:0}
+setblock 18 4 8 leaves 4
+setblock 20 4 8 tallgrass 1
+setblock 18 3 11 water
+setblock 26 4 8 leaves 4
+setblock 28 4 8 tallgrass 1
+setblock 26 3 11 water
+setblock 34 4 8 leaves 4
+setblock 36 4 8 tallgrass 1
+setblock 34 3 11 water

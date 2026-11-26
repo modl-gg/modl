@@ -64,8 +64,7 @@ public final class PunishmentMessageService {
     }
 
     private void putPlayerFacingReason(Map<String, String> variables, SimplePunishment punishment) {
-        String playerFacingReason = punishment.getPlayerFacingReason();
-        String reason = playerFacingReason != null ? playerFacingReason : localeManager.getMessage("config.default_reason");
+        String reason = localeManager.reasonOrDefault(punishment.getPlayerFacingReason());
         variables.put("reason", reason);
         variables.put("description", reason);
     }

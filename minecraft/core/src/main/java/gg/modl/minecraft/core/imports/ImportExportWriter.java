@@ -30,10 +30,12 @@ final class ImportExportWriter implements AutoCloseable {
     private final Writer writer;
     private final JsonWriter json;
     private final String importedAt;
+    private final String warningText;
 
-    ImportExportWriter(String sourceId, Path target, long maxBytes, int plannedPlayers, Instant importedAt)
-            throws IOException {
+    ImportExportWriter(String sourceId, Path target, long maxBytes, int plannedPlayers, Instant importedAt,
+                       String warningText) throws IOException {
         this.sourceId = sourceId;
+        this.warningText = warningText;
         this.importedAt = importedAt.toString();
         this.output = new BoundedOutput(Files.newOutputStream(target), maxBytes);
         this.writer = new BufferedWriter(new OutputStreamWriter(output, StandardCharsets.UTF_8));
@@ -101,13 +103,21 @@ final class ImportExportWriter implements AutoCloseable {
     }
 
     private void writeNote(SourcePunishment note) throws IOException {
+        String text = noteText(note);
+        if (text == null) return;
         json.beginObject();
         json.name("id").value(note.getId());
         json.name("kind").value(note.getKind().name());
-        json.name("text").value(note.getReason());
+        json.name("text").value(text);
         json.name("issuerName").value(textOr(note.getIssuerName(), Constants.UNKNOWN));
         json.name("date").value(iso(note.getIssuedAt()));
         json.endObject();
+    }
+
+    private @Nullable String noteText(SourcePunishment note) {
+        String reason = note.getReason();
+        if (reason != null) return reason;
+        return note.getKind() == PunishmentKind.WARNING ? warningText : null;
     }
 
     private void writePunishment(SourcePunishment punishment, boolean widened) throws IOException {
@@ -117,18 +127,21 @@ final class ImportExportWriter implements AutoCloseable {
         json.name("_id").value(punishment.getId());
         json.name("type").value(type.name());
         json.name("typeOrdinal").value((long) type.getOrdinal());
-        json.name("reason").value(punishment.getReason());
+        String reason = punishment.getReason();
+        if (reason != null) json.name("reason").value(reason);
         json.name("issued").value(issued);
         json.name("started").value(issued);
         String issuer = punishment.getIssuerName();
         if (issuer != null) json.name("issuerName").value(issuer);
         json.name("duration").value(punishment.getDuration());
         json.name("notes").beginArray();
-        json.beginObject();
-        json.name("text").value(punishment.getReason());
-        if (issuer != null) json.name("issuerName").value(issuer);
-        json.name("date").value(issued);
-        json.endObject();
+        if (reason != null) {
+            json.beginObject();
+            json.name("text").value(reason);
+            if (issuer != null) json.name("issuerName").value(issuer);
+            json.name("date").value(issued);
+            json.endObject();
+        }
         json.endArray();
         writeRemoval(punishment.getRemoval(), punishment.getIssuedAt());
         writeData(punishment, widened);

@@ -12,7 +12,7 @@ public class SourcePunishment {
 
     @NonNull String id;
     @NonNull PunishmentKind kind;
-    @NonNull String reason;
+    @Nullable String reason;
     @Nullable String issuerName;
     long issuedAt;
     long duration;

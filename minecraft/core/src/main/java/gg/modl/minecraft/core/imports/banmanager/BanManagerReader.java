@@ -310,7 +310,7 @@ final class BanManagerReader implements SourceReader {
         return SourcePunishment.builder()
                 .id(prefix + row.getLong(1))
                 .kind(kind)
-                .reason(SourceSupport.textOr(row.getString(3), context.getDefaultReason().get()))
+                .reason(SourceSupport.trimmedOrNull(row.getString(3)))
                 .issuerName(actorName(found, PlayerKeys.uuidOrNull(row.getBytes(6))))
                 .issuedAt(issued > 0 ? issued : ended)
                 .duration(expired > 0 ? SourcePunishment.durationBetween(issued, expired) : 0)
@@ -327,7 +327,7 @@ final class BanManagerReader implements SourceReader {
         return SourcePunishment.builder()
                 .id(prefix + row.getLong(1))
                 .kind(kind)
-                .reason(SourceSupport.textOr(row.getString(3), context.getDefaultReason().get()))
+                .reason(SourceSupport.trimmedOrNull(row.getString(3)))
                 .issuerName(actorName(found, PlayerKeys.uuidOrNull(row.getBytes(4))))
                 .issuedAt(created > 0 ? created : context.now());
     }

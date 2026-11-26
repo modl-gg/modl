@@ -8,7 +8,7 @@ import { Label } from '@/components/ui/label';
 import { Select, SelectContent, SelectItem, SelectTrigger, SelectValue } from '@/components/ui/select';
 import { Switch } from '@/components/ui/switch';
 import { APPEAL_FORM_FIELD_TYPES } from '@/hooks/data/punishment-types';
-import type { AppealFormField, AppealFormSection } from '@/types/forms';
+import { FORM_DESCRIPTION_MAX_LENGTH, FORM_FIELD_LABEL_MAX_LENGTH, FORM_OPTION_MAX_LENGTH, type AppealFormField, type AppealFormSection } from '@/types/forms';
 import { newSettingsEntryId } from '@/lib/settings-ids';
 
 type AppealFieldType = AppealFormField['type'];
@@ -99,6 +99,7 @@ export default function AppealFormFieldDialog({ field, initialSectionId, section
             <Label htmlFor="appeal-field-label">{t('settings.tickets.fieldLabel')}</Label>
             <Input
               id="appeal-field-label"
+              maxLength={FORM_FIELD_LABEL_MAX_LENGTH}
               placeholder={t('settings.appealFormEditor.fieldLabelPlaceholder')}
               value={label}
               onChange={(event) => {
@@ -130,6 +131,7 @@ export default function AppealFormFieldDialog({ field, initialSectionId, section
             <Label htmlFor="appeal-field-description">{t('settings.tickets.descriptionOptional')}</Label>
             <Input
               id="appeal-field-description"
+              maxLength={FORM_DESCRIPTION_MAX_LENGTH}
               placeholder={t('settings.appealFormEditor.fieldDescriptionPlaceholder')}
               value={description}
               onChange={(event) => {
@@ -180,6 +182,7 @@ export default function AppealFormFieldDialog({ field, initialSectionId, section
                   <Input
                     placeholder={t('settings.tickets.addOptionPlaceholder')}
                     value={newOption}
+                    maxLength={FORM_OPTION_MAX_LENGTH}
                     onChange={(event) => {
                       setNewOption(event.target.value);
                     }}

@@ -24,6 +24,7 @@ import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Button } from "@/components/ui/button";
 import { isNavPathActive } from "@/lib/nav-active";
 import { SETTINGS_ROOT_PATH } from "@/lib/settings-access";
+import { cn } from "@/lib/utils";
 
 const NotFound = lazy(async () => import("@/pages/not-found"));
 const Home = lazy(async () => import("@/pages/home"));
@@ -181,22 +182,14 @@ function PanelShell() {
   return (
     <PlayerWindowProvider key={user?.id ?? SIGNED_OUT_WINDOW_SCOPE}>
       {user !== null && <ReplayDialogHost />}
-      {isMobile ? (
-        <div className="flex min-h-dvh flex-col bg-background">
-          <main className="flex-1 bg-background pb-16">
-            <PanelRoutes />
-            {isSettingsPage && <PageEndSourceCodeLink />}
-          </main>
-          <MobileNavbar />
-        </div>
-      ) : (
-        <div className="flex min-h-dvh bg-background">
-          <Sidebar showSourceLink={isSettingsPage} />
-          <main className="min-w-0 flex-1 bg-background pl-24">
-            <PanelRoutes />
-          </main>
-        </div>
-      )}
+      <div className={cn("flex min-h-dvh bg-background", isMobile && "flex-col")}>
+        {!isMobile && <Sidebar showSourceLink={isSettingsPage} />}
+        <main className={cn("flex-1 bg-background", isMobile ? "pb-16" : "min-w-0 pl-24")}>
+          <PanelRoutes />
+          {isMobile && isSettingsPage && <PageEndSourceCodeLink />}
+        </main>
+        {isMobile && <MobileNavbar />}
+      </div>
     </PlayerWindowProvider>
   );
 }

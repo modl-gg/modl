@@ -170,7 +170,7 @@ function EvidenceListItem({ item, mediaTrustPolicy }: { item: EvidenceValue; med
               {text}
             </a>
           ) : (
-            <span className="break-all">{text}</span>
+            <span className="wrap-anywhere">{text}</span>
           )}
           <p className="text-muted-foreground text-xs mt-0.5">{issuerInfo}</p>
         </div>

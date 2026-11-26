@@ -35,10 +35,14 @@ public final class SourceSupport {
     }
 
     public static String issuer(@Nullable String sender) {
-        if (!hasText(sender)) return Constants.DEFAULT_CONSOLE_NAME;
-        String plain = COLOR_CODES.matcher(sender).replaceAll("").trim();
+        if (sender == null || !hasText(sender)) return Constants.DEFAULT_CONSOLE_NAME;
+        String plain = plainText(sender).trim();
         if (plain.isEmpty() || CONSOLE_SENDER.equals(plain.toLowerCase(Locale.ROOT))) return Constants.DEFAULT_CONSOLE_NAME;
         return plain;
+    }
+
+    public static String plainText(String value) {
+        return COLOR_CODES.matcher(value).replaceAll("");
     }
 
     public static SourceException runningRefusal(String displayName) {

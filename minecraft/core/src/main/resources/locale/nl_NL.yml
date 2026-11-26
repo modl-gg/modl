@@ -1044,6 +1044,7 @@ menus:
   chat_input:
     prompt: "&6&l» &e{prompt}"
     hint: "&7Typ je antwoord in de chat, of typ &c{cancel} &7om te annuleren."
+    optional_hint: "&7Typ je antwoord in de chat, typ &e{skip} &7om het leeg te laten, of typ &c{cancel} &7om te annuleren."
     timed_out: "&cInvoer is verlopen. Probeer het opnieuw."
 
 standing_gui:
