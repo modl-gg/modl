@@ -1,6 +1,6 @@
 # syntax=docker/dockerfile:1
 
-FROM --platform=$BUILDPLATFORM node:26-bookworm AS panel
+FROM --platform=$BUILDPLATFORM node:24-bookworm AS panel
 WORKDIR /workspace
 COPY package.json package-lock.json tsconfig.strict.json ./
 COPY panel/package.json panel/
