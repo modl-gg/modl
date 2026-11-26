@@ -8,6 +8,7 @@ import dev.simplix.cirrus.player.CirrusPlayerWrapper;
 import dev.simplix.cirrus.velocity.wrapper.VelocityPlayerWrapper;
 import gg.modl.minecraft.api.AbstractPlayer;
 import gg.modl.minecraft.core.Platform;
+import gg.modl.minecraft.core.network.ProxyBackend;
 import revxrsal.commands.Lamp;
 import revxrsal.commands.command.CommandActor;
 import revxrsal.commands.command.ExecutableCommand;
@@ -29,6 +30,7 @@ import org.slf4j.Logger;
 import java.util.function.Consumer;
 import java.util.function.Supplier;
 import java.io.File;
+import java.util.ArrayList;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.List;
@@ -170,10 +172,11 @@ public class VelocityPlatform implements Platform {
     }
 
     @Override
-    public Set<String> knownServerNames() {
-        Set<String> names = new LinkedHashSet<>();
-        server.getAllServers().forEach(registered -> names.add(registered.getServerInfo().getName()));
-        return names;
+    public List<ProxyBackend> proxyBackends() {
+        List<ProxyBackend> backends = new ArrayList<>();
+        server.getAllServers().forEach(registered -> backends.add(
+                ProxyBackend.of(registered.getServerInfo().getName(), registered.getServerInfo().getAddress())));
+        return backends;
     }
 
     @Override

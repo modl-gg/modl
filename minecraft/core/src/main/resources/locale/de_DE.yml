@@ -1168,7 +1168,7 @@ help:
       usage: "unmute <spieler>"
       description: "Alle aktiven und wartenden Stummschaltungen begnadigen"
     replay:
-      usage: "replay <status|capture> [spieler]"
+      usage: "replay <status|record|stop|capture> [spieler]"
       description: "Replay-Aufnahmen verwalten"
     modl_reload:
       usage: "modl reload"
@@ -1325,9 +1325,11 @@ network:
 replay:
   usage:
     - "&f/replay status [spieler] &7- Aufnahmestatus prüfen"
+    - "&f/replay record <spieler> &7- Aufnahme eines Spielers starten"
+    - "&f/replay stop <spieler> &7- Mit /replay record gestartete Aufnahme beenden"
     - "&f/replay capture [spieler] &7- Replay aufnehmen und hochladen"
   not_available: "&cReplay-Aufnahme ist auf diesem Server nicht verfügbar."
-  status_recording: "&a{player} wird derzeit aufgenommen"
+  status_recording: "&a{player} wird aufgenommen ({origin}), seit {duration}"
   status_not_recording: "&c{player} wird nicht aufgenommen"
   no_server_connected: "&cKein Server ist verbunden, um ein Replay aufzunehmen."
   no_active_recording: "&cKeine aktive Aufnahme für {player}"
@@ -1338,6 +1340,19 @@ replay:
   click_to_view: "[Replay anzeigen]"
   click_to_view_hover: "Replay-Viewer öffnen"
   console_specify_player: "&cBitte geben Sie einen Spielernamen von der Konsole an."
+  memory: "&7Replay-Speicher: {used} von {limit} MB, Aufnahmen: {recordings}"
+  record_started: "&a{player} wird jetzt aufgenommen"
+  already_recording: "&e{player} wird bereits aufgenommen"
+  record_stopped: "&aAufnahme von {player} beendet"
+  recording_kept: "&cDie Aufnahme von {player} bleibt bestehen ({origin})"
+  player_left: "&c{player} hat den Server verlassen"
+  status_failed: "&cDer Aufnahmestatus von {player} konnte nicht gelesen werden"
+  server_unreachable: "&cDer Server von {player} ist nicht mit modl verbunden."
+  record_failed: "&cDie Aufnahme von {player} konnte nicht geändert werden"
+  origins:
+    auto_record: "automatische Aufnahme"
+    anticheat_flag: "Anticheat-Meldung"
+    staff: "/replay record"
 
 import:
   usage: "Verwendung: /modl import <source>, danach /modl import <source> confirm <widen|skip> <keep|standard>. Außerdem: /modl import status, /modl import cancel."
@@ -1348,6 +1363,7 @@ import:
   source_missing: "Auf diesem Server wurden keine Daten von {source} gefunden. Führe den Befehl auf dem Server aus, der sie hat (in einem Netzwerk auf dem Proxy, auf dem modl läuft)."
   source_locked: "{source} läuft und hält seine Datenbankdatei geöffnet. Entferne seine JAR-Datei (behalte seinen Ordner), starte neu und führe den Befehl erneut aus."
   database_failed: "Die Daten von {source} konnten nicht gelesen werden: {error}"
+  source_reconnect_failed: "Die seit der Vorschau gehaltene Verbindung zu {source} ging verloren und konnte nicht neu geöffnet werden: {error}. Führe /modl import {source_id} erneut aus."
   no_space: "Es ist nicht genug freier Speicherplatz vorhanden, um die Datenbank von {source} zu kopieren: {error}"
   nothing_to_import: "{source} enthält keine Spieler oder Strafen zum Importieren."
   nothing_left: "Mit dieser Auswahl bleibt nichts zum Importieren übrig."

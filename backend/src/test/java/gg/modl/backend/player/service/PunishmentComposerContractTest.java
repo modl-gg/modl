@@ -37,6 +37,7 @@ import gg.modl.backend.player.PlayerService;
 import gg.modl.backend.player.PunishmentStore;
 import gg.modl.backend.player.data.Player;
 import gg.modl.backend.player.data.punishment.Punishment;
+import gg.modl.backend.player.data.punishment.PunishmentPhase;
 import gg.modl.backend.player.data.punishment.PunishmentState;
 import gg.modl.backend.player.data.punishment.PunishmentStatus;
 import gg.modl.backend.player.data.punishment.ResolvedCategory;
@@ -151,8 +152,9 @@ class PunishmentComposerContractTest {
             Instant now = database.clock().instant();
             assertThat(login(database, services, main)).isEmpty();
             assertThat(login(database, services, alt)).isEmpty();
-            assertThat(store.punishments().countActive(now)).isZero();
-            assertThat(store.players().findActiveBanHolders(List.of(main, alt), now)).isEmpty();
+            assertThat(store.punishments().count(PunishmentPhase.ACTIVE, now)).isZero();
+            assertThat(store.punishments().count(PunishmentPhase.UNSTARTED, now)).isZero();
+            assertThat(store.players().findEnforcedBanHolders(List.of(main, alt), now)).isEmpty();
             assertThat(store.punishments().findTicketIdsHeldByActiveOrUnstarted(List.of("REPORT-1"), now)).isEmpty();
             assertThat(store.modifiedAt("PARENTID")).isEqualTo(now);
 
@@ -559,8 +561,10 @@ class PunishmentComposerContractTest {
             });
             assertThat(login(database, services, alt)).singleElement()
                 .satisfies(view -> assertThat(view.category()).isEqualTo("BAN"));
-            assertThat(store.punishments().countActiveByCategory(database.clock().instant()))
-                .containsEntry(ResolvedCategory.BAN, 2L);
+            assertThat(store.punishments().countByCategory(PunishmentPhase.ACTIVE, database.clock().instant()))
+                .containsEntry(ResolvedCategory.BAN, 1L);
+            assertThat(store.punishments().countByCategory(PunishmentPhase.UNSTARTED, database.clock().instant()))
+                .containsEntry(ResolvedCategory.BAN, 1L);
         }
     }
 

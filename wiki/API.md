@@ -20,7 +20,7 @@ The owner creates keys in Panel > Settings > General > Minecraft servers.
 | Server key, "Standalone or proxy" | Add server | Same as the instance key; revocable on its own |
 | Server key, "Behind a proxy" | Add server | Only what a backend server needs: startup, the version check, its own anticheat reports (normal priority, no tags or chat, a replay only of the reported player), replay upload, and confirming a due stat wipe. Anything else answers 403 `SERVER_KEY_SCOPE`. |
 
-- Server keys start with `msk_`, are shown once, stored only as a hash, and can be revoked. At most 256; names are 1 to 64 letters, digits, `.`, `_` or `-`.
+- Server keys start with `msk_`, are shown once, stored only as a hash, and can be revoked. At most 256; names are 1 to 64 letters, digits, `.`, `_`, or `-`.
 - A full key can act as the console or as any staff member and read all player data. Give each script its own "Standalone or proxy" key so you can revoke it alone.
 
 ## Acting as a staff member
@@ -97,15 +97,15 @@ curl -s -X POST "$PANEL/v1/minecraft/players/<uuid>/notes" -H "X-API-Key: $KEY" 
 | `GET /v1/minecraft/tickets?status=&type=&limit=50` | Tickets (limit up to 100) |
 | `GET /v1/minecraft/tickets/<id>` | One ticket |
 | `POST /v1/minecraft/tickets` | Create (`creatorUuid`, `type` such as `support`, `bug`, `player`, `chat`, `subject`, `description`); returns `ticketId`, `publicUrl` |
-| `GET /v1/minecraft/staff/permissions` | Linked staff with ids, roles and permissions |
+| `GET /v1/minecraft/staff/permissions` | Linked staff with ids, roles, and permissions |
 | `GET /v1/minecraft/dashboard/stats` | Counts for a status display |
 | `GET /v1/health` | `{"status":"ok","timestamp":<epoch ms>}` |
 
-Do not call `/players/login`, `/players/disconnect`, `/players/sync`, `/punishments/acknowledge` or `/v2/minecraft/startup`: they change how the panel sees online players and enforcement.
+Do not call `/players/login`, `/players/disconnect`, `/players/sync`, `/punishments/acknowledge`, or `/v2/minecraft/startup`: they change how the panel sees online players and enforcement.
 
 ## Responses and errors
 
-Success bodies carry `"status": 200` and the data. Errors (those from filters, such as 401, 413, 429 and 503, also carry `"success": false`):
+Success bodies carry `"status": 200` and the data. Errors (those from filters, such as 401, 413, 429, and 503, also carry `"success": false`):
 
 ```json
 {"status":403,"error":"You do not have permission to do this","message":"You do not have permission to do this","code":"PERMISSION_DENIED"}

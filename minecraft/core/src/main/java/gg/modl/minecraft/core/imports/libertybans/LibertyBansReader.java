@@ -316,6 +316,11 @@ final class LibertyBansReader implements SourceReader {
     }
 
     @Override
+    public boolean isReusable() {
+        return session.isReusable();
+    }
+
+    @Override
     public void cancelRunning() {
         session.cancelRunning();
     }

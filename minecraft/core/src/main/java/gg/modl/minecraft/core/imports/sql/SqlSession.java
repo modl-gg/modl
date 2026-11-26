@@ -15,12 +15,13 @@ import java.util.Map;
 
 public final class SqlSession implements AutoCloseable {
     private static final int FETCH_SIZE = 500;
+    private static final int VALIDATION_TIMEOUT_SECONDS = 2;
 
     private final Connection connection;
     private final SqlDialect dialect;
     private final Release release;
     private final Map<String, List<String>> columnsByTable = new HashMap<>();
-    private volatile @Nullable PreparedStatement running;
+    private final CancellableQueries queries = new CancellableQueries();
     private @Nullable List<String> tables;
 
     private SqlSession(Connection connection, SqlDialect dialect, Release release) {
@@ -69,15 +70,10 @@ public final class SqlSession implements AutoCloseable {
     }
 
     public void query(String sql, Binder binder, RowReader reader) throws SQLException {
+        queries.requireActive();
         try (PreparedStatement statement = connection.prepareStatement(sql)) {
             statement.setFetchSize(FETCH_SIZE);
-            binder.bind(statement);
-            running = statement;
-            try (ResultSet row = statement.executeQuery()) {
-                while (row.next()) reader.read(row);
-            } finally {
-                running = null;
-            }
+            queries.read(statement, binder, reader);
         }
     }
 
@@ -86,8 +82,9 @@ public final class SqlSession implements AutoCloseable {
     }
 
     public void execute(String sql) throws SQLException {
+        queries.requireActive();
         try (Statement statement = connection.createStatement()) {
-            statement.execute(sql);
+            queries.execute(statement, sql);
         }
     }
 
@@ -111,13 +108,12 @@ public final class SqlSession implements AutoCloseable {
     }
 
     public Cursor cursor(String sql) throws SQLException {
+        queries.requireActive();
         PreparedStatement statement = connection.prepareStatement(sql, ResultSet.TYPE_FORWARD_ONLY, ResultSet.CONCUR_READ_ONLY);
         try {
             statement.setFetchSize(FETCH_SIZE);
-            running = statement;
-            return new Cursor(statement, statement.executeQuery());
+            return new Cursor(statement, queries.open(statement));
         } catch (SQLException | RuntimeException failure) {
-            running = null;
             statement.close();
             throw failure;
         }
@@ -171,14 +167,17 @@ public final class SqlSession implements AutoCloseable {
         return pattern.replace(escape, escape + escape).replace("_", escape + "_").replace("%", escape + "%");
     }
 
-    public void cancelRunning() {
-        PreparedStatement statement = running;
-        if (statement == null) return;
+    public boolean isReusable() {
+        if (queries.isCancelled()) return false;
         try {
-            statement.cancel();
-        } catch (SQLException alreadyDone) {
-            running = null;
+            return connection.isValid(VALIDATION_TIMEOUT_SECONDS);
+        } catch (SQLException | RuntimeException | AbstractMethodError invalid) {
+            return false;
         }
+    }
+
+    public void cancelRunning() {
+        queries.cancel();
     }
 
     @Override
@@ -186,7 +185,7 @@ public final class SqlSession implements AutoCloseable {
         try {
             release.release();
         } catch (SQLException | RuntimeException ignored) {
-            running = null;
+            queries.finished();
         }
     }
 
@@ -212,6 +211,7 @@ public final class SqlSession implements AutoCloseable {
         }
 
         public boolean next() throws SQLException {
+            queries.requireActive();
             return row.next();
         }
 
@@ -221,7 +221,7 @@ public final class SqlSession implements AutoCloseable {
 
         @Override
         public void close() throws SQLException {
-            running = null;
+            queries.finished();
             try {
                 row.close();
             } finally {

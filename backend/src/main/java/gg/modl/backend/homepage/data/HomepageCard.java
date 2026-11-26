@@ -26,8 +26,6 @@ public class HomepageCard {
 
     private @Nullable String actionUrl;
 
-    private @Nullable String actionButtonText;
-
     private @Nullable String categoryId;
 
     private @Nullable String backgroundColor;

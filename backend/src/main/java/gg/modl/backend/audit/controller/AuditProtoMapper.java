@@ -71,7 +71,7 @@ final class AuditProtoMapper {
                     .setType(stringValue(punishment.type()))
                     .setReason(stringValue(punishment.reason()))
                     .setDuration(stringValue(punishment.duration()))
-                    .setActive(punishment.active())
+                    .setPhase(toProto(punishment.phase()))
                     .setRolledBack(punishment.rolledBack());
             setTimestamp(detail::setIssued, punishment.issued());
             if (punishment.effectiveCategory() != null) {
@@ -127,6 +127,7 @@ final class AuditProtoMapper {
             .setOrdinal(type.ordinal())
             .setName(stringValue(type.name()))
             .setActiveCount(Math.toIntExact(type.activeCount()))
+            .setUnstartedCount(Math.toIntExact(type.unstartedCount()))
             .build()));
         return builder.build();
     }

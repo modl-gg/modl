@@ -15,6 +15,7 @@ import gg.modl.backend.database.backup.TransferReport;
 import gg.modl.backend.database.sql.DatabaseTargetException.Problem;
 import gg.modl.backend.database.sql.TargetInspection.Contents;
 import gg.modl.backend.support.sql.DialectTarget;
+import gg.modl.backend.support.sql.ExternalDialectTest;
 import gg.modl.backend.support.sql.SqlTestDatabase;
 import gg.modl.backend.support.sql.TestDialects;
 import java.nio.file.Path;
@@ -27,8 +28,6 @@ import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 class CopyTargetContractTest {
     private static final String KEY = "storage-signing-key-of-this-installation";
@@ -36,8 +35,7 @@ class CopyTargetContractTest {
     @TempDir
     Path directory;
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void anEmptyDatabaseIsReadyAndTheProbeLeavesNothingBehind(DialectTarget target) throws Exception {
         SqlDatabaseProperties external = TestDialects.freshDatabase(target);
 
@@ -52,8 +50,7 @@ class CopyTargetContractTest {
         assertThat(tables(external)).isEmpty();
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void tablesLeftByAnInterruptedProbeAreRemovedByTheNextOne(DialectTarget target) throws Exception {
         SqlDatabaseProperties external = TestDialects.freshDatabase(target);
         try (Connection connection = ConnectionCheck.connect(external); Statement statement = connection.createStatement()) {
@@ -68,8 +65,7 @@ class CopyTargetContractTest {
         assertThat(tables(external)).isEmpty();
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void aCopyHoldsEveryRowAndIsRecognisedAsThisInstallation(DialectTarget target) throws Exception {
         Map<String, List<String>> saved = seedBuiltIn();
         SqlDatabaseProperties external = TestDialects.freshDatabase(target);
@@ -88,8 +84,7 @@ class CopyTargetContractTest {
         }
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void theBuiltInDatabaseIsATargetForMovingBack(DialectTarget target) throws Exception {
         Map<String, List<String>> saved = seedBuiltIn();
         SqlDatabaseProperties external = TestDialects.freshDatabase(target);
@@ -111,8 +106,7 @@ class CopyTargetContractTest {
         }
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void aDatabaseAnotherServerUsesIsInUse(DialectTarget target) {
         SqlDatabaseProperties external = TestDialects.freshDatabase(target);
         try (SqlTestDatabase running = SqlTestDatabase.start(target, dataDirectory("running").root(), external, WriteAttemptHook.NONE)) {
@@ -121,8 +115,7 @@ class CopyTargetContractTest {
         }
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void aWrongPasswordIsASignInFailure(DialectTarget target) {
         SqlDatabaseProperties external = TestDialects.freshDatabase(target);
         SqlDatabaseProperties wrong = new SqlDatabaseProperties(external.externalUrl().orElseThrow(), external.username(), "wrong",

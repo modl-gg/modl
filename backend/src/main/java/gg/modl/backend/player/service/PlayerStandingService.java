@@ -28,7 +28,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class PlayerStandingService {
     private static final int PUNISHMENT_LIMIT = 14;
-    private static final int KICK_ORDINAL = 0;
     private static final String OTHER_CATEGORY = "OTHER";
     private static final Comparator<Punishment> NEWEST_FIRST =
         Comparator.comparing(Punishment::getIssued).thenComparing(Punishment::getId).reversed();
@@ -115,7 +114,7 @@ public class PlayerStandingService {
 
     private static boolean isKick(Punishment punishment, PunishmentTypeLookup types) {
         PunishmentType type = types.live(punishment.getTypeOrdinal());
-        return punishment.getTypeOrdinal() == KICK_ORDINAL || (type != null && type.isKick());
+        return punishment.getTypeOrdinal() == Punishment.KICK_TYPE_ORDINAL || (type != null && type.isKick());
     }
 
     @Nullable

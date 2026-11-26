@@ -98,7 +98,7 @@ public record DatabaseConnection(
 
     private static String requireDatabase(String database) {
         if (!DATABASE_NAME.matcher(database).matches()) {
-            throw new IllegalArgumentException("Enter a database name of at most 64 letters, digits, _, $ or -");
+            throw new IllegalArgumentException("Enter a database name of at most 64 letters, digits, _, $, or -");
         }
         return database;
     }

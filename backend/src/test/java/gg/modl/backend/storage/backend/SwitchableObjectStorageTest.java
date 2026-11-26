@@ -3,8 +3,10 @@ package gg.modl.backend.storage.backend;
 import static gg.modl.backend.storage.backend.StorageTestBackends.put;
 import static gg.modl.backend.storage.backend.StorageTestBackends.read;
 import static org.assertj.core.api.Assertions.assertThat;
+import static org.assertj.core.api.Assertions.assertThatThrownBy;
 
 import gg.modl.backend.storage.ListedObject;
+import gg.modl.backend.storage.StorageFolders;
 import gg.modl.backend.storage.StorageNamespace;
 import gg.modl.backend.storage.StorageType;
 import gg.modl.backend.storage.local.LocalObjectStorage;
@@ -42,6 +44,16 @@ class SwitchableObjectStorageTest {
 
         assertThat(source.exists(NEW_KEY)).isTrue();
         assertThat(storage.writesToLocalDisk()).isTrue();
+    }
+
+    @Test
+    void aReplayHasNoPublicStorageUrlOnAnyBackend() {
+        String replay = StorageNamespace.KEY_PREFIX + StorageFolders.REPLAYS + "/r1.modlreplay";
+
+        assertThatThrownBy(() -> storage.publicUrl(replay)).isInstanceOf(IllegalArgumentException.class);
+        storage.use(new StorageRoute.Migrating(StorageType.LOCAL, source, StorageType.S3, target));
+        assertThatThrownBy(() -> storage.publicUrl(replay)).isInstanceOf(IllegalArgumentException.class);
+        assertThat(storage.publicUrl(NEW_KEY)).endsWith(NEW_KEY);
     }
 
     @Test

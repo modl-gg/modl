@@ -45,6 +45,8 @@ export const PERMISSIONS = {
   TICKET_MANAGE: 'ticket.manage',
   TICKET_MANAGE_TAGS: 'ticket.manage.tags',
   TICKET_MANAGE_HIDE: 'ticket.manage.hide',
+
+  REPLAY_SHARE: 'replay.share',
 } as const;
 
 export const PUNISHMENT_APPLY_PREFIX = 'punishment.apply.';

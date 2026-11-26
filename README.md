@@ -1,6 +1,6 @@
 # modl
 
-Self-hosted moderation and support panel for Minecraft servers: punishments, reports, tickets, appeals, a knowledgebase, alt detection and replays. Staff work in a web panel; the modl plugin enforces everything on Paper, Folia, Spigot, Velocity and BungeeCord.
+Self-hosted moderation and support panel for Minecraft servers: punishments, reports, tickets, appeals, a knowledgebase, alt detection, and replays. Staff work in a web panel; the modl plugin enforces everything on Paper, Folia, Spigot, Velocity, and BungeeCord.
 
 Documentation: the [wiki](https://github.com/modl-gg/modl/wiki).
 
@@ -15,9 +15,9 @@ From the [releases page](https://github.com/modl-gg/modl/releases):
 
 ## Quick start
 
-Needs Java 21 and 2 GB of heap where the panel runs, and [PacketEvents](https://modrinth.com/plugin/packetevents) on every Paper, Folia and Spigot server ([Requirements](https://github.com/modl-gg/modl/wiki/Requirements)).
+Needs Java 21 and 2 GB of heap where the panel runs, and [PacketEvents](https://modrinth.com/plugin/packetevents) on every Paper, Folia, and Spigot server ([Requirements](https://github.com/modl-gg/modl/wiki/Requirements)).
 
-- One server: put PacketEvents and `modl-3.0.0.jar` in `plugins/`, give the panel its own open port (8080 by default), start the server and open the `/setup` address from the console ([Single Server](https://github.com/modl-gg/modl/wiki/Single-Server)).
+- One server: put PacketEvents and `modl-3.0.0.jar` in `plugins/`, give the panel its own open port (8080 by default), start the server, and open the `/setup` address from the console ([Single Server](https://github.com/modl-gg/modl/wiki/Single-Server)).
 - A network: install the plugin on the proxy, which runs the panel, then give each backend server its own key ([Proxy Network](https://github.com/modl-gg/modl/wiki/Proxy-Network)).
 - Docker or a standalone jar: [Separate Panel](https://github.com/modl-gg/modl/wiki/Separate-Panel).
 
@@ -38,7 +38,7 @@ npm ci
 ./gradlew dist
 ```
 
-This writes `dist/modl-3.0.0.jar`, `dist/modl-embedded-3.0.0.zip` and `dist/modl-server-3.0.0.jar`. The panel's source code link points to the commit it was built from (`MODL_SOURCE_COMMIT`, else the git HEAD; Docker builds have no git, so pass `--build-arg MODL_SOURCE_COMMIT=<sha>`, or set `MODL_SOURCE_COMMIT` for the compose build). A fork sets `MODL_SOURCE_REPOSITORY` to its repository URL the same way (default `https://github.com/modl-gg/modl`; GitHub Actions builds pass their own repository). A plugin jar you built accepts only the zip from the same build: put it in `plugins/modl/server/` before the first start. Docker image: `docker build -t modl-selfhost .`, or `docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build`.
+This writes `dist/modl-3.0.0.jar`, `dist/modl-embedded-3.0.0.zip`, and `dist/modl-server-3.0.0.jar`. The panel's source code link points to the commit it was built from (`MODL_SOURCE_COMMIT`, else the git HEAD; Docker builds have no git, so pass `--build-arg MODL_SOURCE_COMMIT=<sha>`, or set `MODL_SOURCE_COMMIT` for the compose build). A fork sets `MODL_SOURCE_REPOSITORY` to its repository URL the same way (default `https://github.com/modl-gg/modl`; GitHub Actions builds pass their own repository). A plugin jar you built accepts only the zip from the same build: put it in `plugins/modl/server/` before the first start. Docker image: `docker build -t modl-selfhost .`, or `docker compose -f docker-compose.yml -f docker-compose.build.yml up -d --build`.
 
 ## License
 

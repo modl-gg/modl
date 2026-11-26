@@ -12,7 +12,7 @@ import gg.modl.backend.dashboard.repository.StaffIdentity;
 import gg.modl.backend.infrastructure.util.DateRangeUtil;
 import gg.modl.backend.infrastructure.util.UuidUtils;
 import gg.modl.backend.player.data.punishment.Punishment;
-import gg.modl.backend.player.data.punishment.PunishmentState;
+import gg.modl.backend.player.data.punishment.PunishmentPhase;
 import gg.modl.backend.player.data.punishment.ResolvedCategory;
 import gg.modl.backend.player.repository.IssuerMatch;
 import gg.modl.backend.player.repository.PunishmentRecord;
@@ -64,7 +64,7 @@ public class DashboardService {
     private final Clock clock;
 
     public MinecraftDashboardStatsResponse getMinecraftStats(Server server) {
-        Map<ResolvedCategory, Long> active = punishmentRepository.countActiveByCategory(clock.instant());
+        Map<ResolvedCategory, Long> active = punishmentRepository.countByCategory(PunishmentPhase.ACTIVE, clock.instant());
         return new MinecraftDashboardStatsResponse(
             dashboardRepository.countUnresolvedReports(),
             dashboardRepository.countUnresolvedTickets(),
@@ -91,7 +91,7 @@ public class DashboardService {
             dashboardRepository.countTicketsByStatus(TicketStatus.OPEN),
             dashboardRepository.countPlayers(),
             dashboardRepository.countPunishments(),
-            punishmentRepository.countActive(now),
+            punishmentRepository.count(PunishmentPhase.ACTIVE, now),
             staffService.countStaffIncludingSuperAdmin(server),
             PercentChange.between(
                 dashboardRepository.countTicketsCreatedBetween(previousStart, windowStart),
@@ -145,7 +145,7 @@ public class DashboardService {
             Objects.requireNonNullElse(punishment.data().reason(), ""),
             PunishmentMapper.resolveIssuer(punishment.getIssuerId(), punishment.getIssuerName(), staffNames),
             punishment.getIssued(),
-            !PunishmentState.activeUntil(punishment).isBefore(now));
+            PunishmentPhase.of(punishment, now) == PunishmentPhase.ACTIVE);
     }
 
     public List<ActivityItemResponse> getRecentActivity(Server server, String staffEmail, int limit, int days) {

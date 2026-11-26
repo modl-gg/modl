@@ -51,6 +51,42 @@ class ConnectionConfigLoaderTest {
     }
 
     @Test
+    void theTunnelListensOnThisMachineAndTrustsItsLocalAgentByDefault() throws IOException {
+        TempConfigs.write(dataFolder.resolve(ConnectionConfig.FILE_NAME),
+                "mode: embedded", "embedded:", "  bind-address: \"0.0.0.0\"", "  public-url: \"https://panel.example.com\"",
+                "  trust-proxy-headers: false", "  trusted-proxy: \"private\"",
+                "  tunnel:", "    provider: \"cloudflare\"", "    token: \"eyJhIjoiYSIsInQiOiJ0IiwicyI6InMifQ==\"");
+
+        EmbeddedSettings embedded = loader(PlatformType.SPIGOT, ProxyForwarding.NONE).load().getEmbedded();
+
+        assertEquals("127.0.0.1", embedded.getBindAddress());
+        assertTrue(embedded.isTrustProxyHeaders());
+        assertTrue(embedded.trustsOnlyLoopbackProxies());
+        assertTrue(embedded.bind().isLoopback());
+        assertFalse(embedded.toString().contains("eyJhIjoiYSIsInQiOiJ0IiwicyI6InMifQ=="));
+    }
+
+    @Test
+    void anotherBindAddressWinsOverTheTunnelDefault() throws IOException {
+        TempConfigs.write(dataFolder.resolve(ConnectionConfig.FILE_NAME),
+                "mode: embedded", "embedded:", "  bind-address: \"10.0.0.5\"", "  public-url: \"https://panel.example.com\"",
+                "  tunnel:", "    provider: \"cloudflare\"", "    token: \"token\"");
+
+        assertEquals("10.0.0.5", loader(PlatformType.SPIGOT, ProxyForwarding.NONE).load().getEmbedded().getBindAddress());
+    }
+
+    @Test
+    void anUnknownTunnelProviderIsRefused() throws IOException {
+        TempConfigs.write(dataFolder.resolve(ConnectionConfig.FILE_NAME),
+                "mode: embedded", "embedded:", "  public-url: \"https://panel.example.com\"",
+                "  tunnel:", "    provider: \"ngrok\"", "    token: \"token\"");
+
+        assertTrue(assertThrows(ConnectionConfigException.class,
+                () -> loader(PlatformType.SPIGOT, ProxyForwarding.NONE).load()).getMessage()
+                .contains("embedded.tunnel.provider must be cloudflare or empty"));
+    }
+
+    @Test
     void firstStartBehindAProxyWritesBehindProxyModeAndStartsWithoutAKey() throws IOException {
         ConnectionConfig config = loader(PlatformType.SPIGOT, ProxyForwarding.BUNGEECORD).load();
 

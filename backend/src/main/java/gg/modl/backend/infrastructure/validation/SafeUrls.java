@@ -37,6 +37,20 @@ public final class SafeUrls {
         }
     }
 
+    public static boolean isAbsoluteWebUrl(String url) {
+        if (url.isEmpty() || url.chars().anyMatch(character -> Character.isWhitespace(character) || Character.isISOControl(character))) {
+            return false;
+        }
+        try {
+            URI uri = new URI(url);
+            String scheme = uri.getScheme();
+            return (HTTP_SCHEME.equalsIgnoreCase(scheme) || HTTPS_SCHEME.equalsIgnoreCase(scheme))
+                && uri.getHost() != null && !uri.getHost().isEmpty() && uri.getRawUserInfo() == null;
+        } catch (URISyntaxException e) {
+            return false;
+        }
+    }
+
     public static void requireSafe(@Nullable String url, String errorMessage) {
         if (!isSafe(url)) {
             throw new ValidationException(errorMessage);

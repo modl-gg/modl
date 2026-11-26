@@ -7,7 +7,7 @@ import gg.modl.backend.auth.controller.PanelAccountController;
 import gg.modl.backend.auth.controller.PanelSignInSettingsController;
 import gg.modl.backend.auth.controller.PanelStaffSecurityController;
 import gg.modl.backend.dashboard.controller.DashboardController;
-import gg.modl.backend.homepage.controller.PanelHomepageCardController;
+import gg.modl.backend.homepage.controller.PanelHomepageSettingsController;
 import gg.modl.backend.hostedimport.controller.PanelHostedImportController;
 import gg.modl.backend.instance.setup.PanelSetupController;
 import gg.modl.backend.knowledgebase.controller.PanelKnowledgebaseController;
@@ -15,6 +15,8 @@ import gg.modl.backend.limits.controller.PanelRetentionLimitsController;
 import gg.modl.backend.log.controller.PanelLogController;
 import gg.modl.backend.player.controller.PanelPlayerController;
 import gg.modl.backend.replay.controller.PanelReplayController;
+import gg.modl.backend.replay.controller.PanelReplaySettingsController;
+import gg.modl.backend.replay.controller.PanelReplayShareController;
 import gg.modl.backend.role.controller.PanelRoleController;
 import gg.modl.backend.settings.controller.PanelAiSettingsController;
 import gg.modl.backend.settings.controller.PanelAiStatusController;
@@ -53,11 +55,13 @@ public final class PanelHandlerMappingTestSupport {
         AuditController.class,
         PanelLogController.class,
         PanelReplayController.class,
+        PanelReplayShareController.class,
+        PanelReplaySettingsController.class,
         PanelPlayerController.class,
         PanelTicketController.class,
         TicketSubscriptionController.class,
         PanelAppealController.class,
-        PanelHomepageCardController.class,
+        PanelHomepageSettingsController.class,
         PanelKnowledgebaseController.class,
         PanelMediaController.class,
         PanelSettingsController.class,

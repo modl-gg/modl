@@ -51,7 +51,7 @@ public final class SqlTestDatabase implements AutoCloseable {
     }
 
     public static SqlTestDatabase start(DialectTarget target, Path dataDirectory, WriteAttemptHook attemptHook) {
-        SqlDatabaseProperties ownDatabase = TestDialects.freshDatabase(target);
+        SqlDatabaseProperties ownDatabase = SchemaTemplate.migratedCopy(target);
         return start(target, dataDirectory, ownDatabase, attemptHook, () -> TestDialects.drop(target, ownDatabase));
     }
 

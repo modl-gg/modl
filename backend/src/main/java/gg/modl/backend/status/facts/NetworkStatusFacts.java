@@ -9,6 +9,8 @@ import gg.modl.backend.status.StatusContributor;
 import gg.modl.backend.status.StatusFact;
 import gg.modl.backend.status.StatusItem;
 import gg.modl.backend.status.StatusSection;
+import gg.modl.backend.tunnel.TunnelStatus;
+import gg.modl.backend.tunnel.TunnelState;
 import java.util.List;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
@@ -18,14 +20,17 @@ public class NetworkStatusFacts implements StatusContributor {
     private final PublicUrls publicUrls;
     private final InstanceProperties instanceProperties;
     private final PanelReachabilityCheck reachability;
+    private final TunnelStatus tunnel;
     private final String bindAddress;
     private final int port;
 
     public NetworkStatusFacts(PublicUrls publicUrls, InstanceProperties instanceProperties, PanelReachabilityCheck reachability,
-                              @Value("${server.address:0.0.0.0}") String bindAddress, @Value("${server.port:8080}") int port) {
+                              TunnelStatus tunnel, @Value("${server.address:0.0.0.0}") String bindAddress,
+                              @Value("${server.port:8080}") int port) {
         this.publicUrls = publicUrls;
         this.instanceProperties = instanceProperties;
         this.reachability = reachability;
+        this.tunnel = tunnel;
         this.bindAddress = bindAddress;
         this.port = port;
     }
@@ -41,8 +46,19 @@ public class NetworkStatusFacts implements StatusContributor {
             panelUrl(),
             StatusItem.LISTEN_PORT.ok(bindAddress + ":" + port),
             StatusItem.PROXY_HEADERS.ok(StatusFormats.yesNo(instanceProperties.trustsProxyHeaders())),
-            reachabilityFact(reachability.latest())
+            reachabilityFact(reachability.latest()),
+            tunnelFact(tunnel.state(), tunnel.enabled() ? tunnel.address() : "")
         );
+    }
+
+    private static StatusFact tunnelFact(TunnelState state, String address) {
+        return switch (state.phase()) {
+            case OFF -> StatusItem.TUNNEL.ok("off");
+            case CONNECTED -> StatusItem.TUNNEL.ok("connected, " + address);
+            case CONNECTING -> StatusItem.TUNNEL.ok("connecting, " + address);
+            case NOT_CONNECTED -> StatusItem.TUNNEL.warning("not connected, " + address);
+            case UNAVAILABLE -> StatusItem.TUNNEL.problem("cannot start: " + state.problem());
+        };
     }
 
     private StatusFact panelUrl() {

@@ -85,7 +85,7 @@ public final class SqliteFile {
     public void requirePlainSchema() {
         try (Connection connection = snapshots.getConnection()) {
             if (statements.number(connection, SCHEMA_OBJECTS_THAT_CAN_RUN_CODE) > 0) {
-                throw new DatabaseToolException("The database file holds triggers, views or virtual tables, which a modl database never has");
+                throw new DatabaseToolException("The database file holds triggers, views, or virtual tables, which a modl database never has");
             }
         } catch (SQLException e) {
             throw failedTo("read the schema of the database file", e);

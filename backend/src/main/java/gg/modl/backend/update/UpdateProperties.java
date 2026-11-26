@@ -71,7 +71,7 @@ public record UpdateProperties(
         String scheme = uri.getScheme();
         if (uri.getHost() == null || uri.getRawQuery() != null || uri.getRawFragment() != null || uri.getRawUserInfo() != null
             || !("https".equals(scheme) || "http".equals(scheme))) {
-            throw new IllegalArgumentException(setting + " must be an http or https URL without credentials, query or fragment: "
+            throw new IllegalArgumentException(setting + " must be an http or https URL without credentials, query, or fragment: "
                 + url);
         }
     }

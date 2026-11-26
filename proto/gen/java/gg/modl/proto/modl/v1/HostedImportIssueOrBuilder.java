@@ -11,16 +11,15 @@ public interface HostedImportIssueOrBuilder extends
     com.google.protobuf.MessageOrBuilder {
 
   /**
-   * <code>string code = 1 [json_name = "code"];</code>
+   * <code>.modl.v1.HostedImportIssueCode code = 5 [json_name = "code"];</code>
+   * @return The enum numeric value on the wire for code.
+   */
+  int getCodeValue();
+  /**
+   * <code>.modl.v1.HostedImportIssueCode code = 5 [json_name = "code"];</code>
    * @return The code.
    */
-  java.lang.String getCode();
-  /**
-   * <code>string code = 1 [json_name = "code"];</code>
-   * @return The bytes for code.
-   */
-  com.google.protobuf.ByteString
-      getCodeBytes();
+  gg.modl.proto.modl.v1.HostedImportIssueCode getCode();
 
   /**
    * <code>.modl.v1.HostedImportSeverity severity = 2 [json_name = "severity"];</code>

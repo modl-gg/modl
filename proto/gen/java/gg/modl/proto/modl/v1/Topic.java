@@ -119,6 +119,10 @@ public enum Topic
    * <code>TOPIC_NETWORK_ROSTER = 28;</code>
    */
   TOPIC_NETWORK_ROSTER(28),
+  /**
+   * <code>TOPIC_MINECRAFT_FEATURE_SETTINGS = 29;</code>
+   */
+  TOPIC_MINECRAFT_FEATURE_SETTINGS(29),
   UNRECOGNIZED(-1),
   ;
 
@@ -239,6 +243,10 @@ public enum Topic
    * <code>TOPIC_NETWORK_ROSTER = 28;</code>
    */
   public static final int TOPIC_NETWORK_ROSTER_VALUE = 28;
+  /**
+   * <code>TOPIC_MINECRAFT_FEATURE_SETTINGS = 29;</code>
+   */
+  public static final int TOPIC_MINECRAFT_FEATURE_SETTINGS_VALUE = 29;
 
 
   public final int getNumber() {
@@ -292,6 +300,7 @@ public enum Topic
       case 26: return TOPIC_NETWORK_MEMBER_ACTIONS;
       case 27: return TOPIC_NETWORK_REPLAY_CAPTURE;
       case 28: return TOPIC_NETWORK_ROSTER;
+      case 29: return TOPIC_MINECRAFT_FEATURE_SETTINGS;
       default: return null;
     }
   }
@@ -322,7 +331,7 @@ public enum Topic
   }
   public static com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(11);
+    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(13);
   }
 
   private static final Topic[] VALUES = values();

@@ -2,7 +2,7 @@
 
 ## Email (SMTP)
 
-Optional. Without it, login codes, email change and approval codes and invitation links are printed to the console (Minecraft console, `docker compose logs modl` or the jar's terminal), and players reach tickets and appeals only through the private link they get when they create one.
+Optional. Without it, login codes, email change and approval codes, and invitation links are printed to the console (Minecraft console, `docker compose logs modl`, or the jar's terminal), and players reach tickets and appeals only through the private link they get when they create one.
 
 Set it in Panel > Settings > General > Email, which checks the connection and login before saving and can send a test email. Or set `embedded.smtp` (plugin) or `MODL_SMTP_*` ([Configuration](Configuration)); the panel then shows it read-only. Port 465 uses implicit TLS; other ports use STARTTLS unless `starttls` is false. A failed send falls back to the console.
 

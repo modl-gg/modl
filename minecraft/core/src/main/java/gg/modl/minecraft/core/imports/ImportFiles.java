@@ -1,14 +1,14 @@
 package gg.modl.minecraft.core.imports;
 
+import gg.modl.minecraft.core.imports.source.ImportProblem;
 import gg.modl.minecraft.core.imports.support.FileTrees;
+import gg.modl.minecraft.core.util.OwnerOnlyFiles;
 import gg.modl.minecraft.core.util.PluginLogger;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.attribute.PosixFileAttributeView;
-import java.nio.file.attribute.PosixFilePermissions;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.regex.Pattern;
@@ -19,7 +19,6 @@ final class ImportFiles {
     private static final String NATIVE = "native";
     private static final String MARKER_SUFFIX = ".job";
     private static final String EXPORT_SUFFIX = ".json";
-    private static final String OWNER_ONLY_DIRECTORY = "rwx------";
     private static final Pattern JOB_ID = Pattern.compile("[A-Za-z0-9-]{1,36}");
 
     private final Path directory;
@@ -40,10 +39,7 @@ final class ImportFiles {
 
     void begin(String jobId) throws IOException {
         Path marker = marker(jobId);
-        Files.createDirectories(directory);
-        if (Files.getFileStore(directory).supportsFileAttributeView(PosixFileAttributeView.class)) {
-            Files.setPosixFilePermissions(directory, PosixFilePermissions.fromString(OWNER_ONLY_DIRECTORY));
-        }
+        OwnerOnlyFiles.createDirectories(directory);
         Files.write(marker, new byte[0]);
     }
 
@@ -94,7 +90,7 @@ final class ImportFiles {
 
     private static String requireJobId(String jobId) {
         if (jobId == null || !JOB_ID.matcher(jobId).matches()) {
-            throw new ImportFailure(ImportEnding.EXPORT_FAILED, "import.file_failed", "Invalid import job id");
+            throw new ImportFailure(ImportEnding.EXPORT_FAILED, ImportProblem.FILE_FAILED, "Invalid import job id");
         }
         return jobId;
     }

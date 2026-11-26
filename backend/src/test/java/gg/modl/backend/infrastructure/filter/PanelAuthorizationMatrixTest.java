@@ -54,7 +54,7 @@ class PanelAuthorizationMatrixTest {
         "/v1;x=y/panel;a=b/settings/api-keys/panel/reveal"
     );
 
-    private enum Kind { PERMISSION, PERMISSION_PREFIX, PERMIT, PLAYER_READ, APPEAL_REPLY, SUPER_ADMIN }
+    private enum Kind { PERMISSION, PERMISSION_PREFIX, PERMIT, PLAYER_READ, APPEAL_REPLY, REPLAY_SHARING, SUPER_ADMIN }
 
     private record Row(String method, String path, Kind kind, String permission) {
         static Row permission(String method, String path, String permission) {
@@ -75,6 +75,10 @@ class PanelAuthorizationMatrixTest {
 
         static Row appealReply(String path) {
             return new Row("POST", path, Kind.APPEAL_REPLY, null);
+        }
+
+        static Row replaySharing(String method, String path) {
+            return new Row(method, path, Kind.REPLAY_SHARING, null);
         }
 
         static Row superAdminOnly(String method, String path) {
@@ -99,6 +103,11 @@ class PanelAuthorizationMatrixTest {
         Row.superAdminOnly("POST", "/v1/panel/audit/punishments/bulk-set-expiration"),
         Row.permission("GET", "/v1/panel/logs", "admin.audit.view.logs"),
         Row.permission("POST", "/v1/panel/replays/r1/label", "punishment.modify"),
+        Row.playerRead("/v1/panel/replays/r1"),
+        Row.playerRead("/v1/panel/replays/r1/file"),
+        Row.replaySharing("GET", "/v1/panel/replays/r1/shares"),
+        Row.replaySharing("POST", "/v1/panel/replays/r1/shares"),
+        Row.replaySharing("DELETE", "/v1/panel/replays/r1/shares/s1"),
         Row.permission("POST", "/v1/panel/players/uuid1/notes", "player.note"),
         Row.permission("POST", "/v1/panel/players/uuid1/punishments/p1/notes", "punishment.modify.note"),
         Row.permission("POST", "/v1/panel/players/uuid1/punishments/p1/evidence", "punishment.modify.evidence"),
@@ -118,8 +127,6 @@ class PanelAuthorizationMatrixTest {
         Row.permission("POST", "/v1/panel/ticket-subscriptions/updates/u1/read", "ticket.reply.all"),
         Row.permission("GET", "/v1/panel/appeals/a1", "ticket.view.all"),
         Row.permission("PATCH", "/v1/panel/appeals/a1/status", "appeal.modify"),
-        Row.permission("GET", "/v1/panel/homepage-cards", "admin.settings.view.content"),
-        Row.permission("POST", "/v1/panel/homepage-cards", "admin.settings.modify.content"),
         Row.permission("GET", "/v1/panel/knowledgebase/categories", "admin.settings.view.content"),
         Row.permission("POST", "/v1/panel/knowledgebase/categories", "admin.settings.modify.content"),
         Row.permit("GET", "/v1/panel/media/config"),
@@ -132,6 +139,8 @@ class PanelAuthorizationMatrixTest {
         Row.permission("GET", "/v1/panel/settings/public-theme", "admin.settings.view.content"),
         Row.permission("PUT", "/v1/panel/settings/public-theme", "admin.settings.modify.content"),
         Row.permission("POST", "/v1/panel/settings/public-theme/background", "admin.settings.modify.content"),
+        Row.permission("GET", "/v1/panel/settings/homepage", "admin.settings.view.content"),
+        Row.permission("PUT", "/v1/panel/settings/homepage", "admin.settings.modify.content"),
         Row.superAdminOnly("GET", "/v1/panel/settings/public-css"),
         Row.superAdminOnly("PUT", "/v1/panel/settings/public-css"),
         Row.permission("GET", "/v1/panel/settings/ticket-forms", "admin.settings.view"),
@@ -162,6 +171,8 @@ class PanelAuthorizationMatrixTest {
         Row.superAdminOnly("POST", "/v1/panel/settings/database/move"),
         Row.permission("GET", "/v1/panel/settings/replay-retention", "admin.settings.view"),
         Row.superAdminOnly("PATCH", "/v1/panel/settings/replay-retention"),
+        Row.permission("GET", "/v1/panel/settings/replays", "admin.settings.view"),
+        Row.permission("PUT", "/v1/panel/settings/replays", "admin.settings.modify"),
         Row.permission("GET", "/v1/panel/settings/ai-moderation", "admin.settings.view"),
         Row.permission("PATCH", "/v1/panel/settings/ai-moderation", "admin.settings.modify"),
         Row.permission("POST", "/v1/panel/settings/ai-dismiss-suggestion/t1", "admin.settings.modify.punishments"),
@@ -404,6 +415,18 @@ class PanelAuthorizationMatrixTest {
     }
 
     @Test
+    void sharingAReplayNeedsThePlayerViewRuleBesideTheSharePermission() {
+        String shares = "/v1/panel/replays/r1/shares";
+        Assertions.assertFalse(invoke("POST", shares, staffHolding("replay.share")).granted());
+        Assertions.assertFalse(invoke("POST", shares, staffHolding("punishment.view")).granted());
+        Assertions.assertTrue(invoke("POST", shares, mocks -> {
+            authenticateStaff(mocks);
+            lenient().when(mocks.permissionService().hasPermission(mocks.server(), ROLE, "replay.share")).thenReturn(true);
+            lenient().when(mocks.permissionService().hasPermission(mocks.server(), ROLE, "punishment.modify")).thenReturn(true);
+        }).granted());
+    }
+
+    @Test
     void eachPunishmentPermissionOpensOnlyItsOwnPlayerWriteRoute() {
         String player = "/v1/panel/players/uuid1";
         String punishment = player + "/punishments/p1";
@@ -464,6 +487,10 @@ class PanelAuthorizationMatrixTest {
             case PERMIT -> { }
             case PLAYER_READ -> lenient().when(permissionService.hasPermission(mocks.server(), ROLE, "punishment.view")).thenReturn(true);
             case APPEAL_REPLY -> lenient().when(permissionService.hasPermission(mocks.server(), ROLE, "appeal.modify")).thenReturn(true);
+            case REPLAY_SHARING -> {
+                lenient().when(permissionService.hasPermission(mocks.server(), ROLE, "punishment.view")).thenReturn(true);
+                lenient().when(permissionService.hasPermission(mocks.server(), ROLE, "replay.share")).thenReturn(true);
+            }
             case SUPER_ADMIN -> lenient()
                 .when(permissionService.hasPermission(eq(mocks.server()), eq(ROLE), anyString())).thenReturn(true);
         }

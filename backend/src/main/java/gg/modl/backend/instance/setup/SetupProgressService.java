@@ -32,6 +32,7 @@ public class SetupProgressService {
     private final SetupCodeService setupCodeService;
     private final OwnerSignInReadiness ownerSignInReadiness;
     private final List<SetupBlocker> setupBlockers;
+    private final List<SetupStepPrerequisite> prerequisites;
 
     public SetupWizard state(boolean forwardedHeadersSeen) {
         return wizardOf(instanceContext.instance(), forwardedHeadersSeen);
@@ -44,6 +45,7 @@ public class SetupProgressService {
         refuseWhileBlocked(setupBlockers.stream().map(blocker -> blocker.blockingStep(step)).toList());
         Server current = instanceContext.instance();
         requireEarlierStepsDone(current, step);
+        prerequisites.stream().filter(prerequisite -> prerequisite.step() == step).forEach(SetupStepPrerequisite::require);
         boolean finishes = finishesSetup(current, step);
         if (finishes) {
             refuseWhileBlocked(setupBlockers.stream().map(SetupBlocker::blockingCompletion).toList());

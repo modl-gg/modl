@@ -1,6 +1,7 @@
 package gg.modl.minecraft.core.network.link;
 
 import gg.modl.minecraft.core.network.NetworkAvailability;
+import gg.modl.minecraft.core.network.ProxyBackend;
 import gg.modl.minecraft.core.network.SwitchableNetworkAvailability;
 import gg.modl.minecraft.core.realtime.RealtimeConnection;
 import gg.modl.minecraft.core.support.FakePlatform;
@@ -14,8 +15,7 @@ import org.junit.jupiter.api.Test;
 
 import java.util.Arrays;
 import java.util.Collections;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.List;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -26,8 +26,8 @@ class NetworkCoreLinkTest {
     private final SwitchableNetworkAvailability availability = new SwitchableNetworkAvailability(NetworkAvailability.NOWHERE);
     private final FakePlatform platform = new FakePlatform() {
         @Override
-        public Set<String> knownServerNames() {
-            return new HashSet<>(Arrays.asList("lobby", "survival"));
+        public List<ProxyBackend> proxyBackends() {
+            return Arrays.asList(new ProxyBackend("lobby", "10.0.0.2:25565"), new ProxyBackend("survival", "10.0.0.3:25565"));
         }
     };
     private final NetworkCoreLink link = NetworkCoreLink.builder()

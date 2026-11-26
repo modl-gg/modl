@@ -1,7 +1,6 @@
 package gg.modl.backend.replay.service;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
-import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 import static org.mockito.ArgumentMatchers.any;
@@ -24,11 +23,7 @@ import gg.modl.backend.storage.MediaCategory;
 import gg.modl.backend.storage.ObjectStorage;
 import gg.modl.backend.storage.StorageLimitExceededException;
 import gg.modl.backend.storage.StorageLimitPolicy;
-import gg.modl.backend.storage.StoredObject;
 import gg.modl.backend.storage.UploadTarget;
-import gg.modl.backend.storage.service.StorageDeletionService;
-import gg.modl.backend.storage.service.StorageMetadataService;
-import gg.modl.backend.storage.service.UploadConfirmation;
 import gg.modl.backend.support.MutableClock;
 import gg.modl.backend.support.TestServers;
 import jakarta.validation.Validation;
@@ -57,12 +52,6 @@ class ReplayServiceTest {
     private ObjectStorage objectStorage;
 
     @Mock
-    private StorageMetadataService storageMetadataService;
-
-    @Mock
-    private StorageDeletionService storageDeletionService;
-
-    @Mock
     private StorageLimitPolicy storageLimitPolicy;
 
     private static final Instant UPLOAD_DEADLINE = Instant.parse("2026-05-18T12:00:00Z");
@@ -76,9 +65,8 @@ class ReplayServiceTest {
         if (validator == null) {
             validator = Validation.buildDefaultValidatorFactory().getValidator();
         }
-        replayService = new ReplayService(
-            replayRepository, objectStorage, storageMetadataService, storageDeletionService, storageLimitPolicy,
-            new BeanValidationRunner(validator), new ImmediateUnitOfWork(), new MutableClock(NOW));
+        replayService = new ReplayService(replayRepository, objectStorage, storageLimitPolicy, new BeanValidationRunner(validator),
+            new ImmediateUnitOfWork(), new MutableClock(NOW));
         lenient().when(storageLimitPolicy.maxUploadBytes(MediaCategory.REPLAY)).thenReturn(MAX_REPLAY_BYTES);
         lenient().when(storageLimitPolicy.uploadDeadline()).thenReturn(UPLOAD_DEADLINE);
     }
@@ -124,48 +112,6 @@ class ReplayServiceTest {
     }
 
     @Test
-    void confirmUploadMarksReplaysCompleteWhenTheObjectExists() {
-        ReplayDocument pending = pendingReplay();
-        when(replayRepository.findById("replay-1")).thenReturn(Optional.of(pending));
-        when(objectStorage.stat(pending.getStorageKey()))
-            .thenReturn(Optional.of(new StoredObject(pending.getStorageKey(), 1500L, "application/octet-stream", NOW)));
-        when(storageMetadataService.confirmUpload(server, pending.getStorageKey(), 1500L, "application/octet-stream"))
-            .thenReturn(UploadConfirmation.RECORDED);
-
-        assertTrue(replayService.confirmUpload(server, "replay-1"));
-        verify(replayRepository).updateUpload("replay-1", ReplayDocument.STATUS_COMPLETE, 1500L);
-        verify(storageDeletionService, never()).discard(any(), anyString());
-    }
-
-    @Test
-    void confirmUploadAfterTheReservationLapsedDiscardsTheObjectAndFailsTheReplay() {
-        ReplayDocument pending = pendingReplay();
-        when(replayRepository.findById("replay-1")).thenReturn(Optional.of(pending));
-        when(objectStorage.stat(pending.getStorageKey()))
-            .thenReturn(Optional.of(new StoredObject(pending.getStorageKey(), 1500L, "application/octet-stream", NOW)));
-        when(storageMetadataService.confirmUpload(server, pending.getStorageKey(), 1500L, "application/octet-stream"))
-            .thenReturn(UploadConfirmation.EXPIRED);
-
-        assertFalse(replayService.confirmUpload(server, "replay-1"));
-        verify(replayRepository).updateUpload("replay-1", ReplayDocument.STATUS_FAILED, 2048L);
-        verify(storageDeletionService).discard(server, pending.getStorageKey());
-    }
-
-    @Test
-    void confirmUploadCanBeRepeated() {
-        ReplayDocument pending = pendingReplay();
-        when(replayRepository.findById("replay-1")).thenReturn(Optional.of(pending));
-        when(objectStorage.stat(pending.getStorageKey()))
-            .thenReturn(Optional.of(new StoredObject(pending.getStorageKey(), 1500L, "application/octet-stream", NOW)));
-        when(storageMetadataService.confirmUpload(server, pending.getStorageKey(), 1500L, "application/octet-stream"))
-            .thenReturn(UploadConfirmation.ALREADY_RECORDED);
-
-        assertTrue(replayService.confirmUpload(server, "replay-1"));
-        verify(replayRepository).updateUpload("replay-1", ReplayDocument.STATUS_COMPLETE, 1500L);
-        verify(storageDeletionService, never()).discard(any(), anyString());
-    }
-
-    @Test
     void labelsAreSavedOnlyOnCompleteReplays() {
         when(replayRepository.findById("replay-1")).thenReturn(Optional.of(pendingReplay()));
 
@@ -181,16 +127,6 @@ class ReplayServiceTest {
         when(replayRepository.replaceLabels("replay-1", List.of())).thenReturn(Optional.of(complete));
 
         assertEquals(ReplayService.SubmitLabelsResult.OK, replayService.submitLabels(server, "replay-1", List.of()));
-    }
-
-    @Test
-    void confirmUploadMarksReplaysFailedWhenTheObjectIsMissing() {
-        ReplayDocument pending = pendingReplay();
-        when(replayRepository.findById("replay-1")).thenReturn(Optional.of(pending));
-        when(objectStorage.stat(pending.getStorageKey())).thenReturn(Optional.empty());
-
-        assertFalse(replayService.confirmUpload(server, "replay-1"));
-        verify(replayRepository).updateUpload("replay-1", ReplayDocument.STATUS_FAILED, 2048L);
     }
 
     @Test

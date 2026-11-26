@@ -11,6 +11,7 @@ import static gg.modl.backend.database.jooq.Tables.PUNISHMENT_TICKETS;
 import gg.modl.backend.database.ChildRows;
 import gg.modl.backend.database.ColumnLookups;
 import gg.modl.backend.database.ConcurrentUpdateException;
+import gg.modl.backend.database.DerivedColumns;
 import gg.modl.backend.database.InClauseChunks;
 import gg.modl.backend.database.InsertIfAbsent;
 import gg.modl.backend.database.JsonColumns;
@@ -28,6 +29,7 @@ import gg.modl.backend.player.data.punishment.PunishmentEvidence;
 import gg.modl.backend.player.data.punishment.PunishmentIssuerKind;
 import gg.modl.backend.player.data.punishment.PunishmentModification;
 import gg.modl.backend.player.data.punishment.PunishmentNote;
+import gg.modl.backend.player.data.punishment.PunishmentPhase;
 import gg.modl.backend.player.data.punishment.PunishmentState;
 import gg.modl.backend.player.data.punishment.PunishmentStatus;
 import gg.modl.backend.player.data.punishment.ResolvedCategory;
@@ -46,7 +48,9 @@ import org.jspecify.annotations.Nullable;
 import org.jooq.Condition;
 import org.jooq.DSLContext;
 import org.jooq.Field;
+import org.jooq.Name;
 import org.jooq.Record;
+import org.jooq.Select;
 import org.jooq.SelectOnConditionStep;
 import org.jooq.Table;
 import org.jooq.TableField;
@@ -56,6 +60,8 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class JooqPunishmentRepository implements PunishmentRepository {
+    private static final Name LISTED = DSL.name("listed");
+
     private final DSLContext dsl;
     private final UnitOfWork unitOfWork;
     private final InsertIfAbsent insertIfAbsent;
@@ -333,7 +339,7 @@ public class JooqPunishmentRepository implements PunishmentRepository {
                 .from(PUNISHMENT_TICKETS)
                 .join(PUNISHMENTS).on(PUNISHMENTS.ID.eq(PUNISHMENT_TICKETS.PUNISHMENT_ID))
                 .where(PUNISHMENT_TICKETS.TICKET_ID.in(chunk))
-                .and(PunishmentConditions.activeOrUnstartedAt(now))
+                .and(PunishmentConditions.notEnded(now))
                 .fetch(PUNISHMENT_TICKETS.TICKET_ID));
         return Set.copyOf(held);
     }
@@ -370,10 +376,11 @@ public class JooqPunishmentRepository implements PunishmentRepository {
     }
 
     @Override
-    public List<String> pageActiveIdsByTypes(Collection<Integer> typeOrdinals, Instant now, @Nullable String afterId, int limit) {
-        return typeOrdinals.isEmpty()
+    public List<String> pageIdsByTypes(Collection<Integer> typeOrdinals, Collection<PunishmentPhase> phases, Instant now,
+                                       @Nullable String afterId, int limit) {
+        return typeOrdinals.isEmpty() || phases.isEmpty()
             ? List.of()
-            : pageIds(PunishmentConditions.activeAt(now).and(PUNISHMENTS.TYPE_ORDINAL.in(typeOrdinals)), afterId, limit);
+            : pageIds(PunishmentConditions.inAnyPhase(phases, now).and(PUNISHMENTS.TYPE_ORDINAL.in(typeOrdinals)), afterId, limit);
     }
 
     @Override
@@ -398,14 +405,14 @@ public class JooqPunishmentRepository implements PunishmentRepository {
     }
 
     @Override
-    public Map<ResolvedCategory, Long> countActiveByCategory(Instant now) {
+    public Map<ResolvedCategory, Long> countByCategory(PunishmentPhase phase, Instant now) {
         Map<ResolvedCategory, Long> counts = new EnumMap<>(ResolvedCategory.class);
         for (ResolvedCategory category : ResolvedCategory.values()) {
             counts.put(category, 0L);
         }
         dsl.select(PUNISHMENTS.ENFORCEMENT_CATEGORY, DSL.count())
             .from(PUNISHMENTS)
-            .where(PunishmentConditions.activeAt(now))
+            .where(PunishmentConditions.inPhase(phase, now))
             .groupBy(PUNISHMENTS.ENFORCEMENT_CATEGORY)
             .fetch()
             .forEach(row -> counts.put(ResolvedCategory.fromStored(row.value1()), row.value2().longValue()));
@@ -425,23 +432,23 @@ public class JooqPunishmentRepository implements PunishmentRepository {
     }
 
     @Override
-    public long countActive(Instant now) {
+    public long count(PunishmentPhase phase, Instant now) {
         return dsl.selectCount()
             .from(PUNISHMENTS)
-            .where(PunishmentConditions.activeAt(now))
+            .where(PunishmentConditions.inPhase(phase, now))
             .fetchSingle()
             .value1()
             .longValue();
     }
 
     @Override
-    public Map<Integer, Long> countActiveByType(Instant now) {
+    public Map<Integer, Long> countByType(PunishmentPhase phase, Instant now) {
         Field<Integer> count = DSL.count();
         return unitOfWork.report(() -> {
             Map<Integer, Long> counts = new LinkedHashMap<>();
             dsl.select(PUNISHMENTS.TYPE_ORDINAL, count)
                 .from(PUNISHMENTS)
-                .where(PunishmentConditions.activeAt(now))
+                .where(PunishmentConditions.inPhase(phase, now))
                 .groupBy(PUNISHMENTS.TYPE_ORDINAL)
                 .orderBy(PUNISHMENTS.TYPE_ORDINAL)
                 .fetch()
@@ -452,24 +459,44 @@ public class JooqPunishmentRepository implements PunishmentRepository {
 
     @Override
     public PunishmentListPage pageListed(PunishmentListQuery query, Instant now, @Nullable PunishmentListCursor after, int limit) {
-        Field<Long> key = PunishmentListOrder.keyOf(query.sortKey());
-        Field<Long> selectedKey = key.as(PunishmentListOrder.KEY);
         return unitOfWork.report(() -> {
-            List<Record> rows = dsl.select(PUNISHMENTS.fields())
-                .select(selectedKey)
-                .from(PUNISHMENTS)
-                .where(PunishmentConditions.listed(query, now))
-                .and(PunishmentListOrder.after(key, query.ascending(), after))
-                .orderBy(PunishmentListOrder.orderBy(key, query.ascending()))
-                .limit(limit + 1)
-                .fetch();
+            List<Record> rows = listedRows(query, now, after, limit + 1);
             boolean hasMore = rows.size() > limit;
             List<Record> shown = hasMore ? rows.subList(0, limit) : rows;
-            PunishmentListCursor next = hasMore
-                ? new PunishmentListCursor(shown.getLast().get(selectedKey), shown.getLast().get(PUNISHMENTS.ID))
-                : null;
+            PunishmentListCursor next = hasMore ? cursorAfter(shown.getLast()) : null;
             return new PunishmentListPage(recordsOfHeaders(shown.stream().map(row -> row.into(PUNISHMENTS)).toList()), next);
         });
+    }
+
+    private static PunishmentListCursor cursorAfter(Record last) {
+        return new PunishmentListCursor(last.get(PunishmentListOrder.KEY, Long.class), last.get(PUNISHMENTS.ID));
+    }
+
+    private List<Record> listedRows(PunishmentListQuery query, Instant now, @Nullable PunishmentListCursor after, int fetched) {
+        Field<Long> key = PunishmentListOrder.keyOf(query.sortKey());
+        List<Select<Record>> branches = PunishmentConditions.listed(query, now).stream()
+            .map(branch -> listedBranch(branch, key, query.ascending(), after, fetched))
+            .toList();
+        if (branches.size() == 1) {
+            return branches.getFirst().fetch();
+        }
+        Table<Record> merged = branches.stream().reduce(Select::unionAll).orElseThrow().asTable(LISTED);
+        return dsl.selectFrom(merged)
+            .orderBy(PunishmentListOrder.orderBy(DerivedColumns.of(merged, DSL.field(PunishmentListOrder.KEY, Long.class)),
+                DerivedColumns.of(merged, PUNISHMENTS.ID), query.ascending()))
+            .limit(fetched)
+            .fetch();
+    }
+
+    private Select<Record> listedBranch(Condition branch, Field<Long> key, boolean ascending, @Nullable PunishmentListCursor after,
+                                        int fetched) {
+        return dsl.select(PUNISHMENTS.fields())
+            .select(key.as(PunishmentListOrder.KEY))
+            .from(PUNISHMENTS)
+            .where(branch)
+            .and(PunishmentListOrder.after(key, ascending, after))
+            .orderBy(PunishmentListOrder.orderBy(key, ascending))
+            .limit(fetched);
     }
 
     private List<PunishmentRecord> recordsOfHeaders(List<PunishmentsRecord> headers) {

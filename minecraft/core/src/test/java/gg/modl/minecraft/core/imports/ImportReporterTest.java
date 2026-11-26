@@ -37,7 +37,7 @@ class ImportReporterTest {
         reporter.preview(source, inventory, 7, status);
 
         assertEverythingFilled();
-        assertTrue(console.get(0).contains("Example has 2 bans, 1 mutes, 1 warnings, 1 kicks and 1 notes for 3 players."),
+        assertTrue(console.get(0).contains("Example has 2 bans, 1 mutes, 1 warnings, 1 kicks, and 1 notes for 3 players."),
                 console.get(0));
     }
 

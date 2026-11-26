@@ -7,6 +7,7 @@ import gg.modl.backend.database.DataDirectoryProperties;
 import gg.modl.backend.database.WriteAttemptHook;
 import gg.modl.backend.databasemove.repository.JooqDatabaseDepartureRepository;
 import gg.modl.backend.support.sql.DialectTarget;
+import gg.modl.backend.support.sql.ExternalDialectTest;
 import gg.modl.backend.support.sql.SqlTestDatabase;
 import gg.modl.backend.support.sql.TestDialects;
 import java.io.IOException;
@@ -14,14 +15,20 @@ import java.nio.file.Files;
 import java.nio.file.Path;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 class PendingTargetCheckTest {
     private static final String TOKEN = "move-token";
 
     @TempDir
     Path directory;
+
+    @Test
+    void theArrivalWaitOutlastsTheSessionOfACrashedLockHolder() {
+        assertThat(PendingTargetCheck.Outcome.HELD.waitBudget()).isGreaterThan(AdvisoryLockStatements.SESSION_TIMEOUT)
+            .isLessThan(AdvisoryInstanceLock.Timing.DEFAULT.acquireBudget());
+        assertThat(PendingTargetCheck.Outcome.READY.waitBudget()).isZero();
+        assertThat(PendingTargetCheck.Outcome.REFUSED.waitBudget()).isZero();
+    }
 
     @Test
     void aMissingOrUnreadableBuiltInDatabaseIsNotTheCopy() throws IOException {
@@ -53,8 +60,7 @@ class PendingTargetCheckTest {
         }
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void anExternalTargetIsReadyOnlyWhenItIsFreeAndHoldsTheCopy(DialectTarget target) {
         DataDirectoryProperties dataDirectory = new DataDirectoryProperties(directory.toString());
         SqlDatabaseProperties external = TestDialects.freshDatabase(target);
@@ -66,7 +72,7 @@ class PendingTargetCheckTest {
             holder.unitOfWork().write(() -> repository.mark(new DatabaseDeparture(TOKEN, "copy", SqlTestDatabase.START)));
 
             assertThat(PendingTargetCheck.check(external, dataDirectory, TOKEN))
-                .isEqualTo(PendingTargetCheck.Result.retry(PendingTargetCheck.IN_USE));
+                .isEqualTo(PendingTargetCheck.Result.HELD);
         }
 
         assertThat(PendingTargetCheck.check(external, dataDirectory, TOKEN).ready()).isTrue();

@@ -27,8 +27,8 @@ class ImportedUrlsTest {
 
     @BeforeEach
     void setUp() throws IOException {
-        ArchiveIndex index = ImportTestContexts.index(new HostedArchiveFixture().object("evidence/a", "x").object("evidence/b.png", "y"),
-            directory);
+        ArchiveIndex index = ImportTestContexts.index(new HostedArchiveFixture().object("evidence/a", "x").object("evidence/b.png", "y")
+            .object("replays/r.modlreplay", "z"), directory);
         issues = new IssueLog();
         urls = new ImportedUrls(index.manifest(), index.keyPlan(), ImportTestContexts.storage(), issues);
     }
@@ -53,6 +53,15 @@ class ImportedUrlsTest {
         assertThat(urls.rewriteText("https://old-bucket.example.com/" + DOTTED)).isEqualTo("/v1/objects/modl_instance/evidence/b.png");
         String near = "https://old-bucket.example.com/" + DOTTED + "x";
         assertThat(urls.rewriteText(near)).isEqualTo(near);
+    }
+
+    @Test
+    void aReplayObjectIsNeverRewrittenToAStorageUrl() {
+        String replay = HostedArchiveFixture.BASE_URL + HostedArchiveFixture.PREFIX + "replays/r.modlreplay";
+
+        assertThat(urls.rewriteText(replay)).isEqualTo(replay);
+        assertThat(urls.rewriteText("https://old-bucket.example.com/" + HostedArchiveFixture.PREFIX + "replays/r.modlreplay"))
+            .doesNotStartWith("/v1/objects/");
     }
 
     @Test

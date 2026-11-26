@@ -6,6 +6,7 @@ import gg.modl.backend.storage.ListedObject;
 import gg.modl.backend.storage.ObjectStorage;
 import gg.modl.backend.storage.StorageLocation;
 import gg.modl.backend.storage.StorageType;
+import gg.modl.backend.storage.StorageFolders;
 import gg.modl.backend.storage.StoredObject;
 import gg.modl.backend.storage.UploadTarget;
 import java.io.InputStream;
@@ -55,6 +56,9 @@ public class SwitchableObjectStorage implements ObjectStorage, StorageLocation {
 
     @Override
     public String publicUrl(String key) {
+        if (!StorageFolders.servedByStorageUrl(key)) {
+            throw new IllegalArgumentException("Objects under " + StorageFolders.REPLAYS + " have no public storage URL");
+        }
         return holderOf(key).publicUrl(key);
     }
 

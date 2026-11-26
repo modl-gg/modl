@@ -2,6 +2,7 @@ package gg.modl.minecraft.core;
 
 import gg.modl.minecraft.api.http.response.StartupResponse;
 import gg.modl.minecraft.core.boot.BackendSession;
+import gg.modl.minecraft.core.feature.FeatureSettingsChannel;
 import gg.modl.minecraft.core.login.BanEnforcementAcknowledger;
 import gg.modl.minecraft.core.login.InvalidNameNotice;
 import gg.modl.minecraft.core.login.LoginBudget;
@@ -35,6 +36,7 @@ public final class BackendServices {
     private final LoginFlow loginFlow;
     private final PlayerSessionService playerSessionService;
     private final ServerSwitchService serverSwitchService;
+    private final FeatureSettingsChannel featureSettings;
     @Getter(AccessLevel.NONE)
     private final PluginLoader core;
     @Getter(AccessLevel.NONE)
@@ -97,7 +99,13 @@ public final class BackendServices {
         Set<Topic> networkTopics = platform.hostsNetworkMembers()
                 ? RealtimeTopics.coreNetworkTopicsGrantedBy(session.getStartup())
                 : Collections.<Topic>emptySet();
-        this.realtimeConnection = createRealtimeConnection(httpManager, session.getStartup(), syncTopics, networkTopics);
+        Set<Topic> featureTopics = platform.hostsServerFeatures()
+                ? RealtimeTopics.featureTopicsGrantedBy(session.getStartup())
+                : Collections.<Topic>emptySet();
+        this.featureSettings = new FeatureSettingsChannel(logger);
+        this.realtimeConnection = createRealtimeConnection(httpManager, session.getStartup(), syncTopics,
+                RealtimeTopics.union(networkTopics, featureTopics));
+        if (realtimeConnection != null && !featureTopics.isEmpty()) featureSettings.attachTo(realtimeConnection);
         if (realtimeConnection != null) teardown.push("stop the realtime client", realtimeConnection::stop);
         this.networkCoreLink = realtimeConnection != null && !networkTopics.isEmpty()
                 ? NetworkCoreLink.builder()

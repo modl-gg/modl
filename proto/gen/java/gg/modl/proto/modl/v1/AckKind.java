@@ -106,7 +106,7 @@ public enum AckKind
   }
   public static com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(6);
+    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(8);
   }
 
   private static final AckKind[] VALUES = values();

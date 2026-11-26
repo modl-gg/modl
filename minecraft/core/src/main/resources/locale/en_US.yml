@@ -505,7 +505,7 @@ api_errors:
   database_moving: "&cThe moderation system on this server is moving to a new database. Please try again later."
   packetevents_required: "&cThis server cannot accept players until PacketEvents {version} or newer is installed."
   ban_check_failed: "&cUnable to verify ban status. Login temporarily restricted for safety."
-  invalid_name: "&cYour player name is not valid on this server. Names may only use letters, numbers and underscores (up to 16 characters)."
+  invalid_name: "&cYour player name is not valid on this server. Names may only use letters, numbers, and underscores (up to 16 characters)."
   login_check_skipped: "&cYour login could not be checked against this server's bans. Please contact the server staff."
   shortening_needs_pardon: "&cMaking a punishment end earlier needs the permissions to change its duration and to pardon it."
 
@@ -1142,7 +1142,7 @@ help:
       usage: "unmute <player>"
       description: "Pardon every active and queued mute"
     replay:
-      usage: "replay <status|capture> [player]"
+      usage: "replay <status|record|stop|capture> [player]"
       description: "Manage replay recordings"
     modl_reload:
       usage: "modl reload"
@@ -1299,9 +1299,11 @@ network:
 replay:
   usage:
     - "&f/replay status [player] &7- Check recording status"
+    - "&f/replay record <player> &7- Start recording a player"
+    - "&f/replay stop <player> &7- Stop a recording started with /replay record"
     - "&f/replay capture [player] &7- Capture and upload replay"
   not_available: "&cReplay recording is not available on this server."
-  status_recording: "&a{player} is currently being recorded"
+  status_recording: "&a{player} is being recorded ({origin}) for {duration}"
   status_not_recording: "&c{player} is not being recorded"
   no_server_connected: "&cNo server is connected to capture a replay."
   no_active_recording: "&cNo active recording for {player}"
@@ -1312,6 +1314,19 @@ replay:
   click_to_view: "[Click to view replay]"
   click_to_view_hover: "Open replay viewer"
   console_specify_player: "&cSpecify a player name from console."
+  memory: "&7Replay memory: {used} of {limit} MB, recordings: {recordings}"
+  record_started: "&aRecording {player}"
+  already_recording: "&e{player} is already being recorded"
+  record_stopped: "&aStopped recording {player}"
+  recording_kept: "&cThe recording of {player} is kept ({origin})"
+  player_left: "&c{player} left the server"
+  status_failed: "&cCould not read the recording status of {player}"
+  server_unreachable: "&cThe server {player} is on is not connected to modl."
+  record_failed: "&cCould not change the recording of {player}"
+  origins:
+    auto_record: "auto-record"
+    anticheat_flag: "anticheat flag"
+    staff: "/replay record"
 
 standing_gui:
   title: "&fYour Standing"
@@ -1376,10 +1391,11 @@ import:
   detected: "Found here: {detected}. Supported: {supported}."
   nothing_detected: "No data of a supported plugin was found here. Supported: {supported}."
   unknown_source: "{source} is not a supported source. Supported: {supported}."
-  litebans_missing: "LiteBans is not running on this server. Install and enable it here (on the proxy for networks), connected to your LiteBans database, restart and run this again."
+  litebans_missing: "LiteBans is not running on this server. Install and enable it here (on the proxy for networks), connected to your LiteBans database, restart, and run this again."
   source_missing: "No {source} data was found on this server. Run this on the server that has it (on a network, the proxy that runs modl)."
-  source_locked: "{source} is running and keeps its database file open. Remove its jar (keep its folder), restart and run this again."
+  source_locked: "{source} is running and keeps its database file open. Remove its jar (keep its folder), restart, and run this again."
   database_failed: "{source} data could not be read: {error}"
+  source_reconnect_failed: "The connection to {source} kept from the preview was lost and could not be opened again: {error}. Run /modl import {source_id} again."
   no_space: "There is not enough free disk space to copy the {source} database: {error}"
   nothing_to_import: "{source} has no players or punishments to import."
   nothing_left: "Nothing is left to import with these choices."
@@ -1392,7 +1408,7 @@ import:
   confirm_first: "Run /modl import {source_id} first, then confirm within 60 seconds."
   choices_required: "Both choices are required: /modl import {source_id} confirm <widen|skip> <keep|standard>"
   preview:
-    counts: "{source} has {bans} bans, {mutes} mutes, {warnings} warnings, {kicks} kicks and {notes} notes for {players} players."
+    counts: "{source} has {bans} bans, {mutes} mutes, {warnings} warnings, {kicks} kicks, and {notes} notes for {players} players."
     not_imported: "Not imported: {without_account} punishments without a player account."
     scoped: "{ip_wide} IP-wide and {server_scoped} server-scoped punishments. widen: they apply to the account on every server, and IP bans also block its alts. skip: they are left out."
     ip_history: "{old_entries} IP history entries (about {old_megabytes} MB) are older than {days} days. keep: the imported IP history stays. standard: IP history older than {days} days is deleted."
@@ -1443,7 +1459,7 @@ server_features:
       target_offline: "&cTarget is no longer online."
     custody:
       not_saved: "&cStaff mode did not start because your belongings could not be saved safely. You keep everything. Turn staff mode off and ask the server owner to check the console."
-      kept_changing: "&cStaff mode did not start because your inventory kept changing. You keep everything. Turn staff mode off, stand still and try again."
+      kept_changing: "&cStaff mode did not start because your inventory kept changing. You keep everything. Turn staff mode off, stand still, and try again."
       unresolved: "&cStaff mode did not start because an earlier save of your belongings is unresolved. Ask the server owner to check the console, then rejoin."
       held: "&cYour belongings could not be returned yet. modl keeps them safe, and your items stay locked until they are back. Ask the server owner to check the console."
       record_missing: "&cmodl found no saved belongings from your staff mode session. Ask the server owner to check the console."

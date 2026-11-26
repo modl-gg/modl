@@ -15,10 +15,15 @@ import java.io.IOException;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.time.Duration;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicInteger;
+import java.util.concurrent.atomic.AtomicLong;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
+import org.junit.jupiter.params.ParameterizedTest;
+import org.junit.jupiter.params.provider.EnumSource;
+import org.junit.jupiter.params.provider.ValueSource;
 
 class DatabaseSelectionTest {
     private static final DatabaseConnection MYSQL = new DatabaseConnection(DatabaseDialect.MYSQL, "db", 3306, "modl", false, "modl",
@@ -28,7 +33,7 @@ class DatabaseSelectionTest {
     private static final String TOKEN = "move-token";
     private static final PendingTargetProbe REACHABLE = (database, token) -> TOKEN.equals(token) ? Result.READY
         : Result.refused(PendingTargetCheck.NO_COPY);
-    private static final PendingTargetProbe UNREACHABLE = (database, token) -> Result.retry("Connection refused");
+    private static final PendingTargetProbe UNREACHABLE = (database, token) -> Result.unreachable("Connection refused");
     private static final SqlDatabaseProperties CONFIGURED = new SqlDatabaseProperties("jdbc:postgresql://env:5432/modl", "envuser",
         "envpass", 10, null);
 
@@ -139,7 +144,7 @@ class DatabaseSelectionTest {
         Thread.currentThread().interrupt();
         try {
             assertThatThrownBy(() -> DatabaseSelection.resolve(SqlDatabaseProperties.builtIn(), dataDirectory, UNREACHABLE,
-                Duration.ofSeconds(30), new OperatorNotice()))
+                ArrivalWait.atStart(), new OperatorNotice()))
                 .isInstanceOf(IllegalStateException.class)
                 .hasMessageContaining("MySQL at db:3306/modl");
             assertThat(Thread.currentThread().isInterrupted()).isTrue();
@@ -163,7 +168,7 @@ class DatabaseSelectionTest {
         };
 
         DatabaseSelection selection = DatabaseSelection.resolve(SqlDatabaseProperties.builtIn(), dataDirectory, emptied,
-            Duration.ofSeconds(30), new OperatorNotice());
+            new FakeTime().waiting(), new OperatorNotice());
 
         assertThat(attempts).hasValue(1);
         assertThat(selection.effective().dialect()).isEqualTo(DatabaseDialect.SQLITE);
@@ -178,12 +183,12 @@ class DatabaseSelectionTest {
     void aTargetLockedByAnotherServerIsLeftLikeAnUnreachableOne() throws IOException {
         file.write(movedTo(PanelDatabaseChoice.initial(), MYSQL));
 
-        DatabaseSelection selection = resolve(SqlDatabaseProperties.builtIn(), (database, token) -> Result.retry("in use"));
+        DatabaseSelection selection = resolve(SqlDatabaseProperties.builtIn(), (database, token) -> Result.HELD);
 
         assertThat(selection.effective().dialect()).isEqualTo(DatabaseDialect.SQLITE);
         assertThat(file.read().orElseThrow().failure().failure().code()).isEqualTo(DatabaseSelection.NOT_REACHED_CODE);
         assertThat(selection.settleStart()).hasValueSatisfying(report -> assertThat(((StartReport.FellBack) report).reason())
-            .isEqualTo("in use"));
+            .isEqualTo(Result.HELD.reason()));
     }
 
     @Test
@@ -227,12 +232,15 @@ class DatabaseSelectionTest {
     void aDatabaseThatAnswersWithinTheBudgetIsKept() throws IOException {
         file.write(movedTo(PanelDatabaseChoice.initial(), MYSQL));
         AtomicInteger attempts = new AtomicInteger();
-        PendingTargetProbe lateStart = (database, token) -> attempts.incrementAndGet() == 1 ? Result.retry("starting") : Result.READY;
+        PendingTargetProbe lateStart = (database, token) -> attempts.incrementAndGet() == 1 ? Result.unreachable("starting") : Result.READY;
+
+        FakeTime time = new FakeTime();
 
         DatabaseSelection selection = DatabaseSelection.resolve(SqlDatabaseProperties.builtIn(), dataDirectory, lateStart,
-            Duration.ofSeconds(30), new OperatorNotice());
+            time.waiting(), new OperatorNotice());
 
         assertThat(attempts).hasValue(2);
+        assertThat(time.elapsed()).isEqualTo(ArrivalWait.RETRY);
         assertThat(file.read().orElseThrow().pending()).isTrue();
         assertThat(selection.effective().externalUrl()).contains("jdbc:mysql://db:3306/modl");
     }
@@ -287,8 +295,73 @@ class DatabaseSelectionTest {
         assertThat(file.read().orElseThrow().pending()).isTrue();
     }
 
+    @ParameterizedTest
+    @ValueSource(ints = {100, 110, 120})
+    void aLockLeftByACrashedServerIsAwaitedUntilItsSessionTimesOut(int releasedAfterSeconds) throws IOException {
+        file.write(movedTo(PanelDatabaseChoice.initial(), MYSQL));
+        FakeTime time = new FakeTime();
+        Duration released = Duration.ofSeconds(releasedAfterSeconds);
+        PendingTargetProbe heldUntilReleased = (database, token) -> time.elapsed().compareTo(released) < 0 ? Result.HELD : Result.READY;
+
+        DatabaseSelection selection = DatabaseSelection.resolve(SqlDatabaseProperties.builtIn(), dataDirectory, heldUntilReleased,
+            time.waiting(), new OperatorNotice());
+
+        assertThat(selection.adopting()).isTrue();
+        assertThat(selection.effective().externalUrl()).contains("jdbc:mysql://db:3306/modl");
+        assertThat(file.read().orElseThrow().failure()).isNull();
+        assertThat(time.elapsed()).isLessThan(released.plus(ArrivalWait.RETRY));
+    }
+
+    @ParameterizedTest
+    @EnumSource(value = PendingTargetCheck.Outcome.class, names = {"UNREACHABLE", "HELD"})
+    void theStartWaitIsBoundedByTheBudgetOfTheOutcome(PendingTargetCheck.Outcome outcome) throws IOException {
+        file.write(movedTo(PanelDatabaseChoice.initial(), MYSQL));
+        FakeTime time = new FakeTime();
+        AtomicInteger attempts = new AtomicInteger();
+        PendingTargetProbe neverReady = (database, token) -> {
+            attempts.incrementAndGet();
+            return new Result(outcome, "waiting");
+        };
+
+        DatabaseSelection selection = DatabaseSelection.resolve(SqlDatabaseProperties.builtIn(), dataDirectory, neverReady,
+            time.waiting(), new OperatorNotice());
+
+        assertThat(time.elapsed()).isEqualTo(outcome.waitBudget());
+        assertThat(attempts).hasValue((int) (outcome.waitBudget().toSeconds() / ArrivalWait.RETRY.toSeconds()) + 1);
+        assertThat(selection.effective().dialect()).isEqualTo(DatabaseDialect.SQLITE);
+        assertThat(file.read().orElseThrow().failure().failure().code()).isEqualTo(DatabaseSelection.NOT_REACHED_CODE);
+    }
+
+    @Test
+    void anUnreachableTargetStopsWaitingAtItsOwnBudgetEvenAfterALockWasHeld() throws IOException {
+        file.write(movedTo(PanelDatabaseChoice.initial(), MYSQL));
+        FakeTime time = new FakeTime();
+        PendingTargetProbe heldThenGone = (database, token) -> time.elapsed().compareTo(Duration.ofSeconds(100)) < 0 ? Result.HELD
+            : Result.unreachable("Connection refused");
+
+        DatabaseSelection selection = DatabaseSelection.resolve(SqlDatabaseProperties.builtIn(), dataDirectory, heldThenGone,
+            time.waiting(), new OperatorNotice());
+
+        assertThat(time.elapsed()).isEqualTo(Duration.ofSeconds(100));
+        assertThat(selection.settleStart()).hasValueSatisfying(report -> assertThat(((StartReport.FellBack) report).reason())
+            .isEqualTo("Connection refused"));
+    }
+
     private DatabaseSelection resolve(SqlDatabaseProperties configured, PendingTargetProbe probe) {
-        return DatabaseSelection.resolve(configured, dataDirectory, probe, Duration.ZERO, new OperatorNotice());
+        return DatabaseSelection.resolve(configured, dataDirectory, probe, new FakeTime().waiting(), new OperatorNotice());
+    }
+
+    private static final class FakeTime {
+        private final AtomicLong nanos = new AtomicLong(TimeUnit.DAYS.toNanos(1));
+        private final long start = nanos.get();
+
+        ArrivalWait waiting() {
+            return new ArrivalWait(nanos::get, pause -> nanos.addAndGet(pause.toNanos()));
+        }
+
+        Duration elapsed() {
+            return Duration.ofNanos(nanos.get() - start);
+        }
     }
 
     private static PanelDatabaseChoice movedTo(PanelDatabaseChoice from, DatabaseConnection target) {

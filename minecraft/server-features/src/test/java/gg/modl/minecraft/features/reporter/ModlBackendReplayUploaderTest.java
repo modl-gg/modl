@@ -8,16 +8,19 @@ import gg.modl.minecraft.core.boot.VersionMismatchReports;
 import gg.modl.minecraft.core.connection.BackendClientIdentity;
 import gg.modl.minecraft.core.connection.BackendConnections;
 import gg.modl.minecraft.core.connection.BackendEndpoint;
+import gg.modl.minecraft.replay.format.ReplayLimits;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 
 import java.io.File;
 import java.io.IOException;
+import java.io.RandomAccessFile;
 import java.net.InetAddress;
 import java.net.InetSocketAddress;
 import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
@@ -290,6 +293,49 @@ class ModlBackendReplayUploaderTest {
     }
 
     @Test
+    void retriesTheConfirmWhileTheBackendAnswersBusy() throws Exception {
+        HttpServer server = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), 0), 0);
+        AtomicInteger confirmHits = new AtomicInteger();
+        int port = server.getAddress().getPort();
+        String baseUrl = "http://127.0.0.1:" + port;
+
+        server.createContext("/v1/minecraft/replays/upload", exchange -> {
+            byte[] response = ("{\"replayId\":\"replay-busy\",\"uploadUrl\":\"" + baseUrl + "/storage\"}")
+                    .getBytes(StandardCharsets.UTF_8);
+            exchange.sendResponseHeaders(200, response.length);
+            exchange.getResponseBody().write(response);
+            exchange.close();
+        });
+        server.createContext("/storage", exchange -> {
+            exchange.getRequestBody().readAllBytes();
+            exchange.sendResponseHeaders(200, 0);
+            exchange.close();
+        });
+        server.createContext("/v1/minecraft/replays/confirm/replay-busy", exchange -> {
+            if (confirmHits.incrementAndGet() == 1) {
+                byte[] response = "{\"code\":\"REPLAY_VALIDATION_UNAVAILABLE\"}".getBytes(StandardCharsets.UTF_8);
+                exchange.getResponseHeaders().add("Retry-After", "1");
+                exchange.sendResponseHeaders(503, response.length);
+                exchange.getResponseBody().write(response);
+            } else {
+                exchange.sendResponseHeaders(200, 0);
+            }
+            exchange.close();
+        });
+        server.start();
+
+        try {
+            File replayFile = Files.write(tempDir.resolve("busy.replay"), "replay".getBytes(StandardCharsets.UTF_8)).toFile();
+            ModlBackendReplayUploader uploader = ModlBackendReplayUploader.direct(connections(baseUrl, "secret-key"));
+
+            assertEquals("replay-busy", uploader.uploadAsync(replayFile, "1.21.11").get(30, TimeUnit.SECONDS));
+            assertEquals(2, confirmHits.get());
+        } finally {
+            server.stop(0);
+        }
+    }
+
+    @Test
     void rejectsUnsupportedOrMalformedBackendUrlsBeforeUpload() {
         for (String backendUrl : List.of("ftp://example.com", "file:///tmp/backend", "http:///missing-host", "://bad")) {
             IllegalArgumentException exception = assertThrows(IllegalArgumentException.class,
@@ -362,11 +408,12 @@ class ModlBackendReplayUploaderTest {
     }
 
     @Test
-    void closeCompletesQueuedDefaultExecutorUploads() throws Exception {
+    void closeRefusesNewUploadsButLetsAcceptedOnesFinish() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), 0), 0);
         ExecutorService serverExecutor = Executors.newCachedThreadPool();
         CountDownLatch firstUploadStarted = new CountDownLatch(1);
         CountDownLatch releaseFirstUpload = new CountDownLatch(1);
+        AtomicInteger confirmHits = new AtomicInteger();
         String baseUrl = "http://127.0.0.1:" + server.getAddress().getPort();
 
         server.setExecutor(serverExecutor);
@@ -389,6 +436,7 @@ class ModlBackendReplayUploaderTest {
             exchange.close();
         });
         server.createContext("/v1/minecraft/replays/confirm/replay-close", exchange -> {
+            confirmHits.incrementAndGet();
             exchange.sendResponseHeaders(200, 0);
             exchange.close();
         });
@@ -407,10 +455,12 @@ class ModlBackendReplayUploaderTest {
 
             uploader.close();
 
-            assertTrue(queuedUpload.isDone());
-            assertTrue(queuedUpload.isCompletedExceptionally());
-            assertTrue(firstUpload.isDone());
-            assertTrue(firstUpload.isCompletedExceptionally());
+            assertThrows(RejectedExecutionException.class, () -> uploader.uploadAsync(secondReplayFile, "1.21.11"));
+            assertFalse(firstUpload.isDone());
+            releaseFirstUpload.countDown();
+            assertEquals("replay-close", firstUpload.get(5, TimeUnit.SECONDS));
+            assertEquals("replay-close", queuedUpload.get(5, TimeUnit.SECONDS));
+            assertEquals(2, confirmHits.get());
         } finally {
             releaseFirstUpload.countDown();
             server.stop(0);
@@ -420,7 +470,7 @@ class ModlBackendReplayUploaderTest {
     }
 
     @Test
-    void closeSkipsRemainingUploadStagesForInFlightUpload() throws Exception {
+    void anUploadThatOutlivesTheShutdownGraceIsAbandoned() throws Exception {
         HttpServer server = HttpServer.create(new InetSocketAddress(InetAddress.getLoopbackAddress(), 0), 0);
         ExecutorService serverExecutor = Executors.newCachedThreadPool();
         ExecutorService uploadExecutor = Executors.newSingleThreadExecutor();
@@ -460,15 +510,14 @@ class ModlBackendReplayUploaderTest {
 
             CompletableFuture<String> upload = uploader.uploadAsync(replayFile, "1.21.11");
             assertTrue(initStarted.await(5, TimeUnit.SECONDS));
-            uploader.close();
+            uploader.awaitClosed(100, TimeUnit.MILLISECONDS);
+            assertTrue(upload.isCompletedExceptionally());
             releaseInit.countDown();
-
-            assertThrows(ExecutionException.class, () -> upload.get(5, TimeUnit.SECONDS));
 
             awaitExecutorDrained(uploadExecutor);
 
-            assertEquals(0, storageHits.get(), "storage should not be hit after close");
-            assertEquals(0, confirmHits.get(), "confirm should not be hit after close");
+            assertEquals(0, storageHits.get(), "storage should not be hit after the grace ran out");
+            assertEquals(0, confirmHits.get(), "confirm should not be hit after the grace ran out");
         } finally {
             releaseInit.countDown();
             server.stop(0);
@@ -476,6 +525,52 @@ class ModlBackendReplayUploaderTest {
             serverExecutor.awaitTermination(5, TimeUnit.SECONDS);
             uploadExecutor.shutdownNow();
             uploadExecutor.awaitTermination(5, TimeUnit.SECONDS);
+        }
+    }
+
+    @Test
+    void aReplayOverTheUploadLimitIsRefusedBeforeAnyRequest() throws Exception {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        try {
+            File oversized = tempDir.resolve("oversized.modlreplay").toFile();
+            try (RandomAccessFile sparse = new RandomAccessFile(oversized, "rw")) {
+                sparse.setLength(ReplayLimits.MAX_COMPRESSED_BYTES + 1);
+            }
+            ModlBackendReplayUploader uploader = ModlBackendReplayUploader.direct(connections("http://127.0.0.1:9", "secret-key"), executor);
+
+            CompletableFuture<String> upload = uploader.uploadAsync(oversized, "1.21.11");
+
+            ExecutionException failure = assertThrows(ExecutionException.class, () -> upload.get(5, TimeUnit.SECONDS));
+            assertTrue(failure.getCause() instanceof ReplayFileTooLargeException);
+        } finally {
+            executor.shutdownNow();
+            executor.awaitTermination(5, TimeUnit.SECONDS);
+        }
+    }
+
+    @Test
+    void uploadsBeyondTheWaitingLimitAreRefused() throws Exception {
+        ExecutorService executor = Executors.newSingleThreadExecutor();
+        CountDownLatch blocker = new CountDownLatch(1);
+        try {
+            executor.execute(() -> {
+                try {
+                    blocker.await(5, TimeUnit.SECONDS);
+                } catch (InterruptedException e) {
+                    Thread.currentThread().interrupt();
+                }
+            });
+            File replayFile = Files.write(tempDir.resolve("queued.replay"), "replay".getBytes(StandardCharsets.UTF_8)).toFile();
+            ModlBackendReplayUploader uploader = ModlBackendReplayUploader.direct(connections("http://127.0.0.1:9", "secret-key"), executor);
+            List<CompletableFuture<String>> waiting = new ArrayList<>();
+            for (int i = 0; i < ModlBackendReplayUploader.MAX_PENDING_UPLOADS; i++) waiting.add(uploader.uploadAsync(replayFile, "1.21.11"));
+
+            assertThrows(RejectedExecutionException.class, () -> uploader.uploadAsync(replayFile, "1.21.11"));
+            assertEquals(ModlBackendReplayUploader.MAX_PENDING_UPLOADS, waiting.size());
+        } finally {
+            blocker.countDown();
+            executor.shutdownNow();
+            executor.awaitTermination(5, TimeUnit.SECONDS);
         }
     }
 

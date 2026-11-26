@@ -1,5 +1,6 @@
 package gg.modl.backend.storage;
 
+import gg.modl.minecraft.replay.format.ReplayLimits;
 import java.util.Arrays;
 import java.util.List;
 import java.util.Optional;
@@ -13,7 +14,7 @@ public enum MediaCategory {
     APPEAL("appeal", "appeals", Formats.ATTACHMENTS, OptionalLong.empty()),
     ARTICLE("article", "articles", Formats.ARTICLE_MEDIA, OptionalLong.of(50L * Formats.MEGABYTE)),
     SERVER_ICON("server-icon", "server-icons", Formats.IMAGES, OptionalLong.of(10L * Formats.MEGABYTE)),
-    REPLAY("replay", "replays", Set.of("application/octet-stream"), OptionalLong.of(10L * Formats.MEGABYTE));
+    REPLAY("replay", "replays", Set.of("application/octet-stream"), OptionalLong.of(ReplayLimits.MAX_COMPRESSED_BYTES));
 
     private static final String TICKET_ENTITY_FOLDER = "tickets";
 

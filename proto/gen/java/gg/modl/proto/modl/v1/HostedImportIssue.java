@@ -28,7 +28,7 @@ private static final long serialVersionUID = 0L;
     super(builder);
   }
   private HostedImportIssue() {
-    code_ = "";
+    code_ = 0;
     severity_ = 0;
     samples_ =
         com.google.protobuf.LazyStringArrayList.emptyList();
@@ -52,43 +52,22 @@ private static final long serialVersionUID = 0L;
             gg.modl.proto.modl.v1.HostedImportIssue.class, gg.modl.proto.modl.v1.HostedImportIssue.Builder.class);
   }
 
-  public static final int CODE_FIELD_NUMBER = 1;
-  @SuppressWarnings("serial")
-  private volatile java.lang.Object code_ = "";
+  public static final int CODE_FIELD_NUMBER = 5;
+  private int code_ = 0;
   /**
-   * <code>string code = 1 [json_name = "code"];</code>
-   * @return The code.
+   * <code>.modl.v1.HostedImportIssueCode code = 5 [json_name = "code"];</code>
+   * @return The enum numeric value on the wire for code.
    */
-  @java.lang.Override
-  public java.lang.String getCode() {
-    java.lang.Object ref = code_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      code_ = s;
-      return s;
-    }
+  @java.lang.Override public int getCodeValue() {
+    return code_;
   }
   /**
-   * <code>string code = 1 [json_name = "code"];</code>
-   * @return The bytes for code.
+   * <code>.modl.v1.HostedImportIssueCode code = 5 [json_name = "code"];</code>
+   * @return The code.
    */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getCodeBytes() {
-    java.lang.Object ref = code_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      code_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
+  @java.lang.Override public gg.modl.proto.modl.v1.HostedImportIssueCode getCode() {
+    gg.modl.proto.modl.v1.HostedImportIssueCode result = gg.modl.proto.modl.v1.HostedImportIssueCode.forNumber(code_);
+    return result == null ? gg.modl.proto.modl.v1.HostedImportIssueCode.UNRECOGNIZED : result;
   }
 
   public static final int SEVERITY_FIELD_NUMBER = 2;
@@ -171,9 +150,6 @@ private static final long serialVersionUID = 0L;
   @java.lang.Override
   public void writeTo(com.google.protobuf.CodedOutputStream output)
                       throws java.io.IOException {
-    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(code_)) {
-      com.google.protobuf.GeneratedMessage.writeString(output, 1, code_);
-    }
     if (severity_ != gg.modl.proto.modl.v1.HostedImportSeverity.HOSTED_IMPORT_SEVERITY_UNSPECIFIED.getNumber()) {
       output.writeEnum(2, severity_);
     }
@@ -183,13 +159,13 @@ private static final long serialVersionUID = 0L;
     for (int i = 0; i < samples_.size(); i++) {
       com.google.protobuf.GeneratedMessage.writeString(output, 4, samples_.getRaw(i));
     }
+    if (code_ != gg.modl.proto.modl.v1.HostedImportIssueCode.HOSTED_IMPORT_ISSUE_CODE_UNSPECIFIED.getNumber()) {
+      output.writeEnum(5, code_);
+    }
     getUnknownFields().writeTo(output);
   }
   private int computeSerializedSize_0() {
     int size = 0;
-    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(code_)) {
-      size += com.google.protobuf.GeneratedMessage.computeStringSize(1, code_);
-    }
     if (severity_ != gg.modl.proto.modl.v1.HostedImportSeverity.HOSTED_IMPORT_SEVERITY_UNSPECIFIED.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(2, severity_);
@@ -205,6 +181,10 @@ private static final long serialVersionUID = 0L;
       }
       size += dataSize;
       size += 1 * getSamplesList().size();
+    }
+    if (code_ != gg.modl.proto.modl.v1.HostedImportIssueCode.HOSTED_IMPORT_ISSUE_CODE_UNSPECIFIED.getNumber()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(5, code_);
     }
     return size;
   }
@@ -230,8 +210,7 @@ private static final long serialVersionUID = 0L;
     }
     gg.modl.proto.modl.v1.HostedImportIssue other = (gg.modl.proto.modl.v1.HostedImportIssue) obj;
 
-    if (!getCode()
-        .equals(other.getCode())) return false;
+    if (code_ != other.code_) return false;
     if (severity_ != other.severity_) return false;
     if (getCount()
         != other.getCount()) return false;
@@ -249,7 +228,7 @@ private static final long serialVersionUID = 0L;
     int hash = 41;
     hash = (19 * hash) + getDescriptor().hashCode();
     hash = (37 * hash) + CODE_FIELD_NUMBER;
-    hash = (53 * hash) + getCode().hashCode();
+    hash = (53 * hash) + code_;
     hash = (37 * hash) + SEVERITY_FIELD_NUMBER;
     hash = (53 * hash) + severity_;
     hash = (37 * hash) + COUNT_FIELD_NUMBER;
@@ -390,7 +369,7 @@ private static final long serialVersionUID = 0L;
     public Builder clear() {
       super.clear();
       bitField0_ = 0;
-      code_ = "";
+      code_ = 0;
       severity_ = 0;
       count_ = 0L;
       samples_ =
@@ -455,10 +434,8 @@ private static final long serialVersionUID = 0L;
 
     public Builder mergeFrom(gg.modl.proto.modl.v1.HostedImportIssue other) {
       if (other == gg.modl.proto.modl.v1.HostedImportIssue.getDefaultInstance()) return this;
-      if (!other.getCode().isEmpty()) {
-        code_ = other.code_;
-        bitField0_ |= 0x00000001;
-        onChanged();
+      if (other.code_ != 0) {
+        setCodeValue(other.getCodeValue());
       }
       if (other.severity_ != 0) {
         setSeverityValue(other.getSeverityValue());
@@ -500,11 +477,6 @@ private static final long serialVersionUID = 0L;
             case 0:
               done = true;
               break;
-            case 10: {
-              code_ = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000001;
-              break;
-            } // case 10
             case 16: {
               severity_ = input.readEnum();
               bitField0_ |= 0x00000002;
@@ -520,6 +492,11 @@ private static final long serialVersionUID = 0L;
               samples_.add(input.readStringRequireUtf8());
               break;
             } // case 34
+            case 40: {
+              code_ = input.readEnum();
+              bitField0_ |= 0x00000001;
+              break;
+            } // case 40
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -537,74 +514,54 @@ private static final long serialVersionUID = 0L;
     }
     private int bitField0_;
 
-    private java.lang.Object code_ = "";
+    private int code_ = 0;
     /**
-     * <code>string code = 1 [json_name = "code"];</code>
-     * @return The code.
+     * <code>.modl.v1.HostedImportIssueCode code = 5 [json_name = "code"];</code>
+     * @return The enum numeric value on the wire for code.
      */
-    public java.lang.String getCode() {
-      java.lang.Object ref = code_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        code_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
+    @java.lang.Override public int getCodeValue() {
+      return code_;
     }
     /**
-     * <code>string code = 1 [json_name = "code"];</code>
-     * @return The bytes for code.
-     */
-    public com.google.protobuf.ByteString
-        getCodeBytes() {
-      java.lang.Object ref = code_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        code_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string code = 1 [json_name = "code"];</code>
-     * @param value The code to set.
+     * <code>.modl.v1.HostedImportIssueCode code = 5 [json_name = "code"];</code>
+     * @param value The enum numeric value on the wire for code to set.
      * @return This builder for chaining.
      */
-    public Builder setCode(
-        java.lang.String value) {
-      java.util.Objects.requireNonNull(value);
+    public Builder setCodeValue(int value) {
       code_ = value;
       bitField0_ |= 0x00000001;
       onChanged();
       return this;
     }
     /**
-     * <code>string code = 1 [json_name = "code"];</code>
+     * <code>.modl.v1.HostedImportIssueCode code = 5 [json_name = "code"];</code>
+     * @return The code.
+     */
+    @java.lang.Override
+    public gg.modl.proto.modl.v1.HostedImportIssueCode getCode() {
+      gg.modl.proto.modl.v1.HostedImportIssueCode result = gg.modl.proto.modl.v1.HostedImportIssueCode.forNumber(code_);
+      return result == null ? gg.modl.proto.modl.v1.HostedImportIssueCode.UNRECOGNIZED : result;
+    }
+    /**
+     * <code>.modl.v1.HostedImportIssueCode code = 5 [json_name = "code"];</code>
+     * @param value The code to set.
+     * @throws IllegalArgumentException if UNRECOGNIZED is provided.
+     * @return This builder for chaining.
+     */
+    public Builder setCode(gg.modl.proto.modl.v1.HostedImportIssueCode value) {
+      java.util.Objects.requireNonNull(value);
+      bitField0_ |= 0x00000001;
+      code_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.modl.v1.HostedImportIssueCode code = 5 [json_name = "code"];</code>
      * @return This builder for chaining.
      */
     public Builder clearCode() {
-      code_ = getDefaultInstance().getCode();
       bitField0_ = (bitField0_ & ~0x00000001);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string code = 1 [json_name = "code"];</code>
-     * @param value The bytes for code to set.
-     * @return This builder for chaining.
-     */
-    public Builder setCodeBytes(
-        com.google.protobuf.ByteString value) {
-      java.util.Objects.requireNonNull(value);
-      checkByteStringIsUtf8(value);
-      code_ = value;
-      bitField0_ |= 0x00000001;
+      code_ = 0;
       onChanged();
       return this;
     }

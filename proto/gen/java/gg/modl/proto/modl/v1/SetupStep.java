@@ -59,6 +59,10 @@ public enum SetupStep
    * <code>SETUP_STEP_PLAYER_ADDRESSES = 11;</code>
    */
   SETUP_STEP_PLAYER_ADDRESSES(11),
+  /**
+   * <code>SETUP_STEP_REPLAYS = 12;</code>
+   */
+  SETUP_STEP_REPLAYS(12),
   UNRECOGNIZED(-1),
   ;
 
@@ -119,6 +123,10 @@ public enum SetupStep
    * <code>SETUP_STEP_PLAYER_ADDRESSES = 11;</code>
    */
   public static final int SETUP_STEP_PLAYER_ADDRESSES_VALUE = 11;
+  /**
+   * <code>SETUP_STEP_REPLAYS = 12;</code>
+   */
+  public static final int SETUP_STEP_REPLAYS_VALUE = 12;
 
 
   public final int getNumber() {
@@ -157,6 +165,7 @@ public enum SetupStep
       case 9: return SETUP_STEP_CONTENT;
       case 10: return SETUP_STEP_IMPORT;
       case 11: return SETUP_STEP_PLAYER_ADDRESSES;
+      case 12: return SETUP_STEP_REPLAYS;
       default: return null;
     }
   }

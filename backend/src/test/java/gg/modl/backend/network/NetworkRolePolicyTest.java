@@ -33,6 +33,6 @@ class NetworkRolePolicyTest {
             .contains(Topic.TOPIC_MINECRAFT_STAFF_NOTIFICATIONS)
             .doesNotContain(Topic.TOPIC_MINECRAFT_PRESENCE, Topic.TOPIC_MINECRAFT_STAT_WIPES, Topic.TOPIC_NETWORK_MODERATION);
         assertThat(NetworkRolePolicy.topicsFor(ServerRole.SERVER_ROLE_MEMBER))
-            .containsExactly(Topic.TOPIC_NETWORK_MODERATION, Topic.TOPIC_NETWORK_REPLAY_CAPTURE);
+            .containsExactly(Topic.TOPIC_NETWORK_MODERATION, Topic.TOPIC_NETWORK_REPLAY_CAPTURE, Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS);
     }
 }

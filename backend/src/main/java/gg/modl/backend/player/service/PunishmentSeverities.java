@@ -22,7 +22,7 @@ final class PunishmentSeverities {
             return;
         }
         if (!(severity instanceof String text) || !ACCEPTED.contains(text.toLowerCase(Locale.ROOT))) {
-            throw new ValidationException("severity must be lenient, regular, severe or single", "INVALID_ARGUMENT");
+            throw new ValidationException("severity must be lenient, regular, severe, or single", "INVALID_ARGUMENT");
         }
     }
 }

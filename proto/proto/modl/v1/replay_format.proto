@@ -1,0 +1,442 @@
+syntax = "proto3";
+package modl.v1;
+
+message ReplayFrame {
+  oneof frame {
+    ReplayHeader header = 1;
+    ReplayStringTable strings = 2;
+    ReplayBlockPalette block_palette = 3;
+    ReplayWorldSection section = 4;
+    ReplayBlockEntity block_entity = 5;
+    ReplayKeyframe keyframe = 6;
+    ReplayEventBatch events = 7;
+    ReplayEnd end = 8;
+  }
+}
+
+message ReplayHeader {
+  uint32 format_version = 1;
+  string replay_id = 2;
+  string minecraft_version = 3;
+  uint32 protocol_version = 4;
+  uint32 data_version = 5;
+  string server_software = 6;
+  string recorder_version = 7;
+  int64 window_start_epoch_ms = 8;
+  uint32 duration_ms = 9;
+  string target_uuid = 10;
+  string target_name = 11;
+  int32 target_entity_id = 12;
+  ReplayDimension dimension = 13;
+  uint32 radius_blocks = 14;
+  bool hardcore = 15;
+  bool light_recorded = 16;
+  string capture_reason = 17;
+}
+
+message ReplayDimension {
+  uint32 world = 1;
+  string key = 2;
+  string world_name = 3;
+  sint32 min_y = 4;
+  uint32 height = 5;
+  bool has_sky_light = 6;
+}
+
+message ReplayStringTable {
+  repeated string values = 1;
+}
+
+message ReplayBlockPalette {
+  repeated ReplayBlockState states = 1;
+}
+
+message ReplayBlockState {
+  string name = 1;
+  repeated ReplayBlockProperty properties = 2;
+}
+
+message ReplayBlockProperty {
+  string name = 1;
+  string value = 2;
+}
+
+message ReplayWorldSection {
+  uint32 world = 1;
+  sint32 x = 2;
+  sint32 y = 3;
+  sint32 z = 4;
+  repeated uint32 states = 5;
+  bytes sky_light = 6;
+  bytes block_light = 7;
+  repeated uint32 biomes = 8;
+}
+
+message ReplayBlockEntity {
+  uint32 world = 1;
+  sint32 x = 2;
+  sint32 y = 3;
+  sint32 z = 4;
+  uint32 type = 5;
+  repeated string front_text = 6;
+  repeated string back_text = 7;
+  string skin_hash = 8;
+}
+
+message ReplayPosition {
+  sint64 x = 1;
+  sint64 y = 2;
+  sint64 z = 3;
+}
+
+message ReplayItemStack {
+  uint32 item = 1;
+  uint32 count = 2;
+  bool enchanted = 3;
+  repeated ReplayEnchantment enchantments = 4;
+  optional uint32 dye_color = 5;
+  string custom_name = 6;
+  uint32 damage = 7;
+  uint32 max_damage = 8;
+}
+
+message ReplayEnchantment {
+  uint32 key = 1;
+  uint32 level = 2;
+}
+
+message ReplayPlayerInfo {
+  string uuid = 1;
+  string name = 2;
+  string skin_hash = 3;
+  bool slim = 4;
+  ReplayGameMode game_mode = 5;
+  bool listed = 6;
+  string display_name = 7;
+  uint32 latency_ms = 8;
+}
+
+enum ReplayGameMode {
+  REPLAY_GAME_MODE_UNSPECIFIED = 0;
+  REPLAY_GAME_MODE_SURVIVAL = 1;
+  REPLAY_GAME_MODE_CREATIVE = 2;
+  REPLAY_GAME_MODE_ADVENTURE = 3;
+  REPLAY_GAME_MODE_SPECTATOR = 4;
+}
+
+enum ReplayPose {
+  REPLAY_POSE_UNSPECIFIED = 0;
+  REPLAY_POSE_STANDING = 1;
+  REPLAY_POSE_FALL_FLYING = 2;
+  REPLAY_POSE_SLEEPING = 3;
+  REPLAY_POSE_SWIMMING = 4;
+  REPLAY_POSE_SPIN_ATTACK = 5;
+  REPLAY_POSE_CROUCHING = 6;
+  REPLAY_POSE_LONG_JUMPING = 7;
+  REPLAY_POSE_DYING = 8;
+  REPLAY_POSE_SITTING = 9;
+}
+
+message ReplayEntityFlags {
+  bool on_fire = 1;
+  bool sneaking = 2;
+  bool sprinting = 3;
+  bool swimming = 4;
+  bool invisible = 5;
+  bool glowing = 6;
+  bool gliding = 7;
+}
+
+message ReplayEntityMetadata {
+  optional ReplayEntityFlags flags = 1;
+  optional ReplayPose pose = 2;
+  optional ReplayItemStack item = 3;
+  optional string custom_name = 4;
+  optional bool custom_name_visible = 5;
+  optional bool baby = 6;
+  optional float health = 7;
+  optional uint32 block_state = 8;
+  optional uint32 skin_parts = 9;
+  optional bool left_handed = 10;
+  optional uint32 variant = 11;
+}
+
+enum ReplayEquipmentSlot {
+  REPLAY_EQUIPMENT_SLOT_UNSPECIFIED = 0;
+  REPLAY_EQUIPMENT_SLOT_MAIN_HAND = 1;
+  REPLAY_EQUIPMENT_SLOT_OFF_HAND = 2;
+  REPLAY_EQUIPMENT_SLOT_HEAD = 3;
+  REPLAY_EQUIPMENT_SLOT_CHEST = 4;
+  REPLAY_EQUIPMENT_SLOT_LEGS = 5;
+  REPLAY_EQUIPMENT_SLOT_FEET = 6;
+  REPLAY_EQUIPMENT_SLOT_BODY = 7;
+  REPLAY_EQUIPMENT_SLOT_SADDLE = 8;
+}
+
+message ReplayEquipment {
+  ReplayEquipmentSlot slot = 1;
+  optional ReplayItemStack item = 2;
+}
+
+message ReplayEffect {
+  uint32 effect = 1;
+  uint32 amplifier = 2;
+  sint32 duration_ticks = 3;
+  bool ambient = 4;
+  bool hidden = 5;
+}
+
+message ReplayInventorySlot {
+  uint32 slot = 1;
+  optional ReplayItemStack item = 2;
+}
+
+message ReplayEntitySnapshot {
+  int32 entity_id = 1;
+  uint32 type = 2;
+  string uuid = 3;
+  ReplayPosition position = 4;
+  float yaw = 5;
+  float pitch = 6;
+  float head_yaw = 7;
+  bool on_ground = 8;
+  ReplayEntityMetadata metadata = 9;
+  repeated ReplayEquipment equipment = 10;
+  repeated ReplayEffect effects = 11;
+  optional int32 vehicle = 12;
+  uint32 spawn_data = 13;
+}
+
+message ReplayTargetState {
+  float health = 1;
+  float max_health = 2;
+  float absorption = 3;
+  uint32 food = 4;
+  float saturation = 5;
+  uint32 armor = 6;
+  uint32 xp_level = 7;
+  float xp_progress = 8;
+  uint32 xp_total = 9;
+  uint32 selected_slot = 10;
+  ReplayGameMode game_mode = 11;
+  repeated ReplayInventorySlot inventory = 12;
+}
+
+message ReplayKeyframe {
+  uint32 time_ms = 1;
+  uint32 world = 2;
+  repeated ReplayPlayerInfo players = 3;
+  repeated ReplayEntitySnapshot entities = 4;
+  ReplayTargetState target = 5;
+  int64 time_of_day = 6;
+  float rain = 7;
+  float thunder = 8;
+}
+
+message ReplayEventBatch {
+  uint32 start_ms = 1;
+  repeated ReplayEvent events = 2;
+}
+
+message ReplayEvent {
+  uint32 delta_ms = 1;
+  oneof event {
+    ReplayEntitySpawn entity_spawn = 2;
+    ReplayEntityRemove entity_remove = 3;
+    ReplayEntityMove entity_move = 4;
+    ReplayEntityTeleport entity_teleport = 5;
+    ReplayEntityMetadataUpdate entity_metadata = 6;
+    ReplayEntityEquipmentUpdate entity_equipment = 7;
+    ReplayEntityAnimation entity_animation = 8;
+    ReplayEntityHurt entity_hurt = 9;
+    ReplayEntityDeath entity_death = 10;
+    ReplayEntityEffectUpdate entity_effect = 11;
+    ReplayEntityEffectRemove entity_effect_remove = 12;
+    ReplayEntityPassengers entity_passengers = 13;
+    ReplayItemPickup item_pickup = 14;
+    ReplayBlockChange block_change = 15;
+    ReplayBlockBreakProgress block_break_progress = 16;
+    ReplayPlayerInfoUpdate player_info = 17;
+    ReplayPlayerInfoRemove player_info_remove = 18;
+    ReplayChat chat = 19;
+    ReplayTargetHealth target_health = 20;
+    ReplayTargetAttributes target_attributes = 21;
+    ReplayTargetExperience target_experience = 22;
+    ReplayTargetSelectedSlot target_selected_slot = 23;
+    ReplayTargetInventory target_inventory = 24;
+    ReplayTargetGameMode target_game_mode = 25;
+    ReplayDimensionChange dimension_change = 26;
+    ReplayWorldTime world_time = 27;
+    ReplayWeather weather = 28;
+    ReplayBlockEntity block_entity = 29;
+  }
+}
+
+message ReplayEntitySpawn {
+  ReplayEntitySnapshot entity = 1;
+}
+
+message ReplayEntityRemove {
+  repeated int32 entity_ids = 1;
+}
+
+message ReplayEntityMove {
+  int32 entity_id = 1;
+  sint32 dx = 2;
+  sint32 dy = 3;
+  sint32 dz = 4;
+  optional float yaw = 5;
+  optional float pitch = 6;
+  optional float head_yaw = 7;
+  bool on_ground = 8;
+}
+
+message ReplayEntityTeleport {
+  int32 entity_id = 1;
+  ReplayPosition position = 2;
+  float yaw = 3;
+  float pitch = 4;
+  bool on_ground = 5;
+}
+
+message ReplayEntityMetadataUpdate {
+  int32 entity_id = 1;
+  ReplayEntityMetadata metadata = 2;
+}
+
+message ReplayEntityEquipmentUpdate {
+  int32 entity_id = 1;
+  repeated ReplayEquipment equipment = 2;
+}
+
+enum ReplayAnimation {
+  REPLAY_ANIMATION_UNSPECIFIED = 0;
+  REPLAY_ANIMATION_SWING_MAIN_HAND = 1;
+  REPLAY_ANIMATION_SWING_OFF_HAND = 2;
+  REPLAY_ANIMATION_CRITICAL_HIT = 3;
+  REPLAY_ANIMATION_MAGIC_CRITICAL_HIT = 4;
+  REPLAY_ANIMATION_WAKE_UP = 5;
+}
+
+message ReplayEntityAnimation {
+  int32 entity_id = 1;
+  ReplayAnimation animation = 2;
+}
+
+message ReplayEntityHurt {
+  int32 entity_id = 1;
+  optional float yaw = 2;
+}
+
+message ReplayEntityDeath {
+  int32 entity_id = 1;
+}
+
+message ReplayEntityEffectUpdate {
+  int32 entity_id = 1;
+  ReplayEffect effect = 2;
+}
+
+message ReplayEntityEffectRemove {
+  int32 entity_id = 1;
+  uint32 effect = 2;
+}
+
+message ReplayEntityPassengers {
+  int32 vehicle = 1;
+  repeated int32 passengers = 2;
+}
+
+message ReplayItemPickup {
+  int32 collected = 1;
+  int32 collector = 2;
+  uint32 count = 3;
+}
+
+message ReplayBlockChange {
+  sint32 x = 1;
+  sint32 y = 2;
+  sint32 z = 3;
+  uint32 state = 4;
+}
+
+message ReplayBlockBreakProgress {
+  int32 entity_id = 1;
+  sint32 x = 2;
+  sint32 y = 3;
+  sint32 z = 4;
+  sint32 stage = 5;
+}
+
+message ReplayPlayerInfoUpdate {
+  ReplayPlayerInfo player = 1;
+}
+
+message ReplayPlayerInfoRemove {
+  repeated string uuids = 1;
+}
+
+enum ReplayChatKind {
+  REPLAY_CHAT_KIND_UNSPECIFIED = 0;
+  REPLAY_CHAT_KIND_SYSTEM = 1;
+  REPLAY_CHAT_KIND_PLAYER = 2;
+  REPLAY_CHAT_KIND_ACTION_BAR = 3;
+}
+
+message ReplayChat {
+  ReplayChatKind kind = 1;
+  string component_json = 2;
+  string sender_uuid = 3;
+}
+
+message ReplayTargetHealth {
+  float health = 1;
+  uint32 food = 2;
+  float saturation = 3;
+}
+
+message ReplayTargetAttributes {
+  optional float max_health = 1;
+  optional float absorption = 2;
+  optional uint32 armor = 3;
+}
+
+message ReplayTargetExperience {
+  float progress = 1;
+  uint32 level = 2;
+  uint32 total = 3;
+}
+
+message ReplayTargetSelectedSlot {
+  uint32 slot = 1;
+}
+
+message ReplayTargetInventory {
+  bool replace_all = 1;
+  repeated ReplayInventorySlot slots = 2;
+}
+
+message ReplayTargetGameMode {
+  ReplayGameMode game_mode = 1;
+}
+
+message ReplayDimensionChange {
+  ReplayDimension dimension = 1;
+}
+
+message ReplayWorldTime {
+  int64 time_of_day = 1;
+}
+
+message ReplayWeather {
+  float rain = 1;
+  float thunder = 2;
+}
+
+message ReplayEnd {
+  uint32 duration_ms = 1;
+  uint32 event_count = 2;
+  uint32 section_count = 3;
+  uint32 keyframe_count = 4;
+  bool truncated = 5;
+}

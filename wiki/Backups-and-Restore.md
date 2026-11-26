@@ -24,7 +24,7 @@ java -jar modl-server-<version>.jar restore --input modl-backup.zip
 - `backup` may run while modl runs. `--with-storage` adds uploads; it refuses while uploads are being moved or when they are on S3 (back up the bucket with your provider's tools).
 - `restore` needs modl stopped. It checks the whole file, saves a `pre-restore-` backup, then replaces modl's data (only modl's tables on an external database). It accepts nightly and `backup` files from this or an older modl 3 version, into any supported database. `--database-only` skips the uploads (required with S3).
 - If a restore stops part way, run the same restore again before starting modl.
-- Backups leave out the mark of a database move, so a restored backup starts normally. While a move made in the panel waits for its restart, `backup`, `restore` and `copy-database` refuse: start modl once, then run them.
+- Backups leave out the mark of a database move, so a restored backup starts normally. While a move made in the panel waits for its restart, `backup`, `restore`, and `copy-database` refuse: start modl once, then run them.
 - When you copy `storage/` with other tools, copy it whole, including `storage/.meta/`.
 
 ### Plugin with a built-in panel
@@ -35,7 +35,7 @@ Download `modl-server-<version>.jar` of the same version and run it from the Min
 MODL_DATA_DIR=plugins/modl/data java -jar modl-server-<version>.jar backup --output modl-backup.zip --with-storage
 ```
 
-The commands do not read `connection.yml`; they follow the database chosen in the panel. If `embedded.database` is set, also pass `MODL_DATABASE_URL`, `MODL_DATABASE_USERNAME` and `MODL_DATABASE_PASSWORD` (and `MODL_SQLITE_NATIVE_DIR` if set). Stop the Minecraft server before `restore`.
+The commands do not read `connection.yml`; they follow the database chosen in the panel. If `embedded.database` is set, also pass `MODL_DATABASE_URL`, `MODL_DATABASE_USERNAME`, and `MODL_DATABASE_PASSWORD` (and `MODL_SQLITE_NATIVE_DIR` if set). Stop the Minecraft server before `restore`.
 
 ### Docker
 

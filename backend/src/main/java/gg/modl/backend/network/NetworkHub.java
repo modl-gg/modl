@@ -11,6 +11,7 @@ import gg.modl.backend.realtime.transport.RealtimeCloseStatuses;
 import gg.modl.backend.serverkey.ServerKey;
 import gg.modl.backend.serverkey.service.ServerKeyCache;
 import gg.modl.proto.modl.v1.ErrorCode;
+import gg.modl.proto.modl.v1.FeatureSettingsEvent;
 import gg.modl.proto.modl.v1.HostedPlayersEvent;
 import gg.modl.proto.modl.v1.MemberActionKind;
 import gg.modl.proto.modl.v1.MemberActionRequest;
@@ -19,12 +20,14 @@ import gg.modl.proto.modl.v1.MemberActionStatus;
 import gg.modl.proto.modl.v1.ModerationStateEvent;
 import gg.modl.proto.modl.v1.NetworkMember;
 import gg.modl.proto.modl.v1.NetworkRosterEvent;
+import gg.modl.proto.modl.v1.ProxyServersEvent;
 import gg.modl.proto.modl.v1.RealtimeCloseCode;
 import gg.modl.proto.modl.v1.RealtimeEnvelope;
 import gg.modl.proto.modl.v1.RealtimeEnvelope.PayloadCase;
 import gg.modl.proto.modl.v1.ReplayCaptureOutcome;
 import gg.modl.proto.modl.v1.ReplayCaptureRequest;
 import gg.modl.proto.modl.v1.ReplayCaptureResult;
+import gg.modl.proto.modl.v1.ServerFeatureStatus;
 import gg.modl.proto.modl.v1.StatWipePushEvent;
 import gg.modl.proto.modl.v1.Topic;
 import java.time.Clock;
@@ -33,6 +36,8 @@ import java.util.List;
 import java.util.Optional;
 import java.util.Set;
 import java.util.concurrent.atomic.AtomicBoolean;
+import java.util.function.Supplier;
+import java.util.stream.Stream;
 import lombok.extern.slf4j.Slf4j;
 import org.jspecify.annotations.Nullable;
 import org.springframework.context.event.EventListener;
@@ -51,8 +56,11 @@ public class NetworkHub {
         PayloadCase.REPLAY_CAPTURE_RESULT,
         PayloadCase.HOSTED_PLAYERS,
         PayloadCase.NETWORK_ROSTER,
-        PayloadCase.STAT_WIPE_PUSH);
+        PayloadCase.PROXY_SERVERS,
+        PayloadCase.STAT_WIPE_PUSH,
+        PayloadCase.FEATURE_STATUS);
     private static final String MODERATION_SLOT = "moderation:";
+    private static final String FEATURE_SETTINGS_SLOT = "feature-settings";
 
     public enum Admission { ADMITTED, NETWORK_FULL, KEY_REVOKED }
 
@@ -66,6 +74,7 @@ public class NetworkHub {
     private final PendingMemberActions pendingActions;
     private final PendingReplayCaptures pendingCaptures;
     private final ServerKeyCache serverKeys;
+    private final FeatureSettingsSource featureSettings;
     private final Clock clock;
     private final RateBuckets memberActionRate;
     private final RateBuckets proxyCommandRate;
@@ -73,11 +82,16 @@ public class NetworkHub {
     private final RateBuckets hostedPlayersRate;
     private final RateBuckets moderationStateRate;
     private final RateBuckets forwardedActionRate;
+    private final RateBuckets proxyServersRate;
+    private final RateBuckets featureStatusRate;
     private final AtomicBoolean rosterChanged = new AtomicBoolean();
+    private final Object featureSettingsLock = new Object();
+    private @Nullable FeatureSettingsEvent latestFeatureSettings;
 
     public NetworkHub(NetworkSessionRegistry registry, NetworkOutbound outbound, ModerationStateCache moderationStates,
                       HostedPlayerIndex hostedPlayers, PendingMemberActions pendingActions,
-                      PendingReplayCaptures pendingCaptures, ServerKeyCache serverKeys, Clock clock) {
+                      PendingReplayCaptures pendingCaptures, ServerKeyCache serverKeys,
+                      FeatureSettingsSource featureSettings, Clock clock) {
         this.registry = registry;
         this.outbound = outbound;
         this.moderationStates = moderationStates;
@@ -85,6 +99,7 @@ public class NetworkHub {
         this.pendingActions = pendingActions;
         this.pendingCaptures = pendingCaptures;
         this.serverKeys = serverKeys;
+        this.featureSettings = featureSettings;
         this.clock = clock;
         this.memberActionRate = new RateBuckets(NetworkLimits.MEMBER_ACTIONS_PER_SECOND, clock);
         this.proxyCommandRate = new RateBuckets(NetworkLimits.PROXY_COMMANDS_PER_SECOND, clock);
@@ -92,6 +107,8 @@ public class NetworkHub {
         this.hostedPlayersRate = new RateBuckets(NetworkLimits.HOSTED_PLAYER_EVENTS_PER_SECOND, clock);
         this.forwardedActionRate = new RateBuckets(NetworkLimits.FORWARDED_ACTIONS_PER_CORE_PER_SECOND, clock);
         this.moderationStateRate = new RateBuckets(NetworkLimits.MODERATION_STATES_PER_SECOND, clock);
+        this.proxyServersRate = new RateBuckets(NetworkLimits.PROXY_SERVER_REPORTS_PER_SECOND, clock);
+        this.featureStatusRate = new RateBuckets(NetworkLimits.FEATURE_STATUS_REPORTS_PER_SECOND, clock);
     }
 
     public static boolean handles(PayloadCase payloadCase) {
@@ -121,6 +138,7 @@ public class NetworkHub {
     public void welcome(RealtimeConnectionState state) {
         registry.get(state.getConnectionId()).ifPresent(session -> {
             session.welcome();
+            publishFeatureSettings(currentFeatureSettings(), () -> List.of(session));
             if (session.isCore()) {
                 retireSources(moderationStates.coreJoined(session.instanceId(), session.coreIdentity(), session.connectionId()));
                 sendRoster(session, rosterEvent());
@@ -150,8 +168,15 @@ public class NetworkHub {
             case REPLAY_CAPTURE_RESULT -> fromMember(from, () -> acceptCaptureResult(from, envelope.getReplayCaptureResult()));
             case HOSTED_PLAYERS -> acceptHostedPlayers(from, envelope.getHostedPlayers());
             case STAT_WIPE_PUSH -> fromCore(from, () -> acceptStatWipes(envelope.getStatWipePush()));
+            case PROXY_SERVERS -> fromCore(from, () -> acceptProxyServers(from, envelope.getProxyServers()));
+            case FEATURE_STATUS -> acceptFeatureStatus(from, envelope.getFeatureStatus());
             default -> Disposition.FORBIDDEN;
         };
+    }
+
+    @EventListener
+    public void onFeatureSettingsChanged(FeatureSettingsChanged changed) {
+        publishFeatureSettings(changed.settings(), () -> Stream.concat(registry.cores().stream(), registry.members().stream()).toList());
     }
 
     public void revoke(ServerKey key) {
@@ -383,6 +408,52 @@ public class NetworkHub {
         registry.members().forEach(member -> outbound.send(member, payload));
     }
 
+    private void acceptProxyServers(NetworkSession core, ProxyServersEvent event) {
+        if (!isValid(event) || !proxyServersRate.tryAcquire(core.connectionId())) {
+            return;
+        }
+        core.reportProxyServers(event.getServersList().stream()
+            .map(server -> new ProxyServer(server.getName(), server.getAddress()))
+            .toList());
+    }
+
+    private Disposition acceptFeatureStatus(NetworkSession from, ServerFeatureStatus reported) {
+        if (isValid(reported) && featureStatusRate.tryAcquire(from.connectionId())) {
+            from.reportFeatures(FeatureStatus.of(reported));
+        }
+        return Disposition.HANDLED;
+    }
+
+    private @Nullable FeatureSettingsEvent currentFeatureSettings() {
+        try {
+            return featureSettings.current();
+        } catch (RuntimeException e) {
+            log.warn("Could not read the feature settings for a welcomed server, it gets the last known ones", e);
+            return null;
+        }
+    }
+
+    private void publishFeatureSettings(@Nullable FeatureSettingsEvent candidate, Supplier<List<NetworkSession>> targets) {
+        synchronized (featureSettingsLock) {
+            FeatureSettingsEvent known = latestFeatureSettings;
+            FeatureSettingsEvent newest = candidate != null && (known == null || candidate.getVersion() >= known.getVersion())
+                ? candidate
+                : known;
+            if (newest == null) {
+                return;
+            }
+            latestFeatureSettings = newest;
+            byte[] payload = outbound.prepare(RealtimeEnvelope.newBuilder().setFeatureSettings(newest).build());
+            targets.get().forEach(session -> sendFeatureSettings(session, payload));
+        }
+    }
+
+    private void sendFeatureSettings(NetworkSession session, byte[] payload) {
+        if (session.subscribedTo(Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS)) {
+            outbound.sendLatest(session, FEATURE_SETTINGS_SLOT, payload);
+        }
+    }
+
     private void forgetSession(NetworkSession session) {
         memberActionRate.forget(session.connectionId());
         proxyCommandRate.forget(session.connectionId());
@@ -390,6 +461,8 @@ public class NetworkHub {
         hostedPlayersRate.forget(session.connectionId());
         moderationStateRate.forget(session.connectionId());
         forwardedActionRate.forget(session.connectionId());
+        proxyServersRate.forget(session.connectionId());
+        featureStatusRate.forget(session.connectionId());
         if (session.isCore()) {
             moderationStates.coreClosed(session.connectionId());
             hostedPlayers.forget(session.connectionId());

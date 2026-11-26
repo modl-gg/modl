@@ -4,7 +4,8 @@ import static gg.modl.backend.infrastructure.proto.ProtoMapperSupport.nullToEmpt
 
 import gg.modl.backend.infrastructure.exception.ValidationException;
 import gg.modl.backend.replay.data.ReplayLabel;
-import gg.modl.proto.modl.v1.PublicReplayResponse;
+import gg.modl.backend.replay.dto.PanelReplayView;
+import gg.modl.proto.modl.v1.PanelReplayResponse;
 import gg.modl.proto.modl.v1.ReplayLabelResponse;
 import gg.modl.proto.modl.v1.SubmitReplayLabelsRequest;
 import java.util.ArrayList;
@@ -16,15 +17,18 @@ public class ReplayProtoMapper {
 
     private static final int MAX_REPLAY_LABELS = 64;
 
-    public PublicReplayResponse toReplayResponse(gg.modl.backend.replay.dto.PublicReplayResponse replay) {
-        return PublicReplayResponse.newBuilder()
+    public PanelReplayResponse toPanelReplay(PanelReplayView replay) {
+        return PanelReplayResponse.newBuilder()
             .setReplayId(nullToEmpty(replay.replayId()))
             .setMcVersion(nullToEmpty(replay.mcVersion()))
-            .setFileSize(replay.fileSize())
-            .setTimestamp(replay.timestamp())
-            .setReplayUrl(nullToEmpty(replay.replayUrl()))
             .setStatus(nullToEmpty(replay.status()))
+            .setFileSize(replay.fileSize())
+            .setCreatedAt(replay.createdAt())
+            .setTargetUuid(nullToEmpty(replay.targetUuid()))
+            .setTargetName(nullToEmpty(replay.targetName()))
             .setLabeled(replay.labeled())
+            .setReplayUrl(nullToEmpty(replay.replayUrl()))
+            .setFormatVersion(replay.formatVersion() == null ? 0 : replay.formatVersion())
             .build();
     }
 

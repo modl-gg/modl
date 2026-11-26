@@ -29,6 +29,10 @@ const DURATION_UNIT_MS: Readonly<Record<DurationUnit, number>> = {
 const BULK_OPERATIONS: readonly BulkOperation[] = ['pardon', 'set-expiration'];
 const NO_TYPES: readonly AuditPunishmentType[] = [];
 
+function affectedCount(type: AuditPunishmentType): number {
+  return type.activeCount + type.unstartedCount;
+}
+
 export function BulkPunishmentActionsModal() {
   const { t } = useTranslation();
   const { toast } = useToast();
@@ -46,13 +50,13 @@ export function BulkPunishmentActionsModal() {
   const typesQuery = useAuditPunishmentTypes({ enabled: open });
   const isComplete = typesQuery.data !== undefined;
   const isError = typesQuery.isError && !isComplete;
-  const activeTypes = useMemo(
-    () => (typesQuery.data ?? NO_TYPES).filter((type) => type.activeCount > 0),
+  const affectedTypes = useMemo(
+    () => (typesQuery.data ?? NO_TYPES).filter((type) => affectedCount(type) > 0),
     [typesQuery.data],
   );
-  const previewCount = activeTypes
+  const previewCount = affectedTypes
     .filter((type) => selectedTypes.has(type.ordinal))
-    .reduce((sum, type) => sum + type.activeCount, 0);
+    .reduce((sum, type) => sum + affectedCount(type), 0);
 
   const toggleType = (ordinal: number) => {
     setSelectedTypes(prev => {
@@ -150,18 +154,23 @@ export function BulkPunishmentActionsModal() {
               </div>
             ) : !isComplete ? (
               <LoadingSpinner className="h-4 w-4 text-muted-foreground" />
-            ) : activeTypes.length === 0 ? (
+            ) : affectedTypes.length === 0 ? (
               <p className="text-sm text-muted-foreground">{t('audit.bulk.noActivePunishments')}</p>
             ) : (
               <div role="group" aria-labelledby={typesId} className="space-y-2 max-h-40 overflow-auto border rounded p-2">
-                {activeTypes.map(({ ordinal, name, activeCount }) => (
+                {affectedTypes.map(({ ordinal, name, activeCount, unstartedCount }) => (
                   <label key={ordinal} className="flex items-center gap-2 cursor-pointer hover:bg-muted/50 rounded p-1">
                     <Checkbox
                       checked={selectedTypes.has(ordinal)}
                       onCheckedChange={() => { toggleType(ordinal); }}
                     />
                     <span className="text-sm flex-1">{name}</span>
-                    <span className="text-xs text-muted-foreground tabular-nums">{activeCount}</span>
+                    {activeCount > 0 && <span className="text-xs text-muted-foreground tabular-nums">{activeCount}</span>}
+                    {unstartedCount > 0 && (
+                      <span className="text-xs text-muted-foreground tabular-nums">
+                        {t('audit.bulk.unstartedCount', { count: unstartedCount })}
+                      </span>
+                    )}
                   </label>
                 ))}
               </div>

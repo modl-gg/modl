@@ -4,49 +4,51 @@ import lombok.Getter;
 
 @Getter
 public final class SourceException extends Exception {
-    private static final String MISSING = "import.source_missing";
-    private static final String FAILED = "import.database_failed";
-    private static final String LOCKED = "import.source_locked";
-    private static final String NO_SPACE = "import.no_space";
-    private static final String TOO_LARGE = "import.too_many_players";
+    private final ImportProblem problem;
 
-    private final String messageKey;
-
-    private SourceException(String messageKey, String detail, Throwable cause) {
+    private SourceException(ImportProblem problem, String detail, Throwable cause) {
         super(detail, cause);
-        this.messageKey = messageKey;
+        this.problem = problem;
     }
 
-    private SourceException(String messageKey, String detail) {
+    private SourceException(ImportProblem problem, String detail) {
         super(detail);
-        this.messageKey = messageKey;
+        this.problem = problem;
     }
 
-    public static SourceException missing(String messageKey, String detail) {
-        return new SourceException(messageKey, detail);
+    public static SourceException missing(ImportProblem problem, String detail) {
+        return new SourceException(problem, detail);
     }
 
     public static SourceException missing(String detail) {
-        return new SourceException(MISSING, detail);
+        return new SourceException(ImportProblem.SOURCE_MISSING, detail);
     }
 
     public static SourceException failed(Throwable cause) {
-        return new SourceException(FAILED, cause.toString(), cause);
+        return new SourceException(ImportProblem.SOURCE_UNREADABLE, cause.toString(), cause);
     }
 
     public static SourceException failed(String detail) {
-        return new SourceException(FAILED, detail);
+        return new SourceException(ImportProblem.SOURCE_UNREADABLE, detail);
+    }
+
+    public static SourceException cancelled() {
+        return new SourceException(ImportProblem.SOURCE_UNREADABLE, "Cancelled");
     }
 
     public static SourceException noSpace(String detail) {
-        return new SourceException(NO_SPACE, detail);
+        return new SourceException(ImportProblem.NO_SPACE, detail);
     }
 
     public static SourceException tooLarge(String detail) {
-        return new SourceException(TOO_LARGE, detail);
+        return new SourceException(ImportProblem.TOO_MANY_PLAYERS, detail);
     }
 
     public static SourceException locked(String detail) {
-        return new SourceException(LOCKED, detail);
+        return new SourceException(ImportProblem.SOURCE_LOCKED, detail);
+    }
+
+    public String getMessageKey() {
+        return problem.messageKey();
     }
 }

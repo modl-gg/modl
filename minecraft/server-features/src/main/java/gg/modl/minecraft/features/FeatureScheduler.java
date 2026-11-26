@@ -9,7 +9,11 @@ public interface FeatureScheduler extends Scheduler {
 
     void runForPlayer(UUID playerUuid, Runnable task);
 
+    void runForPlayer(UUID playerUuid, Runnable task, Runnable gone);
+
     void runLater(Runnable task, long delayTicks);
+
+    void runAsync(Runnable task);
 
     void runForPlayerLater(UUID playerUuid, Runnable task, long delayTicks);
 

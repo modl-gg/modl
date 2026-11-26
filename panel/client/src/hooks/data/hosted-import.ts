@@ -6,6 +6,7 @@ import {
   HostedImportActionRequestSchema,
   HostedImportPreviewSchema,
   HostedImportReportSchema,
+  HostedImportIssueCode,
   HostedImportRetention,
   HostedImportSeverity,
   HostedImportStaffPageSchema,
@@ -36,6 +37,7 @@ export type ImportPhaseId =
   | 'chatLogs' | 'commandLogs' | 'auditLogs' | 'access' | 'subscriptions' | 'finish';
 export type RetentionChoiceId = 'keepHistory' | 'standard';
 export type IssueSeverityId = 'info' | 'changed' | 'lost' | 'action';
+export type ImportIssueCode = Exclude<HostedImportIssueCode, HostedImportIssueCode.UNSPECIFIED>;
 
 const STATUSES: ReadonlyMap<HostedImportStatus, ImportStatusId> = new Map<HostedImportStatus, ImportStatusId>([
   [HostedImportStatus.UNSPECIFIED, 'none'],
@@ -115,7 +117,7 @@ export interface ImportCount {
 }
 
 export interface ImportIssue {
-  code: string;
+  code: ImportIssueCode;
   severity: IssueSeverityId;
   count: number;
   samples: string[];
@@ -218,8 +220,18 @@ function toCount(count: HostedImportCount): ImportCount {
   };
 }
 
-function toIssue(issue: HostedImportIssue): ImportIssue {
-  return { code: issue.code, severity: SEVERITIES.get(issue.severity) ?? 'info', count: Number(issue.count), samples: [...issue.samples] };
+function isImportIssueCode(code: HostedImportIssueCode): code is ImportIssueCode {
+  return code !== HostedImportIssueCode.UNSPECIFIED && code in HostedImportIssueCode;
+}
+
+function toIssues(issue: HostedImportIssue): ImportIssue[] {
+  const { code } = issue;
+  if (!isImportIssueCode(code)) return [];
+  return [{ code, severity: SEVERITIES.get(issue.severity) ?? 'info', count: Number(issue.count), samples: [...issue.samples] }];
+}
+
+export function issueCodeName(code: ImportIssueCode): string {
+  return HostedImportIssueCode[code];
 }
 
 function toRetention(plan: HostedImportRetentionPlan): RetentionOption | null {
@@ -271,7 +283,7 @@ export function useHostedImportPreview(enabled: boolean) {
         archivedOwnerHasStaffRecord: preview.archivedOwnerHasStaffRecord,
         archivedOwnerMinecraftUsername: preview.archivedOwnerMinecraftUsername,
         counts: preview.counts.map(toCount),
-        issues: preview.issues.map(toIssue),
+        issues: preview.issues.flatMap(toIssues),
         retention: preview.retention.map(toRetention).filter((option): option is RetentionOption => option !== null),
         availableBytes: Number(preview.availableBytes),
         staffTotal: preview.staffTotal,
@@ -318,7 +330,7 @@ export function useHostedImportReport(enabled: boolean) {
         exportedAt: isoOf(report.exportedAt),
         finishedAt: isoOf(report.finishedAt),
         counts: report.counts.map(toCount),
-        issues: report.issues.map(toIssue),
+        issues: report.issues.flatMap(toIssues),
         excluded: report.excludedCollections.map((value) => ({ name: value.name, reason: value.reason, count: Number(value.approximateCount) })),
         skippedObjects: report.skippedObjects.map((value) => ({ reason: value.reason, count: Number(value.approximateCount) })),
         followUps: [...report.followUpCodes],

@@ -49,7 +49,7 @@ class ConnectedServersViewTest {
     void aHubSessionMergesIntoItsStartupRowAndItsLivenessWins() {
         registry.recordStartup("lobby", ServerStartupReport.of("3.0.0", "SPIGOT", "1.21.11", ServerRole.SERVER_ROLE_MEMBER, "lobby"));
         clock.advance(Duration.ofMinutes(9));
-        live.add(new LiveNetworkSession("lobby", "lobby", ServerRole.SERVER_ROLE_MEMBER, "lobby", "3.0.1", 12, START));
+        live.add(new LiveNetworkSession("lobby", "lobby", ServerRole.SERVER_ROLE_MEMBER, "lobby", "3.0.1", 12, START, List.of(), null));
 
         assertThat(servers.connected()).singleElement().satisfies(server -> {
             assertThat(server.platform()).isEqualTo("SPIGOT");
@@ -64,7 +64,7 @@ class ConnectedServersViewTest {
     @Test
     void aHubSessionStaysListedAfterItsStartupRowExpires() {
         registry.recordStartup("lobby", ServerStartupReport.of("3.0.0", "SPIGOT", "1.21.11", ServerRole.SERVER_ROLE_MEMBER, "lobby"));
-        live.add(new LiveNetworkSession("lobby", "lobby", ServerRole.SERVER_ROLE_MEMBER, "lobby", "3.0.0", 3, START));
+        live.add(new LiveNetworkSession("lobby", "lobby", ServerRole.SERVER_ROLE_MEMBER, "lobby", "3.0.0", 3, START, List.of(), null));
         clock.advance(ConnectedServerRegistry.EXPIRY.plusMinutes(1));
 
         assertThat(servers.connected()).singleElement().satisfies(server -> {
@@ -90,7 +90,7 @@ class ConnectedServersViewTest {
     void aCoreKeepsItsSyncedPlayerCount() {
         registry.recordStartup("proxy", ServerStartupReport.of("3.0.0", "VELOCITY", "3.4.0", ServerRole.SERVER_ROLE_CORE, null));
         registry.recordHeartbeat(new ServerHeartbeat("proxy", "Network", 40));
-        live.add(new LiveNetworkSession("proxy", "Network", ServerRole.SERVER_ROLE_CORE, null, "3.0.0", 0, START));
+        live.add(new LiveNetworkSession("proxy", "Network", ServerRole.SERVER_ROLE_CORE, null, "3.0.0", 0, START, List.of(), null));
 
         assertThat(servers.connected()).singleElement().satisfies(server -> {
             assertThat(server.onlinePlayers()).isEqualTo(40);

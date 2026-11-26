@@ -18,6 +18,7 @@ import gg.modl.backend.log.repository.AuditLogRepository;
 import gg.modl.backend.player.data.punishment.Punishment;
 import gg.modl.backend.player.data.punishment.PunishmentModification;
 import gg.modl.backend.player.data.punishment.PunishmentModificationType;
+import gg.modl.backend.player.data.punishment.PunishmentPhase;
 import gg.modl.backend.player.repository.PunishmentRecord;
 import gg.modl.backend.role.service.PermissionService;
 import gg.modl.backend.server.data.Server;
@@ -96,7 +97,7 @@ class StaffPerformanceServiceTest {
     }
 
     @Test
-    void punishmentDetailsAreActiveOnlyWhileEnforced() {
+    void punishmentDetailsCarryTheAuditPhase() {
         long day = Duration.ofDays(1).toMillis();
         Punishment permanent = punishment("permanent", CREATED, null);
         Punishment endingExactlyNow = punishment("ending-now", NOW.minusMillis(day), day);
@@ -118,9 +119,9 @@ class StaffPerformanceServiceTest {
 
         List<StaffDetailsResponse.PunishmentDetail> details = service.getStaffDetails(server, USERNAME, "all").punishments();
 
-        assertThat(details).filteredOn(StaffDetailsResponse.PunishmentDetail::active)
-            .extracting(StaffDetailsResponse.PunishmentDetail::id)
-            .containsExactly("permanent", "ending-now", "never-started");
+        assertThat(details).extracting(StaffDetailsResponse.PunishmentDetail::phase).containsExactly(
+            PunishmentPhase.ACTIVE, PunishmentPhase.ACTIVE, PunishmentPhase.ENDED, PunishmentPhase.ENDED, PunishmentPhase.ENDED,
+            PunishmentPhase.ENDED, PunishmentPhase.UNSTARTED, PunishmentPhase.UNSTARTED, PunishmentPhase.ENDED);
         assertThat(details).filteredOn(StaffDetailsResponse.PunishmentDetail::rolledBack)
             .extracting(StaffDetailsResponse.PunishmentDetail::id)
             .containsExactly("rolled-back");

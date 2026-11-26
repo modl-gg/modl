@@ -24,7 +24,9 @@ import gg.modl.backend.player.data.punishment.PunishmentModificationType;
 import gg.modl.backend.player.data.punishment.PunishmentState;
 import gg.modl.backend.player.repository.JooqPunishmentRepository;
 import gg.modl.backend.replay.data.ReplayDocument;
+import gg.modl.backend.replay.data.ReplayShare;
 import gg.modl.backend.replay.repository.JooqReplayRepository;
+import gg.modl.backend.replay.repository.JooqReplayShareRepository;
 import gg.modl.backend.server.data.Server;
 import gg.modl.backend.settings.data.ReplayRetentionSettings;
 import gg.modl.backend.settings.service.ReplayRetentionSettingsService;
@@ -155,6 +157,30 @@ class ReplayRetentionContractTest {
         }
     }
 
+    @SqlContractTest
+    void aLinkThatNeverExpiresHoldsItsReplayUntilItIsRevoked(DialectTarget target) {
+        try (SqlTestDatabase database = SqlTestDatabase.start(target, dataDirectory, new RetryInjection())) {
+            Seed seed = new Seed(database);
+            seed.replay("shared", EXPIRED);
+            seed.replay("lapsed-link", EXPIRED);
+            JooqReplayShareRepository shares = new JooqReplayShareRepository(database.dsl(), database.childRows());
+            database.unitOfWork().write(() -> {
+                shares.insertWithinLimit(new ReplayShare("s1", "shared", "a".repeat(64), "Moderator", EXPIRED, null, null, 0L, null),
+                    25, 25, EXPIRED);
+                shares.insertWithinLimit(new ReplayShare("s2", "lapsed-link", "b".repeat(64), "Moderator", EXPIRED,
+                    NOW.minusSeconds(1), null, 0L, null), 25, 25, EXPIRED);
+            });
+
+            assertThat(task(database).purge(server, NOW)).isEqualTo(1);
+            assertThat(storedReplayIds(database)).containsExactly("shared");
+
+            database.unitOfWork().write(() -> shares.revoke("s1", NOW));
+            assertThat(task(database).purge(server, NOW)).isEqualTo(1);
+            assertThat(storedReplayIds(database)).isEmpty();
+            assertThat(deletedObjects).containsExactlyInAnyOrder(Seed.keyOf("lapsed-link"), Seed.keyOf("shared"));
+        }
+    }
+
     private ReplayRetentionTask task(SqlTestDatabase database) {
         JooqReplayRepository replays = new JooqReplayRepository(database.dsl(), database.jsonColumns());
         JooqTicketRepository tickets = new JooqTicketRepository(database.dsl(), database.unitOfWork(), database.insertIfAbsent(),
@@ -173,7 +199,8 @@ class ReplayRetentionContractTest {
         ReplayDeletionService deletion =
             new ReplayDeletionService(new ReplayRecordPurger(replays, tickets, database.unitOfWork()), storage);
         List<ReplayHold> holds = List.of(new OpenTicketReplayHold(tickets),
-            new ActivePunishmentReplayHold(tickets, punishments, database.clock()));
+            new ActivePunishmentReplayHold(tickets, punishments, database.clock()),
+            new OpenShareReplayHold(new JooqReplayShareRepository(database.dsl(), database.childRows()), database.clock()));
         return new ReplayRetentionTask(settings, replays, holds, deletion);
     }
 

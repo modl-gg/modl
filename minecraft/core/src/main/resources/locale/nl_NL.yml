@@ -1200,7 +1200,7 @@ help:
       usage: "unmute <speler>"
       description: "Scheld alle actieve en wachtende mutes kwijt"
     replay:
-      usage: "replay <status|capture> [speler]"
+      usage: "replay <status|record|stop|capture> [speler]"
       description: "Beheer replay-opnames"
     modl_reload:
       usage: "modl reload"
@@ -1357,9 +1357,11 @@ network:
 replay:
   usage:
     - "&f/replay status [speler] &7- Controleer opnamestatus"
+    - "&f/replay record <speler> &7- Begin met het opnemen van een speler"
+    - "&f/replay stop <speler> &7- Stop een opname die met /replay record is gestart"
     - "&f/replay capture [speler] &7- Opnemen en uploaden van replay"
   not_available: "&cReplay-opname is niet beschikbaar op deze server."
-  status_recording: "&a{player} wordt momenteel opgenomen"
+  status_recording: "&a{player} wordt opgenomen ({origin}) sinds {duration}"
   status_not_recording: "&c{player} wordt niet opgenomen"
   no_server_connected: "&cEr is geen server verbonden om een replay op te nemen."
   no_active_recording: "&cGeen actieve opname voor {player}"
@@ -1370,6 +1372,19 @@ replay:
   click_to_view: "[Klik om replay te bekijken]"
   click_to_view_hover: "Replay-viewer openen"
   console_specify_player: "&cGeef een spelernaam op vanuit de console."
+  memory: "&7Replay-geheugen: {used} van {limit} MB, opnames: {recordings}"
+  record_started: "&a{player} wordt nu opgenomen"
+  already_recording: "&e{player} wordt al opgenomen"
+  record_stopped: "&aOpname van {player} gestopt"
+  recording_kept: "&cDe opname van {player} blijft doorlopen ({origin})"
+  player_left: "&c{player} heeft de server verlaten"
+  status_failed: "&cDe opnamestatus van {player} kon niet worden gelezen"
+  server_unreachable: "&cDe server van {player} is niet met modl verbonden."
+  record_failed: "&cDe opname van {player} kon niet worden gewijzigd"
+  origins:
+    auto_record: "automatische opname"
+    anticheat_flag: "anticheat-melding"
+    staff: "/replay record"
 
 import:
   usage: "Gebruik: /modl import <source>, daarna /modl import <source> confirm <widen|skip> <keep|standard>. Ook: /modl import status, /modl import cancel."
@@ -1380,6 +1395,7 @@ import:
   source_missing: "Er zijn op deze server geen gegevens van {source} gevonden. Voer dit uit op de server die ze heeft (in een netwerk de proxy waarop modl draait)."
   source_locked: "{source} draait en houdt zijn databasebestand open. Verwijder de jar (bewaar de map), herstart en voer dit opnieuw uit."
   database_failed: "De gegevens van {source} konden niet worden gelezen: {error}"
+  source_reconnect_failed: "De verbinding met {source} uit het voorbeeld is verbroken en kon niet opnieuw worden geopend: {error}. Voer /modl import {source_id} opnieuw uit."
   no_space: "Er is niet genoeg vrije schijfruimte om de database van {source} te kopiëren: {error}"
   nothing_to_import: "{source} heeft geen spelers of straffen om te importeren."
   nothing_left: "Met deze keuzes blijft er niets over om te importeren."

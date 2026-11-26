@@ -29,6 +29,7 @@ private static final long serialVersionUID = 0L;
   }
   private ServerKeysResponse() {
     keys_ = java.util.Collections.emptyList();
+    proxiedServers_ = java.util.Collections.emptyList();
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
@@ -101,6 +102,47 @@ private static final long serialVersionUID = 0L;
     return limit_;
   }
 
+  public static final int PROXIED_SERVERS_FIELD_NUMBER = 3;
+  @SuppressWarnings("serial")
+  private java.util.List<gg.modl.proto.modl.v1.ProxiedServerStatus> proxiedServers_;
+  /**
+   * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+   */
+  @java.lang.Override
+  public java.util.List<gg.modl.proto.modl.v1.ProxiedServerStatus> getProxiedServersList() {
+    return proxiedServers_;
+  }
+  /**
+   * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+   */
+  @java.lang.Override
+  public java.util.List<? extends gg.modl.proto.modl.v1.ProxiedServerStatusOrBuilder> 
+      getProxiedServersOrBuilderList() {
+    return proxiedServers_;
+  }
+  /**
+   * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+   */
+  @java.lang.Override
+  public int getProxiedServersCount() {
+    return proxiedServers_.size();
+  }
+  /**
+   * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ProxiedServerStatus getProxiedServers(int index) {
+    return proxiedServers_.get(index);
+  }
+  /**
+   * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ProxiedServerStatusOrBuilder getProxiedServersOrBuilder(
+      int index) {
+    return proxiedServers_.get(index);
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -121,6 +163,9 @@ private static final long serialVersionUID = 0L;
     if (limit_ != 0) {
       output.writeInt32(2, limit_);
     }
+    for (int i = 0; i < proxiedServers_.size(); i++) {
+      output.writeMessage(3, proxiedServers_.get(i));
+    }
     getUnknownFields().writeTo(output);
   }
   private int computeSerializedSize_0() {
@@ -138,6 +183,15 @@ private static final long serialVersionUID = 0L;
       size += com.google.protobuf.CodedOutputStream
         .computeInt32Size(2, limit_);
     }
+
+        {
+          final int count = proxiedServers_.size();
+          for (int i = 0; i < count; i++) {
+            size += com.google.protobuf.CodedOutputStream
+              .computeMessageSizeNoTag(proxiedServers_.get(i));
+          }
+          size += 1 * count;
+        }
     return size;
   }
   @java.lang.Override
@@ -166,6 +220,8 @@ private static final long serialVersionUID = 0L;
         .equals(other.getKeysList())) return false;
     if (getLimit()
         != other.getLimit()) return false;
+    if (!getProxiedServersList()
+        .equals(other.getProxiedServersList())) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -183,6 +239,10 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + LIMIT_FIELD_NUMBER;
     hash = (53 * hash) + getLimit();
+    if (getProxiedServersCount() > 0) {
+      hash = (37 * hash) + PROXIED_SERVERS_FIELD_NUMBER;
+      hash = (53 * hash) + getProxiedServersList().hashCode();
+    }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -322,6 +382,13 @@ private static final long serialVersionUID = 0L;
       }
       bitField0_ = (bitField0_ & ~0x00000001);
       limit_ = 0;
+      if (proxiedServersBuilder_ == null) {
+        proxiedServers_ = java.util.Collections.emptyList();
+      } else {
+        proxiedServers_ = null;
+        proxiedServersBuilder_.clear();
+      }
+      bitField0_ = (bitField0_ & ~0x00000004);
       return this;
     }
 
@@ -363,6 +430,15 @@ private static final long serialVersionUID = 0L;
         result.keys_ = keys_;
       } else {
         result.keys_ = keysBuilder_.build();
+      }
+      if (proxiedServersBuilder_ == null) {
+        if (((bitField0_ & 0x00000004) != 0)) {
+          proxiedServers_ = java.util.Collections.unmodifiableList(proxiedServers_);
+          bitField0_ = (bitField0_ & ~0x00000004);
+        }
+        result.proxiedServers_ = proxiedServers_;
+      } else {
+        result.proxiedServers_ = proxiedServersBuilder_.build();
       }
     }
 
@@ -414,6 +490,32 @@ private static final long serialVersionUID = 0L;
       if (other.getLimit() != 0) {
         setLimit(other.getLimit());
       }
+      if (proxiedServersBuilder_ == null) {
+        if (!other.proxiedServers_.isEmpty()) {
+          if (proxiedServers_.isEmpty()) {
+            proxiedServers_ = other.proxiedServers_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+          } else {
+            ensureProxiedServersIsMutable();
+            proxiedServers_.addAll(other.proxiedServers_);
+          }
+          onChanged();
+        }
+      } else {
+        if (!other.proxiedServers_.isEmpty()) {
+          if (proxiedServersBuilder_.isEmpty()) {
+            proxiedServersBuilder_.dispose();
+            proxiedServersBuilder_ = null;
+            proxiedServers_ = other.proxiedServers_;
+            bitField0_ = (bitField0_ & ~0x00000004);
+            proxiedServersBuilder_ = 
+              com.google.protobuf.GeneratedMessage.alwaysUseFieldBuilders ?
+                 internalGetProxiedServersFieldBuilder() : null;
+          } else {
+            proxiedServersBuilder_.addAllMessages(other.proxiedServers_);
+          }
+        }
+      }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
       return this;
@@ -456,6 +558,19 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000002;
               break;
             } // case 16
+            case 26: {
+              gg.modl.proto.modl.v1.ProxiedServerStatus m =
+                  input.readMessage(
+                      gg.modl.proto.modl.v1.ProxiedServerStatus.parser(),
+                      extensionRegistry);
+              if (proxiedServersBuilder_ == null) {
+                ensureProxiedServersIsMutable();
+                proxiedServers_.add(m);
+              } else {
+                proxiedServersBuilder_.addMessage(m);
+              }
+              break;
+            } // case 26
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -737,6 +852,240 @@ private static final long serialVersionUID = 0L;
       limit_ = 0;
       onChanged();
       return this;
+    }
+
+    private java.util.List<gg.modl.proto.modl.v1.ProxiedServerStatus> proxiedServers_ =
+      java.util.Collections.emptyList();
+    private void ensureProxiedServersIsMutable() {
+      if (!((bitField0_ & 0x00000004) != 0)) {
+        proxiedServers_ = new java.util.ArrayList<gg.modl.proto.modl.v1.ProxiedServerStatus>(proxiedServers_);
+        bitField0_ |= 0x00000004;
+       }
+    }
+
+    private com.google.protobuf.RepeatedFieldBuilder<
+        gg.modl.proto.modl.v1.ProxiedServerStatus, gg.modl.proto.modl.v1.ProxiedServerStatus.Builder, gg.modl.proto.modl.v1.ProxiedServerStatusOrBuilder> proxiedServersBuilder_;
+
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public java.util.List<gg.modl.proto.modl.v1.ProxiedServerStatus> getProxiedServersList() {
+      if (proxiedServersBuilder_ == null) {
+        return java.util.Collections.unmodifiableList(proxiedServers_);
+      } else {
+        return proxiedServersBuilder_.getMessageList();
+      }
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public int getProxiedServersCount() {
+      if (proxiedServersBuilder_ == null) {
+        return proxiedServers_.size();
+      } else {
+        return proxiedServersBuilder_.getCount();
+      }
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public gg.modl.proto.modl.v1.ProxiedServerStatus getProxiedServers(int index) {
+      if (proxiedServersBuilder_ == null) {
+        return proxiedServers_.get(index);
+      } else {
+        return proxiedServersBuilder_.getMessage(index);
+      }
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public Builder setProxiedServers(
+        int index, gg.modl.proto.modl.v1.ProxiedServerStatus value) {
+      if (proxiedServersBuilder_ == null) {
+        java.util.Objects.requireNonNull(value);
+        ensureProxiedServersIsMutable();
+        proxiedServers_.set(index, value);
+        onChanged();
+      } else {
+        proxiedServersBuilder_.setMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public Builder setProxiedServers(
+        int index, gg.modl.proto.modl.v1.ProxiedServerStatus.Builder builderForValue) {
+      if (proxiedServersBuilder_ == null) {
+        ensureProxiedServersIsMutable();
+        proxiedServers_.set(index, builderForValue.build());
+        onChanged();
+      } else {
+        proxiedServersBuilder_.setMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public Builder addProxiedServers(gg.modl.proto.modl.v1.ProxiedServerStatus value) {
+      if (proxiedServersBuilder_ == null) {
+        java.util.Objects.requireNonNull(value);
+        ensureProxiedServersIsMutable();
+        proxiedServers_.add(value);
+        onChanged();
+      } else {
+        proxiedServersBuilder_.addMessage(value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public Builder addProxiedServers(
+        int index, gg.modl.proto.modl.v1.ProxiedServerStatus value) {
+      if (proxiedServersBuilder_ == null) {
+        java.util.Objects.requireNonNull(value);
+        ensureProxiedServersIsMutable();
+        proxiedServers_.add(index, value);
+        onChanged();
+      } else {
+        proxiedServersBuilder_.addMessage(index, value);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public Builder addProxiedServers(
+        gg.modl.proto.modl.v1.ProxiedServerStatus.Builder builderForValue) {
+      if (proxiedServersBuilder_ == null) {
+        ensureProxiedServersIsMutable();
+        proxiedServers_.add(builderForValue.build());
+        onChanged();
+      } else {
+        proxiedServersBuilder_.addMessage(builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public Builder addProxiedServers(
+        int index, gg.modl.proto.modl.v1.ProxiedServerStatus.Builder builderForValue) {
+      if (proxiedServersBuilder_ == null) {
+        ensureProxiedServersIsMutable();
+        proxiedServers_.add(index, builderForValue.build());
+        onChanged();
+      } else {
+        proxiedServersBuilder_.addMessage(index, builderForValue.build());
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public Builder addAllProxiedServers(
+        java.lang.Iterable<? extends gg.modl.proto.modl.v1.ProxiedServerStatus> values) {
+      if (proxiedServersBuilder_ == null) {
+        ensureProxiedServersIsMutable();
+        com.google.protobuf.AbstractMessageLite.Builder.addAll(
+            values, proxiedServers_);
+        onChanged();
+      } else {
+        proxiedServersBuilder_.addAllMessages(values);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public Builder clearProxiedServers() {
+      if (proxiedServersBuilder_ == null) {
+        proxiedServers_ = java.util.Collections.emptyList();
+        bitField0_ = (bitField0_ & ~0x00000004);
+        onChanged();
+      } else {
+        proxiedServersBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public Builder removeProxiedServers(int index) {
+      if (proxiedServersBuilder_ == null) {
+        ensureProxiedServersIsMutable();
+        proxiedServers_.remove(index);
+        onChanged();
+      } else {
+        proxiedServersBuilder_.remove(index);
+      }
+      return this;
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public gg.modl.proto.modl.v1.ProxiedServerStatus.Builder getProxiedServersBuilder(
+        int index) {
+      return internalGetProxiedServersFieldBuilder().getBuilder(index);
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public gg.modl.proto.modl.v1.ProxiedServerStatusOrBuilder getProxiedServersOrBuilder(
+        int index) {
+      if (proxiedServersBuilder_ == null) {
+        return proxiedServers_.get(index);  } else {
+        return proxiedServersBuilder_.getMessageOrBuilder(index);
+      }
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public java.util.List<? extends gg.modl.proto.modl.v1.ProxiedServerStatusOrBuilder> 
+         getProxiedServersOrBuilderList() {
+      if (proxiedServersBuilder_ != null) {
+        return proxiedServersBuilder_.getMessageOrBuilderList();
+      } else {
+        return java.util.Collections.unmodifiableList(proxiedServers_);
+      }
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public gg.modl.proto.modl.v1.ProxiedServerStatus.Builder addProxiedServersBuilder() {
+      return internalGetProxiedServersFieldBuilder().addBuilder(
+          gg.modl.proto.modl.v1.ProxiedServerStatus.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public gg.modl.proto.modl.v1.ProxiedServerStatus.Builder addProxiedServersBuilder(
+        int index) {
+      return internalGetProxiedServersFieldBuilder().addBuilder(
+          index, gg.modl.proto.modl.v1.ProxiedServerStatus.getDefaultInstance());
+    }
+    /**
+     * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+     */
+    public java.util.List<gg.modl.proto.modl.v1.ProxiedServerStatus.Builder> 
+         getProxiedServersBuilderList() {
+      return internalGetProxiedServersFieldBuilder().getBuilderList();
+    }
+    private com.google.protobuf.RepeatedFieldBuilder<
+        gg.modl.proto.modl.v1.ProxiedServerStatus, gg.modl.proto.modl.v1.ProxiedServerStatus.Builder, gg.modl.proto.modl.v1.ProxiedServerStatusOrBuilder> 
+        internalGetProxiedServersFieldBuilder() {
+      if (proxiedServersBuilder_ == null) {
+        proxiedServersBuilder_ = new com.google.protobuf.RepeatedFieldBuilder<
+            gg.modl.proto.modl.v1.ProxiedServerStatus, gg.modl.proto.modl.v1.ProxiedServerStatus.Builder, gg.modl.proto.modl.v1.ProxiedServerStatusOrBuilder>(
+                proxiedServers_,
+                ((bitField0_ & 0x00000004) != 0),
+                getParentForChildren(),
+                isClean());
+        proxiedServers_ = null;
+      }
+      return proxiedServersBuilder_;
     }
 
     // @@protoc_insertion_point(builder_scope:modl.v1.ServerKeysResponse)

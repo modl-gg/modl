@@ -95,18 +95,6 @@ public interface HomepageCardResponseOrBuilder extends
       getActionUrlBytes();
 
   /**
-   * <code>string action_button_text = 8 [json_name = "actionButtonText"];</code>
-   * @return The actionButtonText.
-   */
-  java.lang.String getActionButtonText();
-  /**
-   * <code>string action_button_text = 8 [json_name = "actionButtonText"];</code>
-   * @return The bytes for actionButtonText.
-   */
-  com.google.protobuf.ByteString
-      getActionButtonTextBytes();
-
-  /**
    * <code>string category_id = 9 [json_name = "categoryId"];</code>
    * @return The categoryId.
    */

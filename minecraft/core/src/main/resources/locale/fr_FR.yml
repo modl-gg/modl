@@ -1143,7 +1143,7 @@ help:
       usage: "unmute <joueur>"
       description: "Révoquer tous les mutes actifs et en attente"
     replay:
-      usage: "replay <status|capture> [joueur]"
+      usage: "replay <status|record|stop|capture> [joueur]"
       description: "Gérer les enregistrements de replay"
     modl_reload:
       usage: "modl reload"
@@ -1300,9 +1300,11 @@ network:
 replay:
   usage:
     - "&f/replay status [joueur] &7- Vérifier l'état de l'enregistrement"
+    - "&f/replay record <joueur> &7- Commencer à enregistrer un joueur"
+    - "&f/replay stop <joueur> &7- Arrêter un enregistrement lancé avec /replay record"
     - "&f/replay capture [joueur] &7- Capturer et envoyer le replay"
   not_available: "&cL'enregistrement de replays n'est pas disponible sur ce serveur."
-  status_recording: "&a{player} est actuellement en cours d'enregistrement"
+  status_recording: "&a{player} est en cours d'enregistrement ({origin}) depuis {duration}"
   status_not_recording: "&c{player} n'est pas en cours d'enregistrement"
   no_server_connected: "&cAucun serveur n'est connecté pour capturer un replay."
   no_active_recording: "&cAucun enregistrement actif pour {player}"
@@ -1313,6 +1315,19 @@ replay:
   click_to_view: "[Clique pour voir le replay]"
   click_to_view_hover: "Ouvrir le lecteur de replay"
   console_specify_player: "&cIndique un nom de joueur depuis la console."
+  memory: "&7Mémoire des replays : {used} sur {limit} Mo, enregistrements : {recordings}"
+  record_started: "&aEnregistrement de {player} lancé"
+  already_recording: "&e{player} est déjà en cours d'enregistrement"
+  record_stopped: "&aEnregistrement de {player} arrêté"
+  recording_kept: "&cL'enregistrement de {player} est conservé ({origin})"
+  player_left: "&c{player} a quitté le serveur"
+  status_failed: "&cImpossible de lire l'état de l'enregistrement de {player}"
+  server_unreachable: "&cLe serveur de {player} n'est pas connecté à modl."
+  record_failed: "&cImpossible de modifier l'enregistrement de {player}"
+  origins:
+    auto_record: "enregistrement automatique"
+    anticheat_flag: "alerte de l'anticheat"
+    staff: "/replay record"
 
 standing_gui:
   title: "&fTa réputation"
@@ -1381,6 +1396,7 @@ import:
   source_missing: "Aucune donnée {source} n'a été trouvée sur ce serveur. Lance ceci sur le serveur qui les contient (sur un réseau, le proxy qui exécute modl)."
   source_locked: "{source} fonctionne et garde son fichier de base de données ouvert. Retire son jar (garde son dossier), redémarre puis recommence."
   database_failed: "Les données {source} n'ont pas pu être lues : {error}"
+  source_reconnect_failed: "La connexion à {source} conservée depuis l'aperçu a été perdue et n'a pas pu être rouverte : {error}. Relancez /modl import {source_id}."
   no_space: "Il n'y a pas assez d'espace disque libre pour copier la base de données {source} : {error}"
   nothing_to_import: "{source} n'a aucun joueur ni aucune sanction à importer."
   nothing_left: "Il ne reste rien à importer avec ces choix."

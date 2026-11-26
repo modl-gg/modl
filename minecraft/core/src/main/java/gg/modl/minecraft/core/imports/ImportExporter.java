@@ -1,5 +1,6 @@
 package gg.modl.minecraft.core.imports;
 
+import gg.modl.minecraft.core.imports.source.ImportProblem;
 import gg.modl.minecraft.core.imports.source.ImportSource;
 import gg.modl.minecraft.core.imports.source.PlayerRecords;
 import gg.modl.minecraft.core.imports.source.SourceException;
@@ -31,13 +32,13 @@ final class ImportExporter {
                 ExportProgress progress, Instant importedAt) {
         int players = inventory.getPlayers();
         if (players > PlayerLimit.MAX_PLAYERS) {
-            throw new ImportFailure(ImportEnding.EXPORT_FAILED, "import.too_many_players", players + " players");
+            throw new ImportFailure(ImportEnding.EXPORT_FAILED, ImportProblem.TOO_MANY_PLAYERS, players + " players");
         }
         progress.begin(players, inventory.getWithoutAccount());
         try (ImportExportWriter writer = new ImportExportWriter(source.id(), target, maxBytes, players, importedAt)) {
             writeEverything(writer, choice, progress);
         } catch (IOException failure) {
-            throw new ImportFailure(ImportEnding.EXPORT_FAILED, "import.file_failed", failure);
+            throw new ImportFailure(ImportEnding.EXPORT_FAILED, ImportProblem.FILE_FAILED, failure);
         }
     }
 
@@ -46,13 +47,13 @@ final class ImportExporter {
         try {
             int written = writePlayers(writer, choice, progress);
             if (written == 0) {
-                String key = progress.failed() > 0 ? "import.every_player_failed" : "import.nothing_left";
-                throw new ImportFailure(ImportEnding.EXPORT_FAILED, key, "No player could be exported");
+                ImportProblem problem = progress.failed() > 0 ? ImportProblem.EVERY_PLAYER_FAILED : ImportProblem.NOTHING_LEFT;
+                throw new ImportFailure(ImportEnding.EXPORT_FAILED, problem, "No player could be exported");
             }
             writer.finish();
         } catch (IOException failure) {
             if (writer.limitExceeded()) {
-                throw new ImportFailure(ImportEnding.FILE_TOO_LARGE, ImportEnding.FILE_TOO_LARGE.messageKey(), failure);
+                throw ImportFailure.ended(ImportEnding.FILE_TOO_LARGE, failure);
             }
             throw failure;
         }

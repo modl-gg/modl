@@ -12,7 +12,7 @@ public record S3ConnectionResult(boolean ok, String code, String message) {
     public static final String FAILED = "S3_FAILED";
 
     static S3ConnectionResult passed() {
-        return new S3ConnectionResult(true, OK, "Connected: modl could write, read and delete a test file in the bucket");
+        return new S3ConnectionResult(true, OK, "Connected: modl could write, read, and delete a test file in the bucket");
     }
 
     static S3ConnectionResult failed(String code, String message) {

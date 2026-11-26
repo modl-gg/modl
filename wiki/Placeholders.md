@@ -10,7 +10,7 @@ Put only the keys you change in `plugins/modl/locale/<locale>.yml`; they are mer
 
 ### Punishment messages
 
-`punishment_types.ordinal_<n>.player_notification` (lines shown to the punished player, kick or ban screen and mute notice) and `.public_notification` (broadcast). Types without their own entry use `punishments.player_notification.*` and `punishments.public_notification.*`.
+`punishment_types.ordinal_<n>.player_notification` (lines shown to the punished player, kick or ban screen, and mute notice) and `.public_notification` (broadcast). Types without their own entry use `punishments.player_notification.*` and `punishments.public_notification.*`.
 
 | Placeholder | Player | Public | Value |
 |---|---|---|---|
@@ -32,7 +32,7 @@ The words behind `{tense}`, `{temp}` and the expiry texts are in `punishment_wor
 
 ### Other messages
 
-Other messages take the placeholders their default text in `en_US.yml` uses. Staff join, leave, switch and verified notices, chat management broadcasts, the staff list, and the freeze, staff mode and vanish broadcasts also accept `{in-game-name}`.
+Other messages take the placeholders their default text in `en_US.yml` uses. Staff join, leave, switch, and verified notices, chat management broadcasts, the staff list, and the freeze, staff mode, and vanish broadcasts also accept `{in-game-name}`.
 
 ## Plugin files
 

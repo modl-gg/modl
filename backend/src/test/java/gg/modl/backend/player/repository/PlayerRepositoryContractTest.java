@@ -27,6 +27,9 @@ import gg.modl.backend.player.data.Player;
 import gg.modl.backend.player.data.PlayerNoteKind;
 import gg.modl.backend.player.data.UsernameEntry;
 import gg.modl.backend.player.data.punishment.Punishment;
+import gg.modl.backend.player.data.punishment.PunishmentModification;
+import gg.modl.backend.player.data.punishment.PunishmentModificationType;
+import gg.modl.backend.player.data.punishment.PunishmentStatus;
 import gg.modl.backend.player.data.punishment.ResolvedCategory;
 import gg.modl.backend.support.sql.DialectTarget;
 import gg.modl.backend.support.sql.RetryInjection;
@@ -568,7 +571,7 @@ class PlayerRepositoryContractTest {
     }
 
     @SqlContractTest
-    void banHoldersAndActiveCountsFollowTheActiveBoundary(DialectTarget target) {
+    void banHoldersAndLinkedCountsIncludePunishmentsWaitingToStart(DialectTarget target) {
         try (SqlTestDatabase database = SqlTestDatabase.start(target, dataDirectory)) {
             PlayerRepositories repositories = PlayerRepositories.on(database);
             PlayerRepository players = repositories.players();
@@ -576,18 +579,32 @@ class PlayerRepositoryContractTest {
             String banned = login(players, "banned", null, NOW);
             String waiting = login(players, "waiting", null, NOW);
             String muted = login(players, "muted", null, NOW);
+            String queued = login(players, "queued", null, NOW);
+            String pardoned = login(players, "pardoned", null, NOW);
+            String kicked = login(players, "kicked", null, NOW);
             PlayerFixtures.insert(punishments, banned, PlayerFixtures.punishment(2, ResolvedCategory.BAN, NOW, NOW, DAY_MILLIS));
             PlayerFixtures.insert(punishments, waiting, PlayerFixtures.punishment(2, ResolvedCategory.BAN, NOW, null, DAY_MILLIS));
             PlayerFixtures.insert(punishments, muted, PlayerFixtures.punishment(1, ResolvedCategory.MUTE, NOW, NOW, null));
-            List<String> all = List.of(banned, waiting, muted);
+            Punishment queuedMute = PlayerFixtures.punishment(1, ResolvedCategory.MUTE, NOW, NOW, DAY_MILLIS);
+            queuedMute.data().setStatus(PunishmentStatus.UNSTARTED);
+            PlayerFixtures.insert(punishments, queued, queuedMute);
+            Punishment pardonedBan = PlayerFixtures.punishment(2, ResolvedCategory.BAN, NOW, null, DAY_MILLIS);
+            pardonedBan.getModifications().add(new PunishmentModification("M1", PunishmentModificationType.MANUAL_PARDON.name(),
+                NOW, "Moderator", null, "", null, null, null));
+            PlayerFixtures.insert(punishments, pardoned, pardonedBan);
+            Punishment pendingKick = PlayerFixtures.punishment(0, ResolvedCategory.BAN, NOW, null, null);
+            pendingKick.data().setStatus(PunishmentStatus.UNSTARTED);
+            PlayerFixtures.insert(punishments, kicked, pendingKick);
+            List<String> all = List.of(banned, waiting, muted, queued, pardoned, kicked);
             Instant expiry = NOW.plusMillis(DAY_MILLIS);
 
-            assertThat(players.findActiveBanHolders(all, expiry)).containsExactlyInAnyOrder(banned, waiting);
-            assertThat(players.findActiveBanHolders(all, expiry.plusMillis(1))).containsExactly(waiting);
+            assertThat(players.findEnforcedBanHolders(all, expiry)).containsExactlyInAnyOrder(banned, waiting);
+            assertThat(players.findEnforcedBanHolders(all, expiry.plusMillis(1))).containsExactly(waiting);
             assertThat(players.countActiveByPlayer(all, NOW)).containsExactlyInAnyOrderEntriesOf(Map.of(
                 banned, new ActiveCounts(1, 0),
                 waiting, new ActiveCounts(1, 0),
-                muted, new ActiveCounts(0, 1)));
+                muted, new ActiveCounts(0, 1),
+                queued, new ActiveCounts(0, 1)));
         }
     }
 

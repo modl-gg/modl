@@ -16,9 +16,9 @@ Use a domain with HTTPS for any panel reached over the internet: passkeys need H
 4. Keep the panel port closed to the internet: `embedded.bind-address: "127.0.0.1"` or `MODL_BIND_ADDRESS=127.0.0.1` when the proxy is on the same machine; for Docker change the port mapping in `docker-compose.yml` to `"127.0.0.1:${MODL_PORT:-8080}:8080"`.
 5. Restart modl. Update `remote.url` on your servers to the new address.
 
-With `trust-proxy-headers` on, modl trusts forwarded headers from loopback, private, link-local and carrier-grade NAT addresses (`trusted-proxy: private`, the default), so run the proxy on the same machine or private network. `embedded.trusted-proxy: "loopback"` or `MODL_TRUSTED_PROXY=loopback` trusts only the same machine (not with Docker). modl does not send `Strict-Transport-Security`; add it in the proxy if you want it.
+With `trust-proxy-headers` on, modl trusts forwarded headers from loopback, private, link-local, and carrier-grade NAT addresses (`trusted-proxy: private`, the default), so run the proxy on the same machine or private network. `embedded.trusted-proxy: "loopback"` or `MODL_TRUSTED_PROXY=loopback` trusts only the same machine (not with Docker). modl does not send `Strict-Transport-Security`; add it in the proxy if you want it.
 
-No domain or no open port: use an HTTPS tunnel instead ([Panel Port and Tunnels](Panel-Port-and-Tunnels)).
+Domain on Cloudflare? Use the [built-in Cloudflare Tunnel](Panel-Port-and-Tunnels#built-in-cloudflare-tunnel) (no open port). No domain or no open port: use an HTTPS tunnel instead ([Panel Port and Tunnels](Panel-Port-and-Tunnels)).
 
 ## Caddy
 

@@ -1,5 +1,6 @@
 package gg.modl.backend.hostedimport.job;
 
+import static org.assertj.core.api.Assertions.assertThat;
 import static org.mockito.ArgumentMatchers.any;
 import static org.mockito.ArgumentMatchers.anyLong;
 import static org.mockito.ArgumentMatchers.anyString;
@@ -24,9 +25,12 @@ import gg.modl.backend.hostedimport.model.ImportJob;
 import gg.modl.backend.hostedimport.model.ImportPhase;
 import gg.modl.backend.hostedimport.model.ImportSource;
 import gg.modl.backend.hostedimport.model.ImportStatus;
+import gg.modl.backend.hostedimport.model.ImportSubject;
+import gg.modl.backend.hostedimport.model.ImportTally;
 import gg.modl.backend.hostedimport.model.IssueLog;
 import gg.modl.backend.hostedimport.model.RetentionChoice;
 import gg.modl.backend.hostedimport.model.RetentionPlan;
+import gg.modl.backend.hostedimport.model.SubjectCount;
 import gg.modl.backend.role.service.RoleService;
 import gg.modl.backend.server.data.Server;
 import gg.modl.backend.support.TestServers;
@@ -37,6 +41,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.concurrent.atomic.AtomicReference;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
 import org.mockito.InOrder;
@@ -53,7 +58,9 @@ class ConfigurationStepTest {
         ConfigurationWriter writer = mock(ConfigurationWriter.class);
         RoleService roleService = mock(RoleService.class);
         RecordUnits units = mock(RecordUnits.class);
+        AtomicReference<ImportTally> committed = new AtomicReference<>();
         doAnswer(call -> {
+            committed.set(((IssueLog) call.getArgument(2)).tally());
             ((Runnable) call.getArgument(3)).run();
             return null;
         }).when(units).commitState(anyString(), anyLong(), any(IssueLog.class), any(Runnable.class));
@@ -63,8 +70,8 @@ class ConfigurationStepTest {
         Server server = TestServers.server("Server", "owner@example.com");
         ImportContext context = ImportTestContexts.context(index);
         RoleMapper roles = new RoleMapper(context, List.of(), Set.of());
-        ImportPlan plan = new ImportPlan(context, new SettingsImportPlan(Optional.empty(), context.types(), Map.of(), null), roles,
-            StaffPlan.of(index, context.ids(), "owner@example.com", roles));
+        ImportPlan plan = new ImportPlan(context, new SettingsImportPlan(Optional.empty(), context.types(), Map.of(), null,
+            Set.of("general", "ticketForms"), Set.of("quickResponses")), roles, StaffPlan.of(index, context.ids(), "owner@example.com", roles));
         ImportJob job = ImportJob.started("aaaaaaaa-0a53-4b8e-9d1c-0c8f0f0d2a11", ImportSource.UPLOAD, null, 1, null, ImportTestContexts.NOW)
             .withStatus(ImportStatus.APPLYING).withPhase(ImportPhase.CONFIGURATION);
         Path archivePath = fixture.write(directory);
@@ -79,6 +86,8 @@ class ConfigurationStepTest {
         InOrder order = inOrder(writer, roleService);
         order.verify(writer).write(any(), any(), any(), any(), any());
         order.verify(roleService).createDefaultRoles(server);
+        assertThat(committed.get().count(ImportSubject.ROLES)).isEqualTo(new SubjectCount(0, 1, 0, 0));
+        assertThat(committed.get().count(ImportSubject.SETTINGS)).isEqualTo(new SubjectCount(0, 2, 0, 1));
     }
 
     @Test
@@ -91,7 +100,7 @@ class ConfigurationStepTest {
         ImportArchiveFiles files = mock(ImportArchiveFiles.class);
         ImportContext context = ImportTestContexts.context(index);
         RoleMapper roles = new RoleMapper(context, List.of(), Set.of());
-        ImportPlan plan = new ImportPlan(context, new SettingsImportPlan(Optional.empty(), context.types(), Map.of(), null), roles,
+        ImportPlan plan = new ImportPlan(context, new SettingsImportPlan(Optional.empty(), context.types(), Map.of(), null, Set.of(), Set.of()), roles,
             StaffPlan.of(index, context.ids(), "owner@example.com", roles));
         ImportJob job = ImportJob.started("aaaaaaaa-0a53-4b8e-9d1c-0c8f0f0d2a11", ImportSource.UPLOAD, null, 1, null, ImportTestContexts.NOW)
             .withStatus(ImportStatus.APPLYING).withPhase(ImportPhase.CONFIGURATION).withCursor(1);

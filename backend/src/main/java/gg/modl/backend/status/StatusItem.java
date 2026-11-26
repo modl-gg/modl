@@ -11,6 +11,7 @@ public enum StatusItem {
     LISTEN_PORT("network.port", StatusSection.NETWORK, "Listening on"),
     PROXY_HEADERS("network.proxyHeaders", StatusSection.NETWORK, "Trusts proxy headers"),
     REACHABILITY("network.reachability", StatusSection.NETWORK, "Reachable at the panel URL"),
+    TUNNEL("network.tunnel", StatusSection.NETWORK, "Cloudflare Tunnel"),
     DATABASE_TYPE("database.type", StatusSection.DATABASE, "Type"),
     STORAGE_BACKEND("storage.backend", StatusSection.STORAGE, "Uploads stored in"),
     STORAGE_USED("storage.used", StatusSection.STORAGE, "Uploads"),

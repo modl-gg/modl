@@ -11,6 +11,7 @@ import gg.modl.minecraft.core.imports.sql.DriverLibraries;
 import gg.modl.minecraft.core.imports.sql.JdbcDriver;
 
 import java.net.URL;
+import java.nio.file.Path;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
@@ -50,14 +51,13 @@ public final class RuntimeLibraryLoader implements DriverLibraries {
 
     @Override
     public synchronized ClassLoader isolatedLoader(String loaderId, LibraryRecord record) {
-        Library library = pinned(record).isolatedLoad(true).loaderId(loaderId).build();
-        IsolatedClassLoader existing = libraryManager.getIsolatedClassLoaderById(loaderId);
+        IsolatedClassLoader existing = isolated.get(loaderId);
         if (existing != null) return existing;
-        libraryManager.loadLibrary(library);
-        IsolatedClassLoader loaded = libraryManager.getIsolatedClassLoaderById(loaderId);
-        if (loaded == null) throw new IllegalStateException("The library " + record.getFileName() + " did not load");
-        isolated.put(loaderId, loaded);
-        return loaded;
+        Path file = libraryManager.downloadLibrary(pinned(record).build());
+        IsolatedClassLoader created = new IsolatedClassLoader();
+        created.addPath(file);
+        isolated.put(loaderId, created);
+        return created;
     }
 
     @Override

@@ -18,6 +18,7 @@ import gg.modl.backend.infrastructure.exception.ForbiddenException;
 import gg.modl.backend.infrastructure.exception.ValidationException;
 import gg.modl.backend.log.repository.AuditLogRepository;
 import gg.modl.backend.player.data.punishment.Punishment;
+import gg.modl.backend.player.data.punishment.PunishmentPhase;
 import gg.modl.backend.player.data.punishment.PunishmentModification;
 import gg.modl.backend.player.data.punishment.PunishmentModificationType;
 import gg.modl.backend.player.repository.IssuerMatch;
@@ -192,7 +193,7 @@ class AuditServiceTest {
     }
 
     private void pageOfTypes(List<Integer> ordinals, PunishmentRecord... page) {
-        when(punishments.pageActiveIdsByTypes(ordinals, NOW, null, AuditService.BULK_PAGE_SIZE))
+        when(punishments.pageIdsByTypes(ordinals, PunishmentPhase.NOT_ENDED, NOW, null, AuditService.BULK_PAGE_SIZE))
             .thenReturn(Arrays.stream(page).map(record -> record.punishment().getId()).toList());
         stubFound(page);
     }

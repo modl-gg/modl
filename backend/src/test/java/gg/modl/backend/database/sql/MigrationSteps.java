@@ -12,7 +12,7 @@ import java.util.List;
 import javax.sql.DataSource;
 import org.flywaydb.core.api.configuration.FluentConfiguration;
 
-final class MigrationSteps {
+public final class MigrationSteps {
     private final DatabaseDialect dialect;
     private final DataSource connections;
 
@@ -21,7 +21,7 @@ final class MigrationSteps {
         this.connections = connections;
     }
 
-    static MigrationSteps on(DialectTarget target, SqlDatabaseProperties database, DataDirectoryProperties dataDirectory)
+    public static MigrationSteps on(DialectTarget target, SqlDatabaseProperties database, DataDirectoryProperties dataDirectory)
         throws IOException {
         ConnectionTracker tracker = new ConnectionTracker();
         if (!target.isSqlite()) {
@@ -33,7 +33,7 @@ final class MigrationSteps {
             SqliteDatabaseConnections.prepare(databaseDirectory, temporary, temporary, tracker, new OperatorNotice()).migration());
     }
 
-    DataSource connections() {
+    public DataSource connections() {
         return connections;
     }
 
@@ -43,7 +43,7 @@ final class MigrationSteps {
             .toList();
     }
 
-    String migrateTo(String version) {
+    public String migrateTo(String version) {
         return DatabaseMigration.migrate(dialect, flyway().target(version).load()).schemaVersion();
     }
 

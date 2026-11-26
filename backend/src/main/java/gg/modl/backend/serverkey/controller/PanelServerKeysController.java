@@ -10,12 +10,15 @@ import gg.modl.backend.network.LiveNetworkView;
 import gg.modl.backend.serverkey.ServerKey;
 import gg.modl.backend.serverkey.ServerKeyScope;
 import gg.modl.backend.serverkey.service.CreatedServerKey;
+import gg.modl.backend.serverkey.service.ProxyServerListing;
 import gg.modl.backend.serverkey.service.ServerKeyService;
 import gg.modl.proto.modl.v1.CreateServerKeyRequest;
 import gg.modl.proto.modl.v1.CreateServerKeyResponse;
 import gg.modl.proto.modl.v1.ServerKeysResponse;
 import gg.modl.proto.modl.v1.UpdateServerKeyRequest;
 import jakarta.servlet.http.HttpServletRequest;
+import java.util.List;
+import java.util.Set;
 import lombok.RequiredArgsConstructor;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.DeleteMapping;
@@ -33,12 +36,15 @@ import org.springframework.web.bind.annotation.RestController;
 public class PanelServerKeysController {
     private final ServerKeyService serverKeyService;
     private final LiveNetworkView liveNetwork;
+    private final ProxyServerListing proxyServers;
     private final PublicUrls publicUrls;
 
     @GetMapping
     @RequiresPanelPermission(rule = PanelAccessRule.SUPER_ADMIN)
     public ServerKeysResponse list() {
-        return ServerKeyProtoMapper.toResponse(serverKeyService.list(), liveNetwork.connectedKeyIds());
+        List<ServerKey> keys = serverKeyService.list();
+        Set<String> connectedKeyIds = liveNetwork.connectedKeyIds();
+        return ServerKeyProtoMapper.toResponse(keys, connectedKeyIds, proxyServers.list(keys, connectedKeyIds));
     }
 
     @PostMapping

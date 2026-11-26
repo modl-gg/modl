@@ -2,7 +2,7 @@ import { useTranslation } from 'react-i18next';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { usePunishmentTypes, useTicketFormSettings } from '@/hooks/use-data';
 import { useKnowledgebaseCategories } from '@/hooks/data/knowledgebase';
-import { useHomepageCards } from '@/hooks/data/homepage';
+import { useHomepageSettings } from '@/hooks/data/homepage-settings';
 import { TICKET_FORM_TYPES } from '@/types/forms';
 import { SetupNextSteps } from '../SetupNextSteps';
 
@@ -53,7 +53,7 @@ export function ContentStep() {
   const punishmentTypes = usePunishmentTypes();
   const ticketForms = useTicketFormSettings();
   const categories = useKnowledgebaseCategories();
-  const homepageCards = useHomepageCards();
+  const homepageSettings = useHomepageSettings();
 
   const summaries: ContentSummary[] = [
     {
@@ -70,7 +70,7 @@ export function ContentStep() {
     },
     {
       labelKey: 'pages.setup.content.homepageCards',
-      count: countOf(homepageCards, (cards) => cards.length),
+      count: countOf(homepageSettings, (settings) => settings.value.cards.length),
     },
   ];
 

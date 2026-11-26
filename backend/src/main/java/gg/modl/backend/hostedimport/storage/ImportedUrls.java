@@ -9,6 +9,7 @@ import gg.modl.backend.hostedimport.model.IssueCode;
 import gg.modl.backend.hostedimport.model.IssueLog;
 import gg.modl.backend.infrastructure.validation.SafeUrls;
 import gg.modl.backend.storage.ObjectStorage;
+import gg.modl.backend.storage.StorageFolders;
 import org.jspecify.annotations.Nullable;
 import java.net.URLDecoder;
 import java.nio.charset.StandardCharsets;
@@ -229,11 +230,11 @@ public final class ImportedUrls {
             if (url.startsWith(base)) {
                 Optional<String> exported = exactKey(url.substring(base.length()));
                 if (exported.isPresent()) {
-                    return exported.map(publicUrl);
+                    return exported.filter(StorageFolders::servedByStorageUrl).map(publicUrl);
                 }
             }
         }
-        return exportedPathOnOtherHost(url).map(publicUrl);
+        return exportedPathOnOtherHost(url).filter(StorageFolders::servedByStorageUrl).map(publicUrl);
     }
 
     private Optional<String> exportedPathOnOtherHost(String url) {

@@ -15,7 +15,7 @@ export function useGuardedBrowserLocation(options?: Parameters<typeof useBrowser
 export function installHistoryGuard(): void {
   window.addEventListener('popstate', () => {
     const restored = navigationGuard.restoreTarget(window.location.href);
-    if (restored !== null) window.history.pushState(null, '', restored);
+    if (restored !== null) window.history.pushState(restored.state, '', restored.path);
   });
 }
 
@@ -28,7 +28,7 @@ export function useNavigationBlocker(active: boolean, onBlocked: () => void): vo
 
   useLayoutEffect(() => {
     if (!active) return undefined;
-    const release = navigationGuard.activate({ path: window.location.pathname, onBlocked: () => { notifyBlocked(); } });
+    const release = navigationGuard.activate({ path: `${window.location.pathname}${window.location.search}`, state: window.history.state, onBlocked: () => { notifyBlocked(); } });
     const confirmUnload = (event: BeforeUnloadEvent) => {
       event.preventDefault();
     };

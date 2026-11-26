@@ -21,7 +21,8 @@ class PanelContentSecurityPolicyTest {
 
         assertThat(policy.get("default-src")).isEqualTo("'self'");
         assertThat(policy.get("script-src")).isEqualTo("'self'");
-        assertThat(policy.get("connect-src")).isEqualTo("'self'");
+        assertThat(policy.get("connect-src")).isEqualTo(
+            "'self' https://piston-meta.mojang.com https://piston-data.mojang.com https://textures.minecraft.net");
         assertThat(policy.get("object-src")).isEqualTo("'none'");
         assertThat(policy.get("base-uri")).isEqualTo("'none'");
         assertThat(policy.get("frame-ancestors")).isEqualTo("'none'");

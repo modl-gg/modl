@@ -66,10 +66,10 @@ class AgeRetainedRecordsContractTest {
             long floor = Sequencer.floorAt(CUTOFF);
             database.unitOfWork().write(() -> {
                 database.dsl().insertInto(AUDIT_LOGS)
-                    .set(new AuditLogsRecord(floor - 1, "info", "system", "expired", null, true, CUTOFF.plusSeconds(1)))
+                    .set(new AuditLogsRecord(floor - 1, "info", "system", "expired", null, CUTOFF.plusSeconds(1)))
                     .execute();
                 database.dsl().insertInto(AUDIT_LOGS)
-                    .set(new AuditLogsRecord(floor, "info", "system", "retained", null, true, CUTOFF.minusSeconds(1)))
+                    .set(new AuditLogsRecord(floor, "info", "system", "retained", null, CUTOFF.minusSeconds(1)))
                     .execute();
             });
             JooqAuditLogRepository audit = new JooqAuditLogRepository(

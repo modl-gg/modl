@@ -15,7 +15,6 @@ import gg.modl.backend.support.sql.SqlTestDatabase;
 import gg.modl.backend.support.sql.TestDialects;
 import java.io.IOException;
 import java.nio.file.Path;
-import java.time.Duration;
 import org.flywaydb.core.Flyway;
 import org.jspecify.annotations.Nullable;
 import org.junit.jupiter.api.AfterEach;
@@ -144,7 +143,7 @@ class DepartureGuardTest {
 
     private DatabaseSelection selection() {
         return DatabaseSelection.resolve(SqlDatabaseProperties.builtIn(), dataDirectory,
-            (target, token) -> PendingTargetCheck.Result.READY, Duration.ZERO, new OperatorNotice());
+            (target, token) -> PendingTargetCheck.Result.READY, ArrivalWait.atStart(), new OperatorNotice());
     }
 
     private DepartureGuard guard(DatabaseSelection selection, @Nullable String reopenedMove) {

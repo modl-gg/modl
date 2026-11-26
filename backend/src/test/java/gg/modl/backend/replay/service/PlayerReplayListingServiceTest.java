@@ -19,6 +19,7 @@ import gg.modl.backend.ticket.repository.TicketRepository;
 import gg.modl.backend.ticket.service.TicketPublicLinks;
 import java.time.Instant;
 import java.util.List;
+import java.util.Optional;
 import java.util.Set;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
@@ -102,8 +103,8 @@ class PlayerReplayListingServiceTest {
 
         when(replayRepository.findByTargetUuid(normalizedPlayerUuid, 100)).thenReturn(List.of(directReplay));
         when(storageMetadataService.existingKeys(eq(server), any())).thenReturn(Set.of("db/replays/replay-1.modlreplay"));
-        when(objectStorage.publicUrl("db/replays/replay-1.modlreplay"))
-            .thenReturn("/v1/storage/objects/db/replays/replay-1.modlreplay");
+        when(objectStorage.keyFromPublicUrl("/v1/storage/objects/db/replays/replay-1.modlreplay"))
+            .thenReturn(Optional.of("db/replays/replay-1.modlreplay"));
         when(ticketRepository.findPlayerTicketsWithReplayUrl(normalizedPlayerUuid, 100))
             .thenReturn(List.of(duplicateUrlTicket, duplicateRawIdTicket, duplicateQueryIdTicket, fallbackTicket));
 
@@ -132,19 +133,18 @@ class PlayerReplayListingServiceTest {
     }
 
     @Test
-    void listPlayerReplaysServesCompleteReplaysThroughTheirStoragePublicUrl() {
+    void listPlayerReplaysServesCompleteReplaysThroughThePanelFileRouteNeverAStorageUrl() {
         String playerUuid = "3f8c9c5a-6b6e-4f2c-9b7f-1a2b3c4d5e6f";
         ReplayDocument replay = completeReplay("replay-1", playerUuid, "db/replays/replay-1.modlreplay");
 
         when(replayRepository.findByTargetUuid(playerUuid, 100)).thenReturn(List.of(replay));
         when(storageMetadataService.existingKeys(eq(server), any())).thenReturn(Set.of("db/replays/replay-1.modlreplay"));
-        when(objectStorage.publicUrl("db/replays/replay-1.modlreplay")).thenReturn("/v1/storage/objects/db/replays/replay-1.modlreplay");
         when(ticketRepository.findPlayerTicketsWithReplayUrl(playerUuid, 100)).thenReturn(List.of());
 
         List<PlayerReplayResponse> replays = listingService.listPlayerReplays(server, playerUuid);
 
         assertEquals(1, replays.size());
-        assertEquals("/v1/storage/objects/db/replays/replay-1.modlreplay", replays.get(0).replayUrl());
+        assertEquals("/v1/panel/replays/replay-1/file", replays.get(0).replayUrl());
     }
 
     @Test

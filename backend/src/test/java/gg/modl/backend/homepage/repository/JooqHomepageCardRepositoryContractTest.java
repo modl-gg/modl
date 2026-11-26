@@ -41,7 +41,6 @@ class JooqHomepageCardRepositoryContractTest {
                 .iconColor("#8b5cf6")
                 .actionType("category_dropdown")
                 .actionUrl("/knowledgebase")
-                .actionButtonText("Open")
                 .categoryId("category")
                 .backgroundColor("#ffffff")
                 .ordinal(4)

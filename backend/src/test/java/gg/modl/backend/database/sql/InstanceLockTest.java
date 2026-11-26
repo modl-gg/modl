@@ -16,6 +16,7 @@ import gg.modl.backend.database.DatabaseUnavailableException;
 import gg.modl.backend.database.WriteAttemptHook;
 import gg.modl.backend.infrastructure.logging.OperatorNotice;
 import gg.modl.backend.support.sql.DialectTarget;
+import gg.modl.backend.support.sql.ExternalDialectTest;
 import gg.modl.backend.support.sql.SqlTestDatabase;
 import gg.modl.backend.support.sql.TestDialects;
 import java.nio.file.Path;
@@ -25,8 +26,6 @@ import java.time.Duration;
 import javax.sql.DataSource;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 class InstanceLockTest {
     private static final Duration SHORT_WAIT = Duration.ofMillis(750);
@@ -100,8 +99,7 @@ class InstanceLockTest {
         open.close();
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void aSecondInstanceOnTheSameExternalDatabaseFailsClosed(DialectTarget target) {
         SqlDatabaseProperties database = TestDialects.freshDatabase(target);
         try (SqlTestDatabase first = SqlTestDatabase.start(target, dataDirectory, database, WriteAttemptHook.NONE)) {
@@ -116,8 +114,7 @@ class InstanceLockTest {
         }
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void aKilledLockSessionTakenByAnotherInstanceFencesOnTheNextHeartbeat(DialectTarget target) throws SQLException {
         SqlDatabaseProperties database = TestDialects.freshDatabase(target);
         try (SqlTestDatabase first = SqlTestDatabase.start(target, dataDirectory, database, WriteAttemptHook.NONE);
@@ -136,8 +133,7 @@ class InstanceLockTest {
         }
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void aKilledLockSessionThatNobodyTakesIsReacquiredOnTheNextHeartbeat(DialectTarget target) throws Exception {
         SqlDatabaseProperties database = TestDialects.freshDatabase(target);
         try (SqlTestDatabase first = SqlTestDatabase.start(target, dataDirectory, database, WriteAttemptHook.NONE);

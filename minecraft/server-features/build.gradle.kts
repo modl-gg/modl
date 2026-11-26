@@ -6,6 +6,7 @@ dependencies {
     api(project(":minecraft:core"))
     api(project(":minecraft:api"))
     implementation(project(":libs:cirrus:cirrus-api"))
+    implementation(project(":libs:replay-format"))
     compileOnly(libs.snakeyaml)
     compileOnly(libs.adventure.api)
     compileOnly(libs.packetevents.api)

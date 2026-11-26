@@ -77,6 +77,8 @@ public class RateLimitConfig {
         Map.entry(RESTMappingV1.PANEL_ACCOUNT + "/minecraft-link", RateLimitTier.ACCOUNT_MINECRAFT_LINK)
     );
     private static final PathContainer.Options DECODED_PATH = PathContainer.Options.create('/', false);
+    private static final PathPattern REPLAY_SHARES =
+        PathPatternParser.defaultInstance.parse(RESTMappingV1.PANEL_REPLAYS + "/{replayId}/shares");
     private static final List<PathPattern> CREDENTIAL_EXCHANGES = RESTMappingV1.PANEL_AUTH_CREDENTIAL_EXCHANGES.stream()
         .map(PathPatternParser.defaultInstance::parse)
         .toList();
@@ -155,6 +157,9 @@ public class RateLimitConfig {
     }
 
     private RateLimitTier resolvePanelTier(String path, String method) {
+        if (isReplayShareCreation(path, method)) {
+            return RateLimitTier.REPLAY_SHARE_CREATE;
+        }
         if (path.contains("/audit/") || path.contains("/analytics/")) {
             return RateLimitTier.PANEL_AUDIT;
         }
@@ -206,6 +211,10 @@ public class RateLimitConfig {
         return false;
     }
 
+    private static boolean isReplayShareCreation(String path, String method) {
+        return "POST".equalsIgnoreCase(method) && REPLAY_SHARES.matches(PathContainer.parsePath(path, DECODED_PATH));
+    }
+
     private boolean isWriteMethod(String method) {
         return "POST".equalsIgnoreCase(method) || "PUT".equalsIgnoreCase(method);
     }
@@ -245,7 +254,8 @@ public class RateLimitConfig {
         AUTH_LOGIN_LINK(10, Duration.ofMinutes(1)),
         AUTH_PASSWORD(10, Duration.ofMinutes(1)),
         AUTH_SECOND_FACTOR(10, Duration.ofMinutes(1)),
-        ACCOUNT_MINECRAFT_LINK(10, Duration.ofMinutes(1));
+        ACCOUNT_MINECRAFT_LINK(10, Duration.ofMinutes(1)),
+        REPLAY_SHARE_CREATE(30, Duration.ofHours(1), RateLimitScope.ACCOUNT);
 
         private final BucketSpec bucketSpec;
         private final RateLimitScope scope;

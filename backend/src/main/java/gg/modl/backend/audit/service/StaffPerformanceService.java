@@ -8,7 +8,7 @@ import gg.modl.backend.audit.repository.StaffActivityRepository;
 import gg.modl.backend.database.UnitOfWork;
 import gg.modl.backend.log.repository.AuditLogRepository;
 import gg.modl.backend.player.data.punishment.Punishment;
-import gg.modl.backend.player.data.punishment.PunishmentState;
+import gg.modl.backend.player.data.punishment.PunishmentPhase;
 import gg.modl.backend.player.repository.PunishmentRecord;
 import gg.modl.backend.player.repository.PunishmentRepository;
 import gg.modl.backend.player.service.StaffIssuedPunishments;
@@ -155,7 +155,7 @@ public class StaffPerformanceService {
             Objects.requireNonNullElse(punishment.data().reason(), NO_REASON),
             duration != null ? duration.toString() : null,
             punishment.getIssued(),
-            !PunishmentState.activeUntil(punishment).isBefore(now),
+            PunishmentPhase.of(punishment, now),
             punishment.hasRollback(),
             punishment.enforcementCategory().displayName());
     }

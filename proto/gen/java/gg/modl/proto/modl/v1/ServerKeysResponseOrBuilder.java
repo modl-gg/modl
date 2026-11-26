@@ -39,4 +39,28 @@ public interface ServerKeysResponseOrBuilder extends
    * @return The limit.
    */
   int getLimit();
+
+  /**
+   * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+   */
+  java.util.List<gg.modl.proto.modl.v1.ProxiedServerStatus> 
+      getProxiedServersList();
+  /**
+   * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+   */
+  gg.modl.proto.modl.v1.ProxiedServerStatus getProxiedServers(int index);
+  /**
+   * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+   */
+  int getProxiedServersCount();
+  /**
+   * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+   */
+  java.util.List<? extends gg.modl.proto.modl.v1.ProxiedServerStatusOrBuilder> 
+      getProxiedServersOrBuilderList();
+  /**
+   * <code>repeated .modl.v1.ProxiedServerStatus proxied_servers = 3 [json_name = "proxiedServers"];</code>
+   */
+  gg.modl.proto.modl.v1.ProxiedServerStatusOrBuilder getProxiedServersOrBuilder(
+      int index);
 }

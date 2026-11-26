@@ -1,0 +1,90 @@
+name: Bug report
+description: Something in modl does not work as it should.
+labels: ["bug"]
+body:
+  - type: input
+    id: version
+    attributes:
+      label: modl version
+      description: Shown by `/modl status` and in Settings > System > Updates.
+      placeholder: 3.0.0-rc.1
+    validations:
+      required: true
+  - type: dropdown
+    id: deployment
+    attributes:
+      label: How modl runs
+      description: Select every setup involved.
+      multiple: true
+      options:
+        - Plugin on Paper
+        - Plugin on Folia
+        - Plugin on Spigot
+        - Plugin on Velocity
+        - Plugin on BungeeCord
+        - Docker
+        - Server jar (modl-server)
+    validations:
+      required: true
+  - type: input
+    id: minecraft
+    attributes:
+      label: Minecraft server software and version
+      placeholder: Paper 1.21.11, Velocity 3.5.1
+    validations:
+      required: true
+  - type: dropdown
+    id: host
+    attributes:
+      label: Host
+      options:
+        - Pterodactyl or another game panel
+        - VPS or dedicated server
+        - Other
+    validations:
+      required: true
+  - type: dropdown
+    id: database
+    attributes:
+      label: Database
+      options:
+        - SQLite (default)
+        - MySQL
+        - MariaDB
+        - PostgreSQL
+    validations:
+      required: true
+  - type: textarea
+    id: actual
+    attributes:
+      label: What happened
+    validations:
+      required: true
+  - type: textarea
+    id: expected
+    attributes:
+      label: Expected behavior
+    validations:
+      required: true
+  - type: textarea
+    id: steps
+    attributes:
+      label: Steps to reproduce
+      placeholder: |
+        1.
+        2.
+        3.
+    validations:
+      required: true
+  - type: textarea
+    id: status
+    attributes:
+      label: /modl status output
+      description: Run `/modl status` in the console, or copy Settings > System > Status. It leaves out keys, passwords, and emails.
+      render: shell
+  - type: textarea
+    id: logs
+    attributes:
+      label: Relevant log lines
+      description: From `plugins/modl/server/logs/server.log`, the server console, or `docker compose logs modl`. Remove anything private first, such as addresses, domains, player names, and emails.
+      render: shell

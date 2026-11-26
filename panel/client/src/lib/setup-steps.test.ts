@@ -53,6 +53,12 @@ await test('the optional player address step comes after the staff step and befo
   assert.equal(parseSetupStep('player-addresses'), 'player-addresses');
 });
 
+await test('the replays step comes after the AI step and before the finish step', () => {
+  assert.equal(adjacentStep('ai', 1), 'replays');
+  assert.equal(adjacentStep('replays', 1), 'content');
+  assert.equal(SETUP_SCREEN_COUNT, 13);
+});
+
 await test('reported progress is put in wizard order and missing steps are pending', () => {
   const ordered = orderedStepProgress(progress(['servers', 'done'], ['account', 'done']));
   assert.deepEqual(ordered.map((entry) => entry.step), [...SETUP_STEP_IDS]);
@@ -81,7 +87,7 @@ await test('only known steps are valid locations', () => {
 await test('the wizard stops at both ends', () => {
   assert.equal(adjacentStep('account', -1), null);
   assert.equal(adjacentStep('import', 1), 'identity');
-  assert.equal(adjacentStep('content', -1), 'ai');
+  assert.equal(adjacentStep('content', -1), 'replays');
   assert.equal(adjacentStep('content', 1), null);
 });
 
@@ -146,4 +152,10 @@ await test('a step continues once it is done, left without the feature, or the f
   assert.equal(stepContinueReady({ value: 'on', configured: true, done: false, none: 'none' }), true);
   assert.equal(stepContinueReady({ value: 'on', configured: false, done: true, none: 'none' }), true);
   assert.equal(stepContinueReady({ value: null, configured: true, done: false, none: 'none' }), false);
+});
+
+await test('a persisted choice applies without a pick and never locks', () => {
+  assert.equal(stepChoiceOf({ remembered: undefined, options: OPTIONS, saved: null, done: true, none: 'none', persisted: 'on' }), 'on');
+  assert.equal(stepChoiceOf({ remembered: 'none', options: OPTIONS, saved: null, done: true, none: 'none', persisted: 'on' }), 'none');
+  assert.equal(stepChoiceOf({ remembered: undefined, options: OPTIONS, saved: null, done: false, none: 'none', persisted: null }), null);
 });

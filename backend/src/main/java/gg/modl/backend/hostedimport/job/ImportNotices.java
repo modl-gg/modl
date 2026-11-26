@@ -29,7 +29,7 @@ public class ImportNotices {
     }
 
     void finished(ImportTally tally) {
-        notice.publish("The import from modl.gg finished: {} players, {} punishments, {} tickets and {} files. See the report at {}.",
+        notice.publish("The import from modl.gg finished: {} players, {} punishments, {} tickets, and {} files. See the report at {}.",
             tally.count(ImportSubject.PLAYERS).imported(),
             tally.count(ImportSubject.PUNISHMENTS).imported(),
             tally.count(ImportSubject.TICKETS).imported(),

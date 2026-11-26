@@ -90,7 +90,7 @@ class BindingRoundTripContractTest {
             long auditId = database.sequencer().next();
             KernelRows.insert(database,
                 new ChatLogsRecord(chatId, "p1", "Steve", "hello", "lobby", KernelRows.NOW),
-                new AuditLogsRecord(auditId, "info", "system", "started", null, true, KernelRows.NOW));
+                new AuditLogsRecord(auditId, "info", "system", "started", null, KernelRows.NOW));
 
             assertTrue(chatId > SEQUENCER_SCALE_FLOOR);
             assertEquals(chatId, database.dsl().select(CHAT_LOGS.ID).from(CHAT_LOGS).fetchSingle(CHAT_LOGS.ID));

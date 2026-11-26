@@ -4,7 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.modl.backend.hostedimport.HostedArchiveFixture;
 import gg.modl.backend.hostedimport.ImportTestContexts;
+import gg.modl.backend.hostedimport.model.ImportSubject;
 import gg.modl.backend.hostedimport.model.IssueCode;
+import gg.modl.backend.hostedimport.model.IssueEntry;
 import gg.modl.backend.hostedimport.model.IssueLog;
 import gg.modl.backend.hostedimport.storage.ImportedUrls;
 import gg.modl.backend.settings.data.DefaultPunishmentTypes;
@@ -14,6 +16,7 @@ import jakarta.validation.Validator;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.Arrays;
+import java.util.List;
 import java.util.Map;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
@@ -36,7 +39,7 @@ class SettingsImportGuardTest {
     @Test
     void operatorOwnedAndInstanceStateSettingsAreNeverImported() {
         assertThat(SettingsImport.REFUSED).contains("operatorLimits", "storageBackend", "addressForwarding",
-            "playerAddresses", "publicTheme", "publicCustomCss", "hostedImport", "hostedImportChoices", "hostedImportAliases");
+            "playerAddresses", "publicTheme", "publicCustomCss", "publicHomepage", "hostedImport", "hostedImportChoices", "hostedImportAliases");
         assertThat(SettingsImport.IMPORTED).doesNotContainAnyElementsOf(SettingsImport.REFUSED);
     }
 
@@ -79,6 +82,31 @@ class SettingsImportGuardTest {
         assertThat(webhooks).containsEntry("enabled", false).containsEntry("discordWebhookUrl", "");
         assertThat(plan.documents().get("aiModerationSettings")).containsEntry("enableAIReview", false)
             .containsEntry("enableAutomatedActions", false);
-        assertThat(issues.tally().issues()).containsKeys(IssueCode.SETTING_IGNORED, IssueCode.WEBHOOK_DISABLED, IssueCode.AI_DISABLED);
+        assertThat(issues.tally().issues()).containsKeys(IssueCode.WEBHOOK_DISABLED, IssueCode.AI_DISABLED)
+            .doesNotContainKey(IssueCode.SETTING_UNREADABLE);
+        assertThat(plan.importedTypes()).containsExactlyInAnyOrder("webhookSettings", "aiModerationSettings");
+    }
+
+    @Test
+    void settingsModlDoesNotUseAreLeftOutSilentlyAndUnreadableOnesAreNamedAndNotImported() throws IOException {
+        ArchiveIndex index = ImportTestContexts.index(new HostedArchiveFixture()
+            .line("settings", "{\"_id\":\"1\",\"type\":\"migration\",\"data\":{\"state\":\"done\"}}")
+            .line("settings", "{\"_id\":\"2\",\"type\":\"systemSettings\",\"data\":{}}")
+            .line("settings", "{\"_id\":\"3\",\"type\":\"general\",\"data\":{\"serverDisplayName\":\"Network\"}}")
+            .line("settings", "{\"_id\":\"4\",\"type\":\"ticketForms\",\"data\":{\"bug\":\"not a form\"}}")
+            .line("settings", "{\"_id\":\"5\",\"type\":\"punishmentTypes\",\"data\":\"not a list\"}"), directory);
+        IssueLog issues = new IssueLog();
+        SettingsImport.SettingsImportPlan plan = new SettingsImport(index, VALIDATOR,
+            new ImportedUrls(index.manifest(), index.keyPlan(), ImportTestContexts.storage(), issues), new ImportFit(issues))
+            .plan(DefaultPunishmentTypes.getAll());
+
+        assertThat(index.analysisTally().count(ImportSubject.SETTINGS).total()).isEqualTo(3);
+        assertThat(plan.importedTypes()).containsExactly("general");
+        assertThat(plan.unreadableTypes()).containsExactlyInAnyOrder("ticketForms", "punishmentTypes");
+        assertThat(plan.documents()).doesNotContainKey("ticketForms");
+        assertThat(plan.types().fromArchive()).isFalse();
+        assertThat(issues.tally().issues().get(IssueCode.SETTING_UNREADABLE))
+            .isEqualTo(new IssueEntry(2, List.of("ticketForms", "punishmentTypes")));
+        assertThat(issues.tally().counts()).isEmpty();
     }
 }

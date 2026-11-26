@@ -27,6 +27,14 @@ class RateLimitConfigTest {
     }
 
     @Test
+    void creatingReplayShareLinksHasItsOwnAccountTier() {
+        assertEquals(RateLimitConfig.RateLimitTier.REPLAY_SHARE_CREATE, tierFor("/v1/panel/replays/r1/shares", "POST"));
+        assertEquals(RateLimitConfig.RateLimitTier.PANEL_STANDARD, tierFor("/v1/panel/replays/r1/shares", "GET"));
+        assertEquals(RateLimitConfig.RateLimitTier.PANEL_STANDARD, tierFor("/v1/panel/replays/r1/shares/s1", "DELETE"));
+        assertEquals(RateLimitConfig.RateLimitTier.PUBLIC_STANDARD, tierFor("/v1/public/replays/shared/token/file", "GET"));
+    }
+
+    @Test
     void publicMediaReadRemainsStandardTier() {
         assertEquals(
             RateLimitConfig.RateLimitTier.PUBLIC_STANDARD,

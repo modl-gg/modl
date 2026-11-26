@@ -146,12 +146,6 @@ private static final long serialVersionUID = 0L;
     com.google.protobuf.TimestampOrBuilder getIssuedOrBuilder();
 
     /**
-     * <code>bool active = 8 [json_name = "active"];</code>
-     * @return The active.
-     */
-    boolean getActive();
-
-    /**
      * <code>bool rolled_back = 9 [json_name = "rolledBack"];</code>
      * @return The rolledBack.
      */
@@ -173,6 +167,17 @@ private static final long serialVersionUID = 0L;
      */
     com.google.protobuf.ByteString
         getEffectiveCategoryBytes();
+
+    /**
+     * <code>.modl.v1.AuditPunishmentPhase phase = 11 [json_name = "phase"];</code>
+     * @return The enum numeric value on the wire for phase.
+     */
+    int getPhaseValue();
+    /**
+     * <code>.modl.v1.AuditPunishmentPhase phase = 11 [json_name = "phase"];</code>
+     * @return The phase.
+     */
+    gg.modl.proto.modl.v1.AuditPunishmentPhase getPhase();
   }
   /**
    * Protobuf type {@code modl.v1.StaffDetailsResponse.PunishmentDetail}
@@ -203,6 +208,7 @@ private static final long serialVersionUID = 0L;
       reason_ = "";
       duration_ = "";
       effectiveCategory_ = "";
+      phase_ = 0;
     }
 
     public static final com.google.protobuf.Descriptors.Descriptor
@@ -484,17 +490,6 @@ private static final long serialVersionUID = 0L;
       return issued_ == null ? com.google.protobuf.Timestamp.getDefaultInstance() : issued_;
     }
 
-    public static final int ACTIVE_FIELD_NUMBER = 8;
-    private boolean active_ = false;
-    /**
-     * <code>bool active = 8 [json_name = "active"];</code>
-     * @return The active.
-     */
-    @java.lang.Override
-    public boolean getActive() {
-      return active_;
-    }
-
     public static final int ROLLED_BACK_FIELD_NUMBER = 9;
     private boolean rolledBack_ = false;
     /**
@@ -553,6 +548,24 @@ private static final long serialVersionUID = 0L;
       }
     }
 
+    public static final int PHASE_FIELD_NUMBER = 11;
+    private int phase_ = 0;
+    /**
+     * <code>.modl.v1.AuditPunishmentPhase phase = 11 [json_name = "phase"];</code>
+     * @return The enum numeric value on the wire for phase.
+     */
+    @java.lang.Override public int getPhaseValue() {
+      return phase_;
+    }
+    /**
+     * <code>.modl.v1.AuditPunishmentPhase phase = 11 [json_name = "phase"];</code>
+     * @return The phase.
+     */
+    @java.lang.Override public gg.modl.proto.modl.v1.AuditPunishmentPhase getPhase() {
+      gg.modl.proto.modl.v1.AuditPunishmentPhase result = gg.modl.proto.modl.v1.AuditPunishmentPhase.forNumber(phase_);
+      return result == null ? gg.modl.proto.modl.v1.AuditPunishmentPhase.UNRECOGNIZED : result;
+    }
+
     private byte memoizedIsInitialized = -1;
     @java.lang.Override
     public final boolean isInitialized() {
@@ -588,14 +601,14 @@ private static final long serialVersionUID = 0L;
       if (((bitField0_ & 0x00000001) != 0)) {
         output.writeMessage(7, getIssued());
       }
-      if (active_ != false) {
-        output.writeBool(8, active_);
-      }
       if (rolledBack_ != false) {
         output.writeBool(9, rolledBack_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
         com.google.protobuf.GeneratedMessage.writeString(output, 10, effectiveCategory_);
+      }
+      if (phase_ != gg.modl.proto.modl.v1.AuditPunishmentPhase.AUDIT_PUNISHMENT_PHASE_UNSPECIFIED.getNumber()) {
+        output.writeEnum(11, phase_);
       }
       getUnknownFields().writeTo(output);
     }
@@ -623,16 +636,16 @@ private static final long serialVersionUID = 0L;
         size += com.google.protobuf.CodedOutputStream
           .computeMessageSize(7, getIssued());
       }
-      if (active_ != false) {
-        size += com.google.protobuf.CodedOutputStream
-          .computeBoolSize(8, active_);
-      }
       if (rolledBack_ != false) {
         size += com.google.protobuf.CodedOutputStream
           .computeBoolSize(9, rolledBack_);
       }
       if (((bitField0_ & 0x00000002) != 0)) {
         size += com.google.protobuf.GeneratedMessage.computeStringSize(10, effectiveCategory_);
+      }
+      if (phase_ != gg.modl.proto.modl.v1.AuditPunishmentPhase.AUDIT_PUNISHMENT_PHASE_UNSPECIFIED.getNumber()) {
+        size += com.google.protobuf.CodedOutputStream
+          .computeEnumSize(11, phase_);
       }
       return size;
     }
@@ -675,8 +688,6 @@ private static final long serialVersionUID = 0L;
         if (!getIssued()
             .equals(other.getIssued())) return false;
       }
-      if (getActive()
-          != other.getActive()) return false;
       if (getRolledBack()
           != other.getRolledBack()) return false;
       if (hasEffectiveCategory() != other.hasEffectiveCategory()) return false;
@@ -684,6 +695,7 @@ private static final long serialVersionUID = 0L;
         if (!getEffectiveCategory()
             .equals(other.getEffectiveCategory())) return false;
       }
+      if (phase_ != other.phase_) return false;
       if (!getUnknownFields().equals(other.getUnknownFields())) return false;
       return true;
     }
@@ -711,9 +723,6 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + ISSUED_FIELD_NUMBER;
         hash = (53 * hash) + getIssued().hashCode();
       }
-      hash = (37 * hash) + ACTIVE_FIELD_NUMBER;
-      hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
-          getActive());
       hash = (37 * hash) + ROLLED_BACK_FIELD_NUMBER;
       hash = (53 * hash) + com.google.protobuf.Internal.hashBoolean(
           getRolledBack());
@@ -721,6 +730,8 @@ private static final long serialVersionUID = 0L;
         hash = (37 * hash) + EFFECTIVE_CATEGORY_FIELD_NUMBER;
         hash = (53 * hash) + getEffectiveCategory().hashCode();
       }
+      hash = (37 * hash) + PHASE_FIELD_NUMBER;
+      hash = (53 * hash) + phase_;
       hash = (29 * hash) + getUnknownFields().hashCode();
       memoizedHashCode = hash;
       return hash;
@@ -869,9 +880,9 @@ private static final long serialVersionUID = 0L;
           issuedBuilder_.dispose();
           issuedBuilder_ = null;
         }
-        active_ = false;
         rolledBack_ = false;
         effectiveCategory_ = "";
+        phase_ = 0;
         return this;
       }
 
@@ -931,14 +942,14 @@ private static final long serialVersionUID = 0L;
           to_bitField0_ |= 0x00000001;
         }
         if (((from_bitField0_ & 0x00000080) != 0)) {
-          result.active_ = active_;
-        }
-        if (((from_bitField0_ & 0x00000100) != 0)) {
           result.rolledBack_ = rolledBack_;
         }
-        if (((from_bitField0_ & 0x00000200) != 0)) {
+        if (((from_bitField0_ & 0x00000100) != 0)) {
           result.effectiveCategory_ = effectiveCategory_;
           to_bitField0_ |= 0x00000002;
+        }
+        if (((from_bitField0_ & 0x00000200) != 0)) {
+          result.phase_ = phase_;
         }
         result.bitField0_ |= to_bitField0_;
       }
@@ -988,16 +999,16 @@ private static final long serialVersionUID = 0L;
         if (other.hasIssued()) {
           mergeIssued(other.getIssued());
         }
-        if (other.getActive() != false) {
-          setActive(other.getActive());
-        }
         if (other.getRolledBack() != false) {
           setRolledBack(other.getRolledBack());
         }
         if (other.hasEffectiveCategory()) {
           effectiveCategory_ = other.effectiveCategory_;
-          bitField0_ |= 0x00000200;
+          bitField0_ |= 0x00000100;
           onChanged();
+        }
+        if (other.phase_ != 0) {
+          setPhaseValue(other.getPhaseValue());
         }
         this.mergeUnknownFields(other.getUnknownFields());
         onChanged();
@@ -1060,21 +1071,21 @@ private static final long serialVersionUID = 0L;
                 bitField0_ |= 0x00000040;
                 break;
               } // case 58
-              case 64: {
-                active_ = input.readBool();
-                bitField0_ |= 0x00000080;
-                break;
-              } // case 64
               case 72: {
                 rolledBack_ = input.readBool();
-                bitField0_ |= 0x00000100;
+                bitField0_ |= 0x00000080;
                 break;
               } // case 72
               case 82: {
                 effectiveCategory_ = input.readStringRequireUtf8();
-                bitField0_ |= 0x00000200;
+                bitField0_ |= 0x00000100;
                 break;
               } // case 82
+              case 88: {
+                phase_ = input.readEnum();
+                bitField0_ |= 0x00000200;
+                break;
+              } // case 88
               default: {
                 if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                   done = true; // was an endgroup tag
@@ -1643,38 +1654,6 @@ private static final long serialVersionUID = 0L;
         return issuedBuilder_;
       }
 
-      private boolean active_ ;
-      /**
-       * <code>bool active = 8 [json_name = "active"];</code>
-       * @return The active.
-       */
-      @java.lang.Override
-      public boolean getActive() {
-        return active_;
-      }
-      /**
-       * <code>bool active = 8 [json_name = "active"];</code>
-       * @param value The active to set.
-       * @return This builder for chaining.
-       */
-      public Builder setActive(boolean value) {
-
-        active_ = value;
-        bitField0_ |= 0x00000080;
-        onChanged();
-        return this;
-      }
-      /**
-       * <code>bool active = 8 [json_name = "active"];</code>
-       * @return This builder for chaining.
-       */
-      public Builder clearActive() {
-        bitField0_ = (bitField0_ & ~0x00000080);
-        active_ = false;
-        onChanged();
-        return this;
-      }
-
       private boolean rolledBack_ ;
       /**
        * <code>bool rolled_back = 9 [json_name = "rolledBack"];</code>
@@ -1692,7 +1671,7 @@ private static final long serialVersionUID = 0L;
       public Builder setRolledBack(boolean value) {
 
         rolledBack_ = value;
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000080;
         onChanged();
         return this;
       }
@@ -1701,7 +1680,7 @@ private static final long serialVersionUID = 0L;
        * @return This builder for chaining.
        */
       public Builder clearRolledBack() {
-        bitField0_ = (bitField0_ & ~0x00000100);
+        bitField0_ = (bitField0_ & ~0x00000080);
         rolledBack_ = false;
         onChanged();
         return this;
@@ -1713,7 +1692,7 @@ private static final long serialVersionUID = 0L;
        * @return Whether the effectiveCategory field is set.
        */
       public boolean hasEffectiveCategory() {
-        return ((bitField0_ & 0x00000200) != 0);
+        return ((bitField0_ & 0x00000100) != 0);
       }
       /**
        * <code>optional string effective_category = 10 [json_name = "effectiveCategory"];</code>
@@ -1757,7 +1736,7 @@ private static final long serialVersionUID = 0L;
           java.lang.String value) {
         java.util.Objects.requireNonNull(value);
         effectiveCategory_ = value;
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000100;
         onChanged();
         return this;
       }
@@ -1767,7 +1746,7 @@ private static final long serialVersionUID = 0L;
        */
       public Builder clearEffectiveCategory() {
         effectiveCategory_ = getDefaultInstance().getEffectiveCategory();
-        bitField0_ = (bitField0_ & ~0x00000200);
+        bitField0_ = (bitField0_ & ~0x00000100);
         onChanged();
         return this;
       }
@@ -1781,7 +1760,59 @@ private static final long serialVersionUID = 0L;
         java.util.Objects.requireNonNull(value);
         checkByteStringIsUtf8(value);
         effectiveCategory_ = value;
+        bitField0_ |= 0x00000100;
+        onChanged();
+        return this;
+      }
+
+      private int phase_ = 0;
+      /**
+       * <code>.modl.v1.AuditPunishmentPhase phase = 11 [json_name = "phase"];</code>
+       * @return The enum numeric value on the wire for phase.
+       */
+      @java.lang.Override public int getPhaseValue() {
+        return phase_;
+      }
+      /**
+       * <code>.modl.v1.AuditPunishmentPhase phase = 11 [json_name = "phase"];</code>
+       * @param value The enum numeric value on the wire for phase to set.
+       * @return This builder for chaining.
+       */
+      public Builder setPhaseValue(int value) {
+        phase_ = value;
         bitField0_ |= 0x00000200;
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.modl.v1.AuditPunishmentPhase phase = 11 [json_name = "phase"];</code>
+       * @return The phase.
+       */
+      @java.lang.Override
+      public gg.modl.proto.modl.v1.AuditPunishmentPhase getPhase() {
+        gg.modl.proto.modl.v1.AuditPunishmentPhase result = gg.modl.proto.modl.v1.AuditPunishmentPhase.forNumber(phase_);
+        return result == null ? gg.modl.proto.modl.v1.AuditPunishmentPhase.UNRECOGNIZED : result;
+      }
+      /**
+       * <code>.modl.v1.AuditPunishmentPhase phase = 11 [json_name = "phase"];</code>
+       * @param value The phase to set.
+       * @throws IllegalArgumentException if UNRECOGNIZED is provided.
+       * @return This builder for chaining.
+       */
+      public Builder setPhase(gg.modl.proto.modl.v1.AuditPunishmentPhase value) {
+        java.util.Objects.requireNonNull(value);
+        bitField0_ |= 0x00000200;
+        phase_ = value.getNumber();
+        onChanged();
+        return this;
+      }
+      /**
+       * <code>.modl.v1.AuditPunishmentPhase phase = 11 [json_name = "phase"];</code>
+       * @return This builder for chaining.
+       */
+      public Builder clearPhase() {
+        bitField0_ = (bitField0_ & ~0x00000200);
+        phase_ = 0;
         onChanged();
         return this;
       }

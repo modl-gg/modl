@@ -9,6 +9,7 @@ import { IdentityStep } from './IdentityStep';
 import { ImportStep } from './import/ImportStep';
 import { MinecraftAccountStep } from './MinecraftAccountStep';
 import { PlayerAddressesStep } from './PlayerAddressesStep';
+import { ReplaysStep } from './ReplaysStep';
 import { ServersStep } from './ServersStep';
 import { StaffStep } from './StaffStep';
 import type { SetupStepProps } from './step-props';
@@ -34,6 +35,7 @@ const STEP_VIEWS = {
   staff: { titleKey: 'pages.setup.staff.title', introKey: 'pages.setup.staff.intro', component: StaffStep },
   'player-addresses': { titleKey: 'pages.setup.playerAddresses.title', introKey: 'pages.setup.playerAddresses.intro', component: PlayerAddressesStep },
   ai: { titleKey: 'pages.setup.ai.title', introKey: 'pages.setup.ai.intro', component: AiStep },
+  replays: { titleKey: 'pages.setup.replays.title', introKey: 'pages.setup.replays.intro', component: ReplaysStep },
   content: { titleKey: 'pages.setup.content.title', introKey: 'pages.setup.content.intro', component: ContentStep },
 } as const satisfies Record<SetupStepId, SetupStepView>;
 

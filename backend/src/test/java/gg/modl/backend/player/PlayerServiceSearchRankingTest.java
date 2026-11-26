@@ -140,7 +140,7 @@ class PlayerServiceSearchRankingTest {
         Player online = player(UUID.fromString("99999999-9999-9999-9999-999999999999"), List.of("modltarget2"), NOW);
         online.data().setOnline(true);
         when(playerRepository.search("modltarget", 100)).thenReturn(List.of(online, banned));
-        when(playerRepository.findActiveBanHolders(any(), eq(NOW))).thenReturn(Set.of(banned.getId()));
+        when(playerRepository.findEnforcedBanHolders(any(), eq(NOW))).thenReturn(Set.of(banned.getId()));
 
         List<PlayerSearchResult> results = playerService.searchPlayers(server, "modltarget");
 

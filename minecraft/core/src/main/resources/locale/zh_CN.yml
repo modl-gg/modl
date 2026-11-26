@@ -1142,7 +1142,7 @@ help:
       usage: "unmute <player>"
       description: "撤销全部生效中和排队中的禁言"
     replay:
-      usage: "replay <status|capture> [player]"
+      usage: "replay <status|record|stop|capture> [player]"
       description: "管理回放录制"
     modl_reload:
       usage: "modl reload"
@@ -1299,9 +1299,11 @@ network:
 replay:
   usage:
     - "&f/replay status [player] &7- 查看录制状态"
+    - "&f/replay record <player> &7- 开始录制玩家"
+    - "&f/replay stop <player> &7- 停止由 /replay record 开始的录制"
     - "&f/replay capture [player] &7- 抓取并上传回放"
   not_available: "&c本服务器不支持回放录制。"
-  status_recording: "&a{player} 正在被录制"
+  status_recording: "&a{player} 正在被录制（{origin}），已录制 {duration}"
   status_not_recording: "&c{player} 未在录制中"
   no_server_connected: "&c没有已连接的服务器可用于抓取回放。"
   no_active_recording: "&c{player} 当前没有进行中的录制"
@@ -1312,6 +1314,19 @@ replay:
   click_to_view: "[点击查看回放]"
   click_to_view_hover: "打开回放查看器"
   console_specify_player: "&c从控制台使用时请指定玩家名。"
+  memory: "&7回放内存：已用 {used} MB / 共 {limit} MB，录制数：{recordings}"
+  record_started: "&a已开始录制 {player}"
+  already_recording: "&e{player} 已在录制中"
+  record_stopped: "&a已停止录制 {player}"
+  recording_kept: "&c{player} 的录制将继续（{origin}）"
+  player_left: "&c{player} 已离开服务器"
+  status_failed: "&c无法读取 {player} 的录制状态"
+  server_unreachable: "&c{player} 所在的服务器未连接到 modl。"
+  record_failed: "&c无法更改 {player} 的录制"
+  origins:
+    auto_record: "自动录制"
+    anticheat_flag: "反作弊标记"
+    staff: "/replay record"
 
 standing_gui:
   title: "&f你的处罚状态"
@@ -1380,6 +1395,7 @@ import:
   source_missing: "本服务器上未找到 {source} 的数据。请在拥有这些数据的服务器上运行（群组服则在运行 modl 的代理端）。"
   source_locked: "{source} 正在运行并占用着其数据库文件。请移除它的 jar（保留其文件夹），重启后再次运行。"
   database_failed: "无法读取 {source} 的数据：{error}"
+  source_reconnect_failed: "预览时保留的 {source} 连接已断开，且无法重新打开：{error}。请重新运行 /modl import {source_id}。"
   no_space: "磁盘可用空间不足，无法复制 {source} 的数据库：{error}"
   nothing_to_import: "{source} 中没有可导入的玩家或处罚。"
   nothing_left: "按这些选项已没有可导入的内容。"

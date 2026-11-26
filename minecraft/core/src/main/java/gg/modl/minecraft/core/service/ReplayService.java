@@ -8,6 +8,12 @@ import java.util.concurrent.CompletableFuture;
 public interface ReplayService {
     CompletableFuture<ReplayCaptureResult> captureReplayResult(UUID targetUuid, String targetName);
 
+    CompletableFuture<ReplayRecordingResult> startRecording(UUID targetUuid, String targetName);
+
+    CompletableFuture<ReplayRecordingResult> stopRecording(UUID targetUuid, String targetName);
+
+    CompletableFuture<ReplayRecordingResult> recordingStatus(UUID targetUuid, String targetName);
+
     default CompletableFuture<@Nullable String> captureReplay(UUID targetUuid, String targetName) {
         return captureReplayResult(targetUuid, targetName).thenApply(result ->
                 result.getStatus() == ReplayCaptureStatus.OK ? result.getReplayId() : null);
@@ -24,6 +30,8 @@ public interface ReplayService {
     default boolean shouldAttemptCapture(UUID playerUuid) {
         return getReplayStatus(playerUuid) != ReplayCaptureStatus.NO_SERVER_CONNECTED;
     }
+
+    default void recordOnSuspicion(UUID playerUuid) {}
 
     default void onPlayerDisconnect(UUID playerUuid) {}
 }

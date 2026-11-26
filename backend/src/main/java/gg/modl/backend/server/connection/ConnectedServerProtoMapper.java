@@ -31,6 +31,9 @@ final class ConnectedServerProtoMapper {
         if (server.keyName() != null) {
             proto.setKeyName(server.keyName());
         }
+        if (server.features() != null) {
+            proto.setFeatures(server.features().toProto());
+        }
         return proto.build();
     }
 

@@ -23,6 +23,8 @@ public final class ConnectionYaml {
     public static final String SMTP_PASSWORD = "embedded.smtp.password";
     public static final String SMTP_FROM = "embedded.smtp.from";
     public static final String SMTP_STARTTLS = "embedded.smtp.starttls";
+    public static final String TUNNEL_PROVIDER = "embedded.tunnel.provider";
+    public static final String TUNNEL_TOKEN = "embedded.tunnel.token";
     public static final String REMOTE_URL = "remote.url";
     public static final String REMOTE_API_KEY = "remote.api-key";
 

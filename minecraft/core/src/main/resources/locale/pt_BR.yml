@@ -1143,7 +1143,7 @@ help:
       usage: "unmute <jogador>"
       description: "Perdoar todos os mutes ativos e em espera"
     replay:
-      usage: "replay <status|capture> [jogador]"
+      usage: "replay <status|record|stop|capture> [jogador]"
       description: "Gerenciar as gravações de replay"
     modl_reload:
       usage: "modl reload"
@@ -1300,9 +1300,11 @@ network:
 replay:
   usage:
     - "&f/replay status [jogador] &7- Ver o status da gravação"
+    - "&f/replay record <jogador> &7- Começar a gravar um jogador"
+    - "&f/replay stop <jogador> &7- Parar uma gravação iniciada com /replay record"
     - "&f/replay capture [jogador] &7- Capturar e enviar o replay"
   not_available: "&cA gravação de replay não está disponível neste servidor."
-  status_recording: "&a{player} está sendo gravado no momento"
+  status_recording: "&a{player} está sendo gravado ({origin}) há {duration}"
   status_not_recording: "&c{player} não está sendo gravado"
   no_server_connected: "&cNenhum servidor está conectado para capturar um replay."
   no_active_recording: "&cNenhuma gravação ativa para {player}"
@@ -1313,6 +1315,19 @@ replay:
   click_to_view: "[Clique para ver o replay]"
   click_to_view_hover: "Abrir o visualizador de replay"
   console_specify_player: "&cInforme o nome de um jogador pelo console."
+  memory: "&7Memória de replays: {used} de {limit} MB, gravações: {recordings}"
+  record_started: "&aGravando {player}"
+  already_recording: "&e{player} já está sendo gravado"
+  record_stopped: "&aGravação de {player} parada"
+  recording_kept: "&cA gravação de {player} continua ({origin})"
+  player_left: "&c{player} saiu do servidor"
+  status_failed: "&cNão foi possível ler o status da gravação de {player}"
+  server_unreachable: "&cO servidor de {player} não está conectado ao modl."
+  record_failed: "&cNão foi possível alterar a gravação de {player}"
+  origins:
+    auto_record: "gravação automática"
+    anticheat_flag: "alerta do anticheat"
+    staff: "/replay record"
 
 standing_gui:
   title: "&fSua Situação"
@@ -1381,6 +1396,7 @@ import:
   source_missing: "Nenhum dado de {source} foi encontrado neste servidor. Execute isto no servidor que tem esses dados (em uma rede, o proxy que executa o modl)."
   source_locked: "{source} está em execução e mantém o arquivo do banco de dados aberto. Remova o jar dele (mantenha a pasta), reinicie e execute novamente."
   database_failed: "Não foi possível ler os dados de {source}: {error}"
+  source_reconnect_failed: "A conexão com {source} mantida desde a prévia foi perdida e não pôde ser reaberta: {error}. Execute /modl import {source_id} novamente."
   no_space: "Não há espaço livre em disco suficiente para copiar o banco de dados de {source}: {error}"
   nothing_to_import: "{source} não tem jogadores ou punições para importar."
   nothing_left: "Com essas opções não resta nada para importar."

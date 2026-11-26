@@ -39,7 +39,7 @@ public final class ConnectionConfigLoader {
         }
         ConnectionConfig config = ConnectionConfigReader.read(readYaml(file, true));
         ConnectionConfigValidator.validate(config, platform);
-        return config;
+        return config.withTunnelNetworkDefaults();
     }
 
     public String displayPath() {

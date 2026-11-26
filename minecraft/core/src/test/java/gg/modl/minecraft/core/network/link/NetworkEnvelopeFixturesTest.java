@@ -6,8 +6,14 @@ import gg.modl.minecraft.core.network.MemberActionKind;
 import gg.modl.minecraft.core.network.MemberActionOutcome;
 import gg.modl.minecraft.core.network.ModerationSnapshot;
 import gg.modl.minecraft.core.network.ModerationState;
+import gg.modl.minecraft.core.network.ProxyBackend;
 import gg.modl.minecraft.core.network.StaffSessionState;
+import gg.modl.minecraft.core.service.ActiveRecording;
+import gg.modl.minecraft.core.service.RecordingOrigin;
 import gg.modl.minecraft.core.service.ReplayCaptureStatus;
+import gg.modl.minecraft.core.service.ReplayMemory;
+import gg.modl.minecraft.core.service.ReplayRecordingOutcome;
+import gg.modl.minecraft.core.service.ReplayRecordingResult;
 import gg.modl.minecraft.core.support.FakePlatform;
 import gg.modl.minecraft.core.support.RecordingPluginLogger;
 import gg.modl.proto.fixtures.NetworkEnvelopeFixtures;
@@ -47,6 +53,18 @@ class NetworkEnvelopeFixturesTest {
         ModerationStateEvent received = NetworkEnvelopeFixtures.MEMBER_MODERATION_STATE.envelope().getModerationState();
         assertEquals(CORE_INSTANCE, received.getSourceInstanceId());
         assertEquals(snapshot, ModerationStateProtos.fromProto(received));
+    }
+
+    @Test
+    void aCoreSendsTheSharedProxyServersBytes() {
+        List<RealtimeEnvelope> reported = new ArrayList<>();
+        ProxyServersReporter reporter = new ProxyServersReporter(() -> Collections.singletonList(
+                new ProxyBackend(MEMBER_NAME, NetworkEnvelopeFixtures.MEMBER_ADDRESS)), reported::add, new RecordingPluginLogger());
+
+        reporter.connected();
+
+        assertEquals(1, reported.size());
+        assertArrayEquals(NetworkEnvelopeFixtures.CORE_PROXY_SERVERS.bytes(), reported.get(0).toByteArray());
     }
 
     @Test
@@ -95,6 +113,34 @@ class NetworkEnvelopeFixturesTest {
                 RealtimeEnvelope.newBuilder().setReplayCaptureResult(answer).build().toByteArray());
         assertEquals("replay-1", NetworkReplayService.resultOf(
                 NetworkEnvelopeFixtures.CORE_CAPTURE_RESULT.envelope().getReplayCaptureResult()).getReplayId());
+    }
+
+    @Test
+    void aCoreSendsAndAMemberReadsTheSharedRecordRequestBytes() {
+        ScheduledExecutorService scheduler = Executors.newSingleThreadScheduledExecutor();
+        try {
+            assertFalse(new NetworkReplayService(new FakePlatform().onServer(target, MEMBER_NAME), sharedRoster(), sent::add,
+                    scheduler).startRecording(target, "Steve").isDone());
+        } finally {
+            scheduler.shutdownNow();
+        }
+
+        ReplayCaptureRequest request = sent.get(0).getReplayCaptureRequest().toBuilder().setRequestId("record-1").build();
+        assertArrayEquals(NetworkEnvelopeFixtures.CORE_RECORD_REQUEST.bytes(),
+                RealtimeEnvelope.newBuilder().setReplayCaptureRequest(request).build().toByteArray());
+        assertEquals(CORE_INSTANCE, NetworkEnvelopeFixtures.MEMBER_RECORD_REQUEST.envelope().getReplayCaptureRequest()
+                .getRequesterInstanceId());
+    }
+
+    @Test
+    void aMemberSendsAndACoreReadsTheSharedRecordingResultBytes() {
+        ReplayRecordingResult status = ReplayRecordingResult.of(ReplayRecordingOutcome.OK,
+                new ActiveRecording(RecordingOrigin.STAFF, 65_000L), new ReplayMemory(3L * 1024 * 1024, 64L * 1024 * 1024, 1));
+
+        assertArrayEquals(NetworkEnvelopeFixtures.MEMBER_RECORDING_RESULT.bytes(), RealtimeEnvelope.newBuilder()
+                .setReplayCaptureResult(ReplayRecordingProtos.toResult("record-1", status)).build().toByteArray());
+        assertEquals(status, ReplayRecordingProtos.fromResult(
+                NetworkEnvelopeFixtures.CORE_RECORDING_RESULT.envelope().getReplayCaptureResult()));
     }
 
     @Test

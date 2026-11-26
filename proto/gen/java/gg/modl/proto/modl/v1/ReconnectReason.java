@@ -133,7 +133,7 @@ public enum ReconnectReason
   }
   public static com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(8);
+    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(10);
   }
 
   private static final ReconnectReason[] VALUES = values();

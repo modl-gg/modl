@@ -21,7 +21,7 @@ import { formatChartDateLabel, formatDateOnly } from '@/utils/date-utils';
 import type { PunishmentStatusKind } from '@/utils/punishment-status';
 import { AuditPeriodSelect } from './AuditPeriodSelect';
 import { formatCompactDuration } from '@/components/player/punishment-timeline';
-import { MINUTE_MS, punishmentTypeBadgeVariant } from './audit-format';
+import { MINUTE_MS, PHASE_STATUS_KINDS, punishmentTypeBadgeVariant } from './audit-format';
 import { CHART_AXIS_PROPS, CHART_GRID_PROPS, ChartEmpty, ChartTooltip, formatPieSliceLabel, withPaletteFill } from './chart-kit';
 import { RollbackPunishmentDialog, type RollbackTarget } from './RollbackPunishmentDialog';
 import { useModalBackground } from './use-modal-background';
@@ -31,7 +31,7 @@ const NO_TICKETS: readonly StaffDetailTicket[] = [];
 
 function recentPunishmentStatus(punishment: StaffDetailPunishment): PunishmentStatusKind {
   if (punishment.rolledBack) return 'rolledBack';
-  return punishment.active ? 'active' : 'inactive';
+  return PHASE_STATUS_KINDS[punishment.phase];
 }
 
 function isInsidePlayerWindow(target: EventTarget | null): boolean {
@@ -80,7 +80,7 @@ function RecentPunishmentsTable({ punishments, onRollback }: {
             <td className="p-2">
               <div className="flex items-center gap-2">
                 <PunishmentStatusBadge status={status} />
-                {status === 'active' && onRollback !== null && (
+                {punishment.phase !== 'ended' && onRollback !== null && (
                   <Button
                     variant="outline"
                     size="icon"

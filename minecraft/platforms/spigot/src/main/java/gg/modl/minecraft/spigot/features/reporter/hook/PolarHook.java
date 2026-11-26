@@ -13,7 +13,7 @@ import top.polar.api.event.listener.repository.EventListenerRepository;
 import top.polar.api.user.event.DetectionAlertEvent;
 
 public class PolarHook extends AbstractAnticheatHook<DetectionAlertEvent> {
-    private static final String HOOK_NAME = "Polar";
+    public static final String HOOK_NAME = "Polar";
     private static final String POLAR_API_CLASS = "top.polar.api.PolarApiAccessor";
 
     private @Nullable Runnable unsubscribe;
@@ -24,6 +24,10 @@ public class PolarHook extends AbstractAnticheatHook<DetectionAlertEvent> {
 
     @Override
     public boolean isAvailable() {
+        return apiPresent();
+    }
+
+    public static boolean apiPresent() {
         try {
             Class.forName(POLAR_API_CLASS);
             return true;

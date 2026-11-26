@@ -272,7 +272,7 @@ public class RecordSteps {
                         metadata.put(PLAYER_ID, ids.get(audit.playerUuid()));
                     }
                     entries.add(new ImportedAuditEntry(assigned.get(i), audit.level(), audit.source(), audit.description(), metadata,
-                        audit.canRollback(), audit.createdAt()));
+                        audit.createdAt()));
                 }
                 importedLogs.insertAudit(entries);
             })

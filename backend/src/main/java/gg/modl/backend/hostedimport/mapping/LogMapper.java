@@ -23,7 +23,6 @@ public final class LogMapper {
     private static final String UNKNOWN_USERNAME = "Unknown";
     private static final String PUNISHMENT_ID = "punishmentId";
     private static final String PLAYER_ID = "playerId";
-    private static final String CAN_ROLLBACK = "canRollback";
 
     private final ImportContext context;
     private final ImportFit fit;
@@ -84,12 +83,9 @@ public final class LogMapper {
         Map<String, Object> metadata = source.document("metadata")
             .map(document -> context.urls().rewriteMap(document.fields()))
             .orElseGet(LinkedHashMap::new);
-        boolean canRollback = !Boolean.FALSE.equals(metadata.get(CAN_ROLLBACK));
         String sourcePlayerId = metadata.get(PLAYER_ID) instanceof String playerId ? playerId : null;
         String playerUuid = context.index().uuidOfSourcePlayer(sourcePlayerId);
         if (sourcePlayerId != null && playerUuid == null) {
-            canRollback = false;
-            metadata.put(CAN_ROLLBACK, false);
             context.issues().report(IssueCode.REFERENCE_DANGLING, sourcePlayerId);
         }
         if (metadata.get(PUNISHMENT_ID) instanceof String punishmentId) {
@@ -103,7 +99,6 @@ public final class LogMapper {
             Objects.requireNonNullElse(fit.textIfPresent(source.string("description")), ""),
             metadata,
             playerUuid,
-            canRollback,
             created));
     }
 
@@ -115,6 +110,6 @@ public final class LogMapper {
     }
 
     public record PendingAudit(long preferredId, String level, String source, String description, Map<String, Object> metadata,
-                               @Nullable String playerUuid, boolean canRollback, Instant createdAt) {
+                               @Nullable String playerUuid, Instant createdAt) {
     }
 }

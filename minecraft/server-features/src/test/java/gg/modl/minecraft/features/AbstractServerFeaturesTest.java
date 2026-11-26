@@ -2,7 +2,7 @@ package gg.modl.minecraft.features;
 
 import gg.modl.minecraft.core.locale.LocaleManager;
 import gg.modl.minecraft.core.network.MemberActionSender;
-import gg.modl.minecraft.core.service.ReplayService;
+import gg.modl.minecraft.core.feature.FeatureSettings;
 import gg.modl.minecraft.core.util.PluginLogger;
 import gg.modl.minecraft.features.config.ServerFeaturesConfig;
 import gg.modl.minecraft.features.config.StaffModeConfig;
@@ -33,6 +33,7 @@ import java.util.function.Supplier;
 import java.util.logging.Logger;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
+import static org.junit.jupiter.api.Assertions.assertFalse;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class AbstractServerFeaturesTest {
@@ -67,7 +68,33 @@ class AbstractServerFeaturesTest {
         features.disable();
     }
 
+    @Test
+    void panelSettingsReachTheRecorderAndTheAnticheatHooksAndReportTheStatus() throws IOException {
+        TestFeatures features = new TestFeatures(new TestContext(dataFolder), ServerFeaturesConfig.load(dataFolder));
+        features.enableStandalone(new RecordingTicketCreator(), (action, onResult) -> { }, () -> "test", new LocaleManager());
+        List<Boolean> reportedHooks = new ArrayList<>();
+        features.reportStatusTo(() -> reportedHooks.add(features.featureStatus().isAnticheatIntegrationActive()));
+        FeatureSettings enabled = new FeatureSettings(true, true, true, true, 90, 48, 128, "Grim");
+
+        assertEquals(0, features.hookRegistrations);
+        features.applyFeatureSettings(enabled);
+        features.applyFeatureSettings(enabled);
+
+        assertEquals(1, features.hookRegistrations);
+        assertEquals(Collections.singletonList(enabled), features.appliedReplaySettings.subList(1, 2));
+        assertEquals(Collections.singletonList(true), reportedHooks);
+        assertEquals(Collections.singletonList("GrimAC"), features.featureStatus().getDetectedAnticheats());
+
+        features.applyFeatureSettings(FeatureSettings.NONE);
+        assertFalse(features.featureStatus().isAnticheatIntegrationActive());
+        assertEquals(FeatureSettings.NONE, features.appliedReplaySettings.get(features.appliedReplaySettings.size() - 1));
+        features.disable();
+    }
+
     private static final class TestFeatures extends AbstractServerFeatures {
+        private final List<FeatureSettings> appliedReplaySettings = new ArrayList<>();
+        private int hookRegistrations;
+
         private TestFeatures(FeaturesPluginContext context, ServerFeaturesConfig config) {
             super(context, config, LOGGER);
         }
@@ -93,11 +120,23 @@ class AbstractServerFeaturesTest {
 
         @Override
         protected void registerAntiCheatHooks(List<AntiCheatHook> hooks, AutoReporter autoReporter) {
+            hookRegistrations++;
+            hooks.add(new NamedHook());
         }
 
         @Override
-        protected ReplayService initReplayRecording(ServerFeaturesConfig config) {
-            return null;
+        protected void applyReplaySettings(FeatureSettings previous, FeatureSettings next) {
+            appliedReplaySettings.add(next);
+        }
+
+        @Override
+        protected boolean supportsReplays() {
+            return false;
+        }
+
+        @Override
+        protected List<String> detectedAnticheats() {
+            return Collections.singletonList("GrimAC");
         }
 
         @Override
@@ -110,6 +149,26 @@ class AbstractServerFeaturesTest {
 
         @Override
         protected void onDisable() {
+        }
+    }
+
+    private static final class NamedHook implements AntiCheatHook {
+        @Override
+        public String getName() {
+            return "GrimAC";
+        }
+
+        @Override
+        public boolean isAvailable() {
+            return true;
+        }
+
+        @Override
+        public void register() {
+        }
+
+        @Override
+        public void unregister() {
         }
     }
 
@@ -171,7 +230,17 @@ class AbstractServerFeaturesTest {
         }
 
         @Override
+        public void runForPlayer(UUID playerUuid, Runnable task, Runnable gone) {
+            task.run();
+        }
+
+        @Override
         public void runLater(Runnable task, long delayTicks) {
+            task.run();
+        }
+
+        @Override
+        public void runAsync(Runnable task) {
             task.run();
         }
 

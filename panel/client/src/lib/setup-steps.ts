@@ -9,6 +9,7 @@ export const SETUP_STEP_IDS = [
   'staff',
   'player-addresses',
   'ai',
+  'replays',
   'content',
 ] as const;
 
@@ -78,12 +79,14 @@ export interface StepChoiceSources<T extends string> {
   saved: T | null;
   done: boolean;
   none: T;
+  persisted?: T | null | undefined;
 }
 
-export function stepChoiceOf<T extends string>({ remembered, options, saved, done, none }: StepChoiceSources<T>): T | null {
+export function stepChoiceOf<T extends string>({ remembered, options, saved, done, none, persisted = null }: StepChoiceSources<T>): T | null {
   if (saved !== null) return saved;
   const picked = options.find((option) => option === remembered);
   if (picked !== undefined) return picked;
+  if (persisted !== null) return persisted;
   return done ? none : null;
 }
 

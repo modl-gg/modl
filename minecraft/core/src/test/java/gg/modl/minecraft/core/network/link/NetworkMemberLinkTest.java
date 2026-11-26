@@ -5,10 +5,20 @@ import gg.modl.minecraft.core.network.MemberActionKind;
 import gg.modl.minecraft.core.network.MemberActionOutcome;
 import gg.modl.minecraft.core.network.ModerationSnapshot;
 import gg.modl.minecraft.core.network.ModerationSnapshotListener;
+import gg.modl.minecraft.core.service.ActiveRecording;
+import gg.modl.minecraft.core.service.RecordingOrigin;
 import gg.modl.minecraft.core.service.ReplayCaptureStatus;
+import gg.modl.minecraft.core.service.ReplayMemory;
+import gg.modl.minecraft.core.service.ReplayRecordingOutcome;
+import gg.modl.minecraft.core.service.ReplayRecordingResult;
 import gg.modl.minecraft.core.support.RecordingPluginLogger;
 import gg.modl.proto.modl.v1.ModerationStateEvent;
+import gg.modl.proto.modl.v1.RealtimeEnvelope;
 import gg.modl.proto.modl.v1.ReplayCaptureOutcome;
+import gg.modl.proto.modl.v1.ReplayCaptureRequest;
+import gg.modl.proto.modl.v1.ReplayCaptureResult;
+import gg.modl.proto.modl.v1.ReplayRecordingOrigin;
+import gg.modl.proto.modl.v1.ReplayRequestAction;
 import gg.modl.proto.modl.v1.StatWipePushEvent;
 import gg.modl.proto.modl.v1.SyncPendingStatWipe;
 import org.junit.jupiter.api.AfterEach;
@@ -19,7 +29,6 @@ import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
-import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.atomic.AtomicReference;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
@@ -30,9 +39,11 @@ class NetworkMemberLinkTest {
     private final List<String> events = new ArrayList<>();
     private final List<String> wipes = new ArrayList<>();
     private final RecordingPluginLogger logger = new RecordingPluginLogger();
+    private final FakeReplayRequests replays = new FakeReplayRequests(ReplayRecordingResult.of(ReplayRecordingOutcome.OK,
+            new ActiveRecording(RecordingOrigin.STAFF, 5_000L), new ReplayMemory(1024L, 2048L, 1)));
     private final NetworkMemberLink link = NetworkMemberLink.builder()
             .moderation(new RecordingModeration())
-            .captures((target, name) -> CompletableFuture.completedFuture(null))
+            .captures(replays)
             .statWipes((username, uuid, punishmentId) -> wipes.add(username + ":" + punishmentId))
             .onlinePlayerCount(() -> 0)
             .serverName(() -> "lobby")
@@ -61,6 +72,38 @@ class NetworkMemberLinkTest {
 
         assertEquals(MemberActionOutcome.NO_CORE, outcome.get());
         assertFalse(link.isConnected());
+    }
+
+    @Test
+    void aRecordingRequestRunsItsActionAndAnswersWithTheRecordingState() {
+        List<RealtimeEnvelope> answers = new ArrayList<>();
+
+        link.onReplayRequest(replayRequest(ReplayRequestAction.REPLAY_REQUEST_ACTION_START_RECORDING), answers::add);
+        link.onReplayRequest(replayRequest(ReplayRequestAction.REPLAY_REQUEST_ACTION_STOP_RECORDING), answers::add);
+        link.onReplayRequest(replayRequest(ReplayRequestAction.REPLAY_REQUEST_ACTION_RECORDING_STATUS), answers::add);
+
+        assertEquals(Arrays.asList("start Steve", "stop Steve", "status Steve"), replays.calls());
+        ReplayCaptureResult answer = answers.get(0).getReplayCaptureResult();
+        assertEquals("r1", answer.getRequestId());
+        assertEquals(ReplayCaptureOutcome.REPLAY_CAPTURE_OUTCOME_OK, answer.getOutcome());
+        assertEquals(ReplayRecordingOrigin.REPLAY_RECORDING_ORIGIN_STAFF, answer.getRecording().getOrigin());
+        assertEquals(5_000L, answer.getRecording().getRecordingMs());
+        assertEquals(2048L, answer.getMemory().getLimitBytes());
+    }
+
+    @Test
+    void aReplayRequestWithoutAKnownActionDoesNothingAndAnswersAnError() {
+        List<RealtimeEnvelope> answers = new ArrayList<>();
+
+        link.onReplayRequest(replayRequest(ReplayRequestAction.REPLAY_REQUEST_ACTION_UNSPECIFIED), answers::add);
+        link.onReplayRequest(replayRequest(ReplayRequestAction.REPLAY_REQUEST_ACTION_START_RECORDING).toBuilder()
+                .setTargetUuid("not-a-uuid").build(), answers::add);
+
+        assertTrue(replays.calls().isEmpty());
+        assertEquals(2, answers.size());
+        for (RealtimeEnvelope answer : answers) {
+            assertEquals(ReplayCaptureOutcome.REPLAY_CAPTURE_OUTCOME_ERROR, answer.getReplayCaptureResult().getOutcome());
+        }
     }
 
     @Test
@@ -119,5 +162,10 @@ class NetworkMemberLinkTest {
         public void linkDown() {
             events.add("down");
         }
+    }
+
+    private static ReplayCaptureRequest replayRequest(ReplayRequestAction action) {
+        return ReplayCaptureRequest.newBuilder().setRequestId("r1").setTargetUuid(UUID.randomUUID().toString())
+                .setTargetName("Steve").setExpectedServer("lobby").setAction(action).build();
     }
 }

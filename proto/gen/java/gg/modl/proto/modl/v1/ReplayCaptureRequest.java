@@ -33,6 +33,7 @@ private static final long serialVersionUID = 0L;
     targetName_ = "";
     expectedServer_ = "";
     requesterInstanceId_ = "";
+    action_ = 0;
   }
 
   public static final com.google.protobuf.Descriptors.Descriptor
@@ -257,6 +258,24 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int ACTION_FIELD_NUMBER = 6;
+  private int action_ = 0;
+  /**
+   * <code>.modl.v1.ReplayRequestAction action = 6 [json_name = "action", (.buf.validate.field) = { ... }</code>
+   * @return The enum numeric value on the wire for action.
+   */
+  @java.lang.Override public int getActionValue() {
+    return action_;
+  }
+  /**
+   * <code>.modl.v1.ReplayRequestAction action = 6 [json_name = "action", (.buf.validate.field) = { ... }</code>
+   * @return The action.
+   */
+  @java.lang.Override public gg.modl.proto.modl.v1.ReplayRequestAction getAction() {
+    gg.modl.proto.modl.v1.ReplayRequestAction result = gg.modl.proto.modl.v1.ReplayRequestAction.forNumber(action_);
+    return result == null ? gg.modl.proto.modl.v1.ReplayRequestAction.UNRECOGNIZED : result;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -286,6 +305,9 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(requesterInstanceId_)) {
       com.google.protobuf.GeneratedMessage.writeString(output, 5, requesterInstanceId_);
     }
+    if (action_ != gg.modl.proto.modl.v1.ReplayRequestAction.REPLAY_REQUEST_ACTION_UNSPECIFIED.getNumber()) {
+      output.writeEnum(6, action_);
+    }
     getUnknownFields().writeTo(output);
   }
   private int computeSerializedSize_0() {
@@ -304,6 +326,10 @@ private static final long serialVersionUID = 0L;
     }
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(requesterInstanceId_)) {
       size += com.google.protobuf.GeneratedMessage.computeStringSize(5, requesterInstanceId_);
+    }
+    if (action_ != gg.modl.proto.modl.v1.ReplayRequestAction.REPLAY_REQUEST_ACTION_UNSPECIFIED.getNumber()) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeEnumSize(6, action_);
     }
     return size;
   }
@@ -342,6 +368,7 @@ private static final long serialVersionUID = 0L;
     }
     if (!getRequesterInstanceId()
         .equals(other.getRequesterInstanceId())) return false;
+    if (action_ != other.action_) return false;
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -365,6 +392,8 @@ private static final long serialVersionUID = 0L;
     }
     hash = (37 * hash) + REQUESTER_INSTANCE_ID_FIELD_NUMBER;
     hash = (53 * hash) + getRequesterInstanceId().hashCode();
+    hash = (37 * hash) + ACTION_FIELD_NUMBER;
+    hash = (53 * hash) + action_;
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -501,6 +530,7 @@ private static final long serialVersionUID = 0L;
       targetName_ = "";
       expectedServer_ = "";
       requesterInstanceId_ = "";
+      action_ = 0;
       return this;
     }
 
@@ -551,6 +581,9 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000010) != 0)) {
         result.requesterInstanceId_ = requesterInstanceId_;
       }
+      if (((from_bitField0_ & 0x00000020) != 0)) {
+        result.action_ = action_;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -590,6 +623,9 @@ private static final long serialVersionUID = 0L;
         requesterInstanceId_ = other.requesterInstanceId_;
         bitField0_ |= 0x00000010;
         onChanged();
+      }
+      if (other.action_ != 0) {
+        setActionValue(other.getActionValue());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -640,6 +676,11 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000010;
               break;
             } // case 42
+            case 48: {
+              action_ = input.readEnum();
+              bitField0_ |= 0x00000020;
+              break;
+            } // case 48
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1020,6 +1061,58 @@ private static final long serialVersionUID = 0L;
       checkByteStringIsUtf8(value);
       requesterInstanceId_ = value;
       bitField0_ |= 0x00000010;
+      onChanged();
+      return this;
+    }
+
+    private int action_ = 0;
+    /**
+     * <code>.modl.v1.ReplayRequestAction action = 6 [json_name = "action", (.buf.validate.field) = { ... }</code>
+     * @return The enum numeric value on the wire for action.
+     */
+    @java.lang.Override public int getActionValue() {
+      return action_;
+    }
+    /**
+     * <code>.modl.v1.ReplayRequestAction action = 6 [json_name = "action", (.buf.validate.field) = { ... }</code>
+     * @param value The enum numeric value on the wire for action to set.
+     * @return This builder for chaining.
+     */
+    public Builder setActionValue(int value) {
+      action_ = value;
+      bitField0_ |= 0x00000020;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.modl.v1.ReplayRequestAction action = 6 [json_name = "action", (.buf.validate.field) = { ... }</code>
+     * @return The action.
+     */
+    @java.lang.Override
+    public gg.modl.proto.modl.v1.ReplayRequestAction getAction() {
+      gg.modl.proto.modl.v1.ReplayRequestAction result = gg.modl.proto.modl.v1.ReplayRequestAction.forNumber(action_);
+      return result == null ? gg.modl.proto.modl.v1.ReplayRequestAction.UNRECOGNIZED : result;
+    }
+    /**
+     * <code>.modl.v1.ReplayRequestAction action = 6 [json_name = "action", (.buf.validate.field) = { ... }</code>
+     * @param value The action to set.
+     * @throws IllegalArgumentException if UNRECOGNIZED is provided.
+     * @return This builder for chaining.
+     */
+    public Builder setAction(gg.modl.proto.modl.v1.ReplayRequestAction value) {
+      java.util.Objects.requireNonNull(value);
+      bitField0_ |= 0x00000020;
+      action_ = value.getNumber();
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>.modl.v1.ReplayRequestAction action = 6 [json_name = "action", (.buf.validate.field) = { ... }</code>
+     * @return This builder for chaining.
+     */
+    public Builder clearAction() {
+      bitField0_ = (bitField0_ & ~0x00000020);
+      action_ = 0;
       onChanged();
       return this;
     }

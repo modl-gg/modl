@@ -240,6 +240,11 @@ public class SpigotPlatform implements Platform {
     }
 
     @Override
+    public boolean hostsServerFeatures() {
+        return true;
+    }
+
+    @Override
     public boolean assignsOfflineUuids() {
         return !Bukkit.getOnlineMode() && proxyForwarding == ProxyForwarding.NONE;
     }

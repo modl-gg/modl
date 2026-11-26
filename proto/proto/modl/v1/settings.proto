@@ -743,5 +743,85 @@ message UpdatePublicCustomCssRequest {
     json_name = "expectedVersion",
     (buf.validate.field).int64.gte = 0
   ];
-  string css = 2 [(buf.validate.field).string.max_bytes = 65536];
+  string css = 2 [(buf.validate.field).string.max_bytes = 1048576];
+}
+
+enum HomepageFooterLinkKind {
+  HOMEPAGE_FOOTER_LINK_KIND_UNSPECIFIED = 0;
+  HOMEPAGE_FOOTER_LINK_KIND_DISCORD = 1;
+  HOMEPAGE_FOOTER_LINK_KIND_STORE = 2;
+  HOMEPAGE_FOOTER_LINK_KIND_WEBSITE = 3;
+  HOMEPAGE_FOOTER_LINK_KIND_VOTE = 4;
+  HOMEPAGE_FOOTER_LINK_KIND_OTHER = 5;
+}
+
+message HomepageFooterLink {
+  string label = 1;
+  string url = 2;
+  HomepageFooterLinkKind kind = 3 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+}
+
+message HomepageSettings {
+  string tagline = 1;
+  string server_address = 2 [json_name = "serverAddress"];
+  bool show_player_count = 3 [json_name = "showPlayerCount"];
+  repeated HomepageFooterLink footer_links = 4 [json_name = "footerLinks"];
+  repeated HomepageCardDraft cards = 5 [(buf.validate.field).repeated.max_items = 50];
+}
+
+enum HomepageCardActionType {
+  HOMEPAGE_CARD_ACTION_TYPE_UNSPECIFIED = 0;
+  HOMEPAGE_CARD_ACTION_TYPE_LINK = 1;
+  HOMEPAGE_CARD_ACTION_TYPE_CATEGORY = 2;
+}
+
+message HomepageCardDraft {
+  string id = 1 [(buf.validate.field).string.max_len = 36];
+  string title = 2 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 128
+    pattern: "(?s).*\\S.*"
+  }];
+  string description = 3 [(buf.validate.field).string.max_len = 500];
+  string icon = 4 [(buf.validate.field).string.max_len = 128];
+  HomepageCardActionType action_type = 5 [
+    json_name = "actionType",
+    (buf.validate.field).enum = {
+      defined_only: true
+      not_in: [0]
+    }
+  ];
+  string action_url = 6 [
+    json_name = "actionUrl",
+    (buf.validate.field).string.max_len = 2048
+  ];
+  string category_id = 7 [
+    json_name = "categoryId",
+    (buf.validate.field).string.max_len = 36
+  ];
+  bool enabled = 8;
+  string category_name = 9 [json_name = "categoryName"];
+}
+
+message HomepageSettingsEnvelope {
+  HomepageSettings data = 1;
+  SettingsMeta meta = 2 [json_name = "_meta"];
+}
+
+message UpdateHomepageSettingsRequest {
+  int64 expected_version = 1 [
+    json_name = "expectedVersion",
+    (buf.validate.field).int64.gte = 0
+  ];
+  HomepageSettings settings = 2 [(buf.validate.field).required = true];
+}
+
+message PublicHomepageResponse {
+  string tagline = 1;
+  string server_address = 2 [json_name = "serverAddress"];
+  optional int32 online_players = 3 [json_name = "onlinePlayers"];
+  repeated HomepageFooterLink footer_links = 4 [json_name = "footerLinks"];
 }

@@ -37,7 +37,7 @@ function asErrors(rules) {
 }
 
 export default defineConfig(
-  globalIgnores(['dist/**', 'scripts/atlas/node_modules/**']),
+  globalIgnores(['dist/**']),
   { linterOptions: strictLinterOptions },
   strictTypeScriptConfigs({
     js: eslint,

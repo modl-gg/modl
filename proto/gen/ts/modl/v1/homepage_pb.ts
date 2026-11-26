@@ -4,7 +4,6 @@
 
 import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
 import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
-import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
 import type { Timestamp } from "@bufbuild/protobuf/wkt";
 import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
 import type { Message } from "@bufbuild/protobuf";
@@ -13,131 +12,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file modl/v1/homepage.proto.
  */
 export const file_modl_v1_homepage: GenFile = /*@__PURE__*/
-  fileDesc("ChZtb2RsL3YxL2hvbWVwYWdlLnByb3RvEgdtb2RsLnYxIoMEChFDcmVhdGVDYXJkUmVxdWVzdBIlCgV0aXRsZRgBIAEoCUIWukgTchEQARiAATIKKD9zKS4qXFMuKhIiCgtkZXNjcmlwdGlvbhgCIAEoCUIIukgFcgMY9ANIAIgBARIbCgRpY29uGAMgASgJQgi6SAVyAxiAAUgBiAEBEiAKCmljb25fY29sb3IYBCABKAlCB7pIBHICGCBIAogBARIhCgthY3Rpb25fdHlwZRgFIAEoCUIHukgEcgIYQEgDiAEBEiEKCmFjdGlvbl91cmwYBiABKAlCCLpIBXIDGIAQSASIAQESKAoSYWN0aW9uX2J1dHRvbl90ZXh0GAcgASgJQge6SARyAhhASAWIAQESIQoLY2F0ZWdvcnlfaWQYCCABKAlCB7pIBHICGEBIBogBARImChBiYWNrZ3JvdW5kX2NvbG9yGAkgASgJQge6SARyAhggSAeIAQESFwoKaXNfZW5hYmxlZBgKIAEoCEgIiAEBQg4KDF9kZXNjcmlwdGlvbkIHCgVfaWNvbkINCgtfaWNvbl9jb2xvckIOCgxfYWN0aW9uX3R5cGVCDQoLX2FjdGlvbl91cmxCFQoTX2FjdGlvbl9idXR0b25fdGV4dEIOCgxfY2F0ZWdvcnlfaWRCEwoRX2JhY2tncm91bmRfY29sb3JCDQoLX2lzX2VuYWJsZWQihAQKEVVwZGF0ZUNhcmRSZXF1ZXN0EhwKBXRpdGxlGAEgASgJQgi6SAVyAxiAAUgAiAEBEiIKC2Rlc2NyaXB0aW9uGAIgASgJQgi6SAVyAxj0A0gBiAEBEhsKBGljb24YAyABKAlCCLpIBXIDGIABSAKIAQESIAoKaWNvbl9jb2xvchgEIAEoCUIHukgEcgIYIEgDiAEBEiEKC2FjdGlvbl90eXBlGAUgASgJQge6SARyAhhASASIAQESIQoKYWN0aW9uX3VybBgGIAEoCUIIukgFcgMYgBBIBYgBARIoChJhY3Rpb25fYnV0dG9uX3RleHQYByABKAlCB7pIBHICGEBIBogBARIhCgtjYXRlZ29yeV9pZBgIIAEoCUIHukgEcgIYQEgHiAEBEiYKEGJhY2tncm91bmRfY29sb3IYCSABKAlCB7pIBHICGCBICIgBARIXCgppc19lbmFibGVkGAogASgISAmIAQFCCAoGX3RpdGxlQg4KDF9kZXNjcmlwdGlvbkIHCgVfaWNvbkINCgtfaWNvbl9jb2xvckIOCgxfYWN0aW9uX3R5cGVCDQoLX2FjdGlvbl91cmxCFQoTX2FjdGlvbl9idXR0b25fdGV4dEIOCgxfY2F0ZWdvcnlfaWRCEwoRX2JhY2tncm91bmRfY29sb3JCDQoLX2lzX2VuYWJsZWQi+wQKFEhvbWVwYWdlQ2FyZFJlc3BvbnNlEgoKAmlkGAEgASgJEg0KBXRpdGxlGAIgASgJEhMKC2Rlc2NyaXB0aW9uGAMgASgJEgwKBGljb24YBCABKAkSEgoKaWNvbl9jb2xvchgFIAEoCRITCgthY3Rpb25fdHlwZRgGIAEoCRISCgphY3Rpb25fdXJsGAcgASgJEhoKEmFjdGlvbl9idXR0b25fdGV4dBgIIAEoCRITCgtjYXRlZ29yeV9pZBgJIAEoCRIYChBiYWNrZ3JvdW5kX2NvbG9yGAogASgJEg8KB29yZGluYWwYCyABKAUSEgoKaXNfZW5hYmxlZBgMIAEoCBIuCgpjcmVhdGVkX2F0GA0gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GA4gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJACghjYXRlZ29yeRgPIAEoCzIuLm1vZGwudjEuSG9tZXBhZ2VDYXJkUmVzcG9uc2UuRW1iZWRkZWRDYXRlZ29yeRqMAQoQRW1iZWRkZWRDYXRlZ29yeRIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEgwKBHNsdWcYAyABKAkSEwoLZGVzY3JpcHRpb24YBCABKAkSOwoIYXJ0aWNsZXMYBSADKAsyKS5tb2RsLnYxLkhvbWVwYWdlQ2FyZFJlc3BvbnNlLkFydGljbGVTdHViGkcKC0FydGljbGVTdHViEgoKAmlkGAEgASgJEg0KBXRpdGxlGAIgASgJEgwKBHNsdWcYAyABKAkSDwoHb3JkaW5hbBgEIAEoBSL7AwoZUGFuZWxIb21lcGFnZUNhcmRSZXNwb25zZRIKCgJpZBgBIAEoCRINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIMCgRpY29uGAQgASgJEhIKCmljb25fY29sb3IYBSABKAkSEwoLYWN0aW9uX3R5cGUYBiABKAkSEgoKYWN0aW9uX3VybBgHIAEoCRIaChJhY3Rpb25fYnV0dG9uX3RleHQYCCABKAkSEwoLY2F0ZWdvcnlfaWQYCSABKAkSGAoQYmFja2dyb3VuZF9jb2xvchgKIAEoCRISCgppc19lbmFibGVkGAsgASgIEg8KB29yZGluYWwYDCABKAUSLgoKY3JlYXRlZF9hdBgNIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASLgoKdXBkYXRlZF9hdBgOIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASSgoIY2F0ZWdvcnkYDyABKAsyMy5tb2RsLnYxLlBhbmVsSG9tZXBhZ2VDYXJkUmVzcG9uc2UuRW1iZWRkZWRDYXRlZ29yeUgAiAEBGjoKEEVtYmVkZGVkQ2F0ZWdvcnkSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRIMCgRzbHVnGAMgASgJQgsKCV9jYXRlZ29yeSJPChpQYW5lbEhvbWVwYWdlQ2FyZHNSZXNwb25zZRIxCgVjYXJkcxgBIAMoCzIiLm1vZGwudjEuUGFuZWxIb21lcGFnZUNhcmRSZXNwb25zZSJLChtQdWJsaWNIb21lcGFnZUNhcmRzUmVzcG9uc2USLAoFY2FyZHMYASADKAsyHS5tb2RsLnYxLkhvbWVwYWdlQ2FyZFJlc3BvbnNlIi8KHEhvbWVwYWdlQ2FyZE11dGF0aW9uUmVzcG9uc2USDwoHbWVzc2FnZRgBIAEoCUJjChVnZy5tb2RsLnByb3RvLm1vZGwudjFCDUhvbWVwYWdlUHJvdG9QAaICA01YWKoCB01vZGwuVjHKAgdNb2RsXFYx4gITTW9kbFxWMVxHUEJNZXRhZGF0YeoCCE1vZGw6OlYxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp]);
-
-/**
- * @generated from message modl.v1.CreateCardRequest
- */
-export type CreateCardRequest = Message<"modl.v1.CreateCardRequest"> & {
-  /**
-   * @generated from field: string title = 1;
-   */
-  title: string;
-
-  /**
-   * @generated from field: optional string description = 2;
-   */
-  description?: string | undefined;
-
-  /**
-   * @generated from field: optional string icon = 3;
-   */
-  icon?: string | undefined;
-
-  /**
-   * @generated from field: optional string icon_color = 4;
-   */
-  iconColor?: string | undefined;
-
-  /**
-   * @generated from field: optional string action_type = 5;
-   */
-  actionType?: string | undefined;
-
-  /**
-   * @generated from field: optional string action_url = 6;
-   */
-  actionUrl?: string | undefined;
-
-  /**
-   * @generated from field: optional string action_button_text = 7;
-   */
-  actionButtonText?: string | undefined;
-
-  /**
-   * @generated from field: optional string category_id = 8;
-   */
-  categoryId?: string | undefined;
-
-  /**
-   * @generated from field: optional string background_color = 9;
-   */
-  backgroundColor?: string | undefined;
-
-  /**
-   * @generated from field: optional bool is_enabled = 10;
-   */
-  isEnabled?: boolean | undefined;
-};
-
-/**
- * Describes the message modl.v1.CreateCardRequest.
- * Use `create(CreateCardRequestSchema)` to create a new message.
- */
-export const CreateCardRequestSchema: GenMessage<CreateCardRequest> = /*@__PURE__*/
-  messageDesc(file_modl_v1_homepage, 0);
-
-/**
- * @generated from message modl.v1.UpdateCardRequest
- */
-export type UpdateCardRequest = Message<"modl.v1.UpdateCardRequest"> & {
-  /**
-   * @generated from field: optional string title = 1;
-   */
-  title?: string | undefined;
-
-  /**
-   * @generated from field: optional string description = 2;
-   */
-  description?: string | undefined;
-
-  /**
-   * @generated from field: optional string icon = 3;
-   */
-  icon?: string | undefined;
-
-  /**
-   * @generated from field: optional string icon_color = 4;
-   */
-  iconColor?: string | undefined;
-
-  /**
-   * @generated from field: optional string action_type = 5;
-   */
-  actionType?: string | undefined;
-
-  /**
-   * @generated from field: optional string action_url = 6;
-   */
-  actionUrl?: string | undefined;
-
-  /**
-   * @generated from field: optional string action_button_text = 7;
-   */
-  actionButtonText?: string | undefined;
-
-  /**
-   * @generated from field: optional string category_id = 8;
-   */
-  categoryId?: string | undefined;
-
-  /**
-   * @generated from field: optional string background_color = 9;
-   */
-  backgroundColor?: string | undefined;
-
-  /**
-   * @generated from field: optional bool is_enabled = 10;
-   */
-  isEnabled?: boolean | undefined;
-};
-
-/**
- * Describes the message modl.v1.UpdateCardRequest.
- * Use `create(UpdateCardRequestSchema)` to create a new message.
- */
-export const UpdateCardRequestSchema: GenMessage<UpdateCardRequest> = /*@__PURE__*/
-  messageDesc(file_modl_v1_homepage, 1);
+  fileDesc("ChZtb2RsL3YxL2hvbWVwYWdlLnByb3RvEgdtb2RsLnYxIvkEChRIb21lcGFnZUNhcmRSZXNwb25zZRIKCgJpZBgBIAEoCRINCgV0aXRsZRgCIAEoCRITCgtkZXNjcmlwdGlvbhgDIAEoCRIMCgRpY29uGAQgASgJEhIKCmljb25fY29sb3IYBSABKAkSEwoLYWN0aW9uX3R5cGUYBiABKAkSEgoKYWN0aW9uX3VybBgHIAEoCRITCgtjYXRlZ29yeV9pZBgJIAEoCRIYChBiYWNrZ3JvdW5kX2NvbG9yGAogASgJEg8KB29yZGluYWwYCyABKAUSEgoKaXNfZW5hYmxlZBgMIAEoCBIuCgpjcmVhdGVkX2F0GA0gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIuCgp1cGRhdGVkX2F0GA4gASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBJACghjYXRlZ29yeRgPIAEoCzIuLm1vZGwudjEuSG9tZXBhZ2VDYXJkUmVzcG9uc2UuRW1iZWRkZWRDYXRlZ29yeRqMAQoQRW1iZWRkZWRDYXRlZ29yeRIKCgJpZBgBIAEoCRIMCgRuYW1lGAIgASgJEgwKBHNsdWcYAyABKAkSEwoLZGVzY3JpcHRpb24YBCABKAkSOwoIYXJ0aWNsZXMYBSADKAsyKS5tb2RsLnYxLkhvbWVwYWdlQ2FyZFJlc3BvbnNlLkFydGljbGVTdHViGkcKC0FydGljbGVTdHViEgoKAmlkGAEgASgJEg0KBXRpdGxlGAIgASgJEgwKBHNsdWcYAyABKAkSDwoHb3JkaW5hbBgEIAEoBUoECAgQCVISYWN0aW9uX2J1dHRvbl90ZXh0IksKG1B1YmxpY0hvbWVwYWdlQ2FyZHNSZXNwb25zZRIsCgVjYXJkcxgBIAMoCzIdLm1vZGwudjEuSG9tZXBhZ2VDYXJkUmVzcG9uc2VCYwoVZ2cubW9kbC5wcm90by5tb2RsLnYxQg1Ib21lcGFnZVByb3RvUAGiAgNNWFiqAgdNb2RsLlYxygIHTW9kbFxWMeICE01vZGxcVjFcR1BCTWV0YWRhdGHqAghNb2RsOjpWMWIGcHJvdG8z", [file_google_protobuf_timestamp]);
 
 /**
  * @generated from message modl.v1.HomepageCardResponse
@@ -177,11 +52,6 @@ export type HomepageCardResponse = Message<"modl.v1.HomepageCardResponse"> & {
    * @generated from field: string action_url = 7;
    */
   actionUrl: string;
-
-  /**
-   * @generated from field: string action_button_text = 8;
-   */
-  actionButtonText: string;
 
   /**
    * @generated from field: string category_id = 9;
@@ -224,7 +94,7 @@ export type HomepageCardResponse = Message<"modl.v1.HomepageCardResponse"> & {
  * Use `create(HomepageCardResponseSchema)` to create a new message.
  */
 export const HomepageCardResponseSchema: GenMessage<HomepageCardResponse> = /*@__PURE__*/
-  messageDesc(file_modl_v1_homepage, 2);
+  messageDesc(file_modl_v1_homepage, 0);
 
 /**
  * @generated from message modl.v1.HomepageCardResponse.EmbeddedCategory
@@ -261,7 +131,7 @@ export type HomepageCardResponse_EmbeddedCategory = Message<"modl.v1.HomepageCar
  * Use `create(HomepageCardResponse_EmbeddedCategorySchema)` to create a new message.
  */
 export const HomepageCardResponse_EmbeddedCategorySchema: GenMessage<HomepageCardResponse_EmbeddedCategory> = /*@__PURE__*/
-  messageDesc(file_modl_v1_homepage, 2, 0);
+  messageDesc(file_modl_v1_homepage, 0, 0);
 
 /**
  * @generated from message modl.v1.HomepageCardResponse.ArticleStub
@@ -293,138 +163,7 @@ export type HomepageCardResponse_ArticleStub = Message<"modl.v1.HomepageCardResp
  * Use `create(HomepageCardResponse_ArticleStubSchema)` to create a new message.
  */
 export const HomepageCardResponse_ArticleStubSchema: GenMessage<HomepageCardResponse_ArticleStub> = /*@__PURE__*/
-  messageDesc(file_modl_v1_homepage, 2, 1);
-
-/**
- * @generated from message modl.v1.PanelHomepageCardResponse
- */
-export type PanelHomepageCardResponse = Message<"modl.v1.PanelHomepageCardResponse"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: string title = 2;
-   */
-  title: string;
-
-  /**
-   * @generated from field: string description = 3;
-   */
-  description: string;
-
-  /**
-   * @generated from field: string icon = 4;
-   */
-  icon: string;
-
-  /**
-   * @generated from field: string icon_color = 5;
-   */
-  iconColor: string;
-
-  /**
-   * @generated from field: string action_type = 6;
-   */
-  actionType: string;
-
-  /**
-   * @generated from field: string action_url = 7;
-   */
-  actionUrl: string;
-
-  /**
-   * @generated from field: string action_button_text = 8;
-   */
-  actionButtonText: string;
-
-  /**
-   * @generated from field: string category_id = 9;
-   */
-  categoryId: string;
-
-  /**
-   * @generated from field: string background_color = 10;
-   */
-  backgroundColor: string;
-
-  /**
-   * @generated from field: bool is_enabled = 11;
-   */
-  isEnabled: boolean;
-
-  /**
-   * @generated from field: int32 ordinal = 12;
-   */
-  ordinal: number;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp created_at = 13;
-   */
-  createdAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: google.protobuf.Timestamp updated_at = 14;
-   */
-  updatedAt?: Timestamp | undefined;
-
-  /**
-   * @generated from field: optional modl.v1.PanelHomepageCardResponse.EmbeddedCategory category = 15;
-   */
-  category?: PanelHomepageCardResponse_EmbeddedCategory | undefined;
-};
-
-/**
- * Describes the message modl.v1.PanelHomepageCardResponse.
- * Use `create(PanelHomepageCardResponseSchema)` to create a new message.
- */
-export const PanelHomepageCardResponseSchema: GenMessage<PanelHomepageCardResponse> = /*@__PURE__*/
-  messageDesc(file_modl_v1_homepage, 3);
-
-/**
- * @generated from message modl.v1.PanelHomepageCardResponse.EmbeddedCategory
- */
-export type PanelHomepageCardResponse_EmbeddedCategory = Message<"modl.v1.PanelHomepageCardResponse.EmbeddedCategory"> & {
-  /**
-   * @generated from field: string id = 1;
-   */
-  id: string;
-
-  /**
-   * @generated from field: string name = 2;
-   */
-  name: string;
-
-  /**
-   * @generated from field: string slug = 3;
-   */
-  slug: string;
-};
-
-/**
- * Describes the message modl.v1.PanelHomepageCardResponse.EmbeddedCategory.
- * Use `create(PanelHomepageCardResponse_EmbeddedCategorySchema)` to create a new message.
- */
-export const PanelHomepageCardResponse_EmbeddedCategorySchema: GenMessage<PanelHomepageCardResponse_EmbeddedCategory> = /*@__PURE__*/
-  messageDesc(file_modl_v1_homepage, 3, 0);
-
-/**
- * @generated from message modl.v1.PanelHomepageCardsResponse
- */
-export type PanelHomepageCardsResponse = Message<"modl.v1.PanelHomepageCardsResponse"> & {
-  /**
-   * @generated from field: repeated modl.v1.PanelHomepageCardResponse cards = 1;
-   */
-  cards: PanelHomepageCardResponse[];
-};
-
-/**
- * Describes the message modl.v1.PanelHomepageCardsResponse.
- * Use `create(PanelHomepageCardsResponseSchema)` to create a new message.
- */
-export const PanelHomepageCardsResponseSchema: GenMessage<PanelHomepageCardsResponse> = /*@__PURE__*/
-  messageDesc(file_modl_v1_homepage, 4);
+  messageDesc(file_modl_v1_homepage, 0, 1);
 
 /**
  * @generated from message modl.v1.PublicHomepageCardsResponse
@@ -441,22 +180,5 @@ export type PublicHomepageCardsResponse = Message<"modl.v1.PublicHomepageCardsRe
  * Use `create(PublicHomepageCardsResponseSchema)` to create a new message.
  */
 export const PublicHomepageCardsResponseSchema: GenMessage<PublicHomepageCardsResponse> = /*@__PURE__*/
-  messageDesc(file_modl_v1_homepage, 5);
-
-/**
- * @generated from message modl.v1.HomepageCardMutationResponse
- */
-export type HomepageCardMutationResponse = Message<"modl.v1.HomepageCardMutationResponse"> & {
-  /**
-   * @generated from field: string message = 1;
-   */
-  message: string;
-};
-
-/**
- * Describes the message modl.v1.HomepageCardMutationResponse.
- * Use `create(HomepageCardMutationResponseSchema)` to create a new message.
- */
-export const HomepageCardMutationResponseSchema: GenMessage<HomepageCardMutationResponse> = /*@__PURE__*/
-  messageDesc(file_modl_v1_homepage, 6);
+  messageDesc(file_modl_v1_homepage, 1);
 

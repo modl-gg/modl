@@ -36,6 +36,7 @@ export const SETTINGS_PAGE_IDS = [
   'punishment-types',
   'escalation',
   'player-addresses',
+  'replays',
   'forms',
   'labels',
   'quick-replies',
@@ -99,6 +100,7 @@ export const SETTINGS_GROUPS: readonly SettingsGroupDefinition[] = [
       { id: 'punishment-types', canAccess: punishmentConfigViewers, canModify: punishmentConfigEditors },
       { id: 'escalation', canAccess: punishmentConfigViewers, canModify: punishmentConfigEditors },
       { id: 'player-addresses', canAccess: superAdminOnly, canModify: superAdminOnly },
+      { id: 'replays', canAccess: settingsViewers, canModify: settingsEditors },
     ],
   },
   {

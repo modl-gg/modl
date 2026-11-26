@@ -19,7 +19,7 @@ public final class ForwardedAddressNotice {
         if (scope == null || scope.isPublic() || !announced.compareAndSet(false, true)) return;
         logger.warning("Players are connecting from " + scope.name().toLowerCase(Locale.ROOT).replace('_', ' ')
                 + " addresses, so their real IPs are not being forwarded. modl will not link accounts by these addresses. "
-                + "If players join through a proxy, tunnel or DDoS protection, turn on its real-IP forwarding "
+                + "If players join through a proxy, tunnel, or DDoS protection, turn on its real-IP forwarding "
                 + "(PROXY protocol or IP forwarding).");
     }
 }

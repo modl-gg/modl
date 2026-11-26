@@ -1142,7 +1142,7 @@ help:
       usage: "unmute <игрок>"
       description: "Снять все активные и ожидающие муты"
     replay:
-      usage: "replay <status|capture> [игрок]"
+      usage: "replay <status|record|stop|capture> [игрок]"
       description: "Управление записями реплеев"
     modl_reload:
       usage: "modl reload"
@@ -1299,9 +1299,11 @@ network:
 replay:
   usage:
     - "&f/replay status [игрок] &7- Проверить статус записи"
+    - "&f/replay record <игрок> &7- Начать запись игрока"
+    - "&f/replay stop <игрок> &7- Остановить запись, начатую через /replay record"
     - "&f/replay capture [игрок] &7- Сохранить и загрузить реплей"
   not_available: "&cЗапись реплеев недоступна на этом сервере."
-  status_recording: "&aИгрок {player} сейчас записывается"
+  status_recording: "&aИгрок {player} записывается ({origin}) уже {duration}"
   status_not_recording: "&cИгрок {player} не записывается"
   no_server_connected: "&cНет подключённого сервера для сохранения реплея."
   no_active_recording: "&cНет активной записи для игрока {player}"
@@ -1312,6 +1314,19 @@ replay:
   click_to_view: "[Нажмите, чтобы посмотреть реплей]"
   click_to_view_hover: "Открыть просмотрщик реплеев"
   console_specify_player: "&cУкажите имя игрока при запуске из консоли."
+  memory: "&7Память реплеев: {used} из {limit} МБ, записей: {recordings}"
+  record_started: "&aЗапись игрока {player} начата"
+  already_recording: "&eИгрок {player} уже записывается"
+  record_stopped: "&aЗапись игрока {player} остановлена"
+  recording_kept: "&cЗапись игрока {player} продолжается ({origin})"
+  player_left: "&cИгрок {player} покинул сервер"
+  status_failed: "&cНе удалось получить статус записи игрока {player}"
+  server_unreachable: "&cСервер игрока {player} не подключён к modl."
+  record_failed: "&cНе удалось изменить запись игрока {player}"
+  origins:
+    auto_record: "автозапись"
+    anticheat_flag: "срабатывание античита"
+    staff: "/replay record"
 
 standing_gui:
   title: "&fВаш статус"
@@ -1380,6 +1395,7 @@ import:
   source_missing: "На этом сервере не найдено данных {source}. Выполните команду на сервере, где они есть (в сети это прокси, на котором работает modl)."
   source_locked: "{source} запущен и держит файл своей базы данных открытым. Удалите его jar (папку оставьте), перезапустите сервер и повторите команду."
   database_failed: "Не удалось прочитать данные {source}: {error}"
+  source_reconnect_failed: "Соединение с {source}, сохранённое после предпросмотра, потеряно и не открылось снова: {error}. Выполните /modl import {source_id} ещё раз."
   no_space: "Недостаточно свободного места на диске, чтобы скопировать базу данных {source}: {error}"
   nothing_to_import: "В {source} нет игроков или наказаний для импорта."
   nothing_left: "С этим выбором импортировать нечего."

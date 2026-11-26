@@ -28,6 +28,15 @@ Commands run on the server that runs the modl core: a standalone server, or the 
 
 Ticket commands have a 60 second cooldown per ticket type (`/report` and `/hackreport` share one). `/standing` has a 60 second cooldown too.
 
+## From report to punishment
+
+[![Video: From report to punishment](https://img.youtube.com/vi/p_jYzaaRfc4/maxresdefault.jpg)](https://youtu.be/p_jYzaaRfc4)
+
+1. In game: `/report <player>`, pick a reason, and confirm. Cheating reasons can capture a replay (when recording is on, [Replays](Replays)); chat reasons can attach the player's recent chat.
+2. Panel > Tickets: open the new report.
+3. View replay opens the replay over the ticket (Esc closes it).
+4. Reply as Accept, then apply the punishment in the panel that opens. Applying it closes the ticket and sends the reply.
+
 ## Staff
 
 | Command | Aliases | Arguments | Permission |
@@ -60,6 +69,8 @@ Ticket commands have a 60 second cooldown per ticket type (`/report` and `/hackr
 | `/freeze` | | `<player>` | `staff.modactions` |
 | `/target` | | `[player]` | `staff.modactions` (players only) |
 | `/replay status` | | `[player]` | `staff.modactions` |
+| `/replay record` | | `<player>` | `staff.modactions` |
+| `/replay stop` | | `<player>` | `staff.modactions` |
 | `/replay capture` | | `[player]` | `staff.modactions` |
 | `/chatlogs` | | `<player> [page]` | `staff.chatlogs` |
 | `/commandlogs` | | `<player> [page]` | `staff.commandlogs` |
@@ -67,7 +78,7 @@ Ticket commands have a 60 second cooldown per ticket type (`/report` and `/hackr
 | `/verify` | | | staff, players only; with `staff_2fa.enabled` |
 | `/modl reload` | | | owner (Super Admin) or console; also the Reload button in the staff menu's settings |
 
-View players: `punishment.view`, `punishment.modify` or any `punishment.apply.<ordinal>`.
+View players: `punishment.view`, `punishment.modify`, or any `punishment.apply.<ordinal>`.
 
 `-p` (or `print`) prints to chat instead of opening a menu. Consoles and proxies without PacketEvents always print. `/punish` with no type opens the punishment menu.
 
@@ -86,7 +97,7 @@ In the console of the server that runs the core, not through RCON or `/proxycmd`
 | `/modl import cancel` | Stop it |
 | `/modl status` | Support report without keys or emails, also while modl is not running (Settings > System > Status shows the same) |
 
-## Spigot, Paper and Folia servers
+## Spigot, Paper, and Folia servers
 
 | Command | Who | Does |
 |---|---|---|
@@ -104,4 +115,4 @@ In the console of the server that runs the core, not through RCON or `/proxycmd`
 
 - `/ban` and `/mute` take a duration: a number with a unit, combinable (`1d12h`): `s`, `m` (minutes), `h`, `d`, `w`, `mo` (30 days). The first word that reads as a duration is taken, anywhere in the arguments. Without one they are permanent.
 - `/punish` always uses the type's configured duration; a duration word becomes part of the reason.
-- `/punish` takes the configurable types (ordinal 6 and up, [Permissions](Permissions#punishment-types)); names match case-insensitively and may have up to 4 words: `/punish Steve Chat Abuse spam in chat -severe`. Use `/kick`, `/mute`, `/ban` and `/blacklist` for the fixed types.
+- `/punish` takes the configurable types (ordinal 6 and up, [Permissions](Permissions#punishment-types)); names match case-insensitively and may have up to 4 words: `/punish Steve Chat Abuse spam in chat -severe`. Use `/kick`, `/mute`, `/ban`, and `/blacklist` for the fixed types.

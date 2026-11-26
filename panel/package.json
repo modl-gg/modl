@@ -9,9 +9,9 @@
     "build": "vite build",
     "preview": "vite preview",
     "check": "tsc --noEmit && tsc --noEmit -p tsconfig.node.json && eslint . && npm run test",
-    "test": "node --test 'client/src/**/*.test.ts'",
+    "test": "node --experimental-transform-types --disable-warning=ExperimentalWarning --test 'client/src/**/*.test.ts'",
     "lint": "eslint .",
-    "generate-atlas": "npm ci --prefix scripts/atlas --workspaces=false --no-audit --no-fund && node scripts/atlas/generate-all-atlases.mjs"
+    "lint:fast": "eslint . --cache --cache-strategy content --cache-location node_modules/.cache/eslint/"
   },
   "dependencies": {
     "@bufbuild/protobuf": "~2.17.0",

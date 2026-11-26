@@ -5,6 +5,7 @@ import gg.modl.backend.realtime.state.RealtimeConnectionState;
 import gg.modl.proto.modl.v1.ServerRole;
 import gg.modl.proto.modl.v1.Topic;
 import java.time.Instant;
+import java.util.List;
 import java.util.Locale;
 import java.util.concurrent.atomic.AtomicReference;
 import org.jspecify.annotations.Nullable;
@@ -17,6 +18,8 @@ public final class NetworkSession {
     private final Instant connectedAt;
     private final AtomicReference<@Nullable Boolean> proxyCommandsGrant = new AtomicReference<>();
     private volatile int onlinePlayers;
+    private volatile List<ProxyServer> proxyServers = List.of();
+    private volatile @Nullable FeatureStatus features;
     private volatile boolean welcomed;
 
     NetworkSession(WebSocketSession socket, RealtimeConnectionState state, RealtimePrincipal principal, Instant connectedAt) {
@@ -114,6 +117,14 @@ public final class NetworkSession {
         return previous != count;
     }
 
+    void reportProxyServers(List<ProxyServer> servers) {
+        proxyServers = List.copyOf(servers);
+    }
+
+    void reportFeatures(FeatureStatus reported) {
+        features = reported;
+    }
+
     public Instant connectedAt() {
         return connectedAt;
     }
@@ -127,6 +138,7 @@ public final class NetworkSession {
     }
 
     LiveNetworkSession toLiveView() {
-        return new LiveNetworkSession(instanceId(), name(), role(), keyName(), pluginVersion(), onlinePlayers, connectedAt);
+        return new LiveNetworkSession(instanceId(), name(), role(), keyName(), pluginVersion(), onlinePlayers, connectedAt,
+            proxyServers, features);
     }
 }

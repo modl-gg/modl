@@ -70,7 +70,7 @@ class HttpOriginTest {
             assertThrows(IllegalArgumentException.class, () -> HttpOrigin.requireExact("http://panel.example.com:70000")).getMessage());
         assertEquals("must start with http:// or https://",
             assertThrows(IllegalArgumentException.class, () -> HttpOrigin.requireExact("panel.example.com")).getMessage());
-        assertEquals("must be only scheme, host and port, without a path, query or fragment",
+        assertEquals("must be only scheme, host, and port, without a path, query, or fragment",
             assertThrows(IllegalArgumentException.class, () -> HttpOrigin.requireExact("https://panel.example.com/modl")).getMessage());
         assertEquals("must not contain a user name or password",
             assertThrows(IllegalArgumentException.class, () -> HttpOrigin.requireExact("https://u:p@panel.example.com")).getMessage());

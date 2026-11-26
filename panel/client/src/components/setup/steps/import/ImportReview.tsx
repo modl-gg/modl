@@ -17,7 +17,7 @@ import {
 } from '@/hooks/data/hosted-import';
 import { apiErrorCode } from '@/lib/http-error';
 import { formatFileSize } from '@/utils/file-utils';
-import { ImportCounts, ImportIssues } from './ImportIssues';
+import { ImportIssues, ImportTotals } from './ImportIssues';
 import { errorKey } from './import-labels';
 import { useImportDiscard } from './use-import-discard';
 
@@ -142,7 +142,7 @@ function StaffSelection({ preview, selected, onChange }: {
 }
 
 export function ImportReview({ state }: { state: ImportState }) {
-  const { t } = useTranslation();
+  const { t, i18n } = useTranslation();
   const preview = useHostedImportPreview(true);
   const start = useStartImport();
   const discard = useImportDiscard(state.importId);
@@ -170,16 +170,13 @@ export function ImportReview({ state }: { state: ImportState }) {
           {t('pages.setup.import.review.source', { name: view.serverName === '' ? view.subdomain : view.serverName })}
         </p>
         {view.exportedAt !== null && (
-          <p className="text-xs text-muted-foreground">{t('pages.setup.import.review.exportedAt', { date: new Date(view.exportedAt).toLocaleString() })}</p>
+          <p className="text-xs text-muted-foreground">{t('pages.setup.import.review.exportedAt', { date: new Date(view.exportedAt).toLocaleString(i18n.language) })}</p>
         )}
       </div>
-      <ImportCounts counts={view.counts} />
+      <ImportTotals counts={view.counts} />
       <ImportIssues issues={view.issues} />
       <Notice variant="warning">{t('pages.setup.import.review.replaces')}</Notice>
-      <Notice variant="info">{t('pages.setup.import.review.enforcedImmediately')}</Notice>
-      {view.ownerEmailsMatch ? (
-        <p className="text-sm">{t('pages.setup.import.owner.same', { email: view.localOwnerEmail })}</p>
-      ) : (
+      {!view.ownerEmailsMatch && (
         <div className="space-y-2">
           <p className="text-sm">{t('pages.setup.import.owner.different', { archived: view.archivedOwnerEmail, local: view.localOwnerEmail })}</p>
           {view.archivedOwnerHasStaffRecord && (
@@ -191,7 +188,6 @@ export function ImportReview({ state }: { state: ImportState }) {
               </Label>
             </div>
           )}
-          <p className="text-xs text-muted-foreground">{t('pages.setup.import.owner.staysOwner')}</p>
         </div>
       )}
       {view.archivedOwnerMinecraftUsername !== '' && (

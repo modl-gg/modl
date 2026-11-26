@@ -2,6 +2,8 @@ syntax = "proto3";
 package modl.v1;
 
 import "buf/validate/validate.proto";
+import "google/protobuf/timestamp.proto";
+import "modl/v1/settings.proto";
 
 message SubmitReplayLabelsRequest {
   repeated ReplayLabel players = 1 [(buf.validate.field).repeated.max_items = 20];
@@ -26,16 +28,104 @@ message SubmitReplayLabelsRequest {
   }
 }
 
-message PublicReplayResponse {
-  string replay_id = 1;
-  string mc_version = 2;
-  int64 file_size = 3;
-  int64 timestamp = 4;
-  string replay_url = 5;
-  string status = 6;
-  bool labeled = 7;
-}
-
 message ReplayLabelResponse {
   string status = 1;
+}
+
+message PanelReplayResponse {
+  string replay_id = 1;
+  string mc_version = 2;
+  string status = 3;
+  int64 file_size = 4;
+  int64 created_at = 5;
+  string target_uuid = 6;
+  string target_name = 7;
+  bool labeled = 8;
+  string replay_url = 9;
+  optional int64 marker_ms = 10;
+  uint32 format_version = 11;
+}
+
+message ReplaySettings {
+  bool enabled = 1;
+  bool record_every_player = 2;
+  bool record_on_anticheat_flag = 3;
+  bool anticheat_integration = 4;
+  uint32 window_seconds = 5 [(buf.validate.field).uint32 = {
+    gte: 10
+    lte: 300
+  }];
+  uint32 radius_blocks = 6 [(buf.validate.field).uint32 = {
+    gte: 16
+    lte: 128
+  }];
+  uint32 memory_budget_mb = 7 [(buf.validate.field).uint32 = {
+    gte: 16
+    lte: 1024
+  }];
+  string anticheat_name = 8 [(buf.validate.field).string = {
+    min_len: 1
+    max_len: 32
+  }];
+}
+
+message ReplaySettingsEnvelope {
+  ReplaySettings data = 1;
+  SettingsMeta meta = 2 [json_name = "_meta"];
+  optional google.protobuf.Timestamp choice_made_at = 3;
+}
+
+message UpdateReplaySettingsRequest {
+  int64 expected_version = 1;
+  ReplaySettings settings = 2 [(buf.validate.field).required = true];
+}
+
+enum ReplayShareExpiry {
+  REPLAY_SHARE_EXPIRY_UNSPECIFIED = 0;
+  REPLAY_SHARE_EXPIRY_ONE_DAY = 1;
+  REPLAY_SHARE_EXPIRY_SEVEN_DAYS = 2;
+  REPLAY_SHARE_EXPIRY_THIRTY_DAYS = 3;
+  REPLAY_SHARE_EXPIRY_NEVER = 4;
+}
+
+message CreateReplayShareRequest {
+  ReplayShareExpiry expiry = 1 [(buf.validate.field).enum = {
+    defined_only: true
+    not_in: [0]
+  }];
+}
+
+message ReplayShare {
+  string id = 1;
+  string created_by = 2;
+  google.protobuf.Timestamp created_at = 3;
+  optional google.protobuf.Timestamp expires_at = 4;
+  optional google.protobuf.Timestamp revoked_at = 5;
+  int64 view_count = 6;
+  optional google.protobuf.Timestamp last_viewed_at = 7;
+}
+
+message CreateReplayShareResponse {
+  ReplayShare share = 1;
+  string token = 2;
+  string url = 3;
+}
+
+message ReplaySharesResponse {
+  repeated ReplayShare shares = 1;
+}
+
+message SharedReplayResponse {
+  string target_name = 1;
+  string server_name = 2;
+  string mc_version = 3;
+  google.protobuf.Timestamp created_at = 4;
+  uint32 format_version = 5;
+  int64 file_size = 6;
+  string file_url = 7;
+}
+
+message FeatureSettingsEvent {
+  ReplaySettings replays = 1;
+  int64 version = 2;
 }

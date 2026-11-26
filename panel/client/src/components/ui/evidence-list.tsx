@@ -4,6 +4,8 @@ import { getTrustedEvidenceMediaType, type MediaTrustPolicy } from '@/utils/evid
 import { formatDateWithTime } from '@/utils/date-utils';
 import { useMediaTrustPolicy } from '@/hooks/use-media-upload';
 import { keyByContent } from '@/components/ui/stable-keys';
+import { useOpenReplay } from '@/components/replays/use-replay-dialog';
+import { replayIdFromLink } from '@/lib/replay-reference';
 
 export interface EvidenceEntry {
   text?: string | undefined;
@@ -66,6 +68,23 @@ function normalizeEvidence(item: EvidenceValue): NormalizedEvidence {
   };
 }
 
+function ReplayEvidenceLink({ href, replayId, text }: { href: string; replayId: string; text: string }) {
+  const openReplay = useOpenReplay();
+  return (
+    <a
+      href={href}
+      className="text-primary hover:underline break-all"
+      onClick={(event) => {
+        if (event.button !== 0 || event.metaKey || event.ctrlKey || event.shiftKey) return;
+        event.preventDefault();
+        openReplay(replayId);
+      }}
+    >
+      {text}
+    </a>
+  );
+}
+
 function EvidenceListItem({ item, mediaTrustPolicy }: { item: EvidenceValue; mediaTrustPolicy: MediaTrustPolicy }) {
   const { t } = useTranslation();
   const { text, issuer, date, type, fileUrl, fileName } = normalizeEvidence(item);
@@ -78,6 +97,7 @@ function EvidenceListItem({ item, mediaTrustPolicy }: { item: EvidenceValue; med
   const mediaType = type === 'url' || type === 'file' ? getTrustedEvidenceMediaType(detectionUrl, mediaTrustPolicy) : 'text';
   const fileHref = safeExternalHref(fileUrl);
   const evidenceHref = safeExternalHref(text);
+  const replayId = type === 'url' && evidenceHref !== undefined ? replayIdFromLink(evidenceHref, window.location.origin) : null;
 
   return (
     <li className="text-sm">
@@ -138,6 +158,8 @@ function EvidenceListItem({ item, mediaTrustPolicy }: { item: EvidenceValue; med
               className="max-w-full max-h-48 rounded border"
               style={{ maxWidth: '300px' }}
             />
+          ) : replayId !== null && evidenceHref !== undefined ? (
+            <ReplayEvidenceLink href={evidenceHref} replayId={replayId} text={text} />
           ) : type === 'url' ? (
             <a
               href={evidenceHref}

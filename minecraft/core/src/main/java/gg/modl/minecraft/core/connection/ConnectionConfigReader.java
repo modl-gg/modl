@@ -64,6 +64,10 @@ final class ConnectionConfigReader {
                         .from(string(ConnectionYaml.SMTP_FROM, ""))
                         .starttls(flag(ConnectionYaml.SMTP_STARTTLS, true))
                         .build())
+                .tunnel(TunnelSettings.builder()
+                        .provider(string(ConnectionYaml.TUNNEL_PROVIDER, ""))
+                        .token(string(ConnectionYaml.TUNNEL_TOKEN, ""))
+                        .build())
                 .build();
     }
 

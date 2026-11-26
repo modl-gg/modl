@@ -7,6 +7,8 @@ import gg.modl.backend.instance.ProjectLinks;
 import gg.modl.backend.instance.PublicUrls;
 import gg.modl.backend.instance.setup.PublicUrlCheck;
 import gg.modl.backend.instance.setup.PublicUrlProbe;
+import gg.modl.backend.tunnel.TunnelConnectedEvent;
+import gg.modl.backend.tunnel.TunnelProperties;
 import gg.modl.backend.update.commit.InstanceCommittedEvent;
 import java.time.Clock;
 import java.util.Optional;
@@ -34,19 +36,23 @@ public class PanelReachabilityCheck {
     private final OperatorNotice notice;
     private final Clock clock;
     private final Executor executor;
+    private final TunnelProperties tunnel;
     private final AtomicReference<PanelReachability> latest = new AtomicReference<>(PanelReachability.NOT_CHECKED);
 
     @Autowired
-    public PanelReachabilityCheck(PublicUrlProbe probe, PublicUrls publicUrls, OperatorNotice notice, Clock clock) {
-        this(probe, publicUrls, notice, clock, task -> Thread.ofVirtual().name("modl-panel-reachability").start(task));
+    public PanelReachabilityCheck(PublicUrlProbe probe, PublicUrls publicUrls, OperatorNotice notice, Clock clock,
+                                  TunnelProperties tunnel) {
+        this(probe, publicUrls, notice, clock, task -> Thread.ofVirtual().name("modl-panel-reachability").start(task), tunnel);
     }
 
-    PanelReachabilityCheck(PublicUrlProbe probe, PublicUrls publicUrls, OperatorNotice notice, Clock clock, Executor executor) {
+    PanelReachabilityCheck(PublicUrlProbe probe, PublicUrls publicUrls, OperatorNotice notice, Clock clock, Executor executor,
+                           TunnelProperties tunnel) {
         this.probe = probe;
         this.publicUrls = publicUrls;
         this.notice = notice;
         this.clock = clock;
         this.executor = executor;
+        this.tunnel = tunnel;
     }
 
     public PanelReachability latest() {
@@ -55,6 +61,13 @@ public class PanelReachabilityCheck {
 
     @EventListener(InstanceCommittedEvent.class)
     public void checkAfterCommit() {
+        if (!tunnel.enabled()) {
+            executor.execute(this::check);
+        }
+    }
+
+    @EventListener(TunnelConnectedEvent.class)
+    public void checkAfterTunnelConnected() {
         executor.execute(this::check);
     }
 

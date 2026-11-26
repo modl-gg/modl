@@ -1,0 +1,90 @@
+[CENTER][SIZE=6][B]modl: support and moderation, self-hosted[/B][/SIZE]
+[SIZE=4]Punishments, reports, tickets, appeals, alt detection, replays, and AI chat review, managed from a web panel that runs inside your own server.[/SIZE][/CENTER]
+
+modl is a complete moderation and support system for Minecraft servers. It is free, open source under AGPL-3.0, and entirely yours: the panel runs inside your server or proxy (or on its own with Docker), stores everything in your own database, and needs no account or outside service. Your players and staff only ever see your server's name, logo, and domain.
+
+It runs on [B]Paper, Folia, Spigot, Velocity, and BungeeCord[/B], from 1.8.8 to the latest release, with the same features everywhere.
+
+[CENTER][URL='https://github.com/modl-gg/modl']Source code[/URL] | [URL='https://github.com/modl-gg/modl/wiki']Documentation[/URL] | [URL='https://github.com/modl-gg/modl/releases']Downloads[/URL] | [URL='https://modl.gg/discord']Discord[/URL] | [URL='https://github.com/modl-gg/modl/blob/main/minecraft/core/src/main/resources/locale/en_US.yml']Locale file[/URL] | [URL='https://github.com/modl-gg/modl/blob/main/minecraft/core/src/main/resources/config.yml']Config file[/URL][/CENTER]
+
+[SIZE=5][B]Getting started[/B][/SIZE]
+[LIST=1]
+[*]Put [URL='https://modrinth.com/plugin/packetevents']PacketEvents[/URL] and the modl jar in [I]plugins/[/I] and start the server.
+[*]Open the setup address printed in the console and follow the setup wizard.
+[*]On a network, install modl on the proxy; the proxy's backend servers are listed in the panel with a one-click key for each.
+[/LIST]
+No free port on your host? With your domain on Cloudflare, the built-in Cloudflare Tunnel publishes the panel without opening one.
+
+[SIZE=5][B]Features[/B][/SIZE]
+
+[SIZE=4][B]Punishment system[/B][/SIZE]
+Built to sanction players fairly and consistently while keeping moderator discretion.
+[LIST]
+[*]A customizable [B]point system[/B] that marks players as low, medium, or habitual offenders, separately for gameplay and social offenses
+[*]Customizable durations for every [B]severity[/B] (lenient, regular, severe) and [B]offender level[/B]
+[*]Name and skin punishments that [B]pardon themselves[/B] when the player changes their name or skin
+[*][B]Stat-wiping[/B] bans that run a command on your server when they expire (not when pardoned)
+[*]Change durations and pardon (removing the points) without leaving the page
+[*][B]Evidence[/B] uploads and links (YouTube, Imgur, and others) on every punishment
+[*]8-character punishment IDs for appeals, with an appeal form per punishment type
+[*]Bans on offline players start counting down at their next login
+[*]Several bans or mutes run [B]one after another[/B], each starting when the previous one ends
+[*]Classic manual punishments too: ban, tempban, mute, tempmute, kick, and blacklist
+[/LIST]
+
+[SIZE=4][B]Reports and tickets[/B][/SIZE]
+[LIST]
+[*]In-game /report, /chatreport, and /hackreport that attach the [B]chat log[/B] or a [B]replay[/B] of the reported player
+[*]Ticket forms for support, staff applications, bug reports, and anything else you define
+[*]Labels, assignees, quick replies, internal staff notes, and Discord webhooks
+[*]A public page where players follow their ticket or appeal, with email updates when mail is set up
+[/LIST]
+
+[SIZE=4][B]Replays[/B][/SIZE]
+[LIST]
+[*]Record a player on request or with a report, then watch it in a [B]3D viewer in the browser[/B]
+[*]Punish straight from the replay
+[/LIST]
+
+[SIZE=4][B]AI moderation[/B][/SIZE]
+[LIST]
+[*]Chat reports reviewed by the AI provider you choose (OpenAI, Anthropic, Google Gemini, or any OpenAI-compatible endpoint), with your own key
+[*]Automatic action only within the limits you set, with hourly and daily budgets
+[/LIST]
+
+[SIZE=4][B]Alt detection[/B][/SIZE]
+[LIST]
+[*]Accounts linked through shared addresses, with optional VPN and proxy lookups from the provider you pick
+[*]Alt-blocking bans that follow a player to their linked accounts
+[/LIST]
+
+[SIZE=4][B]Staff tools in game[/B][/SIZE]
+[LIST]
+[*]Staff mode with vanish, freeze, target, and inspection menus, working across a whole network
+[*]Staff chat, slow mode, chat and command logs, and network-wide chat interception
+[*]Punish, inspect, history, notes, and alts menus, plus /standing for players
+[/LIST]
+
+[SIZE=4][B]The panel[/B][/SIZE]
+[LIST]
+[*]Dashboard, player profiles with full history, audit log, and analytics
+[*]Roles with fine-grained permissions, staff invitations, two-factor authentication, and passkeys
+[*]Sign in with an emailed code, a password, a passkey, or a one-time link from in game
+[*]A public homepage and knowledgebase with your theme, fonts and custom CSS
+[*]Available in 11 languages
+[/LIST]
+
+[SIZE=4][B]Built for self-hosting[/B][/SIZE]
+[LIST]
+[*]One jar: the panel starts inside your server or proxy, with a setup wizard
+[*]SQLite out of the box, or MySQL, MariaDB, or PostgreSQL, movable from the panel
+[*]Local file storage or any S3-compatible bucket
+[*]Nightly backups, signed releases, and one-click updates with automatic rollback
+[*]Import your history from [B]LiteBans, AdvancedBan, LibertyBans, BanManager, BanSystem[/B], or the vanilla ban lists
+[/LIST]
+
+[SIZE=5][B]Requirements[/B][/SIZE]
+[LIST]
+[*]Java 21 and 2 GB of memory on the server or proxy that runs the panel (servers behind a proxy run on any Java their Minecraft version needs)
+[*][URL='https://modrinth.com/plugin/packetevents']PacketEvents[/URL] on every Paper, Folia, and Spigot server
+[/LIST]

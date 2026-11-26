@@ -247,7 +247,18 @@ final class FakeWorld implements BelongingsPort, CustodyStore {
         }
 
         @Override
+        public void runForPlayer(UUID player, Runnable task, Runnable gone) {
+            if (online.containsKey(player)) task.run();
+            else gone.run();
+        }
+
+        @Override
         public void runLater(Runnable task, long delayTicks) {
+            task.run();
+        }
+
+        @Override
+        public void runAsync(Runnable task) {
             task.run();
         }
 

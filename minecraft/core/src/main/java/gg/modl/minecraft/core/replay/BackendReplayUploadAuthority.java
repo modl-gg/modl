@@ -7,13 +7,17 @@ import com.google.gson.JsonSyntaxException;
 import gg.modl.minecraft.core.connection.BackendConnections;
 import gg.modl.minecraft.core.util.HttpBodies;
 import gg.modl.minecraft.core.util.UrlEncoding;
+import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
+import java.io.InterruptedIOException;
 import java.io.OutputStream;
 import java.net.HttpURLConnection;
 import java.nio.charset.StandardCharsets;
 import java.util.LinkedHashMap;
 import java.util.Map;
+import java.util.concurrent.TimeUnit;
+import java.util.regex.Pattern;
 
 public final class BackendReplayUploadAuthority implements ReplayUploadAuthority {
     private static final String INIT_PATH = "/v1/minecraft/replays/upload";
@@ -21,6 +25,13 @@ public final class BackendReplayUploadAuthority implements ReplayUploadAuthority
     private static final int CONNECT_TIMEOUT_MS = 10_000;
     private static final int READ_TIMEOUT_MS = 30_000;
     private static final int OK = 200;
+    private static final long CONFIRMED = -1L;
+    private static final String RETRY_AFTER = "Retry-After";
+    private static final Pattern DELAY_SECONDS = Pattern.compile("\\d{1,9}");
+    private static final long MIN_RETRY_MS = 1_000L;
+    private static final long DEFAULT_RETRY_MS = 5_000L;
+    private static final long MAX_RETRY_MS = 30_000L;
+    private static final long CONFIRM_BUDGET_MS = 180_000L;
 
     private final BackendConnections connections;
     private final Gson gson = new Gson();
@@ -55,17 +66,55 @@ public final class BackendReplayUploadAuthority implements ReplayUploadAuthority
 
     @Override
     public void confirmUpload(ReplayUploadGrant grant) throws IOException {
+        long deadline = System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(CONFIRM_BUDGET_MS);
+        IOException lastFailure = null;
+        while (true) {
+            long retryAfterMs;
+            try {
+                retryAfterMs = confirmOnce(grant);
+            } catch (ConfirmRefusedException refused) {
+                throw refused;
+            } catch (IOException unreachable) {
+                if (Thread.currentThread().isInterrupted()) throw unreachable;
+                lastFailure = unreachable;
+                retryAfterMs = DEFAULT_RETRY_MS;
+            }
+            if (retryAfterMs < 0) return;
+            if (System.nanoTime() + TimeUnit.MILLISECONDS.toNanos(retryAfterMs) > deadline) {
+                throw new IOException("Confirm upload for replay " + grant.getReplayId() + " was still busy or unreachable after "
+                        + TimeUnit.MILLISECONDS.toSeconds(CONFIRM_BUDGET_MS) + " seconds", lastFailure);
+            }
+            pause(retryAfterMs);
+        }
+    }
+
+    private long confirmOnce(ReplayUploadGrant grant) throws IOException {
         HttpURLConnection connection = open(CONFIRM_PATH + UrlEncoding.encode(grant.getReplayId()));
         try {
             write(connection, new byte[0]);
             int statusCode = connection.getResponseCode();
             connections.reportIfRefused(connection, statusCode);
-            if (statusCode != OK) {
-                throw new IOException("Confirm upload failed (HTTP " + statusCode + ") for replay " + grant.getReplayId()
-                        + ": " + HttpBodies.readQuietly(connection, statusCode));
-            }
+            if (statusCode == OK) return CONFIRMED;
+            String body = HttpBodies.readQuietly(connection, statusCode);
+            if (statusCode == HttpURLConnection.HTTP_UNAVAILABLE) return retryAfterMs(connection.getHeaderField(RETRY_AFTER));
+            throw new ConfirmRefusedException("Confirm upload failed (HTTP " + statusCode + ") for replay " + grant.getReplayId() + ": " + body);
         } finally {
             connection.disconnect();
+        }
+    }
+
+    static long retryAfterMs(@Nullable String retryAfter) {
+        if (retryAfter == null || !DELAY_SECONDS.matcher(retryAfter.trim()).matches()) return DEFAULT_RETRY_MS;
+        long advised = TimeUnit.SECONDS.toMillis(Long.parseLong(retryAfter.trim()));
+        return Math.max(MIN_RETRY_MS, Math.min(advised, MAX_RETRY_MS));
+    }
+
+    private static void pause(long millis) throws IOException {
+        try {
+            Thread.sleep(millis);
+        } catch (InterruptedException interrupted) {
+            Thread.currentThread().interrupt();
+            throw new InterruptedIOException("Interrupted while waiting to confirm a replay upload");
         }
     }
 
@@ -112,5 +161,11 @@ public final class BackendReplayUploadAuthority implements ReplayUploadAuthority
 
     private static boolean isString(JsonObject json, String key) {
         return json.has(key) && json.get(key).isJsonPrimitive();
+    }
+
+    private static final class ConfirmRefusedException extends IOException {
+        ConfirmRefusedException(String message) {
+            super(message);
+        }
     }
 }

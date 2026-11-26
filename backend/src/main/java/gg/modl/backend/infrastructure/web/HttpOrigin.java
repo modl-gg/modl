@@ -96,7 +96,7 @@ public record HttpOrigin(String scheme, String host, int port) {
         String authority = authorityEnd < 0 ? rest : rest.substring(0, authorityEnd);
         String remainder = authorityEnd < 0 ? "" : rest.substring(authorityEnd);
         if (exact && !remainder.isEmpty() && !"/".equals(remainder)) {
-            throw new IllegalArgumentException("must be only scheme, host and port, without a path, query or fragment");
+            throw new IllegalArgumentException("must be only scheme, host, and port, without a path, query, or fragment");
         }
         if (authority.indexOf('@') >= 0) {
             throw new IllegalArgumentException("must not contain a user name or password");

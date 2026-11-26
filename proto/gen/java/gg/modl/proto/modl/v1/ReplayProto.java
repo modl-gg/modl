@@ -47,15 +47,60 @@ public final class ReplayProto extends com.google.protobuf.GeneratedFile {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_modl_v1_SubmitReplayLabelsRequest_ReplayLabel_TimeRange_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_modl_v1_PublicReplayResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_modl_v1_PublicReplayResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_modl_v1_ReplayLabelResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_modl_v1_ReplayLabelResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_PanelReplayResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_PanelReplayResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_ReplaySettings_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_ReplaySettings_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_ReplaySettingsEnvelope_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_ReplaySettingsEnvelope_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_UpdateReplaySettingsRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_UpdateReplaySettingsRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_CreateReplayShareRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_CreateReplayShareRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_ReplayShare_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_ReplayShare_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_CreateReplayShareResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_CreateReplayShareResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_ReplaySharesResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_ReplaySharesResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_SharedReplayResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_SharedReplayResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_FeatureSettingsEvent_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_FeatureSettingsEvent_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -66,35 +111,92 @@ public final class ReplayProto extends com.google.protobuf.GeneratedFile {
   static {
     java.lang.String[] descriptorData = {
       "\n\024modl/v1/replay.proto\022\007modl.v1\032\033buf/val" +
-      "idate/validate.proto\"\225\004\n\031SubmitReplayLab" +
-      "elsRequest\022R\n\007players\030\001 \003(\0132..modl.v1.Su" +
-      "bmitReplayLabelsRequest.ReplayLabelB\010\272H\005" +
-      "\222\001\002\020\024R\007players\032\243\003\n\013ReplayLabel\022\022\n\004uuid\030\001" +
-      " \001(\tR\004uuid\022\037\n\013player_name\030\002 \001(\tR\nplayerN" +
-      "ame\022\030\n\007verdict\030\003 \001(\tR\007verdict\022\036\n\nconfide" +
-      "nce\030\004 \001(\005R\nconfidence\022R\n\006cheats\030\005 \003(\0132:." +
-      "modl.v1.SubmitReplayLabelsRequest.Replay" +
-      "Label.CheatDetailR\006cheats\022\024\n\005notes\030\006 \001(\t" +
-      "R\005notes\032|\n\013CheatDetail\022\022\n\004type\030\001 \001(\tR\004ty" +
-      "pe\022Y\n\013time_ranges\030\002 \003(\01328.modl.v1.Submit" +
-      "ReplayLabelsRequest.ReplayLabel.TimeRang" +
-      "eR\ntimeRanges\032=\n\tTimeRange\022\031\n\010start_ms\030\001" +
-      " \001(\003R\007startMs\022\025\n\006end_ms\030\002 \001(\003R\005endMs\"\336\001\n" +
-      "\024PublicReplayResponse\022\033\n\treplay_id\030\001 \001(\t" +
-      "R\010replayId\022\035\n\nmc_version\030\002 \001(\tR\tmcVersio" +
-      "n\022\033\n\tfile_size\030\003 \001(\003R\010fileSize\022\034\n\ttimest" +
-      "amp\030\004 \001(\003R\ttimestamp\022\035\n\nreplay_url\030\005 \001(\t" +
-      "R\treplayUrl\022\026\n\006status\030\006 \001(\tR\006status\022\030\n\007l" +
-      "abeled\030\007 \001(\010R\007labeled\"-\n\023ReplayLabelResp" +
-      "onse\022\026\n\006status\030\001 \001(\tR\006statusBa\n\025gg.modl." +
-      "proto.modl.v1B\013ReplayProtoP\001\242\002\003MXX\252\002\007Mod" +
-      "l.V1\312\002\007Modl\\V1\342\002\023Modl\\V1\\GPBMetadata\352\002\010M" +
-      "odl::V1b\006proto3"
+      "idate/validate.proto\032\037google/protobuf/ti" +
+      "mestamp.proto\032\026modl/v1/settings.proto\"\225\004" +
+      "\n\031SubmitReplayLabelsRequest\022R\n\007players\030\001" +
+      " \003(\0132..modl.v1.SubmitReplayLabelsRequest" +
+      ".ReplayLabelB\010\272H\005\222\001\002\020\024R\007players\032\243\003\n\013Repl" +
+      "ayLabel\022\022\n\004uuid\030\001 \001(\tR\004uuid\022\037\n\013player_na" +
+      "me\030\002 \001(\tR\nplayerName\022\030\n\007verdict\030\003 \001(\tR\007v" +
+      "erdict\022\036\n\nconfidence\030\004 \001(\005R\nconfidence\022R" +
+      "\n\006cheats\030\005 \003(\0132:.modl.v1.SubmitReplayLab" +
+      "elsRequest.ReplayLabel.CheatDetailR\006chea" +
+      "ts\022\024\n\005notes\030\006 \001(\tR\005notes\032|\n\013CheatDetail\022" +
+      "\022\n\004type\030\001 \001(\tR\004type\022Y\n\013time_ranges\030\002 \003(\013" +
+      "28.modl.v1.SubmitReplayLabelsRequest.Rep" +
+      "layLabel.TimeRangeR\ntimeRanges\032=\n\tTimeRa" +
+      "nge\022\031\n\010start_ms\030\001 \001(\003R\007startMs\022\025\n\006end_ms" +
+      "\030\002 \001(\003R\005endMs\"-\n\023ReplayLabelResponse\022\026\n\006" +
+      "status\030\001 \001(\tR\006status\"\367\002\n\023PanelReplayResp" +
+      "onse\022\033\n\treplay_id\030\001 \001(\tR\010replayId\022\035\n\nmc_" +
+      "version\030\002 \001(\tR\tmcVersion\022\026\n\006status\030\003 \001(\t" +
+      "R\006status\022\033\n\tfile_size\030\004 \001(\003R\010fileSize\022\035\n" +
+      "\ncreated_at\030\005 \001(\003R\tcreatedAt\022\037\n\013target_u" +
+      "uid\030\006 \001(\tR\ntargetUuid\022\037\n\013target_name\030\007 \001" +
+      "(\tR\ntargetName\022\030\n\007labeled\030\010 \001(\010R\007labeled" +
+      "\022\035\n\nreplay_url\030\t \001(\tR\treplayUrl\022 \n\tmarke" +
+      "r_ms\030\n \001(\003H\000R\010markerMs\210\001\001\022%\n\016format_vers" +
+      "ion\030\013 \001(\rR\rformatVersionB\014\n\n_marker_ms\"\224" +
+      "\003\n\016ReplaySettings\022\030\n\007enabled\030\001 \001(\010R\007enab" +
+      "led\022.\n\023record_every_player\030\002 \001(\010R\021record" +
+      "EveryPlayer\0227\n\030record_on_anticheat_flag\030" +
+      "\003 \001(\010R\025recordOnAnticheatFlag\0223\n\025antichea" +
+      "t_integration\030\004 \001(\010R\024anticheatIntegratio" +
+      "n\0221\n\016window_seconds\030\005 \001(\rB\n\272H\007*\005\030\254\002(\nR\rw" +
+      "indowSeconds\022/\n\rradius_blocks\030\006 \001(\rB\n\272H\007" +
+      "*\005\030\200\001(\020R\014radiusBlocks\0224\n\020memory_budget_m" +
+      "b\030\007 \001(\rB\n\272H\007*\005\030\200\010(\020R\016memoryBudgetMb\0220\n\016a" +
+      "nticheat_name\030\010 \001(\tB\t\272H\006r\004\020\001\030 R\rantichea" +
+      "tName\"\313\001\n\026ReplaySettingsEnvelope\022+\n\004data" +
+      "\030\001 \001(\0132\027.modl.v1.ReplaySettingsR\004data\022*\n" +
+      "\004meta\030\002 \001(\0132\025.modl.v1.SettingsMetaR\005_met" +
+      "a\022E\n\016choice_made_at\030\003 \001(\0132\032.google.proto" +
+      "buf.TimestampH\000R\014choiceMadeAt\210\001\001B\021\n\017_cho" +
+      "ice_made_at\"\205\001\n\033UpdateReplaySettingsRequ" +
+      "est\022)\n\020expected_version\030\001 \001(\003R\017expectedV" +
+      "ersion\022;\n\010settings\030\002 \001(\0132\027.modl.v1.Repla" +
+      "ySettingsB\006\272H\003\310\001\001R\010settings\"Z\n\030CreateRep" +
+      "layShareRequest\022>\n\006expiry\030\001 \001(\0162\032.modl.v" +
+      "1.ReplayShareExpiryB\n\272H\007\202\001\004\020\001 \000R\006expiry\"" +
+      "\216\003\n\013ReplayShare\022\016\n\002id\030\001 \001(\tR\002id\022\035\n\ncreat" +
+      "ed_by\030\002 \001(\tR\tcreatedBy\0229\n\ncreated_at\030\003 \001" +
+      "(\0132\032.google.protobuf.TimestampR\tcreatedA" +
+      "t\022>\n\nexpires_at\030\004 \001(\0132\032.google.protobuf." +
+      "TimestampH\000R\texpiresAt\210\001\001\022>\n\nrevoked_at\030" +
+      "\005 \001(\0132\032.google.protobuf.TimestampH\001R\trev" +
+      "okedAt\210\001\001\022\035\n\nview_count\030\006 \001(\003R\tviewCount" +
+      "\022E\n\016last_viewed_at\030\007 \001(\0132\032.google.protob" +
+      "uf.TimestampH\002R\014lastViewedAt\210\001\001B\r\n\013_expi" +
+      "res_atB\r\n\013_revoked_atB\021\n\017_last_viewed_at" +
+      "\"o\n\031CreateReplayShareResponse\022*\n\005share\030\001" +
+      " \001(\0132\024.modl.v1.ReplayShareR\005share\022\024\n\005tok" +
+      "en\030\002 \001(\tR\005token\022\020\n\003url\030\003 \001(\tR\003url\"D\n\024Rep" +
+      "laySharesResponse\022,\n\006shares\030\001 \003(\0132\024.modl" +
+      ".v1.ReplayShareR\006shares\"\221\002\n\024SharedReplay" +
+      "Response\022\037\n\013target_name\030\001 \001(\tR\ntargetNam" +
+      "e\022\037\n\013server_name\030\002 \001(\tR\nserverName\022\035\n\nmc" +
+      "_version\030\003 \001(\tR\tmcVersion\0229\n\ncreated_at\030" +
+      "\004 \001(\0132\032.google.protobuf.TimestampR\tcreat" +
+      "edAt\022%\n\016format_version\030\005 \001(\rR\rformatVers" +
+      "ion\022\033\n\tfile_size\030\006 \001(\003R\010fileSize\022\031\n\010file" +
+      "_url\030\007 \001(\tR\007fileUrl\"c\n\024FeatureSettingsEv" +
+      "ent\0221\n\007replays\030\001 \001(\0132\027.modl.v1.ReplaySet" +
+      "tingsR\007replays\022\030\n\007version\030\002 \001(\003R\007version" +
+      "*\301\001\n\021ReplayShareExpiry\022#\n\037REPLAY_SHARE_E" +
+      "XPIRY_UNSPECIFIED\020\000\022\037\n\033REPLAY_SHARE_EXPI" +
+      "RY_ONE_DAY\020\001\022\"\n\036REPLAY_SHARE_EXPIRY_SEVE" +
+      "N_DAYS\020\002\022#\n\037REPLAY_SHARE_EXPIRY_THIRTY_D" +
+      "AYS\020\003\022\035\n\031REPLAY_SHARE_EXPIRY_NEVER\020\004Ba\n\025" +
+      "gg.modl.proto.modl.v1B\013ReplayProtoP\001\242\002\003M" +
+      "XX\252\002\007Modl.V1\312\002\007Modl\\V1\342\002\023Modl\\V1\\GPBMeta" +
+      "data\352\002\010Modl::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
           com.buf.validate.ValidateProto.getDescriptor(),
+          com.google.protobuf.TimestampProto.getDescriptor(),
+          gg.modl.proto.modl.v1.SettingsProto.getDescriptor(),
         });
     internal_static_modl_v1_SubmitReplayLabelsRequest_descriptor =
       getDescriptor().getMessageType(0);
@@ -120,20 +222,76 @@ public final class ReplayProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_SubmitReplayLabelsRequest_ReplayLabel_TimeRange_descriptor,
         new java.lang.String[] { "StartMs", "EndMs", });
-    internal_static_modl_v1_PublicReplayResponse_descriptor =
-      getDescriptor().getMessageType(1);
-    internal_static_modl_v1_PublicReplayResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_modl_v1_PublicReplayResponse_descriptor,
-        new java.lang.String[] { "ReplayId", "McVersion", "FileSize", "Timestamp", "ReplayUrl", "Status", "Labeled", });
     internal_static_modl_v1_ReplayLabelResponse_descriptor =
-      getDescriptor().getMessageType(2);
+      getDescriptor().getMessageType(1);
     internal_static_modl_v1_ReplayLabelResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_ReplayLabelResponse_descriptor,
         new java.lang.String[] { "Status", });
+    internal_static_modl_v1_PanelReplayResponse_descriptor =
+      getDescriptor().getMessageType(2);
+    internal_static_modl_v1_PanelReplayResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_PanelReplayResponse_descriptor,
+        new java.lang.String[] { "ReplayId", "McVersion", "Status", "FileSize", "CreatedAt", "TargetUuid", "TargetName", "Labeled", "ReplayUrl", "MarkerMs", "FormatVersion", });
+    internal_static_modl_v1_ReplaySettings_descriptor =
+      getDescriptor().getMessageType(3);
+    internal_static_modl_v1_ReplaySettings_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_ReplaySettings_descriptor,
+        new java.lang.String[] { "Enabled", "RecordEveryPlayer", "RecordOnAnticheatFlag", "AnticheatIntegration", "WindowSeconds", "RadiusBlocks", "MemoryBudgetMb", "AnticheatName", });
+    internal_static_modl_v1_ReplaySettingsEnvelope_descriptor =
+      getDescriptor().getMessageType(4);
+    internal_static_modl_v1_ReplaySettingsEnvelope_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_ReplaySettingsEnvelope_descriptor,
+        new java.lang.String[] { "Data", "Meta", "ChoiceMadeAt", });
+    internal_static_modl_v1_UpdateReplaySettingsRequest_descriptor =
+      getDescriptor().getMessageType(5);
+    internal_static_modl_v1_UpdateReplaySettingsRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_UpdateReplaySettingsRequest_descriptor,
+        new java.lang.String[] { "ExpectedVersion", "Settings", });
+    internal_static_modl_v1_CreateReplayShareRequest_descriptor =
+      getDescriptor().getMessageType(6);
+    internal_static_modl_v1_CreateReplayShareRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_CreateReplayShareRequest_descriptor,
+        new java.lang.String[] { "Expiry", });
+    internal_static_modl_v1_ReplayShare_descriptor =
+      getDescriptor().getMessageType(7);
+    internal_static_modl_v1_ReplayShare_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_ReplayShare_descriptor,
+        new java.lang.String[] { "Id", "CreatedBy", "CreatedAt", "ExpiresAt", "RevokedAt", "ViewCount", "LastViewedAt", });
+    internal_static_modl_v1_CreateReplayShareResponse_descriptor =
+      getDescriptor().getMessageType(8);
+    internal_static_modl_v1_CreateReplayShareResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_CreateReplayShareResponse_descriptor,
+        new java.lang.String[] { "Share", "Token", "Url", });
+    internal_static_modl_v1_ReplaySharesResponse_descriptor =
+      getDescriptor().getMessageType(9);
+    internal_static_modl_v1_ReplaySharesResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_ReplaySharesResponse_descriptor,
+        new java.lang.String[] { "Shares", });
+    internal_static_modl_v1_SharedReplayResponse_descriptor =
+      getDescriptor().getMessageType(10);
+    internal_static_modl_v1_SharedReplayResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_SharedReplayResponse_descriptor,
+        new java.lang.String[] { "TargetName", "ServerName", "McVersion", "CreatedAt", "FormatVersion", "FileSize", "FileUrl", });
+    internal_static_modl_v1_FeatureSettingsEvent_descriptor =
+      getDescriptor().getMessageType(11);
+    internal_static_modl_v1_FeatureSettingsEvent_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_FeatureSettingsEvent_descriptor,
+        new java.lang.String[] { "Replays", "Version", });
     descriptor.resolveAllFeaturesImmutable();
     com.buf.validate.ValidateProto.getDescriptor();
+    com.google.protobuf.TimestampProto.getDescriptor();
+    gg.modl.proto.modl.v1.SettingsProto.getDescriptor();
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();
     registry.add(com.buf.validate.ValidateProto.field);

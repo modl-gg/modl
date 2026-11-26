@@ -1,5 +1,8 @@
 package gg.modl.backend.hostedimport.model;
 
+import java.util.Arrays;
+import java.util.Optional;
+
 public enum IssueCode {
     RECORD_UNREADABLE(IssueSeverity.LOST),
     RECORD_REJECTED(IssueSeverity.LOST),
@@ -13,7 +16,6 @@ public enum IssueCode {
     PLAYER_MERGED(IssueSeverity.CHANGED),
     IP_NOT_KEPT(IssueSeverity.LOST),
     IP_INVALID(IssueSeverity.LOST),
-    IP_STANDARD_RETENTION(IssueSeverity.INFO),
     LOG_NOT_KEPT(IssueSeverity.LOST),
     NOTIFICATION_EXPIRED(IssueSeverity.LOST),
     PUNISHMENT_WITHOUT_DATA(IssueSeverity.CHANGED),
@@ -34,7 +36,7 @@ public enum IssueCode {
     SUBSCRIPTIONS_NOT_RESTORED(IssueSeverity.CHANGED),
     STAFF_RENAMED(IssueSeverity.CHANGED),
     STAFF_LINK_DROPPED(IssueSeverity.CHANGED),
-    SETTING_IGNORED(IssueSeverity.LOST),
+    SETTING_UNREADABLE(IssueSeverity.LOST),
     WEBHOOK_DISABLED(IssueSeverity.ACTION),
     AI_DISABLED(IssueSeverity.ACTION),
     SLUG_RENAMED(IssueSeverity.CHANGED),
@@ -48,9 +50,7 @@ public enum IssueCode {
     FILE_CONFLICT(IssueSeverity.LOST),
     REPLAY_FILE_MISSING(IssueSeverity.CHANGED),
     COMMAND_REDACTED(IssueSeverity.CHANGED),
-    COLLECTION_EXCLUDED(IssueSeverity.INFO),
-    COLLECTION_UNKNOWN(IssueSeverity.LOST),
-    FIELD_IGNORED(IssueSeverity.INFO);
+    COLLECTION_UNKNOWN(IssueSeverity.LOST);
 
     private final IssueSeverity severity;
 
@@ -60,5 +60,9 @@ public enum IssueCode {
 
     public IssueSeverity severity() {
         return severity;
+    }
+
+    public static Optional<IssueCode> named(String name) {
+        return Arrays.stream(values()).filter(code -> code.name().equals(name)).findFirst();
     }
 }

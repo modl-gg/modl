@@ -13,7 +13,6 @@ services:
     environment:
       MODL_DATA_DIR: /data
       MODL_PORT: "8080"
-      MODL_BIND_ADDRESS: 0.0.0.0
       TZ: ${TZ:-UTC}
     ports:
       - "${MODL_PORT:-8080}:8080"

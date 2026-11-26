@@ -5,6 +5,7 @@ Where each setting lives. A value set in `connection.yml` or an environment vari
 | Kind | Plugin with built-in panel | Separate panel (Docker, jar) | Panel |
 |---|---|---|---|
 | Panel URL | `embedded.public-url` | `MODL_PUBLIC_URL` | Settings > General > Panel |
+| Cloudflare Tunnel | `embedded.tunnel` | `MODL_TUNNEL`, `MODL_TUNNEL_TOKEN` | |
 | Server name | | `MODL_SERVER_NAME` | Settings > General > Panel |
 | Owner email | `embedded.admin-email` | `MODL_ADMIN_EMAIL` | |
 | API key | | `MODL_API_KEY` | Settings > General > Minecraft servers |
@@ -23,7 +24,7 @@ The built-in panel ignores environment variables except the switches named at th
 `plugins/modl/connection.yml` on every server and proxy, created on the first start. Restart after editing.
 
 ```yaml
-mode: embedded               # embedded, remote or behind-proxy
+mode: embedded               # embedded, remote, or behind-proxy
 
 embedded:                    # only for mode: embedded
   port: 8080
@@ -50,6 +51,9 @@ embedded:                    # only for mode: embedded
     password: ""
     from: ""
     starttls: true
+  tunnel:                    # Cloudflare Tunnel, see Panel Port and Tunnels
+    provider: ""             # cloudflare, or empty for none
+    token: ""                # tunnel token from the Cloudflare dashboard
 
 remote:                      # for mode: remote and behind-proxy
   url: "http://localhost:8080"
@@ -62,27 +66,29 @@ remote:                      # for mode: remote and behind-proxy
 | `remote` | all | Fails closed (no joins) until it connects |
 | `behind-proxy` | Paper, Folia, Spigot behind a proxy | Players can join while it is offline; the proxy enforces |
 
-A fresh Paper, Folia or Spigot server with proxy forwarding enabled creates the file with `mode: behind-proxy`. A server upgraded from the modl.gg plugin converts `boot.yml` into this file (kept as `boot.yml.old`) and starts with an empty panel.
+A fresh Paper, Folia, or Spigot server with proxy forwarding enabled creates the file with `mode: behind-proxy`. A server upgraded from the modl.gg plugin converts `boot.yml` into this file (kept as `boot.yml.old`) and starts with an empty panel.
 
 `MODL_API_URL` or `-Dmodl.api.url` on a server overrides `remote.url`.
 
-`embedded.download-url` is a mirror with the GitHub release layout (`download/v<version>/<file>` and `latest/download/modl-release.json`) for the first panel download, Update now and update checks. `MODL_UPDATE_BASE_URL` wins over it. Plain `http` works only for a mirror you set; files are checked against the plugin jar either way.
+`embedded.download-url` is a mirror with the GitHub release layout (`download/v<version>/<file>` and `latest/download/modl-release.json`) for the first panel download, Update now, and update checks. `MODL_UPDATE_BASE_URL` wins over it. Plain `http` works only for a mirror you set; files are checked against the plugin jar either way.
 
 ## Environment variables
 
-For `modl-server.jar` and Docker, in `.env` in the working directory or in the environment; `.env` wins over the environment. Empty values count as unset. `MODL_MAX_UPLOAD_MB`, `MODL_MAX_STORAGE_GB`, `MODL_BACKUP_KEEP` and `MODL_BACKUP_HOUR` (Settings > System > Storage) and `MODL_IP_HISTORY_DAYS` and `MODL_NOTIFICATION_EXPIRY_DAYS` (Settings > System > Data retention) are also panel settings; a variable that is set wins and locks its field. `MODL_STORAGE` fixes the whole storage backend; `MODL_S3_*` apply only with it.
+For `modl-server.jar` and Docker, in `.env` in the working directory or in the environment; `.env` wins over the environment. Empty values count as unset. `MODL_MAX_UPLOAD_MB`, `MODL_MAX_STORAGE_GB`, `MODL_BACKUP_KEEP`, and `MODL_BACKUP_HOUR` (Settings > System > Storage) and `MODL_IP_HISTORY_DAYS` and `MODL_NOTIFICATION_EXPIRY_DAYS` (Settings > System > Data retention) are also panel settings; a variable that is set wins and locks its field. `MODL_STORAGE` fixes the whole storage backend; `MODL_S3_*` apply only with it.
 
 | Variable | Default | Meaning |
 |---|---|---|
 | `MODL_PUBLIC_URL` | | Panel address used in links. Fixed when set. |
 | `MODL_PORT` | `8080` | HTTP port. With Docker, the published host port. |
-| `MODL_BIND_ADDRESS` | `0.0.0.0` | Listen address. |
+| `MODL_BIND_ADDRESS` | `0.0.0.0` (`127.0.0.1` with the tunnel) | Listen address. |
+| `MODL_TUNNEL` | | `cloudflare` runs the [built-in Cloudflare Tunnel](Panel-Port-and-Tunnels#built-in-cloudflare-tunnel). Needs an `https://` `MODL_PUBLIC_URL`. |
+| `MODL_TUNNEL_TOKEN` | | Tunnel token from the Cloudflare dashboard. Never shown or logged. |
 | `MODL_ADMIN_EMAIL` | | Owner email. Changing it moves ownership and signs the old owner out. |
 | `MODL_SERVER_NAME` | `Minecraft Server` until setup | Server name. Fixed when set. |
 | `MODL_API_KEY` | generated | Instance API key, 32 to 255 characters. Fixed when set. |
-| `MODL_TRUST_PROXY_HEADERS` | `false` | Trust `X-Forwarded-*` from a reverse proxy or tunnel. |
-| `MODL_TRUSTED_PROXY` | `private` | Who may send them: `private` (loopback and private addresses) or `loopback` ([Panel Port and Tunnels](Panel-Port-and-Tunnels)). |
-| `MODL_DATA_DIR` | `./data` | Database, uploads, backups, update and temporary files. |
+| `MODL_TRUST_PROXY_HEADERS` | `false` (`true` with the tunnel) | Trust `X-Forwarded-*` from a reverse proxy or tunnel. |
+| `MODL_TRUSTED_PROXY` | `private` (`loopback` with the tunnel) | Who may send them: `private` (loopback and private addresses) or `loopback` ([Panel Port and Tunnels](Panel-Port-and-Tunnels)). |
+| `MODL_DATA_DIR` | `./data` | Database, uploads, backups, update, and temporary files. |
 | `MODL_SETUP_CODE_FILE` | `<data>/setup-code.txt` | Where the setup code is saved. |
 | `MODL_BACKUP_KEEP` | `7` | Nightly SQLite backups kept, 1 to 365. |
 | `MODL_BACKUP_HOUR` | `4` | Hour of the nightly backup, 0 to 23, server time zone. |
@@ -125,9 +131,9 @@ For `modl-server.jar` and Docker, in `.env` in the working directory or in the e
 | `MODL_MEMORY_LIMIT` | no limit | Docker only: container memory limit, such as `2g`. |
 | `TZ` | `UTC` | Docker only: container time zone. |
 
-The switches `MODL_UPDATE_CHECK`, `MODL_PRE_UPDATE_BACKUP`, `MODL_ALLOW_DOWNGRADE`, `MODL_UPDATE_BASE_URL`, `MODL_UPDATE_API_URL` and `MODL_DATABASE_REOPEN` also reach the built-in panel as environment variables or `-D` properties of the Minecraft server. `update_checker.enabled: false` in `config.yml` turns checks off there.
+The switches `MODL_UPDATE_CHECK`, `MODL_PRE_UPDATE_BACKUP`, `MODL_ALLOW_DOWNGRADE`, `MODL_UPDATE_BASE_URL`, `MODL_UPDATE_API_URL`, and `MODL_DATABASE_REOPEN` also reach the built-in panel as environment variables or `-D` properties of the Minecraft server. `update_checker.enabled: false` in `config.yml` turns checks off there.
 
-The plugin and Docker set `MODL_LOG_DIR`, `MODL_INTERNAL_API_KEY` and `MODL_DEPLOYMENT` themselves; do not set them.
+The plugin and Docker set `MODL_LOG_DIR`, `MODL_INTERNAL_API_KEY`, and `MODL_DEPLOYMENT` themselves; do not set them.
 
 ## Player addresses
 
@@ -137,8 +143,8 @@ Settings > Moderation > Player addresses (owner only) sets the IP lookup used fo
 |---|---|
 | No lookups | Player IPs never leave the panel. |
 | proxycheck.io without a key | 100 new addresses a day per server address; then new addresses stay unknown until UTC midnight. |
-| proxycheck.io, vpnapi.io, IPHub or ipapi.is with a key | The Test button checks a key with `1.1.1.1`; it cannot confirm a proxycheck.io key, which answers unknown keys like keyless queries. |
+| proxycheck.io, vpnapi.io, IPHub, or ipapi.is with a key | The Test button checks a key with `1.1.1.1`; it cannot confirm a proxycheck.io key, which answers unknown keys like keyless queries. |
 
 The panel sends each address once and refreshes it after 30 days.
 
-Accounts are linked by shared public addresses. Private, loopback, carrier-grade NAT and VPN addresses never link, and an address used by more accounts than the shared address limit (default 10) is skipped. An alt-blocking ban follows only accounts that share an address the provider reported as not a VPN, checked whenever the ban is enforced; with lookups off, or for an address still unknown, it does not follow them.
+Accounts are linked by shared public addresses. Private, loopback, carrier-grade NAT, and VPN addresses never link, and an address used by more accounts than the shared address limit (default 10) is skipped. An alt-blocking ban follows only accounts that share an address the provider reported as not a VPN, checked whenever the ban is enforced; with lookups off, or for an address still unknown, it does not follow them.

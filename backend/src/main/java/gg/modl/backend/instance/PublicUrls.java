@@ -71,6 +71,10 @@ public class PublicUrls {
         return "/replay?id=" + encode(replayId);
     }
 
+    public String sharedReplay(String token) {
+        return origin() + "/replay/" + encode(token);
+    }
+
     public String staffAuditLog() {
         return origin() + "/panel/audit";
     }

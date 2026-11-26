@@ -59,6 +59,7 @@ public class PermissionService {
     public static final String PUNISHMENT_MODIFY_TICKETS = "punishment.modify.tickets";
     public static final String PLAYER_NOTE = "player.note";
     public static final String PLAYER_WARN = "player.warn";
+    public static final String REPLAY_SHARE = "replay.share";
     public static final List<String> PLAYER_PERMISSIONS = List.of(PLAYER_NOTE, PLAYER_WARN);
     public static final String TICKET_PERMISSION_PREFIX = "ticket.";
     public static final String TICKET_VIEW_ALL = "ticket.view.all";
@@ -107,6 +108,7 @@ public class PermissionService {
         new Permission(PUNISHMENT_MODIFY_TICKETS, "Manage Linked Tickets", "Attach and detach tickets on punishments", "punishment", PUNISHMENT_MODIFY),
         new Permission(PLAYER_NOTE, "Add Player Notes", "Add staff notes to player profiles", "player"),
         new Permission(PLAYER_WARN, "Warn Players", "Warn players with /warn", "player"),
+        new Permission(REPLAY_SHARE, "Share Replays", "Create and revoke public links to replays", "player"),
         new Permission(STAFF_CHAT_TOGGLE, "Toggle Chat", "Toggle server chat on/off", "staff"),
         new Permission(STAFF_CHAT_CLEAR, "Clear Chat", "Clear server chat", "staff"),
         new Permission(STAFF_CHAT_SLOW, "Slow Chat", "Set slow mode on server chat", "staff"),

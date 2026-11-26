@@ -74,6 +74,20 @@ public class SpigotFeatureScheduler implements FeatureScheduler {
     }
 
     @Override
+    public void runForPlayer(UUID playerUuid, Runnable task, Runnable gone) {
+        if (!folia) {
+            runOnMainThread(() -> {
+                Player player = Bukkit.getPlayer(playerUuid);
+                if (player != null && player.isOnline()) task.run();
+                else gone.run();
+            });
+            return;
+        }
+        Player player = Bukkit.getPlayer(playerUuid);
+        if (player == null || !player.isOnline() || !foliaScheduler.runForEntity(player, task, gone)) gone.run();
+    }
+
+    @Override
     public void runLater(Runnable task, long delayTicks) {
         ScheduledExecutorService foliaDelays = delayExecutor;
         if (foliaDelays != null) {
@@ -81,6 +95,15 @@ public class SpigotFeatureScheduler implements FeatureScheduler {
             Scheduling.after(foliaDelays, () -> foliaScheduler.runGlobal(task), delayMs, TimeUnit.MILLISECONDS, logger);
         } else {
             Bukkit.getScheduler().runTaskLater(plugin, task, delayTicks);
+        }
+    }
+
+    @Override
+    public void runAsync(Runnable task) {
+        if (folia) {
+            foliaScheduler.runAsync(task);
+        } else {
+            Bukkit.getScheduler().runTaskAsynchronously(plugin, task);
         }
     }
 

@@ -1,6 +1,7 @@
 package gg.modl.minecraft.core.imports;
 
 import gg.modl.minecraft.api.http.response.ImportJob;
+import gg.modl.minecraft.core.imports.source.ImportProblem;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 
@@ -39,10 +40,10 @@ final class ImportUploader {
             if (ImportJobs.isEnded(job)) throw ImportFailure.cancelled();
             if (!ImportJobs.RECEIVING.equals(job.getStatus())) {
                 if (status == CONTENT_TOO_LARGE) {
-                    throw new ImportFailure(ImportEnding.UPLOAD_FAILED, "import.upload_blocked", transferError);
+                    throw new ImportFailure(ImportEnding.UPLOAD_FAILED, ImportProblem.UPLOAD_BLOCKED, transferError);
                 }
                 if (++failedAttempts >= MAX_FAILED_ATTEMPTS) {
-                    throw new ImportFailure(ImportEnding.UPLOAD_FAILED, "import.upload_failed", transferError);
+                    throw new ImportFailure(ImportEnding.UPLOAD_FAILED, ImportProblem.UPLOAD_FAILED, transferError);
                 }
             }
             signal.await(timings.getRetryEvery().toMillis());

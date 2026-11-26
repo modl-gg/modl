@@ -7,7 +7,12 @@ import lombok.Getter;
 import org.bukkit.Bukkit;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
+
 public class SpigotFeaturesContext extends SpigotFeaturesResources implements FeaturesPluginContext {
+    private static final Pattern RELEASE_VERSION = Pattern.compile("^\\d+(?:\\.\\d+)*");
+
     @Getter private final FeatureScheduler scheduler;
     @Getter private final FeaturePlayerProvider playerProvider;
 
@@ -19,8 +24,11 @@ public class SpigotFeaturesContext extends SpigotFeaturesResources implements Fe
 
     @Override
     public String getMinecraftVersion() {
-        String bukkit = Bukkit.getBukkitVersion();
-        int dash = bukkit.indexOf('-');
-        return dash > 0 ? bukkit.substring(0, dash) : bukkit;
+        return releaseVersion(Bukkit.getBukkitVersion());
+    }
+
+    static String releaseVersion(String bukkitVersion) {
+        Matcher matcher = RELEASE_VERSION.matcher(bukkitVersion);
+        return matcher.find() ? matcher.group() : bukkitVersion;
     }
 }

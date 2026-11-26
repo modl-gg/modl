@@ -80,7 +80,7 @@ public class PlayerService {
             return List.of();
         }
 
-        Set<String> banHolders = playerRepository.findActiveBanHolders(
+        Set<String> banHolders = playerRepository.findEnforcedBanHolders(
             players.stream().map(Player::getId).toList(), clock.instant());
         return players.stream()
             .map(player -> toPlayerSearchResult(player, banHolders.contains(player.getId())))

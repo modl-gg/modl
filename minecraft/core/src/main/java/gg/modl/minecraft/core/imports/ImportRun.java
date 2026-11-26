@@ -6,6 +6,7 @@ import gg.modl.minecraft.api.http.request.StartImportJobRequest;
 import gg.modl.minecraft.api.http.response.ImportJob;
 import gg.modl.minecraft.api.http.response.ImportJobResponse;
 import gg.modl.minecraft.api.http.response.ImportStatusResponse;
+import gg.modl.minecraft.core.imports.source.ImportProblem;
 import gg.modl.minecraft.core.imports.source.ImportSource;
 import gg.modl.minecraft.core.imports.source.SourceException;
 import gg.modl.minecraft.core.imports.source.SourceInventory;
@@ -73,10 +74,9 @@ final class ImportRun {
     }
 
     void execute() {
-        SourceReader kept = previewed.take(source.id());
-        SourceReader opened = kept != null ? kept : ImportSourceAccess.open(source);
+        SourceReader opened = readerFor(previewed.take(source.id()));
         try {
-            reader = opened;
+            publish(opened);
             SourceInventory inventory = inventoryOf(opened);
             if (inventory.isEmpty()) {
                 runtime.getReporter().say(source, "import.nothing_to_import");
@@ -88,6 +88,23 @@ final class ImportRun {
             reader = null;
             opened.close();
         }
+    }
+
+    private SourceReader readerFor(@Nullable SourceReader kept) {
+        if (kept == null) return ImportSourceAccess.open(source);
+        if (kept.isReusable()) return kept;
+        try {
+            if (signal.isSet()) throw ImportFailure.cancelled();
+            runtime.getLogger().debug("The " + source.displayName() + " connection kept from the preview cannot be reused, opening it again");
+            return ImportSourceAccess.reopen(source);
+        } finally {
+            kept.close();
+        }
+    }
+
+    private void publish(SourceReader opened) {
+        reader = opened;
+        if (signal.isSet()) throw ImportFailure.cancelled();
     }
 
     private SourceInventory inventoryOf(SourceReader opened) {
@@ -119,7 +136,7 @@ final class ImportRun {
         ImportStatusResponse current = runtime.getCalls().once(api -> api.getImportStatus(), signal);
         if (ImportJobs.isActive(current.getJob())) runtime.getReporter().alreadyRunning(current.getJob());
         else if (!current.isSetupReady()) runtime.getReporter().say(source, "import.setup_required");
-        else runtime.getReporter().failed(source, "import.request_failed", refused.getMessage());
+        else runtime.getReporter().failed(source, ImportProblem.REQUEST_FAILED.messageKey(), refused.getMessage());
     }
 
     private void runJob(ImportJob job, long maxBytes, SourceReader opened, SourceInventory inventory) {
@@ -127,7 +144,7 @@ final class ImportRun {
         try {
             runtime.getFiles().begin(jobId);
         } catch (IOException failure) {
-            fail(jobId, new ImportFailure(ImportEnding.EXPORT_FAILED, "import.file_failed", failure));
+            fail(jobId, new ImportFailure(ImportEnding.EXPORT_FAILED, ImportProblem.FILE_FAILED, failure));
             return;
         }
         runtime.getReporter().say(source, "import.started", mapOf(
@@ -150,7 +167,7 @@ final class ImportRun {
         } catch (RuntimeException | LinkageError failure) {
             runtime.getLogger().warning("The " + source.displayName() + " import failed", failure);
             ImportEnding ending = progress.isUploading() ? ImportEnding.UPLOAD_FAILED : ImportEnding.EXPORT_FAILED;
-            fail(jobId, new ImportFailure(ending, "import.request_failed", failure));
+            fail(jobId, new ImportFailure(ending, ImportProblem.REQUEST_FAILED, failure));
             return;
         } finally {
             if (reports != null) reports.cancel(false);

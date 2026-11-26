@@ -1,0 +1,10 @@
+max-block-entities 65536
+max-block-states 131072
+max-compressed-bytes 10485760
+max-events 2000000
+max-frame-bytes 4194304
+max-keyframes 4096
+max-sections 65536
+max-strings 131072
+max-uncompressed-bytes 268435456
+section-states 4096

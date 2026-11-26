@@ -40,7 +40,7 @@ public final class MemberConnection {
     static String missingKeyNotice(String configPath) {
         return "[network] This server has no server key yet (remote.api-key in " + configPath + " is empty), so modl stays"
                 + " idle. Players can still join; the proxy enforces bans and mutes. Create a key in " + PanelLocations.ADD_SERVER
-                + ", choose Behind a proxy, paste it into remote.api-key and run /modlserver reload.";
+                + ", choose Behind a proxy, paste it into remote.api-key, and run /modlserver reload.";
     }
 
     static String connectingNotice(String serverUrl) {

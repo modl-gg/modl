@@ -2,6 +2,7 @@ package gg.modl.minecraft.core.imports;
 
 import gg.modl.minecraft.api.http.ApiClientException;
 import gg.modl.minecraft.api.http.ImportApi;
+import gg.modl.minecraft.core.imports.source.ImportProblem;
 import lombok.RequiredArgsConstructor;
 
 import java.util.concurrent.CompletableFuture;
@@ -40,7 +41,7 @@ final class ImportCalls {
             }
             if (isFinalAnswer(failure)) throw (ApiClientException) failure;
             if (TimeUnit.NANOSECONDS.toMillis(System.nanoTime() - startedAt) >= giveUpAfterMillis) {
-                throw new ImportFailure(ImportEnding.UPLOAD_FAILED, "import.unreachable", failure);
+                throw new ImportFailure(ImportEnding.UPLOAD_FAILED, ImportProblem.UNREACHABLE, failure);
             }
             signal.await(retryDelayMillis);
         }

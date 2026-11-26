@@ -8,11 +8,11 @@ import gg.modl.minecraft.core.command.RequiresPermission;
 import gg.modl.minecraft.core.command.StaffOnly;
 import gg.modl.minecraft.core.locale.LocaleManager;
 import gg.modl.minecraft.core.service.ReplayCaptureStatus;
+import gg.modl.minecraft.core.service.ReplayRecordingResult;
 import gg.modl.minecraft.core.service.ReplayService;
 import gg.modl.minecraft.core.util.ClickableJsonMessage;
 import gg.modl.minecraft.core.util.CommandUtil;
 import gg.modl.minecraft.core.util.Permissions;
-import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 import revxrsal.commands.annotation.Command;
 import revxrsal.commands.annotation.Description;
@@ -21,16 +21,28 @@ import revxrsal.commands.annotation.Named;
 import revxrsal.commands.annotation.Subcommand;
 import revxrsal.commands.command.CommandActor;
 
+import java.util.List;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
+import java.util.function.BiFunction;
+import java.util.function.Function;
+
 import static gg.modl.minecraft.core.util.Java8Collections.mapOf;
 
 @Command("replay")
 @StaffOnly
-@RequiredArgsConstructor
 public class ReplayCommand {
     private final Platform platform;
     private final LocaleManager localeManager;
     private final PanelUrl panelUrl;
+    private final ReplayRecordingReplies recordingReplies;
+
+    public ReplayCommand(Platform platform, LocaleManager localeManager, PanelUrl panelUrl) {
+        this.platform = platform;
+        this.localeManager = localeManager;
+        this.panelUrl = panelUrl;
+        this.recordingReplies = new ReplayRecordingReplies(localeManager);
+    }
 
     public void help(CommandActor actor) {
         for (String line : localeManager.getMessageList("replay.usage")) {
@@ -42,27 +54,27 @@ public class ReplayCommand {
     @Description("Check replay recording status for a player")
     @RequiresPermission(Permissions.MOD_ACTIONS)
     public void status(CommandActor actor, @Optional @Named("player") @Nullable String targetName) {
-        if (targetName == null) targetName = "";
-        ReplayService replayService = PluginServices.replay();
-        if (replayService == null) {
-            actor.reply(localeManager.getMessage("replay.not_available"));
-            return;
-        }
+        changeRecording(actor, targetName, ReplayService::recordingStatus, recordingReplies::status, recordingReplies::statusFailed);
+    }
 
-        UUID targetUuid = resolveTargetUuid(actor, targetName);
-        if (targetUuid == null) return;
+    @Subcommand("record")
+    @Description("Start recording a player")
+    @RequiresPermission(Permissions.MOD_ACTIONS)
+    public void record(CommandActor actor, @Named("player") String targetName) {
+        changeRecording(actor, targetName, ReplayService::startRecording, recordingReplies::started, recordingReplies::changeFailed);
+    }
 
-        String resolvedName = resolveTargetName(targetUuid, targetName);
-        ReplayCaptureStatus status = replayService.getReplayStatus(targetUuid);
-        String key = status == ReplayCaptureStatus.OK ? "replay.status_recording" : statusMessageKey(status);
-        actor.reply(localeManager.getMessage(key, mapOf("player", resolvedName)));
+    @Subcommand("stop")
+    @Description("Stop a recording started with /replay record")
+    @RequiresPermission(Permissions.MOD_ACTIONS)
+    public void stop(CommandActor actor, @Named("player") String targetName) {
+        changeRecording(actor, targetName, ReplayService::stopRecording, recordingReplies::stopped, recordingReplies::changeFailed);
     }
 
     @Subcommand("capture")
     @Description("Capture and upload a replay for a player")
     @RequiresPermission(Permissions.MOD_ACTIONS)
     public void capture(CommandActor actor, @Optional @Named("player") @Nullable String targetName) {
-        if (targetName == null) targetName = "";
         ReplayService replayService = PluginServices.replay();
         if (replayService == null) {
             actor.reply(localeManager.getMessage("replay.not_available"));
@@ -101,6 +113,29 @@ public class ReplayCommand {
         });
     }
 
+    private void changeRecording(CommandActor actor, @Nullable String targetName, RecordingRequest request,
+                                 BiFunction<ReplayRecordingResult, String, List<String>> replies,
+                                 Function<String, List<String>> failed) {
+        ReplayService replayService = PluginServices.replay();
+        if (replayService == null) {
+            actor.reply(localeManager.getMessage("replay.not_available"));
+            return;
+        }
+        UUID targetUuid = resolveTargetUuid(actor, targetName);
+        if (targetUuid == null) return;
+        String resolvedName = resolveTargetName(targetUuid, targetName);
+        request.send(replayService, targetUuid, resolvedName)
+                .thenAccept(result -> replyAll(actor, replies.apply(result, resolvedName)))
+                .exceptionally(failure -> {
+                    replyAll(actor, failed.apply(resolvedName));
+                    return null;
+                });
+    }
+
+    private static void replyAll(CommandActor actor, List<String> lines) {
+        for (String line : lines) actor.reply(line);
+    }
+
     private String statusMessageKey(ReplayCaptureStatus status) {
         if (status == ReplayCaptureStatus.NO_SERVER_CONNECTED) return "replay.no_server_connected";
         if (status == ReplayCaptureStatus.NO_ACTIVE_RECORDING || status == ReplayCaptureStatus.NOT_LOCAL) {
@@ -126,10 +161,14 @@ public class ReplayCommand {
         return target.getUuid();
     }
 
-    private String resolveTargetName(UUID uuid, String fallback) {
+    private String resolveTargetName(UUID uuid, @Nullable String fallback) {
         AbstractPlayer player = platform.getAbstractPlayer(uuid, false);
         if (player != null) return player.getUsername();
         return fallback != null && !fallback.isEmpty() ? fallback : uuid.toString();
     }
-}
 
+    @FunctionalInterface
+    private interface RecordingRequest {
+        CompletableFuture<ReplayRecordingResult> send(ReplayService service, UUID target, String targetName);
+    }
+}

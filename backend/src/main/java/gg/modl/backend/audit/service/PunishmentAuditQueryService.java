@@ -56,15 +56,18 @@ public class PunishmentAuditQueryService {
     }
 
     public List<AuditPunishmentTypeResponse> getPunishmentTypes(Server server) {
-        Map<Integer, Long> activeByType = punishmentRepository.countActiveByType(clock.instant());
+        Instant now = clock.instant();
+        Map<Integer, Long> activeByType = punishmentRepository.countByType(PunishmentPhase.ACTIVE, now);
+        Map<Integer, Long> unstartedByType = punishmentRepository.countByType(PunishmentPhase.UNSTARTED, now);
         Set<Integer> ordinals = new TreeSet<>(activeByType.keySet());
+        ordinals.addAll(unstartedByType.keySet());
         punishmentTypeService.getPunishmentTypes(server).stream()
             .map(PunishmentType::getOrdinal)
             .filter(Objects::nonNull)
             .forEach(ordinals::add);
         return ordinals.stream()
             .map(ordinal -> new AuditPunishmentTypeResponse(ordinal, punishmentTypeService.getPunishmentTypeName(server, ordinal),
-                activeByType.getOrDefault(ordinal, 0L)))
+                activeByType.getOrDefault(ordinal, 0L), unstartedByType.getOrDefault(ordinal, 0L)))
             .toList();
     }
 

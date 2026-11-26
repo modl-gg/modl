@@ -74,4 +74,15 @@ public interface ReplayCaptureRequestOrBuilder extends
    */
   com.google.protobuf.ByteString
       getRequesterInstanceIdBytes();
+
+  /**
+   * <code>.modl.v1.ReplayRequestAction action = 6 [json_name = "action", (.buf.validate.field) = { ... }</code>
+   * @return The enum numeric value on the wire for action.
+   */
+  int getActionValue();
+  /**
+   * <code>.modl.v1.ReplayRequestAction action = 6 [json_name = "action", (.buf.validate.field) = { ... }</code>
+   * @return The action.
+   */
+  gg.modl.proto.modl.v1.ReplayRequestAction getAction();
 }

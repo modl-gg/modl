@@ -43,6 +43,18 @@ public enum ReplayCaptureOutcome
    * <code>REPLAY_CAPTURE_OUTCOME_MEMBER_DISCONNECTED = 7;</code>
    */
   REPLAY_CAPTURE_OUTCOME_MEMBER_DISCONNECTED(7),
+  /**
+   * <code>REPLAY_CAPTURE_OUTCOME_ALREADY_RECORDING = 8;</code>
+   */
+  REPLAY_CAPTURE_OUTCOME_ALREADY_RECORDING(8),
+  /**
+   * <code>REPLAY_CAPTURE_OUTCOME_NOT_STARTED_BY_STAFF = 9;</code>
+   */
+  REPLAY_CAPTURE_OUTCOME_NOT_STARTED_BY_STAFF(9),
+  /**
+   * <code>REPLAY_CAPTURE_OUTCOME_NOT_AVAILABLE = 10;</code>
+   */
+  REPLAY_CAPTURE_OUTCOME_NOT_AVAILABLE(10),
   UNRECOGNIZED(-1),
   ;
 
@@ -87,6 +99,18 @@ public enum ReplayCaptureOutcome
    * <code>REPLAY_CAPTURE_OUTCOME_MEMBER_DISCONNECTED = 7;</code>
    */
   public static final int REPLAY_CAPTURE_OUTCOME_MEMBER_DISCONNECTED_VALUE = 7;
+  /**
+   * <code>REPLAY_CAPTURE_OUTCOME_ALREADY_RECORDING = 8;</code>
+   */
+  public static final int REPLAY_CAPTURE_OUTCOME_ALREADY_RECORDING_VALUE = 8;
+  /**
+   * <code>REPLAY_CAPTURE_OUTCOME_NOT_STARTED_BY_STAFF = 9;</code>
+   */
+  public static final int REPLAY_CAPTURE_OUTCOME_NOT_STARTED_BY_STAFF_VALUE = 9;
+  /**
+   * <code>REPLAY_CAPTURE_OUTCOME_NOT_AVAILABLE = 10;</code>
+   */
+  public static final int REPLAY_CAPTURE_OUTCOME_NOT_AVAILABLE_VALUE = 10;
 
 
   public final int getNumber() {
@@ -121,6 +145,9 @@ public enum ReplayCaptureOutcome
       case 5: return REPLAY_CAPTURE_OUTCOME_ERROR;
       case 6: return REPLAY_CAPTURE_OUTCOME_TIMED_OUT;
       case 7: return REPLAY_CAPTURE_OUTCOME_MEMBER_DISCONNECTED;
+      case 8: return REPLAY_CAPTURE_OUTCOME_ALREADY_RECORDING;
+      case 9: return REPLAY_CAPTURE_OUTCOME_NOT_STARTED_BY_STAFF;
+      case 10: return REPLAY_CAPTURE_OUTCOME_NOT_AVAILABLE;
       default: return null;
     }
   }

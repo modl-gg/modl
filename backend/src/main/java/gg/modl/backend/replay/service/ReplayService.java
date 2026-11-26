@@ -7,13 +7,14 @@ import gg.modl.backend.database.StorableText;
 import gg.modl.backend.database.TextLimits;
 import gg.modl.backend.database.UnitOfWork;
 import gg.modl.backend.infrastructure.exception.ValidationException;
+import gg.modl.backend.infrastructure.rest.RESTMappingV1;
 import gg.modl.backend.infrastructure.util.ByteFormatUtil;
 import gg.modl.backend.infrastructure.validation.BeanValidationRunner;
 import gg.modl.backend.infrastructure.validation.RequestValidationLimits;
 import gg.modl.backend.replay.data.ReplayDocument;
 import gg.modl.backend.replay.data.ReplayLabel;
 import gg.modl.backend.replay.dto.InitReplayUploadResponse;
-import gg.modl.backend.replay.dto.PublicReplayResponse;
+import gg.modl.backend.replay.dto.PanelReplayView;
 import gg.modl.backend.replay.repository.ReplayRepository;
 import gg.modl.backend.replay.util.ReplayReferenceUtil;
 import gg.modl.backend.server.data.Server;
@@ -21,12 +22,8 @@ import gg.modl.backend.storage.MediaCategory;
 import gg.modl.backend.storage.ObjectStorage;
 import gg.modl.backend.storage.StorageFolders;
 import gg.modl.backend.storage.StorageLimitPolicy;
-import gg.modl.backend.storage.StoredObject;
 import gg.modl.backend.storage.UploadTarget;
 import gg.modl.backend.storage.service.StorageKeyUtils;
-import gg.modl.backend.storage.service.StorageDeletionService;
-import gg.modl.backend.storage.service.StorageMetadataService;
-import gg.modl.backend.storage.service.UploadConfirmation;
 import java.time.Clock;
 import java.util.List;
 import java.util.Optional;
@@ -45,8 +42,6 @@ public class ReplayService {
 
     private final ReplayRepository replayRepository;
     private final ObjectStorage objectStorage;
-    private final StorageMetadataService storageMetadataService;
-    private final StorageDeletionService storageDeletionService;
     private final StorageLimitPolicy storageLimitPolicy;
     private final BeanValidationRunner validationRunner;
     private final UnitOfWork unitOfWork;
@@ -87,33 +82,6 @@ public class ReplayService {
         return new InitReplayUploadResponse(replayId, target.url(), target.method(), target.headers());
     }
 
-    public boolean confirmUpload(Server server, String replayId) {
-        Optional<ReplayDocument> existing = replayRepository.findById(replayId);
-        if (existing.isEmpty()) {
-            return false;
-        }
-
-        ReplayDocument doc = existing.get();
-        String storageKey = doc.getStorageKey();
-        Optional<StoredObject> stored = storageKey == null ? Optional.empty() : objectStorage.stat(storageKey);
-        if (storageKey == null || stored.isEmpty()) {
-            markFailed(doc);
-            log.warn("Replay {} upload not found in storage", replayId);
-            return false;
-        }
-
-        long storedSize = stored.get().size();
-        UploadConfirmation confirmation = unitOfWork.write(() -> recordUpload(server, doc, storageKey, storedSize));
-        if (!confirmation.recorded()) {
-            storageDeletionService.discard(server, storageKey);
-            markFailed(doc);
-            log.warn("Replay {} was confirmed after its upload reservation lapsed", replayId);
-            return false;
-        }
-        log.debug("Replay {} confirmed", replayId);
-        return true;
-    }
-
     private UploadTarget presignReserved(String storageKey, long fileSize) {
         try {
             return objectStorage.presignUpload(storageKey, REPLAY_CONTENT_TYPE, fileSize);
@@ -121,21 +89,6 @@ public class ReplayService {
             storageLimitPolicy.cancel(storageKey);
             throw e;
         }
-    }
-
-    private UploadConfirmation recordUpload(Server server, ReplayDocument doc, String storageKey, long storedSize) {
-        UploadConfirmation confirmation =
-            storageMetadataService.confirmUpload(server, storageKey, storedSize, REPLAY_CONTENT_TYPE);
-        if (confirmation.recorded()) {
-            replayRepository.updateUpload(doc.getId(), ReplayDocument.STATUS_COMPLETE, storedSize);
-        }
-        return confirmation;
-    }
-
-    private void markFailed(ReplayDocument doc) {
-        unitOfWork.write(() -> {
-            replayRepository.updateUpload(doc.getId(), ReplayDocument.STATUS_FAILED, doc.getFileSize());
-        });
     }
 
     public enum SubmitLabelsResult { OK, NOT_FOUND }
@@ -168,17 +121,34 @@ public class ReplayService {
         }
     }
 
-    public Optional<PublicReplayResponse> getPublicReplay(Server server, String replayId) {
+    public Optional<PanelReplayView> getPanelReplay(String replayId) {
+        if (!TextLimits.canMatch(REPLAYS.ID, replayId)) return Optional.empty();
         return replayRepository.findById(replayId)
-            .flatMap(doc -> doc.completedStorageKey().map(storageKey -> new PublicReplayResponse(
+            .filter(doc -> doc.completedStorageKey().isPresent())
+            .map(doc -> new PanelReplayView(
                 doc.getId(),
                 doc.getMcVersion(),
+                doc.getStatus(),
                 doc.getFileSize(),
                 doc.getCreatedAt().toEpochMilli(),
-                objectStorage.publicUrl(storageKey),
-                doc.getStatus(),
-                doc.hasLabels()
-            )));
+                doc.getTargetUuid(),
+                doc.getTargetName(),
+                doc.hasLabels(),
+                panelFileUrl(doc.getId()),
+                doc.getFormatVersion()
+            ));
+    }
+
+    public Optional<ReplayFile> completedFile(String replayId) {
+        if (!TextLimits.canMatch(REPLAYS.ID, replayId)) return Optional.empty();
+        return replayRepository.findById(replayId)
+            .flatMap(ReplayDocument::completedStorageKey)
+            .flatMap(objectStorage::stat)
+            .map(object -> new ReplayFile(objectStorage, object));
+    }
+
+    public static String panelFileUrl(String replayId) {
+        return RESTMappingV1.PANEL_REPLAYS + "/" + replayId + "/file";
     }
 
     private static String storableMcVersion(String value) {

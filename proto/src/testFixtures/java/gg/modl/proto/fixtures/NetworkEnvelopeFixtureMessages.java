@@ -9,16 +9,23 @@ import gg.modl.proto.modl.v1.MemberActionStatus;
 import gg.modl.proto.modl.v1.ModerationStateEvent;
 import gg.modl.proto.modl.v1.NetworkMember;
 import gg.modl.proto.modl.v1.NetworkRosterEvent;
+import gg.modl.proto.modl.v1.ProxiedServer;
+import gg.modl.proto.modl.v1.ProxyServersEvent;
 import gg.modl.proto.modl.v1.RealtimeEnvelope;
 import gg.modl.proto.modl.v1.ReplayCaptureOutcome;
 import gg.modl.proto.modl.v1.ReplayCaptureRequest;
 import gg.modl.proto.modl.v1.ReplayCaptureResult;
+import gg.modl.proto.modl.v1.ReplayMemoryUse;
+import gg.modl.proto.modl.v1.ReplayRecordingOrigin;
+import gg.modl.proto.modl.v1.ReplayRecordingState;
+import gg.modl.proto.modl.v1.ReplayRequestAction;
 import gg.modl.proto.modl.v1.ServerRole;
 import gg.modl.proto.modl.v1.StaffSession;
 import gg.modl.proto.modl.v1.StatWipePushEvent;
 import gg.modl.proto.modl.v1.SyncPendingStatWipe;
 
 import static gg.modl.proto.fixtures.NetworkEnvelopeFixtures.CORE_INSTANCE;
+import static gg.modl.proto.fixtures.NetworkEnvelopeFixtures.MEMBER_ADDRESS;
 import static gg.modl.proto.fixtures.NetworkEnvelopeFixtures.MEMBER_NAME;
 import static gg.modl.proto.fixtures.NetworkEnvelopeFixtures.STAFF;
 import static gg.modl.proto.fixtures.NetworkEnvelopeFixtures.TARGET;
@@ -29,6 +36,10 @@ public final class NetworkEnvelopeFixtureMessages {
     static final String ACTION_ID = "action-1";
     static final String CAPTURE_ID = "capture-1";
     static final String REPLAY_ID = "replay-1";
+    static final String RECORD_ID = "record-1";
+    static final long RECORDING_MS = 65_000L;
+    static final long MEMORY_USED_BYTES = 3L * 1024 * 1024;
+    static final long MEMORY_LIMIT_BYTES = 64L * 1024 * 1024;
     static final String TARGET_NAME = "Steve";
     static final String WIPE_ID = "wipe-1";
 
@@ -47,6 +58,18 @@ public final class NetworkEnvelopeFixtureMessages {
                     .setActorUuid(STAFF)).build();
             case CORE_CAPTURE_REQUEST -> envelope().setReplayCaptureRequest(captureRequest()).build();
             case MEMBER_CAPTURE_REQUEST -> envelope().setReplayCaptureRequest(captureRequest().setRequesterInstanceId(CORE_INSTANCE)).build();
+            case CORE_RECORD_REQUEST -> envelope().setReplayCaptureRequest(recordRequest()).build();
+            case MEMBER_RECORD_REQUEST -> envelope().setReplayCaptureRequest(recordRequest().setRequesterInstanceId(CORE_INSTANCE)).build();
+            case MEMBER_RECORDING_RESULT, CORE_RECORDING_RESULT -> envelope().setReplayCaptureResult(ReplayCaptureResult.newBuilder()
+                    .setRequestId(RECORD_ID)
+                    .setOutcome(ReplayCaptureOutcome.REPLAY_CAPTURE_OUTCOME_OK)
+                    .setRecording(ReplayRecordingState.newBuilder()
+                            .setOrigin(ReplayRecordingOrigin.REPLAY_RECORDING_ORIGIN_STAFF)
+                            .setRecordingMs(RECORDING_MS))
+                    .setMemory(ReplayMemoryUse.newBuilder()
+                            .setUsedBytes(MEMORY_USED_BYTES)
+                            .setLimitBytes(MEMORY_LIMIT_BYTES)
+                            .setRecordings(1))).build();
             case MEMBER_CAPTURE_RESULT, CORE_CAPTURE_RESULT -> envelope().setReplayCaptureResult(ReplayCaptureResult.newBuilder()
                     .setRequestId(CAPTURE_ID)
                     .setOutcome(ReplayCaptureOutcome.REPLAY_CAPTURE_OUTCOME_OK)
@@ -71,6 +94,8 @@ public final class NetworkEnvelopeFixtureMessages {
                             .setMinecraftUuid(TARGET)
                             .setUsername(TARGET_NAME)
                             .setPunishmentId(WIPE_ID))).build();
+            case CORE_PROXY_SERVERS -> envelope().setProxyServers(ProxyServersEvent.newBuilder()
+                    .addServers(ProxiedServer.newBuilder().setName(MEMBER_NAME).setAddress(MEMBER_ADDRESS))).build();
         };
     }
 
@@ -95,10 +120,19 @@ public final class NetworkEnvelopeFixtureMessages {
     }
 
     private static ReplayCaptureRequest.Builder captureRequest() {
+        return replayRequest(CAPTURE_ID, ReplayRequestAction.REPLAY_REQUEST_ACTION_CAPTURE);
+    }
+
+    private static ReplayCaptureRequest.Builder recordRequest() {
+        return replayRequest(RECORD_ID, ReplayRequestAction.REPLAY_REQUEST_ACTION_START_RECORDING);
+    }
+
+    private static ReplayCaptureRequest.Builder replayRequest(String requestId, ReplayRequestAction action) {
         return ReplayCaptureRequest.newBuilder()
-                .setRequestId(CAPTURE_ID)
+                .setRequestId(requestId)
                 .setTargetUuid(TARGET)
                 .setTargetName(TARGET_NAME)
-                .setExpectedServer(MEMBER_NAME);
+                .setExpectedServer(MEMBER_NAME)
+                .setAction(action);
     }
 }

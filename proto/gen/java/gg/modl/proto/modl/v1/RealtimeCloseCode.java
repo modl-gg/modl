@@ -232,7 +232,7 @@ public enum RealtimeCloseCode
   }
   public static com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(10);
+    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(12);
   }
 
   private static final RealtimeCloseCode[] VALUES = values();

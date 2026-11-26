@@ -1142,7 +1142,7 @@ help:
       usage: "unmute <खिलाड़ी>"
       description: "सभी सक्रिय और प्रतीक्षारत म्यूट माफ़ करें"
     replay:
-      usage: "replay <status|capture> [खिलाड़ी]"
+      usage: "replay <status|record|stop|capture> [खिलाड़ी]"
       description: "रीप्ले रिकॉर्डिंग मैनेज करें"
     modl_reload:
       usage: "modl reload"
@@ -1299,9 +1299,11 @@ network:
 replay:
   usage:
     - "&f/replay status [खिलाड़ी] &7- रिकॉर्डिंग स्थिति देखें"
+    - "&f/replay record <खिलाड़ी> &7- किसी खिलाड़ी की रिकॉर्डिंग शुरू करें"
+    - "&f/replay stop <खिलाड़ी> &7- /replay record से शुरू की गई रिकॉर्डिंग रोकें"
     - "&f/replay capture [खिलाड़ी] &7- रीप्ले कैप्चर और अपलोड करें"
   not_available: "&cइस सर्वर पर रीप्ले रिकॉर्डिंग उपलब्ध नहीं है।"
-  status_recording: "&a{player} की रिकॉर्डिंग इस समय चल रही है"
+  status_recording: "&a{player} की रिकॉर्डिंग {duration} से चल रही है ({origin})"
   status_not_recording: "&c{player} की रिकॉर्डिंग नहीं हो रही है"
   no_server_connected: "&cरीप्ले कैप्चर करने के लिए कोई सर्वर जुड़ा नहीं है।"
   no_active_recording: "&c{player} के लिए कोई सक्रिय रिकॉर्डिंग नहीं"
@@ -1312,6 +1314,19 @@ replay:
   click_to_view: "[रीप्ले देखने के लिए क्लिक करें]"
   click_to_view_hover: "रीप्ले व्यूअर खोलें"
   console_specify_player: "&cकंसोल से खिलाड़ी का नाम बताएँ।"
+  memory: "&7रीप्ले मेमोरी: {limit} MB में से {used} MB, रिकॉर्डिंग: {recordings}"
+  record_started: "&a{player} की रिकॉर्डिंग शुरू हुई"
+  already_recording: "&e{player} की रिकॉर्डिंग पहले से चल रही है"
+  record_stopped: "&a{player} की रिकॉर्डिंग रोकी गई"
+  recording_kept: "&c{player} की रिकॉर्डिंग जारी रहेगी ({origin})"
+  player_left: "&c{player} सर्वर छोड़ चुका है"
+  status_failed: "&c{player} की रिकॉर्डिंग स्थिति पढ़ी नहीं जा सकी"
+  server_unreachable: "&c{player} का सर्वर modl से जुड़ा नहीं है।"
+  record_failed: "&c{player} की रिकॉर्डिंग बदली नहीं जा सकी"
+  origins:
+    auto_record: "स्वचालित रिकॉर्डिंग"
+    anticheat_flag: "एंटीचीट चेतावनी"
+    staff: "/replay record"
 
 standing_gui:
   title: "&fआपकी स्टैंडिंग"
@@ -1380,6 +1395,7 @@ import:
   source_missing: "इस सर्वर पर {source} का कोई डेटा नहीं मिला। इसे उस सर्वर पर चलाएँ जिस पर यह डेटा है (नेटवर्क में, वह प्रॉक्सी जिस पर modl चलता है)।"
   source_locked: "{source} चल रहा है और अपनी डेटाबेस फ़ाइल खुली रखता है। उसकी jar हटाएँ (उसका फ़ोल्डर रखें), रीस्टार्ट करें और यह फिर चलाएँ।"
   database_failed: "{source} का डेटा पढ़ा नहीं जा सका: {error}"
+  source_reconnect_failed: "पूर्वावलोकन से रखा गया {source} का कनेक्शन टूट गया और फिर से नहीं खोला जा सका: {error}। /modl import {source_id} फिर से चलाएँ।"
   no_space: "{source} डेटाबेस की प्रति बनाने के लिए डिस्क में पर्याप्त खाली जगह नहीं है: {error}"
   nothing_to_import: "{source} में आयात के लिए कोई खिलाड़ी या सज़ा नहीं है।"
   nothing_left: "इन विकल्पों के साथ आयात के लिए कुछ नहीं बचा।"

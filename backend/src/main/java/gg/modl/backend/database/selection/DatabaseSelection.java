@@ -15,9 +15,6 @@ import lombok.extern.slf4j.Slf4j;
 public final class DatabaseSelection {
     public static final String NOT_REACHED_CODE = "DATABASE_NOT_REACHED_AT_START";
     public static final String COPY_MISSING_CODE = "DATABASE_COPY_MISSING_AT_START";
-    public static final Duration REACH_BUDGET = Duration.ofSeconds(90);
-
-    private static final Duration REACH_RETRY = Duration.ofSeconds(5);
     private static final String COPY_MISSING_MESSAGE = "The new database does not hold the copy modl made";
 
     public enum Source {
@@ -48,7 +45,7 @@ public final class DatabaseSelection {
     }
 
     public static DatabaseSelection resolve(SqlDatabaseProperties configured, DataDirectoryProperties dataDirectory,
-                                            PendingTargetProbe probe, Duration reachBudget, OperatorNotice notice) {
+                                            PendingTargetProbe probe, ArrivalWait wait, OperatorNotice notice) {
         DatabaseChoiceFile file = new DatabaseChoiceFile(dataDirectory.root());
         if (configured.externalUrl().isPresent()) {
             retireOverridden(file, notice);
@@ -56,7 +53,7 @@ public final class DatabaseSelection {
         }
         PanelDatabaseChoice stored = readRequired(file).orElseGet(PanelDatabaseChoice::initial);
         if (stored.pending()) {
-            PendingTargetCheck.Result arrival = arrive(probe, stored, configured, reachBudget, notice);
+            PendingTargetCheck.Result arrival = arrive(probe, stored, configured, wait, notice);
             if (!arrival.ready()) {
                 PanelDatabaseChoice fellBack = stored.fellBack(startFailure(arrival));
                 write(file, fellBack);
@@ -168,27 +165,30 @@ public final class DatabaseSelection {
     }
 
     private static PendingTargetCheck.Result arrive(PendingTargetProbe probe, PanelDatabaseChoice stored,
-                                                    SqlDatabaseProperties configured, Duration budget, OperatorNotice notice) {
+                                                    SqlDatabaseProperties configured, ArrivalWait wait, OperatorNotice notice) {
         String token = stored.moveToken();
         if (token == null) {
             return PendingTargetCheck.Result.refused(PendingTargetCheck.NO_COPY);
         }
         SqlDatabaseProperties target = stored.selected().properties(configured);
-        long deadline = System.nanoTime() + budget.toNanos();
+        long started = wait.now();
         PendingTargetCheck.Result result = probe.check(target, token);
-        boolean announced = false;
-        while (result.outcome() == PendingTargetCheck.Outcome.RETRY && System.nanoTime() < deadline) {
-            if (!announced) {
+        Duration announced = Duration.ZERO;
+        Duration remaining = wait.remaining(result.outcome().waitBudget(), started);
+        while (remaining.isPositive()) {
+            Duration budget = result.outcome().waitBudget();
+            if (budget.compareTo(announced) > 0) {
                 notice.publish("Waiting up to {} seconds for {} to answer.", budget.toSeconds(), stored.selected().describe());
-                announced = true;
+                announced = budget;
             }
             try {
-                Thread.sleep(REACH_RETRY);
+                wait.pauseWithin(remaining);
             } catch (InterruptedException e) {
                 Thread.currentThread().interrupt();
                 throw new IllegalStateException("modl stopped while waiting for " + stored.selected().describe() + " to answer", e);
             }
             result = probe.check(target, token);
+            remaining = wait.remaining(result.outcome().waitBudget(), started);
         }
         return result;
     }

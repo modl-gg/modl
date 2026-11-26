@@ -28,7 +28,7 @@ export function ImportProgress({ state }: { state: ImportState }) {
       <p className="text-xs text-muted-foreground">
         {transferring || state.status === 'verifying'
           ? t('pages.setup.import.progress.bytes', { done: formatFileSize(done), total: formatFileSize(total) })
-          : t('pages.setup.import.progress.items', { done, total })}
+          : t('pages.setup.import.progress.items', { done, count: total })}
       </p>
     </div>
   );

@@ -43,7 +43,7 @@ public final class BackupTestData {
             database.dsl().insertInto(WEBAUTHN_CREDENTIALS).set(new WebauthnCredentialsRecord("credential", "owner@example.com",
                 "credential-id", PUBLIC_KEY, 4_294_967_296L, null, null, NOW, null)).execute();
             database.dsl().insertInto(AUDIT_LOGS).set(new AuditLogsRecord(LOG_ID, "moderation", "test", "line one\nline two",
-                null, false, NOW)).execute();
+                null, NOW)).execute();
         });
     }
 

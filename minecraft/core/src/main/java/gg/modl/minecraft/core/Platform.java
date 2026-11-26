@@ -1,10 +1,11 @@
 package gg.modl.minecraft.core;
 
+import gg.modl.minecraft.core.network.ProxyBackend;
 import gg.modl.minecraft.core.util.PluginLogger;
 
 import java.io.File;
 import java.util.Collections;
-import java.util.Set;
+import java.util.List;
 import java.util.UUID;
 
 public interface Platform extends PlatformMessaging, PlatformPlayers, PlatformCommands, Scheduler {
@@ -20,6 +21,7 @@ public interface Platform extends PlatformMessaging, PlatformPlayers, PlatformCo
 
     default String getPlayerServer(UUID uuid) { return getServerName(); }
     default void connectToServer(UUID player, String serverName) {}
-    default Set<String> knownServerNames() { return Collections.singleton(getServerName()); }
+    default List<ProxyBackend> proxyBackends() { return Collections.emptyList(); }
     default boolean hostsNetworkMembers() { return false; }
+    default boolean hostsServerFeatures() { return false; }
 }

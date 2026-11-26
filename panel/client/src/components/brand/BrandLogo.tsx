@@ -11,19 +11,26 @@ interface BrandLogoProps {
   icon: BrandIconKind;
   wordmarkClassName: string;
   imageClassName: string;
+  decorative?: boolean;
+}
+
+export function useBrandIconUrl(icon: BrandIconKind): string {
+  const { data: publicSettings } = usePublicSettings();
+  return (icon === 'panel' ? publicSettings?.panelIconUrl : publicSettings?.homepageIconUrl) ?? '';
 }
 
 export function ModlWordmark({ className }: { className: string }) {
   return <span className={cn('font-brand leading-none text-primary select-none', className)}>{WORDMARK}</span>;
 }
 
-export function BrandLogo({ icon, wordmarkClassName, imageClassName }: BrandLogoProps) {
+export function BrandLogo({ icon, wordmarkClassName, imageClassName, decorative = false }: BrandLogoProps) {
   const { t } = useTranslation();
   const { data: publicSettings } = usePublicSettings();
-  const iconUrl = icon === 'panel' ? publicSettings?.panelIconUrl : publicSettings?.homepageIconUrl;
+  const iconUrl = useBrandIconUrl(icon);
 
-  if (iconUrl === undefined || iconUrl === '') return <ModlWordmark className={wordmarkClassName} />;
-  return <img src={iconUrl} alt={publicSettings?.serverDisplayName || t('home.serverLogo')} className={imageClassName} />;
+  if (iconUrl === '') return <ModlWordmark className={wordmarkClassName} />;
+  const alt = decorative ? '' : publicSettings?.serverDisplayName || t('home.serverLogo');
+  return <img src={iconUrl} alt={alt} className={imageClassName} />;
 }
 
 export function SignInBrand() {

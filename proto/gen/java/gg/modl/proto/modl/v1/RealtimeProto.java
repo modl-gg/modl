@@ -197,6 +197,16 @@ public final class RealtimeProto extends com.google.protobuf.GeneratedFile {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_modl_v1_MemberActionResult_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_ReplayRecordingState_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_ReplayRecordingState_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_ReplayMemoryUse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_ReplayMemoryUse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_modl_v1_ReplayCaptureRequest_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -211,6 +221,11 @@ public final class RealtimeProto extends com.google.protobuf.GeneratedFile {
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_modl_v1_HostedPlayersEvent_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_ProxyServersEvent_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_ProxyServersEvent_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_modl_v1_NetworkRosterEvent_descriptor;
   static final 
@@ -233,394 +248,429 @@ public final class RealtimeProto extends com.google.protobuf.GeneratedFile {
       "\n\026modl/v1/realtime.proto\022\007modl.v1\032\033buf/v" +
       "alidate/validate.proto\032\034google/protobuf/" +
       "struct.proto\032\037google/protobuf/timestamp." +
-      "proto\032\024modl/v1/common.proto\032\022modl/v1/syn" +
-      "c.proto\"\374\025\n\020RealtimeEnvelope\022\031\n\010event_id" +
-      "\030\001 \001(\tR\007eventId\022)\n\020protocol_version\030\002 \001(" +
-      "\rR\017protocolVersion\0228\n\ttimestamp\030\003 \001(\0132\032." +
-      "google.protobuf.TimestampR\ttimestamp\0229\n\014" +
-      "client_hello\030\n \001(\0132\024.modl.v1.ClientHello" +
-      "H\000R\013clientHello\0229\n\014server_hello\030\013 \001(\0132\024." +
-      "modl.v1.ServerHelloH\000R\013serverHello\0222\n\the" +
-      "artbeat\030\014 \001(\0132\022.modl.v1.HeartbeatH\000R\thea" +
-      "rtbeat\022 \n\003ack\030\r \001(\0132\014.modl.v1.AckH\000R\003ack" +
-      "\022&\n\005error\030\016 \001(\0132\016.modl.v1.ErrorH\000R\005error" +
-      "\0222\n\tsubscribe\030\017 \001(\0132\022.modl.v1.SubscribeH" +
-      "\000R\tsubscribe\0228\n\013unsubscribe\030\020 \001(\0132\024.modl" +
-      ".v1.UnsubscribeH\000R\013unsubscribe\022E\n\020reconn" +
-      "ect_advice\030\021 \001(\0132\030.modl.v1.ReconnectAdvi" +
-      "ceH\000R\017reconnectAdvice\022D\n\016ticket_changed\030" +
-      "\036 \001(\0132\033.modl.v1.TicketChangedEventH\000R\rti" +
-      "cketChanged\022\202\001\n$assigned_ticket_subscrip" +
-      "tion_changed\030\037 \001(\0132/.modl.v1.AssignedTic" +
-      "ketSubscriptionChangedEventH\000R!assignedT" +
-      "icketSubscriptionChanged\022\\\n\026permission_i" +
-      "nvalidated\0302 \001(\0132#.modl.v1.PermissionInv" +
-      "alidatedEventH\000R\025permissionInvalidated\022i" +
-      "\n\033punishment_type_invalidated\0303 \001(\0132\'.mo" +
-      "dl.v1.PunishmentTypeInvalidatedEventH\000R\031" +
-      "punishmentTypeInvalidated\022P\n\022staff_notif" +
-      "ication\0304 \001(\0132\037.modl.v1.StaffNotificatio" +
-      "nEventH\000R\021staffNotification\022M\n\021presence_" +
-      "snapshot\0305 \001(\0132\036.modl.v1.PresenceSnapsho" +
-      "tEventH\000R\020presenceSnapshot\022D\n\016presence_d" +
-      "elta\0306 \001(\0132\033.modl.v1.PresenceDeltaEventH" +
-      "\000R\rpresenceDelta\022V\n\024presence_invalidated" +
-      "\0307 \001(\0132!.modl.v1.PresenceInvalidatedEven" +
-      "tH\000R\023presenceInvalidated\022_\n\027punishment_n" +
-      "otification\0308 \001(\0132$.modl.v1.PunishmentNo" +
-      "tificationEventH\000R\026punishmentNotificatio" +
-      "n\022S\n\023player_notification\0309 \001(\0132 .modl.v1" +
-      ".PlayerNotificationEventH\000R\022playerNotifi" +
-      "cation\022H\n\020staff_two_factor\030: \001(\0132\034.modl." +
-      "v1.StaffTwoFactorEventH\000R\016staffTwoFactor" +
-      "\022M\n\021panel_invalidated\030< \001(\0132\036.modl.v1.Pa" +
-      "nelInvalidatedEventH\000R\020panelInvalidated\022" +
-      "G\n\017punishment_push\030= \001(\0132\034.modl.v1.Punis" +
-      "hmentPushEventH\000R\016punishmentPush\022`\n\030play" +
-      "er_notification_push\030> \001(\0132$.modl.v1.Pla" +
-      "yerNotificationPushEventH\000R\026playerNotifi" +
-      "cationPush\022]\n\027staff_notification_push\030? " +
-      "\001(\0132#.modl.v1.StaffNotificationPushEvent" +
-      "H\000R\025staffNotificationPush\022B\n\016stat_wipe_p" +
-      "ush\030@ \001(\0132\032.modl.v1.StatWipePushEventH\000R" +
-      "\014statWipePush\022B\n\016staff_2fa_push\030A \001(\0132\032." +
-      "modl.v1.Staff2faPushEventH\000R\014staff2faPus" +
-      "h\022K\n\021active_staff_push\030C \001(\0132\035.modl.v1.A" +
-      "ctiveStaffPushEventH\000R\017activeStaffPush\022D" +
-      "\n\016sync_requested\030D \001(\0132\033.modl.v1.SyncReq" +
-      "uestedEventH\000R\rsyncRequested\022J\n\020moderati" +
-      "on_state\030F \001(\0132\035.modl.v1.ModerationState" +
-      "EventH\000R\017moderationState\022C\n\rmember_actio" +
-      "n\030G \001(\0132\034.modl.v1.MemberActionRequestH\000R" +
-      "\014memberAction\022O\n\024member_action_result\030H " +
-      "\001(\0132\033.modl.v1.MemberActionResultH\000R\022memb" +
-      "erActionResult\022U\n\026replay_capture_request" +
-      "\030I \001(\0132\035.modl.v1.ReplayCaptureRequestH\000R" +
-      "\024replayCaptureRequest\022R\n\025replay_capture_" +
-      "result\030J \001(\0132\034.modl.v1.ReplayCaptureResu" +
-      "ltH\000R\023replayCaptureResult\022D\n\016hosted_play" +
-      "ers\030K \001(\0132\033.modl.v1.HostedPlayersEventH\000" +
-      "R\rhostedPlayers\022D\n\016network_roster\030L \001(\0132" +
-      "\033.modl.v1.NetworkRosterEventH\000R\rnetworkR" +
-      "osterB\t\n\007payloadJ\004\010 \020!J\004\010;\020<J\004\010B\020CR\030migr" +
-      "ation_status_changedR\023migration_task_hin" +
-      "tR\023migration_task_push\"\275\004\n\013ClientHello\0224" +
-      "\n\013client_kind\030\001 \001(\0162\023.modl.v1.ClientKind" +
-      "R\nclientKind\022)\n\020protocol_version\030\002 \001(\rR\017" +
-      "protocolVersion\022 \n\tserver_id\030\003 \001(\tH\000R\010se" +
-      "rverId\210\001\001\022$\n\013server_name\030\004 \001(\tH\001R\nserver" +
-      "Name\210\001\001\022 \n\ttenant_id\030\005 \001(\tH\002R\010tenantId\210\001" +
-      "\001\0229\n\020supported_topics\030\006 \003(\0162\016.modl.v1.To" +
-      "picR\017supportedTopics\0221\n\022server_instance_" +
-      "id\030\007 \001(\tH\003R\020serverInstanceId\210\001\001\022$\n\013sessi" +
-      "on_key\030\010 \001(\tH\004R\nsessionKey\210\001\001\0224\n\013server_" +
-      "role\030\t \001(\0162\023.modl.v1.ServerRoleR\nserverR" +
-      "ole\0223\n\016plugin_version\030\n \001(\tB\007\272H\004r\002\030@H\005R\r" +
-      "pluginVersion\210\001\001B\014\n\n_server_idB\016\n\014_serve" +
-      "r_nameB\014\n\n_tenant_idB\025\n\023_server_instance" +
-      "_idB\016\n\014_session_keyB\021\n\017_plugin_version\"\314" +
-      "\001\n\013ServerHello\022)\n\020protocol_version\030\001 \001(\r" +
-      "R\017protocolVersion\022#\n\rconnection_id\030\002 \001(\t" +
-      "R\014connectionId\0227\n\017accepted_topics\030\003 \003(\0162" +
-      "\016.modl.v1.TopicR\016acceptedTopics\022$\n\013serve" +
-      "r_time\030\004 \001(\tH\000R\nserverTime\210\001\001B\016\n\014_server" +
-      "_time\"\'\n\tHeartbeat\022\032\n\010sequence\030\001 \001(\004R\010se" +
-      "quence\"\255\001\n\003Ack\022$\n\004kind\030\001 \001(\0162\020.modl.v1.A" +
-      "ckKindR\004kind\022\031\n\010event_id\030\002 \001(\tR\007eventId\022" +
-      "*\n\016correlation_id\030\003 \001(\tH\000R\rcorrelationId" +
-      "\210\001\001\022\033\n\006detail\030\004 \001(\tH\001R\006detail\210\001\001B\021\n\017_cor" +
-      "relation_idB\t\n\007_detail\"\224\002\n\005Error\022&\n\004code" +
-      "\030\001 \001(\0162\022.modl.v1.ErrorCodeR\004code\022\030\n\007mess" +
-      "age\030\002 \001(\tR\007message\022*\n\016correlation_id\030\003 \001" +
-      "(\tH\000R\rcorrelationId\210\001\001\0226\n\007details\030\004 \001(\0132" +
-      "\027.google.protobuf.StructH\001R\007details\210\001\001\0223" +
-      "\n\016server_version\030\005 \001(\tB\007\272H\004r\002\030@H\002R\rserve" +
-      "rVersion\210\001\001B\021\n\017_correlation_idB\n\n\010_detai" +
-      "lsB\021\n\017_server_version\"3\n\tSubscribe\022&\n\006to" +
-      "pics\030\001 \003(\0162\016.modl.v1.TopicR\006topics\"5\n\013Un" +
-      "subscribe\022&\n\006topics\030\001 \003(\0162\016.modl.v1.Topi" +
-      "cR\006topics\"\315\001\n\017ReconnectAdvice\0220\n\006reason\030" +
-      "\001 \001(\0162\030.modl.v1.ReconnectReasonR\006reason\022" +
-      "0\n\006action\030\002 \001(\0162\030.modl.v1.ReconnectActio" +
-      "nR\006action\022)\n\016retry_after_ms\030\003 \001(\rH\000R\014ret" +
-      "ryAfterMs\210\001\001\022\030\n\007message\030\004 \001(\tR\007messageB\021" +
-      "\n\017_retry_after_ms\"\227\001\n\022TicketChangedEvent" +
-      "\022\033\n\tticket_id\030\001 \001(\tR\010ticketId\022$\n\013change_" +
-      "kind\030\002 \001(\tH\000R\nchangeKind\210\001\001\022 \n\ttenant_id" +
-      "\030\003 \001(\tH\001R\010tenantId\210\001\001B\016\n\014_change_kindB\014\n" +
-      "\n_tenant_id\"\205\001\n&AssignedTicketSubscripti" +
-      "onChangedEvent\022\036\n\010staff_id\030\001 \001(\tH\000R\007staf" +
-      "fId\210\001\001\022 \n\ttenant_id\030\002 \001(\tH\001R\010tenantId\210\001\001" +
-      "B\013\n\t_staff_idB\014\n\n_tenant_id\"\261\001\n\025PanelInv" +
-      "alidatedEvent\0222\n\010resource\030\001 \001(\0162\026.modl.v" +
-      "1.PanelResourceR\010resource\022$\n\013resource_id" +
-      "\030\002 \001(\tH\000R\nresourceId\210\001\001\022 \n\ttenant_id\030\003 \001" +
-      "(\tH\001R\010tenantId\210\001\001B\016\n\014_resource_idB\014\n\n_te" +
-      "nant_id\"\276\001\n\032PermissionInvalidatedEvent\022\036" +
-      "\n\010staff_id\030\001 \001(\tH\000R\007staffId\210\001\001\022*\n\016minecr" +
-      "aft_uuid\030\002 \001(\tH\001R\rminecraftUuid\210\001\001\022$\n\013se" +
-      "rver_name\030\003 \001(\tH\002R\nserverName\210\001\001B\013\n\t_sta" +
-      "ff_idB\021\n\017_minecraft_uuidB\016\n\014_server_name" +
-      "\"\240\001\n\036PunishmentTypeInvalidatedEvent\0221\n\022p" +
-      "unishment_type_id\030\001 \001(\tH\000R\020punishmentTyp" +
-      "eId\210\001\001\022$\n\013server_name\030\002 \001(\tH\001R\nserverNam" +
-      "e\210\001\001B\025\n\023_punishment_type_idB\016\n\014_server_n" +
-      "ame\"\333\001\n\026StaffNotificationEvent\022\'\n\017notifi" +
-      "cation_id\030\001 \001(\tR\016notificationId\022\022\n\004type\030" +
-      "\002 \001(\tR\004type\022\030\n\007message\030\003 \001(\tR\007message\0220\n" +
-      "\004data\030\004 \001(\0132\027.google.protobuf.StructH\000R\004" +
-      "data\210\001\001\022!\n\ttimestamp\030\005 \001(\003H\001R\ttimestamp\210" +
-      "\001\001B\007\n\005_dataB\014\n\n_timestamp\"\332\001\n\025PresenceSn" +
-      "apshotEvent\0220\n\007players\030\001 \003(\0132\026.modl.v1.P" +
-      "resenceEntryR\007players\022$\n\013server_name\030\002 \001" +
-      "(\tH\000R\nserverName\210\001\001\022,\n\022server_instance_i" +
-      "d\030\003 \001(\tR\020serverInstanceId\022+\n\021snapshot_re" +
-      "vision\030\004 \001(\004R\020snapshotRevisionB\016\n\014_serve" +
-      "r_name\"\271\002\n\022PresenceDeltaEvent\022.\n\006joined\030" +
-      "\001 \003(\0132\026.modl.v1.PresenceEntryR\006joined\0220\n" +
-      "\007updated\030\002 \003(\0132\026.modl.v1.PresenceEntryR\007" +
-      "updated\0220\n\024left_minecraft_uuids\030\003 \003(\tR\022l" +
-      "eftMinecraftUuids\022$\n\013server_name\030\004 \001(\tH\000" +
-      "R\nserverName\210\001\001\022,\n\022server_instance_id\030\005 " +
-      "\001(\tR\020serverInstanceId\022+\n\021presence_sequen" +
-      "ce\030\006 \001(\004R\020presenceSequenceB\016\n\014_server_na" +
-      "me\"\213\002\n\030PresenceInvalidatedEvent\022$\n\013serve" +
-      "r_name\030\001 \001(\tH\000R\nserverName\210\001\001\022\'\n\017minecra" +
-      "ft_uuids\030\002 \003(\tR\016minecraftUuids\0221\n\022server" +
-      "_instance_id\030\003 \001(\tH\001R\020serverInstanceId\210\001" +
-      "\001\0220\n\021presence_sequence\030\004 \001(\004H\002R\020presence" +
-      "Sequence\210\001\001B\016\n\014_server_nameB\025\n\023_server_i" +
-      "nstance_idB\024\n\022_presence_sequence\"\262\001\n\rPre" +
-      "senceEntry\022%\n\016minecraft_uuid\030\001 \001(\tR\rmine" +
-      "craftUuid\022\032\n\010username\030\002 \001(\tR\010username\022$\n" +
-      "\013server_name\030\003 \001(\tH\000R\nserverName\210\001\001\022\034\n\007s" +
-      "een_at\030\004 \001(\003H\001R\006seenAt\210\001\001B\016\n\014_server_nam" +
-      "eB\n\n\010_seen_at\"\372\001\n\033PunishmentNotification" +
-      "Event\022#\n\rpunishment_id\030\001 \001(\tR\014punishment" +
-      "Id\022%\n\016minecraft_uuid\030\002 \001(\tR\rminecraftUui" +
-      "d\022\037\n\010username\030\003 \001(\tH\000R\010username\210\001\001\022\033\n\006ac" +
-      "tion\030\004 \001(\tH\001R\006action\210\001\001\0220\n\004data\030\005 \001(\0132\027." +
-      "google.protobuf.StructH\002R\004data\210\001\001B\013\n\t_us" +
-      "ernameB\t\n\007_actionB\007\n\005_data\"\340\001\n\027PlayerNot" +
-      "ificationEvent\022\'\n\017notification_id\030\001 \001(\tR" +
-      "\016notificationId\022%\n\016minecraft_uuid\030\002 \001(\tR" +
-      "\rminecraftUuid\022\030\n\007message\030\003 \001(\tR\007message" +
-      "\022\027\n\004type\030\004 \001(\tH\000R\004type\210\001\001\0220\n\004data\030\005 \001(\0132" +
-      "\027.google.protobuf.StructH\001R\004data\210\001\001B\007\n\005_" +
-      "typeB\007\n\005_data\"\315\001\n\023StaffTwoFactorEvent\022%\n" +
-      "\016minecraft_uuid\030\001 \001(\tR\rminecraftUuid\022\036\n\010" +
-      "staff_id\030\002 \001(\tH\000R\007staffId\210\001\001\022(\n\rsession_" +
-      "valid\030\003 \001(\010H\001R\014sessionValid\210\001\001\022\033\n\006reason" +
-      "\030\004 \001(\tH\002R\006reason\210\001\001B\013\n\t_staff_idB\020\n\016_ses" +
-      "sion_validB\t\n\007_reason\"\302\001\n\023PunishmentPush" +
-      "Event\0228\n\007pending\030\001 \003(\0132\036.modl.v1.SyncPen" +
-      "dingPunishmentR\007pending\022;\n\010modified\030\002 \003(" +
-      "\0132\037.modl.v1.SyncModifiedPunishmentR\010modi" +
-      "fied\022$\n\013server_name\030\003 \001(\tH\000R\nserverName\210" +
-      "\001\001B\016\n\014_server_name\"\232\001\n\033PlayerNotificatio" +
-      "nPushEvent\022E\n\rnotifications\030\001 \003(\0132\037.modl" +
-      ".v1.SyncPlayerNotificationR\rnotification" +
-      "s\022$\n\013server_name\030\002 \001(\tH\000R\nserverName\210\001\001B" +
-      "\016\n\014_server_name\"\230\001\n\032StaffNotificationPus" +
-      "hEvent\022D\n\rnotifications\030\001 \003(\0132\036.modl.v1." +
-      "SyncStaffNotificationR\rnotifications\022$\n\013" +
-      "server_name\030\002 \001(\tH\000R\nserverName\210\001\001B\016\n\014_s" +
-      "erver_name\"\206\001\n\021StatWipePushEvent\022;\n\nstat" +
-      "_wipes\030\001 \003(\0132\034.modl.v1.SyncPendingStatWi" +
-      "peR\tstatWipes\022$\n\013server_name\030\002 \001(\tH\000R\nse" +
-      "rverName\210\001\001B\016\n\014_server_name\"\222\001\n\021Staff2fa" +
-      "PushEvent\022G\n\rverifications\030\001 \003(\0132!.modl." +
-      "v1.SyncStaff2faVerificationR\rverificatio" +
-      "ns\022$\n\013server_name\030\002 \001(\tH\000R\nserverName\210\001\001" +
-      "B\016\n\014_server_name\"\236\001\n\024ActiveStaffPushEven" +
-      "t\022P\n\024active_staff_members\030\001 \003(\0132\036.modl.v" +
-      "1.SyncActiveStaffMemberR\022activeStaffMemb" +
-      "ers\022$\n\013server_name\030\002 \001(\tH\000R\nserverName\210\001" +
-      "\001B\016\n\014_server_name\"H\n\022SyncRequestedEvent\022" +
-      "2\n\006reason\030\001 \001(\0162\032.modl.v1.SyncRequestRea" +
-      "sonR\006reason\"\226\002\n\024ModerationStateEvent\0225\n\022" +
-      "source_instance_id\030\001 \001(\tB\007\272H\004r\002\030@R\020sourc" +
-      "eInstanceId\022\037\n\005epoch\030\002 \001(\tB\t\272H\006r\004\020\001\030 R\005e" +
-      "poch\022\032\n\010revision\030\003 \001(\004R\010revision\0228\n\006froz" +
-      "en\030\004 \003(\0132\025.modl.v1.FrozenPlayerB\t\272H\006\222\001\003\020" +
-      "\200\002R\006frozen\0226\n\005staff\030\005 \003(\0132\025.modl.v1.Staf" +
-      "fSessionB\t\272H\006\222\001\003\020\200\002R\005staff\022\030\n\007retired\030\006 " +
-      "\001(\010R\007retired\"\235\002\n\014FrozenPlayer\022{\n\016minecra" +
-      "ft_uuid\030\001 \001(\tBT\272HQrO2M^[0-9a-fA-F]{8}-[0" +
-      "-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{" +
-      "4}-[0-9a-fA-F]{12}$R\rminecraftUuid\022s\n\nst" +
-      "aff_uuid\030\002 \001(\tBT\272HQrO2M^[0-9a-fA-F]{8}-[" +
-      "0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]" +
-      "{4}-[0-9a-fA-F]{12}$R\tstaffUuid\022\033\n\tfroze" +
-      "n_at\030\003 \001(\003R\010frozenAt\"\322\002\n\014StaffSession\022{\n" +
-      "\016minecraft_uuid\030\001 \001(\tBT\272HQrO2M^[0-9a-fA-" +
-      "F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9" +
-      "a-fA-F]{4}-[0-9a-fA-F]{12}$R\rminecraftUu" +
-      "id\022\035\n\nstaff_mode\030\002 \001(\010R\tstaffMode\022\032\n\010van" +
-      "ished\030\003 \001(\010R\010vanished\022z\n\013target_uuid\030\004 \001" +
-      "(\tBT\272HQrO2M^[0-9a-fA-F]{8}-[0-9a-fA-F]{4" +
-      "}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA" +
-      "-F]{12}$H\000R\ntargetUuid\210\001\001B\016\n\014_target_uui" +
-      "d\"\351\004\n\023MemberActionRequest\022(\n\nrequest_id\030" +
-      "\001 \001(\tB\t\272H\006r\004\020\001\030@R\trequestId\0229\n\004kind\030\002 \001(" +
-      "\0162\031.modl.v1.MemberActionKindB\n\272H\007\202\001\004\020\001 \000" +
-      "R\004kind\022x\n\nactor_uuid\030\003 \001(\tBT\272HQrO2M^[0-9" +
-      "a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}" +
-      "-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$H\000R\tacto" +
-      "rUuid\210\001\001\022z\n\013target_uuid\030\004 \001(\tBT\272HQrO2M^[" +
-      "0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]" +
-      "{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$H\001R\nt" +
-      "argetUuid\210\001\001\0222\n\014command_line\030\005 \001(\tB\n\272H\007r" +
-      "\005\020\001\030\200\002H\002R\013commandLine\210\001\001\022(\n\013member_name\030" +
-      "\006 \001(\tB\007\272H\004r\002\030@R\nmemberName\0225\n\022member_ins" +
-      "tance_id\030\007 \001(\tB\007\272H\004r\002\030@R\020memberInstanceI" +
-      "d\0222\n\025proxy_command_granted\030\010 \001(\010R\023proxyC" +
-      "ommandGrantedB\r\n\013_actor_uuidB\016\n\014_target_" +
-      "uuidB\017\n\r_command_line\"\210\002\n\022MemberActionRe" +
-      "sult\022(\n\nrequest_id\030\001 \001(\tB\t\272H\006r\004\020\001\030@R\treq" +
-      "uestId\022?\n\006status\030\002 \001(\0162\033.modl.v1.MemberA" +
-      "ctionStatusB\n\272H\007\202\001\004\020\001 \000R\006status\022x\n\nactor" +
-      "_uuid\030\003 \001(\tBT\272HQrO2M^[0-9a-fA-F]{8}-[0-9" +
-      "a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}" +
-      "-[0-9a-fA-F]{12}$H\000R\tactorUuid\210\001\001B\r\n\013_ac" +
-      "tor_uuid\"\231\003\n\024ReplayCaptureRequest\022(\n\nreq" +
-      "uest_id\030\001 \001(\tB\t\272H\006r\004\020\001\030@R\trequestId\022u\n\013t" +
-      "arget_uuid\030\002 \001(\tBT\272HQrO2M^[0-9a-fA-F]{8}" +
-      "-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-" +
-      "F]{4}-[0-9a-fA-F]{12}$R\ntargetUuid\022V\n\013ta" +
-      "rget_name\030\003 \001(\tB5\272H2r02.^([A-Za-z0-9_]{1" +
-      ",16}|[.*+][A-Za-z0-9_]{1,15})$R\ntargetNa" +
-      "me\0227\n\017expected_server\030\004 \001(\tB\t\272H\006r\004\020\001\030@H\000" +
-      "R\016expectedServer\210\001\001\022;\n\025requester_instanc" +
-      "e_id\030\005 \001(\tB\007\272H\004r\002\030@R\023requesterInstanceId" +
-      "B\022\n\020_expected_server\"\322\001\n\023ReplayCaptureRe" +
-      "sult\022(\n\nrequest_id\030\001 \001(\tB\t\272H\006r\004\020\001\030@R\treq" +
-      "uestId\022C\n\007outcome\030\002 \001(\0162\035.modl.v1.Replay" +
-      "CaptureOutcomeB\n\272H\007\202\001\004\020\001 \000R\007outcome\022>\n\tr" +
-      "eplay_id\030\003 \001(\tB\034\272H\031r\0272\025^[A-Za-z0-9_-]{1," +
-      "64}$H\000R\010replayId\210\001\001B\014\n\n_replay_id\"\370\002\n\022Ho" +
-      "stedPlayersEvent\022\030\n\007replace\030\001 \001(\010R\007repla" +
-      "ce\022\177\n\014joined_uuids\030\002 \003(\tB\\\272HY\222\001V\020\350\007\"QrO2" +
+      "proto\032\024modl/v1/common.proto\032\024modl/v1/rep" +
+      "lay.proto\032\025modl/v1/servers.proto\032\022modl/v" +
+      "1/sync.proto\"\322\027\n\020RealtimeEnvelope\022\031\n\010eve" +
+      "nt_id\030\001 \001(\tR\007eventId\022)\n\020protocol_version" +
+      "\030\002 \001(\rR\017protocolVersion\0228\n\ttimestamp\030\003 \001" +
+      "(\0132\032.google.protobuf.TimestampR\ttimestam" +
+      "p\0229\n\014client_hello\030\n \001(\0132\024.modl.v1.Client" +
+      "HelloH\000R\013clientHello\0229\n\014server_hello\030\013 \001" +
+      "(\0132\024.modl.v1.ServerHelloH\000R\013serverHello\022" +
+      "2\n\theartbeat\030\014 \001(\0132\022.modl.v1.HeartbeatH\000" +
+      "R\theartbeat\022 \n\003ack\030\r \001(\0132\014.modl.v1.AckH\000" +
+      "R\003ack\022&\n\005error\030\016 \001(\0132\016.modl.v1.ErrorH\000R\005" +
+      "error\0222\n\tsubscribe\030\017 \001(\0132\022.modl.v1.Subsc" +
+      "ribeH\000R\tsubscribe\0228\n\013unsubscribe\030\020 \001(\0132\024" +
+      ".modl.v1.UnsubscribeH\000R\013unsubscribe\022E\n\020r" +
+      "econnect_advice\030\021 \001(\0132\030.modl.v1.Reconnec" +
+      "tAdviceH\000R\017reconnectAdvice\022D\n\016ticket_cha" +
+      "nged\030\036 \001(\0132\033.modl.v1.TicketChangedEventH" +
+      "\000R\rticketChanged\022\202\001\n$assigned_ticket_sub" +
+      "scription_changed\030\037 \001(\0132/.modl.v1.Assign" +
+      "edTicketSubscriptionChangedEventH\000R!assi" +
+      "gnedTicketSubscriptionChanged\022\\\n\026permiss" +
+      "ion_invalidated\0302 \001(\0132#.modl.v1.Permissi" +
+      "onInvalidatedEventH\000R\025permissionInvalida" +
+      "ted\022i\n\033punishment_type_invalidated\0303 \001(\013" +
+      "2\'.modl.v1.PunishmentTypeInvalidatedEven" +
+      "tH\000R\031punishmentTypeInvalidated\022P\n\022staff_" +
+      "notification\0304 \001(\0132\037.modl.v1.StaffNotifi" +
+      "cationEventH\000R\021staffNotification\022M\n\021pres" +
+      "ence_snapshot\0305 \001(\0132\036.modl.v1.PresenceSn" +
+      "apshotEventH\000R\020presenceSnapshot\022D\n\016prese" +
+      "nce_delta\0306 \001(\0132\033.modl.v1.PresenceDeltaE" +
+      "ventH\000R\rpresenceDelta\022V\n\024presence_invali" +
+      "dated\0307 \001(\0132!.modl.v1.PresenceInvalidate" +
+      "dEventH\000R\023presenceInvalidated\022_\n\027punishm" +
+      "ent_notification\0308 \001(\0132$.modl.v1.Punishm" +
+      "entNotificationEventH\000R\026punishmentNotifi" +
+      "cation\022S\n\023player_notification\0309 \001(\0132 .mo" +
+      "dl.v1.PlayerNotificationEventH\000R\022playerN" +
+      "otification\022H\n\020staff_two_factor\030: \001(\0132\034." +
+      "modl.v1.StaffTwoFactorEventH\000R\016staffTwoF" +
+      "actor\022M\n\021panel_invalidated\030< \001(\0132\036.modl." +
+      "v1.PanelInvalidatedEventH\000R\020panelInvalid" +
+      "ated\022G\n\017punishment_push\030= \001(\0132\034.modl.v1." +
+      "PunishmentPushEventH\000R\016punishmentPush\022`\n" +
+      "\030player_notification_push\030> \001(\0132$.modl.v" +
+      "1.PlayerNotificationPushEventH\000R\026playerN" +
+      "otificationPush\022]\n\027staff_notification_pu" +
+      "sh\030? \001(\0132#.modl.v1.StaffNotificationPush" +
+      "EventH\000R\025staffNotificationPush\022B\n\016stat_w" +
+      "ipe_push\030@ \001(\0132\032.modl.v1.StatWipePushEve" +
+      "ntH\000R\014statWipePush\022B\n\016staff_2fa_push\030A \001" +
+      "(\0132\032.modl.v1.Staff2faPushEventH\000R\014staff2" +
+      "faPush\022K\n\021active_staff_push\030C \001(\0132\035.modl" +
+      ".v1.ActiveStaffPushEventH\000R\017activeStaffP" +
+      "ush\022D\n\016sync_requested\030D \001(\0132\033.modl.v1.Sy" +
+      "ncRequestedEventH\000R\rsyncRequested\022J\n\020mod" +
+      "eration_state\030F \001(\0132\035.modl.v1.Moderation" +
+      "StateEventH\000R\017moderationState\022C\n\rmember_" +
+      "action\030G \001(\0132\034.modl.v1.MemberActionReque" +
+      "stH\000R\014memberAction\022O\n\024member_action_resu" +
+      "lt\030H \001(\0132\033.modl.v1.MemberActionResultH\000R" +
+      "\022memberActionResult\022U\n\026replay_capture_re" +
+      "quest\030I \001(\0132\035.modl.v1.ReplayCaptureReque" +
+      "stH\000R\024replayCaptureRequest\022R\n\025replay_cap" +
+      "ture_result\030J \001(\0132\034.modl.v1.ReplayCaptur" +
+      "eResultH\000R\023replayCaptureResult\022D\n\016hosted" +
+      "_players\030K \001(\0132\033.modl.v1.HostedPlayersEv" +
+      "entH\000R\rhostedPlayers\022D\n\016network_roster\030L" +
+      " \001(\0132\033.modl.v1.NetworkRosterEventH\000R\rnet" +
+      "workRoster\022A\n\rproxy_servers\030M \001(\0132\032.modl" +
+      ".v1.ProxyServersEventH\000R\014proxyServers\022J\n" +
+      "\020feature_settings\030N \001(\0132\035.modl.v1.Featur" +
+      "eSettingsEventH\000R\017featureSettings\022E\n\016fea" +
+      "ture_status\030O \001(\0132\034.modl.v1.ServerFeatur" +
+      "eStatusH\000R\rfeatureStatusB\t\n\007payloadJ\004\010 \020" +
+      "!J\004\010;\020<J\004\010B\020CR\030migration_status_changedR" +
+      "\023migration_task_hintR\023migration_task_pus" +
+      "h\"\275\004\n\013ClientHello\0224\n\013client_kind\030\001 \001(\0162\023" +
+      ".modl.v1.ClientKindR\nclientKind\022)\n\020proto" +
+      "col_version\030\002 \001(\rR\017protocolVersion\022 \n\tse" +
+      "rver_id\030\003 \001(\tH\000R\010serverId\210\001\001\022$\n\013server_n" +
+      "ame\030\004 \001(\tH\001R\nserverName\210\001\001\022 \n\ttenant_id\030" +
+      "\005 \001(\tH\002R\010tenantId\210\001\001\0229\n\020supported_topics" +
+      "\030\006 \003(\0162\016.modl.v1.TopicR\017supportedTopics\022" +
+      "1\n\022server_instance_id\030\007 \001(\tH\003R\020serverIns" +
+      "tanceId\210\001\001\022$\n\013session_key\030\010 \001(\tH\004R\nsessi" +
+      "onKey\210\001\001\0224\n\013server_role\030\t \001(\0162\023.modl.v1." +
+      "ServerRoleR\nserverRole\0223\n\016plugin_version" +
+      "\030\n \001(\tB\007\272H\004r\002\030@H\005R\rpluginVersion\210\001\001B\014\n\n_" +
+      "server_idB\016\n\014_server_nameB\014\n\n_tenant_idB" +
+      "\025\n\023_server_instance_idB\016\n\014_session_keyB\021" +
+      "\n\017_plugin_version\"\314\001\n\013ServerHello\022)\n\020pro" +
+      "tocol_version\030\001 \001(\rR\017protocolVersion\022#\n\r" +
+      "connection_id\030\002 \001(\tR\014connectionId\0227\n\017acc" +
+      "epted_topics\030\003 \003(\0162\016.modl.v1.TopicR\016acce" +
+      "ptedTopics\022$\n\013server_time\030\004 \001(\tH\000R\nserve" +
+      "rTime\210\001\001B\016\n\014_server_time\"\'\n\tHeartbeat\022\032\n" +
+      "\010sequence\030\001 \001(\004R\010sequence\"\255\001\n\003Ack\022$\n\004kin" +
+      "d\030\001 \001(\0162\020.modl.v1.AckKindR\004kind\022\031\n\010event" +
+      "_id\030\002 \001(\tR\007eventId\022*\n\016correlation_id\030\003 \001" +
+      "(\tH\000R\rcorrelationId\210\001\001\022\033\n\006detail\030\004 \001(\tH\001" +
+      "R\006detail\210\001\001B\021\n\017_correlation_idB\t\n\007_detai" +
+      "l\"\224\002\n\005Error\022&\n\004code\030\001 \001(\0162\022.modl.v1.Erro" +
+      "rCodeR\004code\022\030\n\007message\030\002 \001(\tR\007message\022*\n" +
+      "\016correlation_id\030\003 \001(\tH\000R\rcorrelationId\210\001" +
+      "\001\0226\n\007details\030\004 \001(\0132\027.google.protobuf.Str" +
+      "uctH\001R\007details\210\001\001\0223\n\016server_version\030\005 \001(" +
+      "\tB\007\272H\004r\002\030@H\002R\rserverVersion\210\001\001B\021\n\017_corre" +
+      "lation_idB\n\n\010_detailsB\021\n\017_server_version" +
+      "\"3\n\tSubscribe\022&\n\006topics\030\001 \003(\0162\016.modl.v1." +
+      "TopicR\006topics\"5\n\013Unsubscribe\022&\n\006topics\030\001" +
+      " \003(\0162\016.modl.v1.TopicR\006topics\"\315\001\n\017Reconne" +
+      "ctAdvice\0220\n\006reason\030\001 \001(\0162\030.modl.v1.Recon" +
+      "nectReasonR\006reason\0220\n\006action\030\002 \001(\0162\030.mod" +
+      "l.v1.ReconnectActionR\006action\022)\n\016retry_af" +
+      "ter_ms\030\003 \001(\rH\000R\014retryAfterMs\210\001\001\022\030\n\007messa" +
+      "ge\030\004 \001(\tR\007messageB\021\n\017_retry_after_ms\"\227\001\n" +
+      "\022TicketChangedEvent\022\033\n\tticket_id\030\001 \001(\tR\010" +
+      "ticketId\022$\n\013change_kind\030\002 \001(\tH\000R\nchangeK" +
+      "ind\210\001\001\022 \n\ttenant_id\030\003 \001(\tH\001R\010tenantId\210\001\001" +
+      "B\016\n\014_change_kindB\014\n\n_tenant_id\"\205\001\n&Assig" +
+      "nedTicketSubscriptionChangedEvent\022\036\n\010sta" +
+      "ff_id\030\001 \001(\tH\000R\007staffId\210\001\001\022 \n\ttenant_id\030\002" +
+      " \001(\tH\001R\010tenantId\210\001\001B\013\n\t_staff_idB\014\n\n_ten" +
+      "ant_id\"\261\001\n\025PanelInvalidatedEvent\0222\n\010reso" +
+      "urce\030\001 \001(\0162\026.modl.v1.PanelResourceR\010reso" +
+      "urce\022$\n\013resource_id\030\002 \001(\tH\000R\nresourceId\210" +
+      "\001\001\022 \n\ttenant_id\030\003 \001(\tH\001R\010tenantId\210\001\001B\016\n\014" +
+      "_resource_idB\014\n\n_tenant_id\"\276\001\n\032Permissio" +
+      "nInvalidatedEvent\022\036\n\010staff_id\030\001 \001(\tH\000R\007s" +
+      "taffId\210\001\001\022*\n\016minecraft_uuid\030\002 \001(\tH\001R\rmin" +
+      "ecraftUuid\210\001\001\022$\n\013server_name\030\003 \001(\tH\002R\nse" +
+      "rverName\210\001\001B\013\n\t_staff_idB\021\n\017_minecraft_u" +
+      "uidB\016\n\014_server_name\"\240\001\n\036PunishmentTypeIn" +
+      "validatedEvent\0221\n\022punishment_type_id\030\001 \001" +
+      "(\tH\000R\020punishmentTypeId\210\001\001\022$\n\013server_name" +
+      "\030\002 \001(\tH\001R\nserverName\210\001\001B\025\n\023_punishment_t" +
+      "ype_idB\016\n\014_server_name\"\333\001\n\026StaffNotifica" +
+      "tionEvent\022\'\n\017notification_id\030\001 \001(\tR\016noti" +
+      "ficationId\022\022\n\004type\030\002 \001(\tR\004type\022\030\n\007messag" +
+      "e\030\003 \001(\tR\007message\0220\n\004data\030\004 \001(\0132\027.google." +
+      "protobuf.StructH\000R\004data\210\001\001\022!\n\ttimestamp\030" +
+      "\005 \001(\003H\001R\ttimestamp\210\001\001B\007\n\005_dataB\014\n\n_times" +
+      "tamp\"\332\001\n\025PresenceSnapshotEvent\0220\n\007player" +
+      "s\030\001 \003(\0132\026.modl.v1.PresenceEntryR\007players" +
+      "\022$\n\013server_name\030\002 \001(\tH\000R\nserverName\210\001\001\022," +
+      "\n\022server_instance_id\030\003 \001(\tR\020serverInstan" +
+      "ceId\022+\n\021snapshot_revision\030\004 \001(\004R\020snapsho" +
+      "tRevisionB\016\n\014_server_name\"\271\002\n\022PresenceDe" +
+      "ltaEvent\022.\n\006joined\030\001 \003(\0132\026.modl.v1.Prese" +
+      "nceEntryR\006joined\0220\n\007updated\030\002 \003(\0132\026.modl" +
+      ".v1.PresenceEntryR\007updated\0220\n\024left_minec" +
+      "raft_uuids\030\003 \003(\tR\022leftMinecraftUuids\022$\n\013" +
+      "server_name\030\004 \001(\tH\000R\nserverName\210\001\001\022,\n\022se" +
+      "rver_instance_id\030\005 \001(\tR\020serverInstanceId" +
+      "\022+\n\021presence_sequence\030\006 \001(\004R\020presenceSeq" +
+      "uenceB\016\n\014_server_name\"\213\002\n\030PresenceInvali" +
+      "datedEvent\022$\n\013server_name\030\001 \001(\tH\000R\nserve" +
+      "rName\210\001\001\022\'\n\017minecraft_uuids\030\002 \003(\tR\016minec" +
+      "raftUuids\0221\n\022server_instance_id\030\003 \001(\tH\001R" +
+      "\020serverInstanceId\210\001\001\0220\n\021presence_sequenc" +
+      "e\030\004 \001(\004H\002R\020presenceSequence\210\001\001B\016\n\014_serve" +
+      "r_nameB\025\n\023_server_instance_idB\024\n\022_presen" +
+      "ce_sequence\"\262\001\n\rPresenceEntry\022%\n\016minecra" +
+      "ft_uuid\030\001 \001(\tR\rminecraftUuid\022\032\n\010username" +
+      "\030\002 \001(\tR\010username\022$\n\013server_name\030\003 \001(\tH\000R" +
+      "\nserverName\210\001\001\022\034\n\007seen_at\030\004 \001(\003H\001R\006seenA" +
+      "t\210\001\001B\016\n\014_server_nameB\n\n\010_seen_at\"\372\001\n\033Pun" +
+      "ishmentNotificationEvent\022#\n\rpunishment_i" +
+      "d\030\001 \001(\tR\014punishmentId\022%\n\016minecraft_uuid\030" +
+      "\002 \001(\tR\rminecraftUuid\022\037\n\010username\030\003 \001(\tH\000" +
+      "R\010username\210\001\001\022\033\n\006action\030\004 \001(\tH\001R\006action\210" +
+      "\001\001\0220\n\004data\030\005 \001(\0132\027.google.protobuf.Struc" +
+      "tH\002R\004data\210\001\001B\013\n\t_usernameB\t\n\007_actionB\007\n\005" +
+      "_data\"\340\001\n\027PlayerNotificationEvent\022\'\n\017not" +
+      "ification_id\030\001 \001(\tR\016notificationId\022%\n\016mi" +
+      "necraft_uuid\030\002 \001(\tR\rminecraftUuid\022\030\n\007mes" +
+      "sage\030\003 \001(\tR\007message\022\027\n\004type\030\004 \001(\tH\000R\004typ" +
+      "e\210\001\001\0220\n\004data\030\005 \001(\0132\027.google.protobuf.Str" +
+      "uctH\001R\004data\210\001\001B\007\n\005_typeB\007\n\005_data\"\315\001\n\023Sta" +
+      "ffTwoFactorEvent\022%\n\016minecraft_uuid\030\001 \001(\t" +
+      "R\rminecraftUuid\022\036\n\010staff_id\030\002 \001(\tH\000R\007sta" +
+      "ffId\210\001\001\022(\n\rsession_valid\030\003 \001(\010H\001R\014sessio" +
+      "nValid\210\001\001\022\033\n\006reason\030\004 \001(\tH\002R\006reason\210\001\001B\013" +
+      "\n\t_staff_idB\020\n\016_session_validB\t\n\007_reason" +
+      "\"\302\001\n\023PunishmentPushEvent\0228\n\007pending\030\001 \003(" +
+      "\0132\036.modl.v1.SyncPendingPunishmentR\007pendi" +
+      "ng\022;\n\010modified\030\002 \003(\0132\037.modl.v1.SyncModif" +
+      "iedPunishmentR\010modified\022$\n\013server_name\030\003" +
+      " \001(\tH\000R\nserverName\210\001\001B\016\n\014_server_name\"\232\001" +
+      "\n\033PlayerNotificationPushEvent\022E\n\rnotific" +
+      "ations\030\001 \003(\0132\037.modl.v1.SyncPlayerNotific" +
+      "ationR\rnotifications\022$\n\013server_name\030\002 \001(" +
+      "\tH\000R\nserverName\210\001\001B\016\n\014_server_name\"\230\001\n\032S" +
+      "taffNotificationPushEvent\022D\n\rnotificatio" +
+      "ns\030\001 \003(\0132\036.modl.v1.SyncStaffNotification" +
+      "R\rnotifications\022$\n\013server_name\030\002 \001(\tH\000R\n" +
+      "serverName\210\001\001B\016\n\014_server_name\"\206\001\n\021StatWi" +
+      "pePushEvent\022;\n\nstat_wipes\030\001 \003(\0132\034.modl.v" +
+      "1.SyncPendingStatWipeR\tstatWipes\022$\n\013serv" +
+      "er_name\030\002 \001(\tH\000R\nserverName\210\001\001B\016\n\014_serve" +
+      "r_name\"\222\001\n\021Staff2faPushEvent\022G\n\rverifica" +
+      "tions\030\001 \003(\0132!.modl.v1.SyncStaff2faVerifi" +
+      "cationR\rverifications\022$\n\013server_name\030\002 \001" +
+      "(\tH\000R\nserverName\210\001\001B\016\n\014_server_name\"\236\001\n\024" +
+      "ActiveStaffPushEvent\022P\n\024active_staff_mem" +
+      "bers\030\001 \003(\0132\036.modl.v1.SyncActiveStaffMemb" +
+      "erR\022activeStaffMembers\022$\n\013server_name\030\002 " +
+      "\001(\tH\000R\nserverName\210\001\001B\016\n\014_server_name\"H\n\022" +
+      "SyncRequestedEvent\0222\n\006reason\030\001 \001(\0162\032.mod" +
+      "l.v1.SyncRequestReasonR\006reason\"\226\002\n\024Moder" +
+      "ationStateEvent\0225\n\022source_instance_id\030\001 " +
+      "\001(\tB\007\272H\004r\002\030@R\020sourceInstanceId\022\037\n\005epoch\030" +
+      "\002 \001(\tB\t\272H\006r\004\020\001\030 R\005epoch\022\032\n\010revision\030\003 \001(" +
+      "\004R\010revision\0228\n\006frozen\030\004 \003(\0132\025.modl.v1.Fr" +
+      "ozenPlayerB\t\272H\006\222\001\003\020\200\002R\006frozen\0226\n\005staff\030\005" +
+      " \003(\0132\025.modl.v1.StaffSessionB\t\272H\006\222\001\003\020\200\002R\005" +
+      "staff\022\030\n\007retired\030\006 \001(\010R\007retired\"\235\002\n\014Froz" +
+      "enPlayer\022{\n\016minecraft_uuid\030\001 \001(\tBT\272HQrO2" +
       "M^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA" +
-      "-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$R\013" +
-      "joinedUuids\022{\n\nleft_uuids\030\003 \003(\tB\\\272HY\222\001V\020" +
-      "\350\007\"QrO2M^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[" +
-      "0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]" +
-      "{12}$R\tleftUuids\022\032\n\010sequence\030\004 \001(\004R\010sequ" +
-      "ence\022.\n\014online_count\030\005 \001(\005B\013\272H\010\032\006\030\240\215\006(\000R" +
-      "\013onlineCount\"Q\n\022NetworkRosterEvent\022;\n\007me" +
-      "mbers\030\001 \003(\0132\026.modl.v1.NetworkMemberB\t\272H\006" +
-      "\222\001\003\020\200\002R\007members\"\273\001\n\rNetworkMember\022\037\n\013ins" +
-      "tance_id\030\001 \001(\tR\ninstanceId\022\022\n\004name\030\002 \001(\t" +
-      "R\004name\022\'\n\004role\030\003 \001(\0162\023.modl.v1.ServerRol" +
-      "eR\004role\022%\n\016plugin_version\030\004 \001(\tR\rpluginV" +
-      "ersion\022%\n\016online_players\030\005 \001(\005R\ronlinePl" +
-      "ayers*\262\003\n\rPanelResource\022\036\n\032PANEL_RESOURC" +
-      "E_UNSPECIFIED\020\000\022\032\n\026PANEL_RESOURCE_PLAYER" +
-      "S\020\001\022\036\n\032PANEL_RESOURCE_PUNISHMENTS\020\002\022\030\n\024P" +
-      "ANEL_RESOURCE_STAFF\020\003\022\030\n\024PANEL_RESOURCE_" +
-      "ROLES\020\004\022\033\n\027PANEL_RESOURCE_SETTINGS\020\005\022#\n\037" +
-      "PANEL_RESOURCE_PUNISHMENT_TYPES\020\006\022 \n\034PAN" +
-      "EL_RESOURCE_KNOWLEDGEBASE\020\007\022\030\n\024PANEL_RES" +
-      "OURCE_AUDIT\020\010\022\033\n\027PANEL_RESOURCE_HOMEPAGE" +
-      "\020\t\022\032\n\026PANEL_RESOURCE_APPEALS\020\n\022\032\n\026PANEL_" +
-      "RESOURCE_TICKETS\020\013\022\034\n\030PANEL_RESOURCE_DAS" +
-      "HBOARD\020\014\022 \n\034PANEL_RESOURCE_NOTIFICATIONS" +
-      "\020\r*\213\001\n\021SyncRequestReason\022#\n\037SYNC_REQUEST" +
-      "_REASON_UNSPECIFIED\020\000\022)\n%SYNC_REQUEST_RE" +
-      "ASON_PANEL_URL_CHANGED\020\001\022&\n\"SYNC_REQUEST" +
-      "_REASON_PUSH_TOO_LARGE\020\002*\236\003\n\020MemberActio" +
-      "nKind\022\"\n\036MEMBER_ACTION_KIND_UNSPECIFIED\020" +
-      "\000\022+\n\'MEMBER_ACTION_KIND_TOGGLE_FREEZE_TA" +
-      "RGET\020\001\022$\n MEMBER_ACTION_KIND_TOGGLE_VANI" +
-      "SH\020\002\022$\n MEMBER_ACTION_KIND_SELECT_TARGET" +
-      "\020\003\022#\n\037MEMBER_ACTION_KIND_CLEAR_TARGET\020\004\022" +
-      "&\n\"MEMBER_ACTION_KIND_OPEN_STAFF_MENU\020\005\022" +
-      "%\n!MEMBER_ACTION_KIND_INSPECT_TARGET\020\006\022(" +
-      "\n$MEMBER_ACTION_KIND_HACKREPORT_TARGET\020\007" +
-      "\022$\n MEMBER_ACTION_KIND_PROXY_COMMAND\020\010\022)" +
-      "\n%MEMBER_ACTION_KIND_STAFF_MODE_REFUSED\020" +
-      "\t*\221\002\n\022MemberActionStatus\022$\n MEMBER_ACTIO" +
-      "N_STATUS_UNSPECIFIED\020\000\022!\n\035MEMBER_ACTION_" +
-      "STATUS_ACCEPTED\020\001\022 \n\034MEMBER_ACTION_STATU" +
-      "S_NO_CORE\020\002\022%\n!MEMBER_ACTION_STATUS_RATE" +
-      "_LIMITED\020\003\022 \n\034MEMBER_ACTION_STATUS_INVAL" +
-      "ID\020\004\022\037\n\033MEMBER_ACTION_STATUS_DENIED\020\005\022&\n" +
-      "\"MEMBER_ACTION_STATUS_NOT_PERMITTED\020\006*\322\002" +
-      "\n\024ReplayCaptureOutcome\022&\n\"REPLAY_CAPTURE" +
-      "_OUTCOME_UNSPECIFIED\020\000\022\035\n\031REPLAY_CAPTURE" +
-      "_OUTCOME_OK\020\001\022.\n*REPLAY_CAPTURE_OUTCOME_" +
-      "NO_ACTIVE_RECORDING\020\002\022%\n!REPLAY_CAPTURE_" +
-      "OUTCOME_NOT_HOSTED\020\003\022$\n REPLAY_CAPTURE_O" +
-      "UTCOME_NO_MEMBER\020\004\022 \n\034REPLAY_CAPTURE_OUT" +
-      "COME_ERROR\020\005\022$\n REPLAY_CAPTURE_OUTCOME_T" +
-      "IMED_OUT\020\006\022.\n*REPLAY_CAPTURE_OUTCOME_MEM" +
-      "BER_DISCONNECTED\020\007*{\n\nClientKind\022\033\n\027CLIE" +
-      "NT_KIND_UNSPECIFIED\020\000\022\025\n\021CLIENT_KIND_PAN" +
-      "EL\020\001\022\027\n\023CLIENT_KIND_BACKEND\020\002\022 \n\034CLIENT_" +
-      "KIND_MINECRAFT_PLUGIN\020\003*P\n\007AckKind\022\030\n\024AC" +
-      "K_KIND_UNSPECIFIED\020\000\022\026\n\022ACK_KIND_TRANSPO" +
-      "RT\020\001\022\023\n\017ACK_KIND_DOMAIN\020\002*\372\001\n\tErrorCode\022" +
-      "\032\n\026ERROR_CODE_UNSPECIFIED\020\000\022#\n\037ERROR_COD" +
-      "E_UNSUPPORTED_PROTOCOL\020\001\022\033\n\027ERROR_CODE_U" +
-      "NAUTHORIZED\020\002\022\030\n\024ERROR_CODE_FORBIDDEN\020\003\022" +
-      "\036\n\032ERROR_CODE_INVALID_MESSAGE\020\004\022\033\n\027ERROR" +
-      "_CODE_RATE_LIMITED\020\005\022\027\n\023ERROR_CODE_INTER" +
-      "NAL\020\006\022\037\n\033ERROR_CODE_VERSION_MISMATCH\020\007*\346" +
-      "\001\n\017ReconnectReason\022 \n\034RECONNECT_REASON_U" +
-      "NSPECIFIED\020\000\022#\n\037RECONNECT_REASON_SERVER_" +
-      "RESTART\020\001\022\037\n\033RECONNECT_REASON_DEPLOYMENT" +
-      "\020\002\022!\n\035RECONNECT_REASON_BACKPRESSURE\020\003\022!\n" +
-      "\035RECONNECT_REASON_AUTH_EXPIRED\020\004\022%\n!RECO" +
-      "NNECT_REASON_PROTOCOL_UPGRADE\020\005*\260\001\n\017Reco" +
-      "nnectAction\022 \n\034RECONNECT_ACTION_UNSPECIF" +
-      "IED\020\000\022\036\n\032RECONNECT_ACTION_RECONNECT\020\001\022#\n" +
-      "\037RECONNECT_ACTION_REAUTHENTICATE\020\002\022\033\n\027RE" +
-      "CONNECT_ACTION_RESYNC\020\003\022\031\n\025RECONNECT_ACT" +
-      "ION_STOP\020\004*\330\005\n\021RealtimeCloseCode\022#\n\037REAL" +
-      "TIME_CLOSE_CODE_UNSPECIFIED\020\000\022!\n\034REALTIM" +
-      "E_CLOSE_CODE_DISABLED\020\240\037\022&\n!REALTIME_CLO" +
-      "SE_CODE_SLOW_CONSUMER\020\241\037\022#\n\036REALTIME_CLO" +
-      "SE_CODE_OVERLOADED\020\242\037\022*\n%REALTIME_CLOSE_" +
-      "CODE_TRANSPORT_FAILURE\020\243\037\022*\n%REALTIME_CL" +
-      "OSE_CODE_HEARTBEAT_TIMEOUT\020\244\037\022*\n%REALTIM" +
-      "E_CLOSE_CODE_HANDSHAKE_TIMEOUT\020\245\037\022%\n REA" +
-      "LTIME_CLOSE_CODE_DEPLOY_DRAIN\020\246\037\022%\n REAL" +
-      "TIME_CLOSE_CODE_RATE_LIMITED\020\247\037\022(\n#REALT" +
-      "IME_CLOSE_CODE_MALFORMED_FRAME\020\250\037\022(\n#REA" +
-      "LTIME_CLOSE_CODE_FRAME_TOO_LARGE\020\251\037\022.\n)R" +
-      "EALTIME_CLOSE_CODE_AUTHENTICATION_FAILED" +
-      "\020\252\037\022&\n!REALTIME_CLOSE_CODE_SESSION_ENDED" +
-      "\020\253\037\022-\n(REALTIME_CLOSE_CODE_UNSUPPORTED_P" +
-      "ROTOCOL\020\254\037\022+\n&REALTIME_CLOSE_CODE_PROTOC" +
-      "OL_VIOLATION\020\255\037\022)\n$REALTIME_CLOSE_CODE_V" +
-      "ERSION_MISMATCH\020\256\037\022)\n$REALTIME_CLOSE_COD" +
-      "E_SESSION_REPLACED\020\257\037*\365\006\n\005Topic\022\025\n\021TOPIC" +
-      "_UNSPECIFIED\020\000\022\027\n\023TOPIC_PANEL_TICKETS\020\001\022" +
-      " \n\034TOPIC_PANEL_ASSIGNED_TICKETS\020\002\022\027\n\023TOP" +
-      "IC_PANEL_PLAYERS\020\004\022\033\n\027TOPIC_PANEL_PUNISH" +
-      "MENTS\020\005\022\025\n\021TOPIC_PANEL_STAFF\020\006\022\025\n\021TOPIC_" +
-      "PANEL_ROLES\020\007\022\030\n\024TOPIC_PANEL_SETTINGS\020\010\022" +
-      " \n\034TOPIC_PANEL_PUNISHMENT_TYPES\020\t\022\037\n\033TOP" +
-      "IC_MINECRAFT_PERMISSIONS\020\n\022$\n TOPIC_MINE" +
-      "CRAFT_PUNISHMENT_TYPES\020\013\022\'\n#TOPIC_MINECR" +
-      "AFT_STAFF_NOTIFICATIONS\020\014\022\034\n\030TOPIC_MINEC" +
-      "RAFT_PRESENCE\020\r\022\037\n\033TOPIC_MINECRAFT_PUNIS" +
-      "HMENTS\020\016\022(\n$TOPIC_MINECRAFT_PLAYER_NOTIF" +
-      "ICATIONS\020\017\022\035\n\031TOPIC_MINECRAFT_STAFF_2FA\020" +
-      "\020\022\035\n\031TOPIC_PANEL_KNOWLEDGEBASE\020\022\022\025\n\021TOPI" +
-      "C_PANEL_AUDIT\020\023\022\030\n\024TOPIC_PANEL_HOMEPAGE\020" +
-      "\024\022\027\n\023TOPIC_PANEL_APPEALS\020\025\022\031\n\025TOPIC_PANE" +
-      "L_DASHBOARD\020\026\022\035\n\031TOPIC_PANEL_NOTIFICATIO" +
-      "NS\020\027\022\036\n\032TOPIC_MINECRAFT_STAT_WIPES\020\030\022\034\n\030" +
-      "TOPIC_NETWORK_MODERATION\020\031\022 \n\034TOPIC_NETW" +
-      "ORK_MEMBER_ACTIONS\020\032\022 \n\034TOPIC_NETWORK_RE" +
-      "PLAY_CAPTURE\020\033\022\030\n\024TOPIC_NETWORK_ROSTER\020\034" +
-      "\"\004\010\003\020\003\"\004\010\021\020\021*\026TOPIC_PANEL_MIGRATIONS*\037TO" +
-      "PIC_MINECRAFT_MIGRATION_TASKSBc\n\025gg.modl" +
-      ".proto.modl.v1B\rRealtimeProtoP\001\242\002\003MXX\252\002\007" +
-      "Modl.V1\312\002\007Modl\\V1\342\002\023Modl\\V1\\GPBMetadata\352" +
-      "\002\010Modl::V1b\006proto3"
+      "-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$R\r" +
+      "minecraftUuid\022s\n\nstaff_uuid\030\002 \001(\tBT\272HQrO" +
+      "2M^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-f" +
+      "A-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$R" +
+      "\tstaffUuid\022\033\n\tfrozen_at\030\003 \001(\003R\010frozenAt\"" +
+      "\322\002\n\014StaffSession\022{\n\016minecraft_uuid\030\001 \001(\t" +
+      "BT\272HQrO2M^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-" +
+      "[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F" +
+      "]{12}$R\rminecraftUuid\022\035\n\nstaff_mode\030\002 \001(" +
+      "\010R\tstaffMode\022\032\n\010vanished\030\003 \001(\010R\010vanished" +
+      "\022z\n\013target_uuid\030\004 \001(\tBT\272HQrO2M^[0-9a-fA-" +
+      "F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9" +
+      "a-fA-F]{4}-[0-9a-fA-F]{12}$H\000R\ntargetUui" +
+      "d\210\001\001B\016\n\014_target_uuid\"\351\004\n\023MemberActionReq" +
+      "uest\022(\n\nrequest_id\030\001 \001(\tB\t\272H\006r\004\020\001\030@R\treq" +
+      "uestId\0229\n\004kind\030\002 \001(\0162\031.modl.v1.MemberAct" +
+      "ionKindB\n\272H\007\202\001\004\020\001 \000R\004kind\022x\n\nactor_uuid\030" +
+      "\003 \001(\tBT\272HQrO2M^[0-9a-fA-F]{8}-[0-9a-fA-F" +
+      "]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a" +
+      "-fA-F]{12}$H\000R\tactorUuid\210\001\001\022z\n\013target_uu" +
+      "id\030\004 \001(\tBT\272HQrO2M^[0-9a-fA-F]{8}-[0-9a-f" +
+      "A-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-[0" +
+      "-9a-fA-F]{12}$H\001R\ntargetUuid\210\001\001\0222\n\014comma" +
+      "nd_line\030\005 \001(\tB\n\272H\007r\005\020\001\030\200\002H\002R\013commandLine" +
+      "\210\001\001\022(\n\013member_name\030\006 \001(\tB\007\272H\004r\002\030@R\nmembe" +
+      "rName\0225\n\022member_instance_id\030\007 \001(\tB\007\272H\004r\002" +
+      "\030@R\020memberInstanceId\0222\n\025proxy_command_gr" +
+      "anted\030\010 \001(\010R\023proxyCommandGrantedB\r\n\013_act" +
+      "or_uuidB\016\n\014_target_uuidB\017\n\r_command_line" +
+      "\"\210\002\n\022MemberActionResult\022(\n\nrequest_id\030\001 " +
+      "\001(\tB\t\272H\006r\004\020\001\030@R\trequestId\022?\n\006status\030\002 \001(" +
+      "\0162\033.modl.v1.MemberActionStatusB\n\272H\007\202\001\004\020\001" +
+      " \000R\006status\022x\n\nactor_uuid\030\003 \001(\tBT\272HQrO2M^" +
+      "[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F" +
+      "]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$H\000R\t" +
+      "actorUuid\210\001\001B\r\n\013_actor_uuid\"}\n\024ReplayRec" +
+      "ordingState\022B\n\006origin\030\001 \001(\0162\036.modl.v1.Re" +
+      "playRecordingOriginB\n\272H\007\202\001\004\020\001 \000R\006origin\022" +
+      "!\n\014recording_ms\030\002 \001(\004R\013recordingMs\"q\n\017Re" +
+      "playMemoryUse\022\035\n\nused_bytes\030\001 \001(\004R\tusedB" +
+      "ytes\022\037\n\013limit_bytes\030\002 \001(\004R\nlimitBytes\022\036\n" +
+      "\nrecordings\030\003 \001(\rR\nrecordings\"\333\003\n\024Replay" +
+      "CaptureRequest\022(\n\nrequest_id\030\001 \001(\tB\t\272H\006r" +
+      "\004\020\001\030@R\trequestId\022u\n\013target_uuid\030\002 \001(\tBT\272" +
+      "HQrO2M^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-" +
+      "9a-fA-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{1" +
+      "2}$R\ntargetUuid\022V\n\013target_name\030\003 \001(\tB5\272H" +
+      "2r02.^([A-Za-z0-9_]{1,16}|[.*+][A-Za-z0-" +
+      "9_]{1,15})$R\ntargetName\0227\n\017expected_serv" +
+      "er\030\004 \001(\tB\t\272H\006r\004\020\001\030@H\000R\016expectedServer\210\001\001" +
+      "\022;\n\025requester_instance_id\030\005 \001(\tB\007\272H\004r\002\030@" +
+      "R\023requesterInstanceId\022@\n\006action\030\006 \001(\0162\034." +
+      "modl.v1.ReplayRequestActionB\n\272H\007\202\001\004\020\001 \000R" +
+      "\006actionB\022\n\020_expected_server\"\344\002\n\023ReplayCa" +
+      "ptureResult\022(\n\nrequest_id\030\001 \001(\tB\t\272H\006r\004\020\001" +
+      "\030@R\trequestId\022C\n\007outcome\030\002 \001(\0162\035.modl.v1" +
+      ".ReplayCaptureOutcomeB\n\272H\007\202\001\004\020\001 \000R\007outco" +
+      "me\022>\n\treplay_id\030\003 \001(\tB\034\272H\031r\0272\025^[A-Za-z0-" +
+      "9_-]{1,64}$H\000R\010replayId\210\001\001\022@\n\trecording\030" +
+      "\004 \001(\0132\035.modl.v1.ReplayRecordingStateH\001R\t" +
+      "recording\210\001\001\0225\n\006memory\030\005 \001(\0132\030.modl.v1.R" +
+      "eplayMemoryUseH\002R\006memory\210\001\001B\014\n\n_replay_i" +
+      "dB\014\n\n_recordingB\t\n\007_memory\"\370\002\n\022HostedPla" +
+      "yersEvent\022\030\n\007replace\030\001 \001(\010R\007replace\022\177\n\014j" +
+      "oined_uuids\030\002 \003(\tB\\\272HY\222\001V\020\350\007\"QrO2M^[0-9a" +
+      "-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA-F]{4}-" +
+      "[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$R\013joinedU" +
+      "uids\022{\n\nleft_uuids\030\003 \003(\tB\\\272HY\222\001V\020\350\007\"QrO2" +
+      "M^[0-9a-fA-F]{8}-[0-9a-fA-F]{4}-[0-9a-fA" +
+      "-F]{4}-[0-9a-fA-F]{4}-[0-9a-fA-F]{12}$R\t" +
+      "leftUuids\022\032\n\010sequence\030\004 \001(\004R\010sequence\022.\n" +
+      "\014online_count\030\005 \001(\005B\013\272H\010\032\006\030\240\215\006(\000R\013online" +
+      "Count\"P\n\021ProxyServersEvent\022;\n\007servers\030\001 " +
+      "\003(\0132\026.modl.v1.ProxiedServerB\t\272H\006\222\001\003\020\200\002R\007" +
+      "servers\"Q\n\022NetworkRosterEvent\022;\n\007members" +
+      "\030\001 \003(\0132\026.modl.v1.NetworkMemberB\t\272H\006\222\001\003\020\200" +
+      "\002R\007members\"\273\001\n\rNetworkMember\022\037\n\013instance" +
+      "_id\030\001 \001(\tR\ninstanceId\022\022\n\004name\030\002 \001(\tR\004nam" +
+      "e\022\'\n\004role\030\003 \001(\0162\023.modl.v1.ServerRoleR\004ro" +
+      "le\022%\n\016plugin_version\030\004 \001(\tR\rpluginVersio" +
+      "n\022%\n\016online_players\030\005 \001(\005R\ronlinePlayers" +
+      "*\262\003\n\rPanelResource\022\036\n\032PANEL_RESOURCE_UNS" +
+      "PECIFIED\020\000\022\032\n\026PANEL_RESOURCE_PLAYERS\020\001\022\036" +
+      "\n\032PANEL_RESOURCE_PUNISHMENTS\020\002\022\030\n\024PANEL_" +
+      "RESOURCE_STAFF\020\003\022\030\n\024PANEL_RESOURCE_ROLES" +
+      "\020\004\022\033\n\027PANEL_RESOURCE_SETTINGS\020\005\022#\n\037PANEL" +
+      "_RESOURCE_PUNISHMENT_TYPES\020\006\022 \n\034PANEL_RE" +
+      "SOURCE_KNOWLEDGEBASE\020\007\022\030\n\024PANEL_RESOURCE" +
+      "_AUDIT\020\010\022\033\n\027PANEL_RESOURCE_HOMEPAGE\020\t\022\032\n" +
+      "\026PANEL_RESOURCE_APPEALS\020\n\022\032\n\026PANEL_RESOU" +
+      "RCE_TICKETS\020\013\022\034\n\030PANEL_RESOURCE_DASHBOAR" +
+      "D\020\014\022 \n\034PANEL_RESOURCE_NOTIFICATIONS\020\r*\213\001" +
+      "\n\021SyncRequestReason\022#\n\037SYNC_REQUEST_REAS" +
+      "ON_UNSPECIFIED\020\000\022)\n%SYNC_REQUEST_REASON_" +
+      "PANEL_URL_CHANGED\020\001\022&\n\"SYNC_REQUEST_REAS" +
+      "ON_PUSH_TOO_LARGE\020\002*\236\003\n\020MemberActionKind" +
+      "\022\"\n\036MEMBER_ACTION_KIND_UNSPECIFIED\020\000\022+\n\'" +
+      "MEMBER_ACTION_KIND_TOGGLE_FREEZE_TARGET\020" +
+      "\001\022$\n MEMBER_ACTION_KIND_TOGGLE_VANISH\020\002\022" +
+      "$\n MEMBER_ACTION_KIND_SELECT_TARGET\020\003\022#\n" +
+      "\037MEMBER_ACTION_KIND_CLEAR_TARGET\020\004\022&\n\"ME" +
+      "MBER_ACTION_KIND_OPEN_STAFF_MENU\020\005\022%\n!ME" +
+      "MBER_ACTION_KIND_INSPECT_TARGET\020\006\022(\n$MEM" +
+      "BER_ACTION_KIND_HACKREPORT_TARGET\020\007\022$\n M" +
+      "EMBER_ACTION_KIND_PROXY_COMMAND\020\010\022)\n%MEM" +
+      "BER_ACTION_KIND_STAFF_MODE_REFUSED\020\t*\221\002\n" +
+      "\022MemberActionStatus\022$\n MEMBER_ACTION_STA" +
+      "TUS_UNSPECIFIED\020\000\022!\n\035MEMBER_ACTION_STATU" +
+      "S_ACCEPTED\020\001\022 \n\034MEMBER_ACTION_STATUS_NO_" +
+      "CORE\020\002\022%\n!MEMBER_ACTION_STATUS_RATE_LIMI" +
+      "TED\020\003\022 \n\034MEMBER_ACTION_STATUS_INVALID\020\004\022" +
+      "\037\n\033MEMBER_ACTION_STATUS_DENIED\020\005\022&\n\"MEMB" +
+      "ER_ACTION_STATUS_NOT_PERMITTED\020\006*\333\003\n\024Rep" +
+      "layCaptureOutcome\022&\n\"REPLAY_CAPTURE_OUTC" +
+      "OME_UNSPECIFIED\020\000\022\035\n\031REPLAY_CAPTURE_OUTC" +
+      "OME_OK\020\001\022.\n*REPLAY_CAPTURE_OUTCOME_NO_AC" +
+      "TIVE_RECORDING\020\002\022%\n!REPLAY_CAPTURE_OUTCO" +
+      "ME_NOT_HOSTED\020\003\022$\n REPLAY_CAPTURE_OUTCOM" +
+      "E_NO_MEMBER\020\004\022 \n\034REPLAY_CAPTURE_OUTCOME_" +
+      "ERROR\020\005\022$\n REPLAY_CAPTURE_OUTCOME_TIMED_" +
+      "OUT\020\006\022.\n*REPLAY_CAPTURE_OUTCOME_MEMBER_D" +
+      "ISCONNECTED\020\007\022,\n(REPLAY_CAPTURE_OUTCOME_" +
+      "ALREADY_RECORDING\020\010\022/\n+REPLAY_CAPTURE_OU" +
+      "TCOME_NOT_STARTED_BY_STAFF\020\t\022(\n$REPLAY_C" +
+      "APTURE_OUTCOME_NOT_AVAILABLE\020\n*\340\001\n\023Repla" +
+      "yRequestAction\022%\n!REPLAY_REQUEST_ACTION_" +
+      "UNSPECIFIED\020\000\022!\n\035REPLAY_REQUEST_ACTION_C" +
+      "APTURE\020\001\022)\n%REPLAY_REQUEST_ACTION_START_" +
+      "RECORDING\020\002\022(\n$REPLAY_REQUEST_ACTION_STO" +
+      "P_RECORDING\020\003\022*\n&REPLAY_REQUEST_ACTION_R" +
+      "ECORDING_STATUS\020\004*\270\001\n\025ReplayRecordingOri" +
+      "gin\022\'\n#REPLAY_RECORDING_ORIGIN_UNSPECIFI" +
+      "ED\020\000\022\'\n#REPLAY_RECORDING_ORIGIN_AUTO_REC" +
+      "ORD\020\001\022*\n&REPLAY_RECORDING_ORIGIN_ANTICHE" +
+      "AT_FLAG\020\002\022!\n\035REPLAY_RECORDING_ORIGIN_STA" +
+      "FF\020\003*{\n\nClientKind\022\033\n\027CLIENT_KIND_UNSPEC" +
+      "IFIED\020\000\022\025\n\021CLIENT_KIND_PANEL\020\001\022\027\n\023CLIENT" +
+      "_KIND_BACKEND\020\002\022 \n\034CLIENT_KIND_MINECRAFT" +
+      "_PLUGIN\020\003*P\n\007AckKind\022\030\n\024ACK_KIND_UNSPECI" +
+      "FIED\020\000\022\026\n\022ACK_KIND_TRANSPORT\020\001\022\023\n\017ACK_KI" +
+      "ND_DOMAIN\020\002*\372\001\n\tErrorCode\022\032\n\026ERROR_CODE_" +
+      "UNSPECIFIED\020\000\022#\n\037ERROR_CODE_UNSUPPORTED_" +
+      "PROTOCOL\020\001\022\033\n\027ERROR_CODE_UNAUTHORIZED\020\002\022" +
+      "\030\n\024ERROR_CODE_FORBIDDEN\020\003\022\036\n\032ERROR_CODE_" +
+      "INVALID_MESSAGE\020\004\022\033\n\027ERROR_CODE_RATE_LIM" +
+      "ITED\020\005\022\027\n\023ERROR_CODE_INTERNAL\020\006\022\037\n\033ERROR" +
+      "_CODE_VERSION_MISMATCH\020\007*\346\001\n\017ReconnectRe" +
+      "ason\022 \n\034RECONNECT_REASON_UNSPECIFIED\020\000\022#" +
+      "\n\037RECONNECT_REASON_SERVER_RESTART\020\001\022\037\n\033R" +
+      "ECONNECT_REASON_DEPLOYMENT\020\002\022!\n\035RECONNEC" +
+      "T_REASON_BACKPRESSURE\020\003\022!\n\035RECONNECT_REA" +
+      "SON_AUTH_EXPIRED\020\004\022%\n!RECONNECT_REASON_P" +
+      "ROTOCOL_UPGRADE\020\005*\260\001\n\017ReconnectAction\022 \n" +
+      "\034RECONNECT_ACTION_UNSPECIFIED\020\000\022\036\n\032RECON" +
+      "NECT_ACTION_RECONNECT\020\001\022#\n\037RECONNECT_ACT" +
+      "ION_REAUTHENTICATE\020\002\022\033\n\027RECONNECT_ACTION" +
+      "_RESYNC\020\003\022\031\n\025RECONNECT_ACTION_STOP\020\004*\330\005\n" +
+      "\021RealtimeCloseCode\022#\n\037REALTIME_CLOSE_COD" +
+      "E_UNSPECIFIED\020\000\022!\n\034REALTIME_CLOSE_CODE_D" +
+      "ISABLED\020\240\037\022&\n!REALTIME_CLOSE_CODE_SLOW_C" +
+      "ONSUMER\020\241\037\022#\n\036REALTIME_CLOSE_CODE_OVERLO" +
+      "ADED\020\242\037\022*\n%REALTIME_CLOSE_CODE_TRANSPORT" +
+      "_FAILURE\020\243\037\022*\n%REALTIME_CLOSE_CODE_HEART" +
+      "BEAT_TIMEOUT\020\244\037\022*\n%REALTIME_CLOSE_CODE_H" +
+      "ANDSHAKE_TIMEOUT\020\245\037\022%\n REALTIME_CLOSE_CO" +
+      "DE_DEPLOY_DRAIN\020\246\037\022%\n REALTIME_CLOSE_COD" +
+      "E_RATE_LIMITED\020\247\037\022(\n#REALTIME_CLOSE_CODE" +
+      "_MALFORMED_FRAME\020\250\037\022(\n#REALTIME_CLOSE_CO" +
+      "DE_FRAME_TOO_LARGE\020\251\037\022.\n)REALTIME_CLOSE_" +
+      "CODE_AUTHENTICATION_FAILED\020\252\037\022&\n!REALTIM" +
+      "E_CLOSE_CODE_SESSION_ENDED\020\253\037\022-\n(REALTIM" +
+      "E_CLOSE_CODE_UNSUPPORTED_PROTOCOL\020\254\037\022+\n&" +
+      "REALTIME_CLOSE_CODE_PROTOCOL_VIOLATION\020\255" +
+      "\037\022)\n$REALTIME_CLOSE_CODE_VERSION_MISMATC" +
+      "H\020\256\037\022)\n$REALTIME_CLOSE_CODE_SESSION_REPL" +
+      "ACED\020\257\037*\233\007\n\005Topic\022\025\n\021TOPIC_UNSPECIFIED\020\000",
+      "\022\027\n\023TOPIC_PANEL_TICKETS\020\001\022 \n\034TOPIC_PANEL" +
+      "_ASSIGNED_TICKETS\020\002\022\027\n\023TOPIC_PANEL_PLAYE" +
+      "RS\020\004\022\033\n\027TOPIC_PANEL_PUNISHMENTS\020\005\022\025\n\021TOP" +
+      "IC_PANEL_STAFF\020\006\022\025\n\021TOPIC_PANEL_ROLES\020\007\022" +
+      "\030\n\024TOPIC_PANEL_SETTINGS\020\010\022 \n\034TOPIC_PANEL" +
+      "_PUNISHMENT_TYPES\020\t\022\037\n\033TOPIC_MINECRAFT_P" +
+      "ERMISSIONS\020\n\022$\n TOPIC_MINECRAFT_PUNISHME" +
+      "NT_TYPES\020\013\022\'\n#TOPIC_MINECRAFT_STAFF_NOTI" +
+      "FICATIONS\020\014\022\034\n\030TOPIC_MINECRAFT_PRESENCE\020" +
+      "\r\022\037\n\033TOPIC_MINECRAFT_PUNISHMENTS\020\016\022(\n$TO" +
+      "PIC_MINECRAFT_PLAYER_NOTIFICATIONS\020\017\022\035\n\031" +
+      "TOPIC_MINECRAFT_STAFF_2FA\020\020\022\035\n\031TOPIC_PAN" +
+      "EL_KNOWLEDGEBASE\020\022\022\025\n\021TOPIC_PANEL_AUDIT\020" +
+      "\023\022\030\n\024TOPIC_PANEL_HOMEPAGE\020\024\022\027\n\023TOPIC_PAN" +
+      "EL_APPEALS\020\025\022\031\n\025TOPIC_PANEL_DASHBOARD\020\026\022" +
+      "\035\n\031TOPIC_PANEL_NOTIFICATIONS\020\027\022\036\n\032TOPIC_" +
+      "MINECRAFT_STAT_WIPES\020\030\022\034\n\030TOPIC_NETWORK_" +
+      "MODERATION\020\031\022 \n\034TOPIC_NETWORK_MEMBER_ACT" +
+      "IONS\020\032\022 \n\034TOPIC_NETWORK_REPLAY_CAPTURE\020\033" +
+      "\022\030\n\024TOPIC_NETWORK_ROSTER\020\034\022$\n TOPIC_MINE" +
+      "CRAFT_FEATURE_SETTINGS\020\035\"\004\010\003\020\003\"\004\010\021\020\021*\026TO" +
+      "PIC_PANEL_MIGRATIONS*\037TOPIC_MINECRAFT_MI" +
+      "GRATION_TASKSBc\n\025gg.modl.proto.modl.v1B\r" +
+      "RealtimeProtoP\001\242\002\003MXX\252\002\007Modl.V1\312\002\007Modl\\V" +
+      "1\342\002\023Modl\\V1\\GPBMetadata\352\002\010Modl::V1b\006prot" +
+      "o3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -629,6 +679,8 @@ public final class RealtimeProto extends com.google.protobuf.GeneratedFile {
           com.google.protobuf.StructProto.getDescriptor(),
           com.google.protobuf.TimestampProto.getDescriptor(),
           gg.modl.proto.modl.v1.CommonProto.getDescriptor(),
+          gg.modl.proto.modl.v1.ReplayProto.getDescriptor(),
+          gg.modl.proto.modl.v1.ServersProto.getDescriptor(),
           gg.modl.proto.modl.v1.SyncProto.getDescriptor(),
         });
     internal_static_modl_v1_RealtimeEnvelope_descriptor =
@@ -636,7 +688,7 @@ public final class RealtimeProto extends com.google.protobuf.GeneratedFile {
     internal_static_modl_v1_RealtimeEnvelope_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_RealtimeEnvelope_descriptor,
-        new java.lang.String[] { "EventId", "ProtocolVersion", "Timestamp", "ClientHello", "ServerHello", "Heartbeat", "Ack", "Error", "Subscribe", "Unsubscribe", "ReconnectAdvice", "TicketChanged", "AssignedTicketSubscriptionChanged", "PermissionInvalidated", "PunishmentTypeInvalidated", "StaffNotification", "PresenceSnapshot", "PresenceDelta", "PresenceInvalidated", "PunishmentNotification", "PlayerNotification", "StaffTwoFactor", "PanelInvalidated", "PunishmentPush", "PlayerNotificationPush", "StaffNotificationPush", "StatWipePush", "Staff2FaPush", "ActiveStaffPush", "SyncRequested", "ModerationState", "MemberAction", "MemberActionResult", "ReplayCaptureRequest", "ReplayCaptureResult", "HostedPlayers", "NetworkRoster", "Payload", });
+        new java.lang.String[] { "EventId", "ProtocolVersion", "Timestamp", "ClientHello", "ServerHello", "Heartbeat", "Ack", "Error", "Subscribe", "Unsubscribe", "ReconnectAdvice", "TicketChanged", "AssignedTicketSubscriptionChanged", "PermissionInvalidated", "PunishmentTypeInvalidated", "StaffNotification", "PresenceSnapshot", "PresenceDelta", "PresenceInvalidated", "PunishmentNotification", "PlayerNotification", "StaffTwoFactor", "PanelInvalidated", "PunishmentPush", "PlayerNotificationPush", "StaffNotificationPush", "StatWipePush", "Staff2FaPush", "ActiveStaffPush", "SyncRequested", "ModerationState", "MemberAction", "MemberActionResult", "ReplayCaptureRequest", "ReplayCaptureResult", "HostedPlayers", "NetworkRoster", "ProxyServers", "FeatureSettings", "FeatureStatus", "Payload", });
     internal_static_modl_v1_ClientHello_descriptor =
       getDescriptor().getMessageType(1);
     internal_static_modl_v1_ClientHello_fieldAccessorTable = new
@@ -835,32 +887,50 @@ public final class RealtimeProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_MemberActionResult_descriptor,
         new java.lang.String[] { "RequestId", "Status", "ActorUuid", });
-    internal_static_modl_v1_ReplayCaptureRequest_descriptor =
+    internal_static_modl_v1_ReplayRecordingState_descriptor =
       getDescriptor().getMessageType(34);
+    internal_static_modl_v1_ReplayRecordingState_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_ReplayRecordingState_descriptor,
+        new java.lang.String[] { "Origin", "RecordingMs", });
+    internal_static_modl_v1_ReplayMemoryUse_descriptor =
+      getDescriptor().getMessageType(35);
+    internal_static_modl_v1_ReplayMemoryUse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_ReplayMemoryUse_descriptor,
+        new java.lang.String[] { "UsedBytes", "LimitBytes", "Recordings", });
+    internal_static_modl_v1_ReplayCaptureRequest_descriptor =
+      getDescriptor().getMessageType(36);
     internal_static_modl_v1_ReplayCaptureRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_ReplayCaptureRequest_descriptor,
-        new java.lang.String[] { "RequestId", "TargetUuid", "TargetName", "ExpectedServer", "RequesterInstanceId", });
+        new java.lang.String[] { "RequestId", "TargetUuid", "TargetName", "ExpectedServer", "RequesterInstanceId", "Action", });
     internal_static_modl_v1_ReplayCaptureResult_descriptor =
-      getDescriptor().getMessageType(35);
+      getDescriptor().getMessageType(37);
     internal_static_modl_v1_ReplayCaptureResult_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_ReplayCaptureResult_descriptor,
-        new java.lang.String[] { "RequestId", "Outcome", "ReplayId", });
+        new java.lang.String[] { "RequestId", "Outcome", "ReplayId", "Recording", "Memory", });
     internal_static_modl_v1_HostedPlayersEvent_descriptor =
-      getDescriptor().getMessageType(36);
+      getDescriptor().getMessageType(38);
     internal_static_modl_v1_HostedPlayersEvent_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_HostedPlayersEvent_descriptor,
         new java.lang.String[] { "Replace", "JoinedUuids", "LeftUuids", "Sequence", "OnlineCount", });
+    internal_static_modl_v1_ProxyServersEvent_descriptor =
+      getDescriptor().getMessageType(39);
+    internal_static_modl_v1_ProxyServersEvent_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_ProxyServersEvent_descriptor,
+        new java.lang.String[] { "Servers", });
     internal_static_modl_v1_NetworkRosterEvent_descriptor =
-      getDescriptor().getMessageType(37);
+      getDescriptor().getMessageType(40);
     internal_static_modl_v1_NetworkRosterEvent_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_NetworkRosterEvent_descriptor,
         new java.lang.String[] { "Members", });
     internal_static_modl_v1_NetworkMember_descriptor =
-      getDescriptor().getMessageType(38);
+      getDescriptor().getMessageType(41);
     internal_static_modl_v1_NetworkMember_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_NetworkMember_descriptor,
@@ -870,6 +940,8 @@ public final class RealtimeProto extends com.google.protobuf.GeneratedFile {
     com.google.protobuf.StructProto.getDescriptor();
     com.google.protobuf.TimestampProto.getDescriptor();
     gg.modl.proto.modl.v1.CommonProto.getDescriptor();
+    gg.modl.proto.modl.v1.ReplayProto.getDescriptor();
+    gg.modl.proto.modl.v1.ServersProto.getDescriptor();
     gg.modl.proto.modl.v1.SyncProto.getDescriptor();
     com.google.protobuf.ExtensionRegistry registry =
         com.google.protobuf.ExtensionRegistry.newInstance();

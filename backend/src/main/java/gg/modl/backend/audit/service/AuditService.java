@@ -7,7 +7,7 @@ import gg.modl.backend.infrastructure.validation.RequestValidationLimits;
 import gg.modl.backend.log.repository.AuditLogRepository;
 import gg.modl.backend.log.service.AuditActor;
 import gg.modl.backend.player.data.punishment.Punishment;
-import gg.modl.backend.player.data.punishment.PunishmentState;
+import gg.modl.backend.player.data.punishment.PunishmentPhase;
 import gg.modl.backend.player.repository.IssuerMatch;
 import gg.modl.backend.player.repository.PunishmentRecord;
 import gg.modl.backend.player.repository.PunishmentRepository;
@@ -111,7 +111,7 @@ public class AuditService {
         Map<String, Object> details = Map.of(
             AuditMetadata.PARDON_REASON, Objects.requireNonNullElse(reason, ""),
             AuditMetadata.BULK_PARDON, true);
-        return applyToActiveOfTypes(typeOrdinals, (target, now) -> {
+        return applyToTypesInBulkPhases(typeOrdinals, (target, now) -> {
             if (!punishmentLifecycleService.pardonPunishment(
                     server, target.punishment().getId(), performer.name(), performer.id(), reason, null).success()) {
                 return false;
@@ -130,7 +130,7 @@ public class AuditService {
             AuditMetadata.REASON, Objects.requireNonNullElse(reason, ""),
             AuditMetadata.NEW_DURATION, newDurationMs,
             AuditMetadata.BULK_DURATION_CHANGE, true);
-        return applyToActiveOfTypes(typeOrdinals, (target, now) -> {
+        return applyToTypesInBulkPhases(typeOrdinals, (target, now) -> {
             if (!punishmentMutationService.changeDuration(
                     server, target.punishment().getId(), effectiveDuration, performer.name(), performer.id(), shortening).success()) {
                 return false;
@@ -147,7 +147,7 @@ public class AuditService {
         }
     }
 
-    private int applyToActiveOfTypes(List<Integer> typeOrdinals, ActiveTargetAction action) {
+    private int applyToTypesInBulkPhases(List<Integer> typeOrdinals, BulkTargetAction action) {
         List<Integer> ordinals = typeOrdinals.stream().distinct().toList();
         if (ordinals.size() > BULK_TYPES_MAX) {
             throw new ValidationException("At most " + BULK_TYPES_MAX + " punishment types can be changed at once", "INVALID_ARGUMENT");
@@ -156,8 +156,9 @@ public class AuditService {
             return 0;
         }
         Instant now = clock.instant();
-        return applyByIds(afterId -> punishmentRepository.pageActiveIdsByTypes(ordinals, now, afterId, BULK_PAGE_SIZE),
-            target -> isActive(target.punishment(), now) && action.apply(target, now));
+        return applyByIds(
+            afterId -> punishmentRepository.pageIdsByTypes(ordinals, PunishmentPhase.NOT_ENDED, now, afterId, BULK_PAGE_SIZE),
+            target -> PunishmentPhase.NOT_ENDED.contains(PunishmentPhase.of(target.punishment(), now)) && action.apply(target, now));
     }
 
     private int applyByIds(TargetIds pages, Predicate<PunishmentRecord> action) {
@@ -229,10 +230,6 @@ public class AuditService {
         return Objects.requireNonNullElse(target.playerUsername(), UNKNOWN_PLAYER);
     }
 
-    private static boolean isActive(Punishment punishment, Instant now) {
-        return !PunishmentState.activeUntil(punishment).isBefore(now);
-    }
-
     private record Rollback(Server server, PunishmentIssuer performer, @Nullable String reason, String auditedReason) {
     }
 
@@ -242,7 +239,7 @@ public class AuditService {
     }
 
     @FunctionalInterface
-    private interface ActiveTargetAction {
+    private interface BulkTargetAction {
         boolean apply(PunishmentRecord target, Instant now);
     }
 }

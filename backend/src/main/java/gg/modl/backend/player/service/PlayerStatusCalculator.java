@@ -86,7 +86,7 @@ public class PlayerStatusCalculator {
     }
 
     private boolean isPunishmentEligible(Punishment punishment) {
-        if (punishment.getTypeOrdinal() == 0) {
+        if (punishment.getTypeOrdinal() == Punishment.KICK_TYPE_ORDINAL) {
             return false;
         }
 
@@ -116,7 +116,7 @@ public class PlayerStatusCalculator {
             return false;
         }
 
-        if (punishment.getTypeOrdinal() == 0) {
+        if (punishment.getTypeOrdinal() == Punishment.KICK_TYPE_ORDINAL) {
             return false;
         }
 

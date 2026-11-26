@@ -1,4 +1,5 @@
-import type { ImportPhaseId, ImportStatusId, IssueSeverityId } from '@/hooks/data/hosted-import';
+import { HostedImportIssueCode } from '@proto/modl/v1/hosted_import_pb.ts';
+import type { ImportIssueCode, ImportPhaseId, ImportStatusId } from '@/hooks/data/hosted-import';
 
 export const STATUS_KEYS: Readonly<Record<ImportStatusId, string>> = {
   none: 'pages.setup.import.status.none',
@@ -28,13 +29,6 @@ export const PHASE_KEYS: Readonly<Record<ImportPhaseId, string>> = {
   access: 'pages.setup.import.phase.access',
   subscriptions: 'pages.setup.import.phase.subscriptions',
   finish: 'pages.setup.import.phase.finish',
-};
-
-export const SEVERITY_KEYS: Readonly<Record<IssueSeverityId, string>> = {
-  info: 'pages.setup.import.severity.info',
-  changed: 'pages.setup.import.severity.changed',
-  lost: 'pages.setup.import.severity.lost',
-  action: 'pages.setup.import.severity.action',
 };
 
 const SUBJECT_KEYS: Readonly<Record<string, string>> = {
@@ -97,31 +91,63 @@ const ERROR_KEYS: Readonly<Record<string, string>> = {
   IMPORT_UPLOAD_OFFSET: 'pages.setup.import.errors.uploadOffset',
 };
 
-const ISSUE_KEYS: Readonly<Record<string, string>> = {
-  PUNISHMENT_ROLLBACK_ENDS: 'pages.setup.import.issues.rollbackEnds',
-  PUNISHMENT_DELETED_TYPE_ENFORCED: 'pages.setup.import.issues.deletedTypeEnforced',
-  PUNISHMENT_WITHOUT_DATA: 'pages.setup.import.issues.punishmentWithoutData',
-  PUNISHMENT_RESTRICTION_UNKNOWN: 'pages.setup.import.issues.restrictionUnknown',
-  PUNISHMENT_CATEGORY_UNKNOWN: 'pages.setup.import.issues.categoryUnknown',
-  STAT_WIPE_PENDING: 'pages.setup.import.issues.statWipePending',
-  WEBHOOK_DISABLED: 'pages.setup.import.issues.webhookDisabled',
-  AI_DISABLED: 'pages.setup.import.issues.aiDisabled',
-  STAFF_NOT_RESTORED: 'pages.setup.import.issues.staffNotRestored',
-  STAFF_ACCESS_NOT_RESTORED: 'pages.setup.import.issues.staffAccessNotRestored',
-  SUBSCRIPTIONS_NOT_RESTORED: 'pages.setup.import.issues.subscriptionsNotRestored',
-  COMMAND_REDACTED: 'pages.setup.import.issues.commandRedacted',
-  LOG_NOT_KEPT: 'pages.setup.import.issues.logNotKept',
-  IP_NOT_KEPT: 'pages.setup.import.issues.ipNotKept',
-  IP_INVALID: 'pages.setup.import.issues.ipInvalid',
-  URL_LEFT_REMOTE: 'pages.setup.import.issues.urlLeftRemote',
-  FILE_SKIPPED_BY_EXPORT: 'pages.setup.import.issues.fileSkipped',
-  COLLECTION_EXCLUDED: 'pages.setup.import.issues.collectionExcluded',
-  RECORD_UNREADABLE: 'pages.setup.import.issues.recordUnreadable',
-  RECORD_TOO_LARGE: 'pages.setup.import.issues.recordUnreadable',
-  RECORD_REJECTED: 'pages.setup.import.issues.recordUnreadable',
+export type IssueDetails = 'none' | 'list' | 'settings';
+
+export interface IssueLabel {
+  readonly messageKey: string;
+  readonly details: IssueDetails;
+}
+
+export const ISSUE_LABELS: Readonly<Record<ImportIssueCode, IssueLabel>> = {
+  [HostedImportIssueCode.RECORD_UNREADABLE]: { messageKey: 'pages.setup.import.issues.recordUnreadable', details: 'none' },
+  [HostedImportIssueCode.RECORD_REJECTED]: { messageKey: 'pages.setup.import.issues.recordRejected', details: 'none' },
+  [HostedImportIssueCode.RECORD_TOO_LARGE]: { messageKey: 'pages.setup.import.issues.recordTooLarge', details: 'none' },
+  [HostedImportIssueCode.VALUE_TRUNCATED]: { messageKey: 'pages.setup.import.issues.valueTruncated', details: 'none' },
+  [HostedImportIssueCode.VALUE_DEFAULTED]: { messageKey: 'pages.setup.import.issues.valueDefaulted', details: 'none' },
+  [HostedImportIssueCode.ID_REMAPPED]: { messageKey: 'pages.setup.import.issues.idRemapped', details: 'none' },
+  [HostedImportIssueCode.ID_ALIASED]: { messageKey: 'pages.setup.import.issues.idAliased', details: 'none' },
+  [HostedImportIssueCode.REFERENCE_DANGLING]: { messageKey: 'pages.setup.import.issues.referenceDangling', details: 'none' },
+  [HostedImportIssueCode.PLAYER_INVALID_UUID]: { messageKey: 'pages.setup.import.issues.playerInvalidUuid', details: 'none' },
+  [HostedImportIssueCode.PLAYER_MERGED]: { messageKey: 'pages.setup.import.issues.playerMerged', details: 'none' },
+  [HostedImportIssueCode.IP_NOT_KEPT]: { messageKey: 'pages.setup.import.issues.ipNotKept', details: 'none' },
+  [HostedImportIssueCode.IP_INVALID]: { messageKey: 'pages.setup.import.issues.ipInvalid', details: 'none' },
+  [HostedImportIssueCode.LOG_NOT_KEPT]: { messageKey: 'pages.setup.import.issues.logNotKept', details: 'none' },
+  [HostedImportIssueCode.NOTIFICATION_EXPIRED]: { messageKey: 'pages.setup.import.issues.notificationExpired', details: 'none' },
+  [HostedImportIssueCode.PUNISHMENT_WITHOUT_DATA]: { messageKey: 'pages.setup.import.issues.punishmentWithoutData', details: 'none' },
+  [HostedImportIssueCode.PUNISHMENT_ROLLBACK_ENDS]: { messageKey: 'pages.setup.import.issues.rollbackEnds', details: 'none' },
+  [HostedImportIssueCode.PUNISHMENT_DELETED_TYPE_ENFORCED]: { messageKey: 'pages.setup.import.issues.deletedTypeEnforced', details: 'list' },
+  [HostedImportIssueCode.PUNISHMENT_CATEGORY_UNKNOWN]: { messageKey: 'pages.setup.import.issues.categoryUnknown', details: 'none' },
+  [HostedImportIssueCode.PUNISHMENT_RESTRICTION_UNKNOWN]: { messageKey: 'pages.setup.import.issues.restrictionUnknown', details: 'none' },
+  [HostedImportIssueCode.PUNISHMENT_STORED_NONE]: { messageKey: 'pages.setup.import.issues.storedNone', details: 'none' },
+  [HostedImportIssueCode.PUNISHMENT_DURATION_SATURATED]: { messageKey: 'pages.setup.import.issues.durationSaturated', details: 'none' },
+  [HostedImportIssueCode.STAT_WIPE_PENDING]: { messageKey: 'pages.setup.import.issues.statWipePending', details: 'list' },
+  [HostedImportIssueCode.KICK_MARKED_DELIVERED]: { messageKey: 'pages.setup.import.issues.kickMarkedDelivered', details: 'none' },
+  [HostedImportIssueCode.TYPE_INVALID]: { messageKey: 'pages.setup.import.issues.typeInvalid', details: 'list' },
+  [HostedImportIssueCode.TYPE_TOMBSTONE]: { messageKey: 'pages.setup.import.issues.typeTombstone', details: 'none' },
+  [HostedImportIssueCode.ROLE_RENAMED]: { messageKey: 'pages.setup.import.issues.roleRenamed', details: 'list' },
+  [HostedImportIssueCode.PERMISSION_DROPPED]: { messageKey: 'pages.setup.import.issues.permissionDropped', details: 'list' },
+  [HostedImportIssueCode.STAFF_NOT_RESTORED]: { messageKey: 'pages.setup.import.issues.staffNotRestored', details: 'list' },
+  [HostedImportIssueCode.STAFF_ACCESS_NOT_RESTORED]: { messageKey: 'pages.setup.import.issues.staffAccessNotRestored', details: 'none' },
+  [HostedImportIssueCode.SUBSCRIPTIONS_NOT_RESTORED]: { messageKey: 'pages.setup.import.issues.subscriptionsNotRestored', details: 'none' },
+  [HostedImportIssueCode.STAFF_RENAMED]: { messageKey: 'pages.setup.import.issues.staffRenamed', details: 'list' },
+  [HostedImportIssueCode.STAFF_LINK_DROPPED]: { messageKey: 'pages.setup.import.issues.staffLinkDropped', details: 'list' },
+  [HostedImportIssueCode.SETTING_UNREADABLE]: { messageKey: 'pages.setup.import.issues.settingUnreadable', details: 'settings' },
+  [HostedImportIssueCode.WEBHOOK_DISABLED]: { messageKey: 'pages.setup.import.issues.webhookDisabled', details: 'none' },
+  [HostedImportIssueCode.AI_DISABLED]: { messageKey: 'pages.setup.import.issues.aiDisabled', details: 'none' },
+  [HostedImportIssueCode.SLUG_RENAMED]: { messageKey: 'pages.setup.import.issues.slugRenamed', details: 'list' },
+  [HostedImportIssueCode.ARTICLE_ORPHANED]: { messageKey: 'pages.setup.import.issues.articleOrphaned', details: 'none' },
+  [HostedImportIssueCode.URL_UNSAFE]: { messageKey: 'pages.setup.import.issues.urlUnsafe', details: 'none' },
+  [HostedImportIssueCode.URL_LEFT_REMOTE]: { messageKey: 'pages.setup.import.issues.urlLeftRemote', details: 'none' },
+  [HostedImportIssueCode.FILE_KEY_RENAMED]: { messageKey: 'pages.setup.import.issues.fileKeyRenamed', details: 'none' },
+  [HostedImportIssueCode.FILE_CASE_CONFLICT]: { messageKey: 'pages.setup.import.issues.fileCaseConflict', details: 'none' },
+  [HostedImportIssueCode.FILE_TYPE_NEUTRALISED]: { messageKey: 'pages.setup.import.issues.fileTypeNeutralised', details: 'none' },
+  [HostedImportIssueCode.FILE_SKIPPED_BY_EXPORT]: { messageKey: 'pages.setup.import.issues.fileSkipped', details: 'none' },
+  [HostedImportIssueCode.FILE_CONFLICT]: { messageKey: 'pages.setup.import.issues.fileConflict', details: 'none' },
+  [HostedImportIssueCode.REPLAY_FILE_MISSING]: { messageKey: 'pages.setup.import.issues.replayFileMissing', details: 'none' },
+  [HostedImportIssueCode.COMMAND_REDACTED]: { messageKey: 'pages.setup.import.issues.commandRedacted', details: 'none' },
+  [HostedImportIssueCode.COLLECTION_UNKNOWN]: { messageKey: 'pages.setup.import.issues.collectionUnknown', details: 'none' },
 };
 
-export const UNKNOWN_ISSUE_KEY = 'pages.setup.import.issues.unknown';
 export const UNKNOWN_ERROR_KEY = 'pages.setup.import.errors.unknown';
 export const UNKNOWN_REASON_KEY = 'pages.setup.import.reasons.unknown';
 export const UNKNOWN_SUBJECT_KEY = 'pages.setup.import.subjects.other';
@@ -140,8 +166,4 @@ export function reasonKey(code: string): string {
 
 export function errorKey(code: string | null): string {
   return code === null ? UNKNOWN_ERROR_KEY : ERROR_KEYS[code] ?? UNKNOWN_ERROR_KEY;
-}
-
-export function issueKey(code: string): string {
-  return ISSUE_KEYS[code] ?? UNKNOWN_ISSUE_KEY;
 }

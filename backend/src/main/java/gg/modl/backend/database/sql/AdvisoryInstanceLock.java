@@ -22,7 +22,8 @@ import org.jspecify.annotations.Nullable;
 final class AdvisoryInstanceLock implements InstanceLock {
     record Timing(Duration acquireBudget, Duration acquireRetry, Duration unreachableBudget, Duration heartbeatInterval,
                   boolean announcesWait) {
-        static final Timing DEFAULT = new Timing(Duration.ofSeconds(150), Duration.ofSeconds(5), Duration.ofSeconds(30),
+        static final Timing DEFAULT = new Timing(AdvisoryLockStatements.SESSION_TIMEOUT.plus(Duration.ofSeconds(30)),
+            Duration.ofSeconds(5), Duration.ofSeconds(30),
             Duration.ofSeconds(10), true);
     }
 

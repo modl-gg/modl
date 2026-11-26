@@ -48,7 +48,7 @@ import gg.modl.proto.modl.v1.ClaimSetupRequest;
 import gg.modl.proto.modl.v1.CommandLogEntry;
 import gg.modl.proto.modl.v1.CreateAppealRequest;
 import gg.modl.proto.modl.v1.CreateArticleRequest;
-import gg.modl.proto.modl.v1.CreateCardRequest;
+import gg.modl.proto.modl.v1.HomepageCardDraft;
 import gg.modl.proto.modl.v1.CreateCategoryRequest;
 import gg.modl.proto.modl.v1.CreateEvidenceRequest;
 import gg.modl.proto.modl.v1.CreateEvidenceUploadTokenRequest;
@@ -81,7 +81,6 @@ import gg.modl.proto.modl.v1.SubmitTicketFormRequest;
 import gg.modl.proto.modl.v1.TicketAssignees;
 import gg.modl.proto.modl.v1.TogglePunishmentOptionRequest;
 import gg.modl.proto.modl.v1.UpdateArticleRequest;
-import gg.modl.proto.modl.v1.UpdateCardRequest;
 import gg.modl.proto.modl.v1.UpdateCategoryRequest;
 import gg.modl.proto.modl.v1.UpdateRolePermissionsRequest;
 import gg.modl.proto.modl.v1.UpdateStaffRequest;
@@ -256,18 +255,10 @@ class ProtoColumnLimitTest {
             limit(UpdateCategoryRequest.getDescriptor(), "name", KNOWLEDGEBASE_CATEGORIES.NAME),
             limit(CreateArticleRequest.getDescriptor(), "title", KNOWLEDGEBASE_ARTICLES.TITLE),
             limit(UpdateArticleRequest.getDescriptor(), "title", KNOWLEDGEBASE_ARTICLES.TITLE),
-            limit(CreateCardRequest.getDescriptor(), "title", HOMEPAGE_CARDS.TITLE),
-            limit(CreateCardRequest.getDescriptor(), "icon", HOMEPAGE_CARDS.ICON),
-            limit(CreateCardRequest.getDescriptor(), "icon_color", HOMEPAGE_CARDS.ICON_COLOR),
-            limit(CreateCardRequest.getDescriptor(), "action_type", HOMEPAGE_CARDS.ACTION_TYPE),
-            limit(CreateCardRequest.getDescriptor(), "action_button_text", HOMEPAGE_CARDS.ACTION_BUTTON_TEXT),
-            limit(CreateCardRequest.getDescriptor(), "background_color", HOMEPAGE_CARDS.BACKGROUND_COLOR),
-            limit(UpdateCardRequest.getDescriptor(), "title", HOMEPAGE_CARDS.TITLE),
-            limit(UpdateCardRequest.getDescriptor(), "icon", HOMEPAGE_CARDS.ICON),
-            limit(UpdateCardRequest.getDescriptor(), "icon_color", HOMEPAGE_CARDS.ICON_COLOR),
-            limit(UpdateCardRequest.getDescriptor(), "action_type", HOMEPAGE_CARDS.ACTION_TYPE),
-            limit(UpdateCardRequest.getDescriptor(), "action_button_text", HOMEPAGE_CARDS.ACTION_BUTTON_TEXT),
-            limit(UpdateCardRequest.getDescriptor(), "background_color", HOMEPAGE_CARDS.BACKGROUND_COLOR)
+            limit(HomepageCardDraft.getDescriptor(), "id", HOMEPAGE_CARDS.ID),
+            limit(HomepageCardDraft.getDescriptor(), "title", HOMEPAGE_CARDS.TITLE),
+            limit(HomepageCardDraft.getDescriptor(), "icon", HOMEPAGE_CARDS.ICON),
+            limit(HomepageCardDraft.getDescriptor(), "category_id", HOMEPAGE_CARDS.CATEGORY_ID)
         );
     }
 

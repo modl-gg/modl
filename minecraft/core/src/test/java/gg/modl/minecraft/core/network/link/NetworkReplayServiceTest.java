@@ -1,10 +1,20 @@
 package gg.modl.minecraft.core.network.link;
 
+import gg.modl.minecraft.core.service.ActiveRecording;
+import gg.modl.minecraft.core.service.RecordingOrigin;
 import gg.modl.minecraft.core.service.ReplayCaptureResult;
 import gg.modl.minecraft.core.service.ReplayCaptureStatus;
+import gg.modl.minecraft.core.service.ReplayMemory;
+import gg.modl.minecraft.core.service.ReplayRecordingOutcome;
+import gg.modl.minecraft.core.service.ReplayRecordingResult;
 import gg.modl.minecraft.core.support.FakePlatform;
 import gg.modl.proto.modl.v1.RealtimeEnvelope;
 import gg.modl.proto.modl.v1.ReplayCaptureOutcome;
+import gg.modl.proto.modl.v1.ReplayCaptureRequest;
+import gg.modl.proto.modl.v1.ReplayMemoryUse;
+import gg.modl.proto.modl.v1.ReplayRecordingOrigin;
+import gg.modl.proto.modl.v1.ReplayRecordingState;
+import gg.modl.proto.modl.v1.ReplayRequestAction;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.Test;
 
@@ -14,7 +24,9 @@ import java.util.UUID;
 import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ScheduledExecutorService;
+import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
+import java.util.concurrent.TimeUnit;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -96,6 +108,88 @@ class NetworkReplayServiceTest {
         replays.disconnected();
 
         assertEquals(ReplayCaptureStatus.NO_SERVER_CONNECTED, capture.join().getStatus());
+    }
+
+    @Test
+    void aRecordingRequestNamesItsActionAndReadsTheMembersRecordingState() {
+        roster.replace(NetworkStatWipeExecutorTest.roster("lobby"));
+
+        CompletableFuture<ReplayRecordingResult> start = replays.startRecording(target, "Steve");
+
+        ReplayCaptureRequest request = sent.get(0).getReplayCaptureRequest();
+        assertEquals(ReplayRequestAction.REPLAY_REQUEST_ACTION_START_RECORDING, request.getAction());
+        assertEquals("lobby", request.getExpectedServer());
+        replays.onResult(gg.modl.proto.modl.v1.ReplayCaptureResult.newBuilder()
+                .setRequestId(request.getRequestId())
+                .setOutcome(ReplayCaptureOutcome.REPLAY_CAPTURE_OUTCOME_OK)
+                .setRecording(ReplayRecordingState.newBuilder()
+                        .setOrigin(ReplayRecordingOrigin.REPLAY_RECORDING_ORIGIN_STAFF).setRecordingMs(1500))
+                .setMemory(ReplayMemoryUse.newBuilder().setUsedBytes(10).setLimitBytes(20).setRecordings(1))
+                .build());
+
+        ReplayRecordingResult result = start.join();
+        assertEquals(ReplayRecordingOutcome.OK, result.getOutcome());
+        assertEquals(new ActiveRecording(RecordingOrigin.STAFF, 1500), result.getRecording());
+        assertEquals(new ReplayMemory(10, 20, 1), result.getMemory());
+    }
+
+    @Test
+    void stopAndStatusAreSentAsTheirOwnRequestsEvenForOnePlayer() {
+        roster.replace(NetworkStatWipeExecutorTest.roster("lobby"));
+
+        assertFalse(replays.stopRecording(target, "Steve").isDone());
+        assertFalse(replays.recordingStatus(target, "Steve").isDone());
+        assertFalse(replays.recordingStatus(target, "Steve").isDone());
+
+        assertEquals(3, sent.size());
+        assertEquals(ReplayRequestAction.REPLAY_REQUEST_ACTION_STOP_RECORDING, sent.get(0).getReplayCaptureRequest().getAction());
+        assertEquals(ReplayRequestAction.REPLAY_REQUEST_ACTION_RECORDING_STATUS, sent.get(2).getReplayCaptureRequest().getAction());
+    }
+
+    @Test
+    void aRecordingRequestWithoutAMemberOrAfterADisconnectAnswersNoServer() {
+        roster.replace(NetworkStatWipeExecutorTest.roster("survival"));
+        assertEquals(ReplayRecordingOutcome.NO_SERVER_CONNECTED, replays.startRecording(target, "Steve").join().getOutcome());
+        assertTrue(sent.isEmpty());
+
+        roster.replace(NetworkStatWipeExecutorTest.roster("lobby"));
+        CompletableFuture<ReplayRecordingResult> status = replays.recordingStatus(target, "Steve");
+        replays.disconnected();
+
+        assertEquals(ReplayRecordingOutcome.NO_SERVER_CONNECTED, status.join().getOutcome());
+    }
+
+    @Test
+    void aRecordingRequestTimesOutSoonerThanACapture() {
+        ScheduledThreadPoolExecutor timeouts = new ScheduledThreadPoolExecutor(1);
+        try {
+            NetworkReplayService service = new NetworkReplayService(platform, roster, envelope -> sent.add(envelope), timeouts);
+            roster.replace(NetworkStatWipeExecutorTest.roster("lobby"));
+
+            assertFalse(service.startRecording(target, "Steve").isDone());
+            assertFalse(service.captureReplayResult(target, "Steve").isDone());
+
+            List<Long> delays = new ArrayList<>();
+            for (Runnable queued : timeouts.getQueue()) delays.add(((ScheduledFuture<?>) queued).getDelay(TimeUnit.SECONDS));
+            delays.sort(null);
+            assertTrue(delays.get(0) <= NetworkReplayService.RECORDING_TIMEOUT_SECONDS, delays.toString());
+            assertTrue(delays.get(1) > NetworkReplayService.RECORDING_TIMEOUT_SECONDS, delays.toString());
+        } finally {
+            timeouts.shutdownNow();
+        }
+    }
+
+    @Test
+    void aRequestAfterTheLinkStoppedAnswersNoServerAndLeavesNothingPending() {
+        ScheduledExecutorService stopped = Executors.newSingleThreadScheduledExecutor();
+        stopped.shutdownNow();
+        NetworkReplayService service = new NetworkReplayService(platform, roster, envelope -> sent.add(envelope), stopped);
+        roster.replace(NetworkStatWipeExecutorTest.roster("lobby"));
+
+        assertEquals(ReplayCaptureStatus.NO_SERVER_CONNECTED, service.captureReplayResult(target, "Steve").join().getStatus());
+        assertEquals(ReplayCaptureStatus.NO_SERVER_CONNECTED, service.captureReplayResult(target, "Steve").join().getStatus());
+        assertEquals(ReplayRecordingOutcome.NO_SERVER_CONNECTED, service.recordingStatus(target, "Steve").join().getOutcome());
+        assertTrue(sent.isEmpty());
     }
 
     @Test

@@ -21,10 +21,12 @@ public final class NetworkRolePolicy {
         Topic.TOPIC_MINECRAFT_STAFF_2FA,
         Topic.TOPIC_NETWORK_MEMBER_ACTIONS,
         Topic.TOPIC_NETWORK_REPLAY_CAPTURE,
-        Topic.TOPIC_NETWORK_ROSTER);
+        Topic.TOPIC_NETWORK_ROSTER,
+        Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS);
     private static final List<Topic> MEMBER_TOPICS = List.of(
         Topic.TOPIC_NETWORK_MODERATION,
-        Topic.TOPIC_NETWORK_REPLAY_CAPTURE);
+        Topic.TOPIC_NETWORK_REPLAY_CAPTURE,
+        Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS);
 
     private NetworkRolePolicy() {
     }

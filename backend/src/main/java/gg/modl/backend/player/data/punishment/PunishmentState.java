@@ -43,7 +43,7 @@ public final class PunishmentState {
 
     public static boolean endsEarlierWith(Punishment punishment, @Nullable Long newDurationMillis, Instant at) {
         Long newDuration = timed(newDurationMillis);
-        if (punishment.getTypeOrdinal() == 0 || punishment.hasEndedEnforcement() || newDuration == null) {
+        if (punishment.getTypeOrdinal() == Punishment.KICK_TYPE_ORDINAL || punishment.hasEndedEnforcement() || newDuration == null) {
             return false;
         }
         PunishmentModification durationChange = latestDurationChange(punishment.getModifications());
@@ -82,7 +82,7 @@ public final class PunishmentState {
     }
 
     private static boolean cannotBeActive(Punishment punishment) {
-        return punishment.getTypeOrdinal() == 0
+        return punishment.getTypeOrdinal() == Punishment.KICK_TYPE_ORDINAL
             || punishment.data().isUnstarted()
             || punishment.hasEndedEnforcement();
     }

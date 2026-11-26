@@ -58,7 +58,6 @@ public class JooqImportedLogRepository implements ImportedLogRepository {
             TextLimits.require(AUDIT_LOGS.SOURCE, entry.source()),
             entry.description(),
             entry.metadata().isEmpty() ? null : json.write(entry.metadata()),
-            entry.canRollback(),
             entry.createdAt());
     }
 

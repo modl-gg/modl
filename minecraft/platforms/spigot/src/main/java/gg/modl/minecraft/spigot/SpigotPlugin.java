@@ -155,7 +155,13 @@ public class SpigotPlugin extends JavaPlugin {
         String serverName = platform.getServerName();
 
         ReplayService replayService = features.getReplayService();
-        if (replayService != null) PluginServices.get().setReplayService(replayService);
+        if (replayService != null) {
+            PluginServices services = PluginServices.get();
+            services.setReplayService(replayService);
+            backend.onShutdown("forget the replay service", () -> services.setReplayService(null));
+        }
+        backend.getFeatureSettings().bind(features);
+        backend.onShutdown("stop applying the panel's replay settings", backend.getFeatureSettings()::unbind);
 
         DirectStatWipeExecutor directExecutor = new DirectStatWipeExecutor(features, serverName);
         backend.getSyncService().setStatWipeExecutor(directExecutor);

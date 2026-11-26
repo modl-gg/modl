@@ -10,9 +10,11 @@ import static org.mockito.Mockito.when;
 import gg.modl.backend.dashboard.dto.response.ActivityItemResponse;
 import gg.modl.backend.dashboard.dto.response.DashboardMetricsResponse;
 import gg.modl.backend.dashboard.dto.response.MinecraftDashboardStatsResponse;
+import gg.modl.backend.dashboard.dto.response.RecentPunishmentResponse;
 import gg.modl.backend.dashboard.repository.DashboardRepository;
 import gg.modl.backend.dashboard.repository.StaffIdentity;
 import gg.modl.backend.player.data.punishment.Punishment;
+import gg.modl.backend.player.data.punishment.PunishmentPhase;
 import gg.modl.backend.player.data.punishment.ResolvedCategory;
 import gg.modl.backend.player.repository.PunishmentRecord;
 import gg.modl.backend.player.repository.PunishmentRepository;
@@ -52,7 +54,7 @@ class DashboardServiceTest {
 
     @Test
     void minecraftStatsCountByStoredCategorySoDeletedTypesStillCount() {
-        when(punishments.countActiveByCategory(NOW)).thenReturn(Map.of(
+        when(punishments.countByCategory(PunishmentPhase.ACTIVE, NOW)).thenReturn(Map.of(
             ResolvedCategory.BAN, 3L, ResolvedCategory.MUTE, 2L, ResolvedCategory.NONE, 1L));
         when(dashboard.countUnresolvedReports()).thenReturn(4L);
         when(dashboard.countUnresolvedTickets()).thenReturn(5L);
@@ -74,7 +76,7 @@ class DashboardServiceTest {
         when(dashboard.countTicketsCreatedAfter(WEEK_AGO)).thenReturn(5L);
         when(dashboard.countTicketsCreatedBetween(twoWeeksAgo, WEEK_AGO)).thenReturn(10L);
         when(dashboard.countPunishments()).thenReturn(77L);
-        when(punishments.countActive(NOW)).thenReturn(2L);
+        when(punishments.count(PunishmentPhase.ACTIVE, NOW)).thenReturn(2L);
 
         DashboardMetricsResponse metrics = service.getMetrics(server, "7d");
 
@@ -85,25 +87,33 @@ class DashboardServiceTest {
     }
 
     @Test
-    void recentPunishmentsResolveTheIssuerAndTheDeletedTypeName() {
+    void recentPunishmentsResolveTheIssuerAndTheDeletedTypeNameAndAreActiveOnlyOnceStarted() {
         Punishment punishment = new Punishment();
         punishment.setId("BAN00001");
         punishment.setTypeOrdinal(18);
         punishment.setIssuerId("k7m2qz9xv4b8c1d3");
         punishment.setIssued(NOW);
-        when(punishments.findRecent(WEEK_AGO, 10))
-            .thenReturn(List.of(new PunishmentRecord("internal", "uuid", "Target", punishment, 0)));
+        punishment.setStarted(NOW);
+        Punishment waiting = new Punishment();
+        waiting.setId("BAN00002");
+        waiting.setTypeOrdinal(18);
+        waiting.setIssued(NOW);
+        when(punishments.findRecent(WEEK_AGO, 10)).thenReturn(List.of(
+            new PunishmentRecord("internal", "uuid", "Target", punishment, 0),
+            new PunishmentRecord("internal", "uuid", "Target", waiting, 0)));
         when(issuers.resolveForPunishments(eq(server), argThat(listed -> listed.stream()
             .anyMatch(candidate -> "k7m2qz9xv4b8c1d3".equals(candidate.getIssuerId())))))
             .thenReturn(Map.of("k7m2qz9xv4b8c1d3", "Alice"));
         when(types.getPunishmentTypeName(server, 18)).thenReturn("Cheating (deleted)");
 
-        assertThat(service.getRecentPunishments(server, 10)).singleElement().satisfies(recent -> {
-            assertThat(recent.type()).isEqualTo("Cheating (deleted)");
-            assertThat(recent.issuerName()).isEqualTo("Alice");
-            assertThat(recent.playerUuid()).isEqualTo("uuid");
-            assertThat(recent.active()).isTrue();
+        List<RecentPunishmentResponse> recent = service.getRecentPunishments(server, 10);
+        assertThat(recent).first().satisfies(started -> {
+            assertThat(started.type()).isEqualTo("Cheating (deleted)");
+            assertThat(started.issuerName()).isEqualTo("Alice");
+            assertThat(started.playerUuid()).isEqualTo("uuid");
+            assertThat(started.active()).isTrue();
         });
+        assertThat(recent).extracting(RecentPunishmentResponse::active).containsExactly(true, false);
     }
 
     @Test

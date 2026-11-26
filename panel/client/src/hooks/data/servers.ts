@@ -4,6 +4,7 @@ import {
   ConnectedServersResponseSchema,
   ServerCompatibility,
   type ConnectedServer as ConnectedServerMessage,
+  type ServerFeatureStatus,
 } from '@proto/modl/v1/servers_pb.ts';
 import { protoFetch } from '@/lib/proto-fetch';
 import { tsToIso } from '@/lib/proto-ui';
@@ -28,6 +29,26 @@ export interface ConnectedServer {
   keyName: string | null;
   hubConnected: boolean;
   compatibility: ServerVersionCompatibility;
+  features: ServerFeatures | null;
+}
+
+export interface ServerFeatures {
+  replaysSupported: boolean;
+  replaysActive: boolean;
+  anticheatIntegrationActive: boolean;
+  detectedAnticheats: readonly string[];
+  replayMemoryBudgetMb: number | null;
+}
+
+function toFeatures(features: ServerFeatureStatus | undefined): ServerFeatures | null {
+  if (features === undefined) return null;
+  return {
+    replaysSupported: features.replaysSupported,
+    replaysActive: features.replaysActive,
+    anticheatIntegrationActive: features.anticheatIntegrationActive,
+    detectedAnticheats: features.detectedAnticheats,
+    replayMemoryBudgetMb: features.replayMemoryBudgetMb === 0 ? null : features.replayMemoryBudgetMb,
+  };
 }
 
 function toRole(role: ServerRole): ConnectedServerRole {
@@ -68,6 +89,7 @@ function toConnectedServer(server: ConnectedServerMessage): ConnectedServer {
     keyName: server.keyName ?? null,
     hubConnected: server.hubConnected,
     compatibility: toCompatibility(server.compatibility),
+    features: toFeatures(server.features),
   };
 }
 

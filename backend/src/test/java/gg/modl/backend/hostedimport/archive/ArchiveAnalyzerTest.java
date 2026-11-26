@@ -48,10 +48,23 @@ class ArchiveAnalyzerTest {
         assertThat(index.setting("general").flatMap(document -> document.document("data")).map(data -> data.string("serverDisplayName")))
             .contains("New");
         assertThat(index.analysisTally().count(ImportSubject.PLAYERS).total()).isEqualTo(2);
-        assertThat(index.analysisTally().issues()).containsKeys(IssueCode.COMMAND_REDACTED, IssueCode.COLLECTION_EXCLUDED,
-            IssueCode.FILE_SKIPPED_BY_EXPORT);
+        assertThat(index.analysisTally().issues()).containsKeys(IssueCode.COMMAND_REDACTED, IssueCode.FILE_SKIPPED_BY_EXPORT);
         assertThat(index.keyPlan().forOriginalKey(HostedArchiveFixture.PREFIX + "evidence/a.png"))
             .map(planned -> planned.localKey()).contains("modl_instance/evidence/a.png");
+    }
+
+    @Test
+    void theRolesAndSettingsTotalsCountOnlyWhatModlImports() throws IOException {
+        ArchiveIndex index = analyse(new HostedArchiveFixture()
+            .line("staffroles", "{\"_id\":\"super-admin\",\"name\":\"Super Admin\",\"permissions\":[]}")
+            .line("staffroles", "{\"_id\":\"mods\",\"name\":\"Mods\",\"permissions\":[]}")
+            .line("settings", "{\"_id\":\"1\",\"type\":\"general\",\"data\":{}}")
+            .line("settings", "{\"_id\":\"2\",\"type\":\"ticketTags\",\"data\":{}}")
+            .line("settings", "{\"_id\":\"3\",\"type\":\"mail\",\"data\":{}}"));
+
+        assertThat(index.analysisTally().count(ImportSubject.ROLES).total()).isEqualTo(1);
+        assertThat(index.analysisTally().count(ImportSubject.SETTINGS).total()).isEqualTo(1);
+        assertThat(index.analysisTally().counts()).doesNotContainKeys(ImportSubject.STAFF, ImportSubject.CARDS);
     }
 
     @Test

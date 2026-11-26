@@ -1,6 +1,7 @@
 package gg.modl.backend.storage.controller;
 
 import gg.modl.backend.infrastructure.rest.RESTMappingV1;
+import gg.modl.backend.storage.StorageFolders;
 import gg.modl.backend.storage.StoredObject;
 import gg.modl.backend.storage.local.LocalObjectFile;
 import gg.modl.backend.storage.local.LocalObjectStorage;
@@ -63,7 +64,11 @@ public class ObjectStorageController {
 
     @GetMapping("/{*key}")
     public ResponseEntity<Resource> download(@PathVariable String key) {
-        return storage.open(StorageKeyUtils.stripLeadingSlash(key))
+        String objectKey = StorageKeyUtils.stripLeadingSlash(key);
+        if (!StorageFolders.servedByStorageUrl(objectKey)) {
+            return ResponseEntity.notFound().build();
+        }
+        return storage.open(objectKey)
             .map(ObjectStorageController::serve)
             .orElseGet(() -> ResponseEntity.notFound().build());
     }

@@ -4,6 +4,7 @@ import gg.modl.minecraft.core.connection.AiSettings;
 import gg.modl.minecraft.core.connection.DatabaseSettings;
 import gg.modl.minecraft.core.connection.EmbeddedSettings;
 import gg.modl.minecraft.core.connection.SmtpSettings;
+import gg.modl.minecraft.core.connection.TunnelSettings;
 import org.junit.jupiter.api.Test;
 
 import java.nio.file.Paths;
@@ -46,6 +47,33 @@ class EmbeddedServerPropertiesTest {
         assertEquals(Paths.get("/srv/mc/plugins/modl/data").toString(), properties.get("MODL_DATA_DIR"));
         assertEquals(Paths.get("/srv/mc/plugins/modl/server/logs").toString(), properties.get("MODL_LOG_DIR"));
         assertEquals(Paths.get("/srv/mc/plugins/modl/setup-code.txt").toString(), properties.get("MODL_SETUP_CODE_FILE"));
+    }
+
+    @Test
+    void forwardsTheTunnelWithItsLoopbackNetworkDefaults() {
+        EmbeddedSettings settings = EmbeddedSettings.builder()
+                .publicUrl("https://panel.example.com")
+                .tunnel(TunnelSettings.builder().provider("cloudflare").token(" tunnel-token ").build())
+                .build()
+                .withTunnelNetworkDefaults();
+
+        Map<String, String> properties = EmbeddedServerProperties.of(settings, paths, "internal-key", Collections.emptyMap());
+
+        assertEquals("cloudflare", properties.get("MODL_TUNNEL"));
+        assertEquals("tunnel-token", properties.get("MODL_TUNNEL_TOKEN"));
+        assertEquals("127.0.0.1", properties.get("MODL_BIND_ADDRESS"));
+        assertEquals("true", properties.get("MODL_TRUST_PROXY_HEADERS"));
+        assertEquals("loopback", properties.get("MODL_TRUSTED_PROXY"));
+        assertFalse(settings.toString().contains("tunnel-token"));
+    }
+
+    @Test
+    void withoutATunnelNothingIsForwarded() {
+        Map<String, String> properties = EmbeddedServerProperties.of(EmbeddedSettings.builder().build(), paths, "key",
+                Collections.emptyMap());
+
+        assertFalse(properties.containsKey("MODL_TUNNEL"));
+        assertFalse(properties.containsKey("MODL_TUNNEL_TOKEN"));
     }
 
     @Test

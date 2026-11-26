@@ -1,11 +1,11 @@
 # Proxy Network
 
-<video src="VIDEO_URL_velocity-network" controls></video>
+[![Video: Connect a Velocity network](https://img.youtube.com/vi/oBUhASI2hiU/maxresdefault.jpg)](https://youtu.be/oBUhASI2hiU)
 
-A Velocity or BungeeCord proxy with Paper, Folia or Spigot servers behind it.
+A Velocity or BungeeCord proxy with Paper, Folia, or Spigot servers behind it.
 
-- The proxy runs the modl core, `embedded` or `remote` ([Separate Panel](Separate-Panel)): bans, mutes, kicks, commands and menus.
-- Each backend server runs `behind-proxy` with its own server key: staff mode, freeze, anticheat reports, replays, stat wipes and signed-chat mute enforcement. It needs no extra port.
+- The proxy runs the modl core, `embedded` or `remote` ([Separate Panel](Separate-Panel)): bans, mutes, kicks, commands, and menus.
+- Each backend server runs `behind-proxy` with its own server key: staff mode, freeze, anticheat reports, replays, stat wipes, and signed-chat mute enforcement. It needs no extra port.
 
 ## 1. Forwarding
 
@@ -24,15 +24,20 @@ Velocity modern forwarding needs Paper 1.13 or newer. Paper 1.8 to 1.12 networks
 
 1. Put `modl-<version>.jar` in the proxy's `plugins/` (and PacketEvents for in-game menus).
 2. Use Java 21 or newer (25 for Velocity 4) and at least 2 GB of heap.
-3. Allocate and open port 8080 for the panel.
+3. Give the panel its address:
+
+   | Panel address | Do |
+   |---|---|
+   | Domain on Cloudflare? Use the [built-in Cloudflare Tunnel](Panel-Port-and-Tunnels#built-in-cloudflare-tunnel) (no open port) | Set `embedded.tunnel` and `embedded.public-url` on the proxy; backend servers use that `https://` address as `remote.url` |
+   | Open port | Allocate and open port 8080 for the panel |
 4. Start the proxy and finish [First Run](First-Run) with the setup code from the proxy console.
 
 For a separately hosted panel, set `mode: remote` on the proxy with a "Standalone or proxy" key ([Separate Panel](Separate-Panel#connect-servers)).
 
 ## 3. Each backend server
 
-1. In the panel open Settings > General > Minecraft servers > Add server.
-2. Name: exactly this server's name in the proxy config (`lobby`, `survival`). Where: Behind a proxy. Create the key.
+1. In the panel open Settings > General > Minecraft servers (or the Servers step of the setup wizard). While the proxy is connected, every server in its config is listed with its address; Create key on its row creates its key.
+2. A server the proxy does not list: Minecraft servers > Add server. Name: exactly this server's name in the proxy config (`lobby`, `survival`). Where: Behind a proxy. Create the key.
 3. Download `connection.yml` (the key is shown once). It looks like:
    ```yaml
    mode: behind-proxy
@@ -45,7 +50,7 @@ For a separately hosted panel, set `mode: remote` on the proxy with a "Standalon
 5. In `plugins/modl/server-features.yml` set `server-name` to the same name. Start the server.
 6. The console prints `[network] Connected to the modl network at https://panel.example.com as survival.` and the server shows as Behind a proxy and Connected under Settings > General > Minecraft servers.
 
-`remote.url` must be reachable from the backend server. With an embedded panel on the proxy and no domain, use the proxy's private address, such as `http://10.0.0.5:8080`. Use HTTPS when the traffic leaves your private network. A reverse proxy in front of the panel must pass websocket upgrades on `/v1/realtime/ws`.
+`remote.url` must be reachable from the backend server. With the built-in Cloudflare Tunnel, use its `https://` address. With an embedded panel on the proxy and no domain, use the proxy's private address, such as `http://10.0.0.5:8080`. Use HTTPS when the traffic leaves your private network. A reverse proxy in front of the panel must pass websocket upgrades on `/v1/realtime/ws`.
 
 While the panel is unreachable or the key is rejected, players can still join a backend server; its staff tools stay off until it connects.
 

@@ -10,6 +10,7 @@ import gg.modl.backend.replay.data.ReplayDocument;
 import gg.modl.backend.replay.data.ReplayLabel;
 import gg.modl.backend.replay.data.ReplayLabel.CheatDetail;
 import gg.modl.backend.replay.data.ReplayLabel.TimeRange;
+import gg.modl.backend.replay.data.ReplayUploadClaim;
 import gg.modl.backend.support.sql.DialectTarget;
 import gg.modl.backend.support.sql.SqlContractTest;
 import gg.modl.backend.support.sql.SqlTestDatabase;
@@ -64,25 +65,75 @@ class JooqReplayRepositoryContractTest {
     }
 
     @SqlContractTest
-    void anUploadUpdateCanBeRepeated(DialectTarget target) {
+    void onlyOneConfirmClaimsAPendingUploadUntilItsLeaseRunsOut(DialectTarget target) {
         try (SqlTestDatabase database = SqlTestDatabase.start(target, dataDirectory)) {
             JooqReplayRepository repository = repository(database);
             database.unitOfWork().write(() -> repository.insert(replay("replay", ReplayDocument.STATUS_PENDING, NOW, "key")));
+            ReplayUploadClaim first = new ReplayUploadClaim("replay", NOW.plusSeconds(120));
+            ReplayUploadClaim second = new ReplayUploadClaim("replay", NOW.plusSeconds(130));
+            ReplayUploadClaim afterLease = new ReplayUploadClaim("replay", NOW.plusSeconds(240));
 
-            for (int attempt = 0; attempt < 2; attempt++) {
-                assertThat(database.unitOfWork()
-                    .write(() -> repository.updateUpload("replay", ReplayDocument.STATUS_COMPLETE, 99))
-                    .booleanValue()).isTrue();
-            }
+            assertThat(claim(database, repository, first, NOW)).isTrue();
+            assertThat(claim(database, repository, second, NOW.plusSeconds(10))).isFalse();
+            assertThat(claim(database, repository, afterLease, NOW.plusSeconds(120))).isTrue();
 
-            assertThat(repository.findById("replay")).get().satisfies(stored -> {
-                assertThat(stored.getStatus()).isEqualTo(ReplayDocument.STATUS_COMPLETE);
-                assertThat(stored.getFileSize()).isEqualTo(99);
-            });
-            assertThat(database.unitOfWork()
-                .write(() -> repository.updateUpload("missing", ReplayDocument.STATUS_FAILED, 0))
-                .booleanValue()).isFalse();
+            assertThat(database.unitOfWork().write(() -> repository.holdClaim(first)).booleanValue()).isFalse();
+            assertThat(database.unitOfWork().write(() -> repository.holdClaim(afterLease)).booleanValue()).isTrue();
+            assertThat(database.unitOfWork().write(() -> repository.completeUpload(first, 1, 5)).booleanValue()).isFalse();
+            assertThat(database.unitOfWork().write(() -> repository.failUpload(first)).booleanValue()).isFalse();
+            assertThat(database.unitOfWork().write(() -> repository.releaseUpload(first)).booleanValue()).isFalse();
+            assertThat(repository.findById("replay")).get().extracting(ReplayDocument::getStatus).isEqualTo(ReplayDocument.STATUS_PENDING);
+            assertThat(claim(database, repository, new ReplayUploadClaim("missing", NOW.plusSeconds(120)), NOW)).isFalse();
         }
+    }
+
+    @SqlContractTest
+    void aReleasedClaimCanBeTakenAgainAtOnce(DialectTarget target) {
+        try (SqlTestDatabase database = SqlTestDatabase.start(target, dataDirectory)) {
+            JooqReplayRepository repository = repository(database);
+            database.unitOfWork().write(() -> repository.insert(replay("replay", ReplayDocument.STATUS_PENDING, NOW, "key")));
+            ReplayUploadClaim first = new ReplayUploadClaim("replay", NOW.plusSeconds(120));
+            claim(database, repository, first, NOW);
+
+            assertThat(database.unitOfWork().write(() -> repository.releaseUpload(first)).booleanValue()).isTrue();
+
+            assertThat(claim(database, repository, new ReplayUploadClaim("replay", NOW.plusSeconds(121)), NOW.plusSeconds(1))).isTrue();
+        }
+    }
+
+    @SqlContractTest
+    void onlyTheClaimHolderCompletesOrFailsAndASettledUploadIsNeverClaimed(DialectTarget target) {
+        try (SqlTestDatabase database = SqlTestDatabase.start(target, dataDirectory)) {
+            JooqReplayRepository repository = repository(database);
+            database.unitOfWork().write(() -> {
+                repository.insert(replay("complete", ReplayDocument.STATUS_PENDING, NOW, "key-complete"));
+                repository.insert(replay("failed", ReplayDocument.STATUS_PENDING, NOW, "key-failed"));
+            });
+            ReplayUploadClaim completing = new ReplayUploadClaim("complete", NOW.plusSeconds(120));
+            ReplayUploadClaim failing = new ReplayUploadClaim("failed", NOW.plusSeconds(120));
+            claim(database, repository, completing, NOW);
+            claim(database, repository, failing, NOW);
+            assertThat(repository.findById("complete")).get().extracting(ReplayDocument::getFormatVersion).isNull();
+
+            assertThat(database.unitOfWork().write(() -> repository.completeUpload(completing, 1234, 5)).booleanValue()).isTrue();
+            assertThat(database.unitOfWork().write(() -> repository.failUpload(failing)).booleanValue()).isTrue();
+            assertThat(database.unitOfWork().write(() -> repository.completeUpload(completing, 1, 5)).booleanValue()).isFalse();
+            assertThat(database.unitOfWork().write(() -> repository.failUpload(failing)).booleanValue()).isFalse();
+
+            assertThat(repository.findById("complete")).get().satisfies(stored -> {
+                assertThat(stored.getStatus()).isEqualTo(ReplayDocument.STATUS_COMPLETE);
+                assertThat(stored.getFileSize()).isEqualTo(1234);
+                assertThat(stored.getFormatVersion()).isEqualTo(5);
+            });
+            assertThat(repository.findById("failed")).get().extracting(ReplayDocument::getStatus).isEqualTo(ReplayDocument.STATUS_FAILED);
+            Instant later = NOW.plusSeconds(600);
+            assertThat(claim(database, repository, new ReplayUploadClaim("complete", later.plusSeconds(120)), later)).isFalse();
+            assertThat(claim(database, repository, new ReplayUploadClaim("failed", later.plusSeconds(120)), later)).isFalse();
+        }
+    }
+
+    private static boolean claim(SqlTestDatabase database, JooqReplayRepository repository, ReplayUploadClaim claim, Instant now) {
+        return database.unitOfWork().write(() -> repository.claimUpload(claim, now));
     }
 
     @SqlContractTest
@@ -108,7 +159,7 @@ class JooqReplayRepositoryContractTest {
     }
 
     @SqlContractTest
-    void onlyFinishedReplaysBeforeTheCutoffExpireSplitByStoredObject(DialectTarget target) {
+    void finishedAndAbandonedReplaysBeforeTheCutoffExpireSplitByStoredObject(DialectTarget target) {
         try (SqlTestDatabase database = SqlTestDatabase.start(target, dataDirectory)) {
             JooqReplayRepository repository = repository(database);
             Instant expired = NOW.minusMillis(1);
@@ -119,10 +170,12 @@ class JooqReplayRepositoryContractTest {
                 repository.insert(replay("at-cutoff", ReplayDocument.STATUS_COMPLETE, NOW, "key-cutoff"));
                 repository.insert(replay("no-key", ReplayDocument.STATUS_FAILED, expired, null));
                 repository.insert(replay("empty-key", ReplayDocument.STATUS_COMPLETE, expired, ""));
+                repository.insert(replay("validating", ReplayDocument.STATUS_PENDING, expired, "key-validating"));
             });
+            claim(database, repository, new ReplayUploadClaim("validating", NOW.plusSeconds(120)), NOW);
 
             assertThat(repository.findExpiredWithStorageKey(NOW, null, 10)).extracting(ReplayDocument::getId)
-                .containsExactly("complete", "failed");
+                .containsExactly("complete", "failed", "pending");
             assertThat(repository.findExpiredWithMissingStorageKey(NOW, null, 10)).extracting(ReplayDocument::getId)
                 .containsExactly("empty-key", "no-key");
         }

@@ -8,6 +8,7 @@ import gg.modl.backend.database.TextLimits;
 import gg.modl.backend.database.jooq.tables.records.ReplaysRecord;
 import gg.modl.backend.replay.data.ReplayDocument;
 import gg.modl.backend.replay.data.ReplayLabel;
+import gg.modl.backend.replay.data.ReplayUploadClaim;
 import java.time.Instant;
 import java.util.Collection;
 import java.util.List;
@@ -30,7 +31,7 @@ public class JooqReplayRepository implements ReplayRepository {
     private static final TypeReference<List<ReplayLabel>> LABELS = new TypeReference<>() {
     };
     private static final List<Field<?>> COLUMNS_WITHOUT_LABELS = List.of(REPLAYS.ID, REPLAYS.MC_VERSION, REPLAYS.TARGET_UUID,
-        REPLAYS.TARGET_NAME, REPLAYS.FILE_SIZE, REPLAYS.STORAGE_KEY, REPLAYS.STATUS, REPLAYS.CREATED_AT);
+        REPLAYS.TARGET_NAME, REPLAYS.FILE_SIZE, REPLAYS.FORMAT_VERSION, REPLAYS.STORAGE_KEY, REPLAYS.STATUS, REPLAYS.CREATED_AT);
 
     private final DSLContext dsl;
     private final JsonColumns jsonColumns;
@@ -43,6 +44,7 @@ public class JooqReplayRepository implements ReplayRepository {
         row.setTargetUuid(TextLimits.requireIfPresent(REPLAYS.TARGET_UUID, replay.getTargetUuid()));
         row.setTargetName(TextLimits.requireIfPresent(REPLAYS.TARGET_NAME, replay.getTargetName()));
         row.setFileSize(replay.getFileSize());
+        row.setFormatVersion(replay.getFormatVersion());
         row.setStorageKey(TextLimits.requireIfPresent(REPLAYS.STORAGE_KEY, replay.getStorageKey()));
         row.setStatus(TextLimits.require(REPLAYS.STATUS, replay.getStatus()));
         row.setLabelsJson(jsonColumns.writeIfPresent(replay.getLabels()));
@@ -51,12 +53,55 @@ public class JooqReplayRepository implements ReplayRepository {
     }
 
     @Override
-    public boolean updateUpload(String replayId, String status, long fileSize) {
+    public boolean claimUpload(ReplayUploadClaim claim, Instant now) {
         return dsl.update(REPLAYS)
-            .set(REPLAYS.STATUS, TextLimits.require(REPLAYS.STATUS, status))
+            .set(REPLAYS.VALIDATION_LEASE_EXPIRES_AT, claim.leaseExpiresAt())
+            .where(REPLAYS.ID.eq(claim.replayId()))
+            .and(REPLAYS.STATUS.eq(ReplayDocument.STATUS_PENDING))
+            .and(REPLAYS.VALIDATION_LEASE_EXPIRES_AT.isNull().or(REPLAYS.VALIDATION_LEASE_EXPIRES_AT.le(now)))
+            .execute() == 1;
+    }
+
+    @Override
+    public boolean holdClaim(ReplayUploadClaim claim) {
+        return dsl.update(REPLAYS)
+            .set(REPLAYS.VALIDATION_LEASE_EXPIRES_AT, claim.leaseExpiresAt())
+            .where(heldBy(claim))
+            .execute() == 1;
+    }
+
+    @Override
+    public boolean completeUpload(ReplayUploadClaim claim, long fileSize, int formatVersion) {
+        return dsl.update(REPLAYS)
+            .set(REPLAYS.STATUS, ReplayDocument.STATUS_COMPLETE)
             .set(REPLAYS.FILE_SIZE, fileSize)
-            .where(REPLAYS.ID.eq(replayId))
-            .execute() > 0;
+            .set(REPLAYS.FORMAT_VERSION, formatVersion)
+            .setNull(REPLAYS.VALIDATION_LEASE_EXPIRES_AT)
+            .where(heldBy(claim))
+            .execute() == 1;
+    }
+
+    @Override
+    public boolean failUpload(ReplayUploadClaim claim) {
+        return dsl.update(REPLAYS)
+            .set(REPLAYS.STATUS, ReplayDocument.STATUS_FAILED)
+            .setNull(REPLAYS.VALIDATION_LEASE_EXPIRES_AT)
+            .where(heldBy(claim))
+            .execute() == 1;
+    }
+
+    @Override
+    public boolean releaseUpload(ReplayUploadClaim claim) {
+        return dsl.update(REPLAYS)
+            .setNull(REPLAYS.VALIDATION_LEASE_EXPIRES_AT)
+            .where(heldBy(claim))
+            .execute() == 1;
+    }
+
+    private static Condition heldBy(ReplayUploadClaim claim) {
+        return REPLAYS.ID.eq(claim.replayId())
+            .and(REPLAYS.STATUS.eq(ReplayDocument.STATUS_PENDING))
+            .and(REPLAYS.VALIDATION_LEASE_EXPIRES_AT.eq(claim.leaseExpiresAt()));
     }
 
     @Override
@@ -114,8 +159,10 @@ public class JooqReplayRepository implements ReplayRepository {
     }
 
     private List<ReplayDocument> findExpiredPage(Condition storage, Instant cutoff, @Nullable ReplayCursor after, int limit) {
-        Condition expired = REPLAYS.STATUS.in(ReplayDocument.STATUS_COMPLETE, ReplayDocument.STATUS_FAILED)
-            .and(REPLAYS.CREATED_AT.lt(cutoff));
+        Condition settled = REPLAYS.STATUS.in(ReplayDocument.STATUS_COMPLETE, ReplayDocument.STATUS_FAILED);
+        Condition abandoned = REPLAYS.STATUS.eq(ReplayDocument.STATUS_PENDING)
+            .and(REPLAYS.VALIDATION_LEASE_EXPIRES_AT.isNull().or(REPLAYS.VALIDATION_LEASE_EXPIRES_AT.le(cutoff)));
+        Condition expired = settled.or(abandoned).and(REPLAYS.CREATED_AT.lt(cutoff));
         Condition remaining = after == null
             ? DSL.noCondition()
             : DSL.row(REPLAYS.CREATED_AT, REPLAYS.ID).gt(after.createdAt(), after.id());
@@ -141,6 +188,7 @@ public class JooqReplayRepository implements ReplayRepository {
         replay.setTargetUuid(row.get(REPLAYS.TARGET_UUID));
         replay.setTargetName(row.get(REPLAYS.TARGET_NAME));
         replay.setFileSize(row.get(REPLAYS.FILE_SIZE));
+        replay.setFormatVersion(row.get(REPLAYS.FORMAT_VERSION));
         replay.setStorageKey(row.get(REPLAYS.STORAGE_KEY));
         replay.setStatus(row.get(REPLAYS.STATUS));
         replay.setCreatedAt(row.get(REPLAYS.CREATED_AT));

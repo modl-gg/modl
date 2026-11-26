@@ -289,6 +289,7 @@ function getTopicInvalidationTargets(topic: Topic): InvalidationTarget[] {
     case Topic.NETWORK_MEMBER_ACTIONS:
     case Topic.NETWORK_REPLAY_CAPTURE:
     case Topic.NETWORK_ROSTER:
+    case Topic.MINECRAFT_FEATURE_SETTINGS:
       return [];
   }
 }
@@ -556,6 +557,9 @@ export function useRealtimeInvalidation(): void {
         case 'replayCaptureResult':
         case 'hostedPlayers':
         case 'networkRoster':
+        case 'proxyServers':
+        case 'featureSettings':
+        case 'featureStatus':
         case undefined:
           break;
       }

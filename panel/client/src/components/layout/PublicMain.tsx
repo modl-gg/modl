@@ -1,5 +1,6 @@
-import { useMemo, type ReactNode } from 'react';
+import { useMemo, useState, type ReactNode } from 'react';
 import { useLocation } from 'wouter';
+import { PublicFooterSlotProvider } from '@/components/layout/PublicFooterSlot';
 import { PageEndSourceCodeLink } from '@/components/layout/SourceCodeLink';
 import { usePublicSettings } from '@/hooks/use-public-settings';
 import {
@@ -19,6 +20,7 @@ function ThemedPublicMain({ page, children }: { page: PublicPageId; children: Re
   const { scheme } = usePublicColorScheme();
   const customCssRevision = usePublicSettings().data?.customCssRevision ?? '';
   const rules = useMemo(() => publicThemeRules(theme, scheme), [theme, scheme]);
+  const [footerSlot, setFooterSlot] = useState<HTMLDivElement | null>(null);
 
   useDocumentStyleRules(rules);
   usePublicFont(theme.font);
@@ -26,8 +28,11 @@ function ThemedPublicMain({ page, children }: { page: PublicPageId; children: Re
 
   return (
     <main data-modl="page" data-modl-page={page} className="flex min-h-dvh flex-col bg-background">
-      <div className={`flex flex-1 flex-col ${SCREEN_PAGES_FILL_ABOVE_LINK}`}>{children}</div>
+      <div className={`flex flex-1 flex-col ${SCREEN_PAGES_FILL_ABOVE_LINK}`}>
+        <PublicFooterSlotProvider slot={footerSlot}>{children}</PublicFooterSlotProvider>
+      </div>
       <footer data-modl="footer">
+        <div ref={setFooterSlot} className="contents" />
         <PageEndSourceCodeLink />
       </footer>
     </main>

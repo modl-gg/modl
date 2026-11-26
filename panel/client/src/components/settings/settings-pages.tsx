@@ -4,7 +4,7 @@ import type { SettingsPageId } from '@/lib/settings-access';
 const CustomCssSettings = lazy(async () => import('./CustomCssSettings'));
 const DatabaseSettings = lazy(async () => import('./DatabaseSettings'));
 const DataRetentionSettings = lazy(async () => import('./DataRetentionSettings'));
-const HomepageCardSettings = lazy(async () => import('./HomepageCardSettings'));
+const HomepageSettingsPage = lazy(async () => import('./HomepageSettingsPage'));
 const KnowledgebaseSettings = lazy(async () => import('./KnowledgebaseSettings'));
 const MailSettingsCard = lazy(async () => import('./MailSettingsCard'));
 const MinecraftServersSettings = lazy(async () => import('./MinecraftServersSettings'));
@@ -21,6 +21,7 @@ const StaffRolesCard = lazy(async () => import('./StaffRolesCard'));
 const StatusSettings = lazy(async () => import('./StatusSettings'));
 const StorageSettings = lazy(async () => import('./StorageSettings'));
 const TicketAiModerationSettings = lazy(async () => import('./TicketAiModerationSettings'));
+const ReplaySettings = lazy(async () => import('./ReplaySettings'));
 const QuickRepliesSettings = lazy(async () => import('./TicketSettings').then((module) => ({ default: module.QuickRepliesSettings })));
 const TicketFormsSettings = lazy(async () => import('./TicketSettings').then((module) => ({ default: module.TicketFormsSettings })));
 const TicketLabelsSettings = lazy(async () => import('./TicketSettings').then((module) => ({ default: module.TicketLabelsSettings })));
@@ -40,11 +41,12 @@ export const SETTINGS_PAGE_VIEWS: Record<SettingsPageId, ComponentType> = {
   'punishment-types': PunishmentTypesSettings,
   escalation: EscalationSettings,
   'player-addresses': PlayerAddressSettings,
+  replays: ReplaySettings,
   forms: TicketFormsSettings,
   labels: TicketLabelsSettings,
   'quick-replies': QuickRepliesSettings,
   'ai-moderation': TicketAiModerationSettings,
-  homepage: HomepageCardSettings,
+  homepage: HomepageSettingsPage,
   knowledgebase: KnowledgebaseSettings,
   theme: PublicThemeSettings,
   'custom-css': CustomCssSettings,

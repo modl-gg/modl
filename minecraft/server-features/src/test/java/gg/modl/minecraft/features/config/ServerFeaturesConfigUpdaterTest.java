@@ -29,16 +29,15 @@ class ServerFeaturesConfigUpdaterTest {
     Path dataFolder;
 
     @Test
-    void addsTheAnticheatToggleToAnOlderServerFeaturesConfig() throws IOException {
-        write("server-features.yml", "proxy-host: \"10.0.0.5\"\nanticheat-name: \"Grim\"\n");
+    void addsMissingKeysToAnOlderServerFeaturesConfigAndKeepsTheOwnersValues() throws IOException {
+        write("server-features.yml", "proxy-host: \"10.0.0.5\"\nreport-cooldown: 30\n");
 
         ConfigUpdate update = ConfigUpdater.update(ServerFeaturesManagedConfigs.SERVER_FEATURES, dataFolder, LOGGER);
 
-        assertTrue(update.getAddedPaths().contains("anticheat-hook-enabled"));
+        assertTrue(update.getAddedPaths().contains("server-name"));
         Map<?, ?> loaded = load("server-features.yml");
-        assertEquals(true, loaded.get("anticheat-hook-enabled"));
         assertEquals("10.0.0.5", loaded.get("proxy-host"));
-        assertEquals("Grim", loaded.get("anticheat-name"));
+        assertEquals(30, loaded.get("report-cooldown"));
     }
 
     @Test
@@ -91,7 +90,7 @@ class ServerFeaturesConfigUpdaterTest {
 
         ServerFeaturesConfig config = ServerFeaturesConfig.load(dataFolder);
         assertEquals("Hub", config.getServerName());
-        assertTrue(config.isAnticheatHookEnabled());
+        assertEquals(60, config.getReportCooldown());
     }
 
     private void write(String name, String content) throws IOException {

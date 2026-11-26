@@ -1,0 +1,2 @@
+Self-hosted moderation: punishments, reports, tickets, appeals, replays, and a web panel.
+Free, open-source moderation and support for Minecraft servers. Punishments, reports, tickets, appeals, alt detection, replays, and AI chat review, managed from a web panel that runs inside your own server.

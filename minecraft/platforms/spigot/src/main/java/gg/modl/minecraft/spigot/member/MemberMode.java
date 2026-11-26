@@ -5,6 +5,7 @@ import gg.modl.minecraft.core.boot.MemberConnection;
 import gg.modl.minecraft.core.boot.PlatformType;
 import gg.modl.minecraft.core.connection.BackendClientIdentity;
 import gg.modl.minecraft.core.connection.ConnectionConfig;
+import gg.modl.minecraft.core.feature.FeatureSettingsChannel;
 import gg.modl.minecraft.core.member.MemberSession;
 import gg.modl.minecraft.core.member.MemberSessionListener;
 import gg.modl.minecraft.core.network.link.NetworkMemberLink;
@@ -29,13 +30,15 @@ public final class MemberMode {
     private final MemberConnection connection;
     private final PolarHookLatch polarHooks;
     private final NetworkLinkSessions sessions;
+    private final FeatureSettingsChannel featureSettings;
 
     private MemberMode(ServerFeaturesComponent features, MemberConnection connection, PolarHookLatch polarHooks,
-                       NetworkLinkSessions sessions) {
+                       NetworkLinkSessions sessions, FeatureSettingsChannel featureSettings) {
         this.features = features;
         this.connection = connection;
         this.polarHooks = polarHooks;
         this.sessions = sessions;
+        this.featureSettings = featureSettings;
     }
 
     public static MemberMode enable(JavaPlugin plugin, ConnectionConfig config, String configPath,
@@ -45,9 +48,10 @@ public final class MemberMode {
         ServerFeaturesComponent features = new ServerFeaturesComponent(plugin, featuresConfig, logger, polarLoaderAvailable);
         boolean debug = plugin.getConfig().getBoolean("debug", false);
         NetworkLinkSessions sessions = new NetworkLinkSessions(features);
+        FeatureSettingsChannel featureSettings = new FeatureSettingsChannel(logger);
         MemberConnection connection = MemberConnection.create(config.getRemote(), configPath, request,
                 BackendClientIdentity.newBoot(PlatformType.SPIGOT), debug, logger, sessions);
-        MemberMode mode = new MemberMode(features, connection, polarHooks, sessions);
+        MemberMode mode = new MemberMode(features, connection, polarHooks, sessions, featureSettings);
         try {
             LinkedCoreLink coreLink = new LinkedCoreLink();
             features.enableMember(TicketCreatorFactory.standalone(plugin, connection::httpClient),
@@ -56,6 +60,7 @@ public final class MemberMode {
                     .moderation(features.getModerationReconciler())
                     .captures(features.memberReplayCaptures())
                     .statWipes(features.memberStatWipes(connection::httpClient, featuresConfig::getServerName))
+                    .featureSettings(featureSettings)
                     .onlinePlayerCount(features::onlinePlayerCount)
                     .serverName(featuresConfig::getServerName)
                     .credentialsRejected(() -> connection.restart(REJECTED_KEY_REASON))
@@ -65,6 +70,7 @@ public final class MemberMode {
                     .build();
             coreLink.use(link);
             sessions.use(link);
+            featureSettings.bind(features);
             polarHooks.featuresStarted(features);
             features.addReloadStep(new ConnectionReload(connection, reloadedRemoteSettings));
             connection.start();
@@ -76,6 +82,7 @@ public final class MemberMode {
     }
 
     public void disable() {
+        featureSettings.unbind();
         connection.shutdown();
         sessions.shutdown();
         polarHooks.featuresStopped();
@@ -128,6 +135,7 @@ public final class MemberMode {
 
         @Override
         public void onDisconnected(MemberSession session) {
+            features.stopReplayUploads();
             NetworkMemberLink current = link;
             if (current != null) current.disconnect();
         }

@@ -1,6 +1,7 @@
 package gg.modl.minecraft.core.imports.litebans;
 
 import gg.modl.minecraft.api.DatabaseProvider;
+import gg.modl.minecraft.core.imports.source.ImportProblem;
 import gg.modl.minecraft.core.imports.source.PlayerRecords;
 import gg.modl.minecraft.core.imports.source.PunishmentScope;
 import gg.modl.minecraft.core.imports.source.Removal;
@@ -10,6 +11,7 @@ import gg.modl.minecraft.core.imports.source.SourcePlayer;
 import gg.modl.minecraft.core.imports.source.SourcePunishment;
 import gg.modl.minecraft.core.imports.source.SourceReader;
 import gg.modl.minecraft.core.imports.source.UnreadablePlayerException;
+import gg.modl.minecraft.core.imports.sql.CancellableQueries;
 import gg.modl.minecraft.core.imports.support.InventoryCounter;
 import gg.modl.minecraft.core.imports.support.PlayerHistory;
 import gg.modl.minecraft.core.imports.support.PlayerKeySet;
@@ -52,7 +54,7 @@ final class LiteBansReader implements SourceReader {
     private final String defaultReason;
     private final LongSupplier clock;
     private final BooleanSupplier enabled;
-    private volatile @Nullable PreparedStatement running;
+    private final CancellableQueries queries = new CancellableQueries();
     private @Nullable Players players;
 
     LiteBansReader(DatabaseProvider database, String defaultReason, LongSupplier clock, BooleanSupplier enabled) {
@@ -140,7 +142,8 @@ final class LiteBansReader implements SourceReader {
     }
 
     private void requireDatabase() throws SourceException {
-        if (!enabled.getAsBoolean()) throw SourceException.missing("import.litebans_missing", "LiteBans stopped");
+        if (queries.isCancelled()) throw SourceException.cancelled();
+        if (!enabled.getAsBoolean()) throw SourceException.missing(ImportProblem.LITEBANS_MISSING, "LiteBans stopped");
         try {
             query(PROBE, statement -> { }, row -> { });
         } catch (SQLException | RuntimeException lost) {
@@ -208,14 +211,13 @@ final class LiteBansReader implements SourceReader {
     }
 
     @Override
+    public boolean isReusable() {
+        return !queries.isCancelled() && enabled.getAsBoolean();
+    }
+
+    @Override
     public void cancelRunning() {
-        PreparedStatement statement = running;
-        if (statement == null) return;
-        try {
-            statement.cancel();
-        } catch (SQLException ignored) {
-            running = null;
-        }
+        queries.cancel();
     }
 
     @Override
@@ -224,14 +226,9 @@ final class LiteBansReader implements SourceReader {
     }
 
     private void query(String sql, Binder binder, RowReader reader) throws SQLException {
+        queries.requireActive();
         try (PreparedStatement statement = database.prepareStatement(sql)) {
-            binder.bind(statement);
-            running = statement;
-            try (ResultSet row = statement.executeQuery()) {
-                while (row.next()) reader.read(row);
-            } finally {
-                running = null;
-            }
+            queries.read(statement, binder::bind, reader::read);
         }
     }
 

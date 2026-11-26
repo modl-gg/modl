@@ -67,7 +67,7 @@ public interface PlayerRepository {
 
     int markOfflineAll(Collection<String> uuids, Instant now);
 
-    Set<String> findActiveBanHolders(Collection<String> playerIds, Instant now);
+    Set<String> findEnforcedBanHolders(Collection<String> playerIds, Instant now);
 
     Map<String, ActiveCounts> countActiveByPlayer(Collection<String> playerIds, Instant now);
 

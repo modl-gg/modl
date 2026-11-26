@@ -3,11 +3,14 @@ import { create } from '@bufbuild/protobuf';
 import {
   CreateServerKeyRequestSchema,
   CreateServerKeyResponseSchema,
+  ProxiedServerState,
   ServerKeySchema,
   ServerKeyScope,
   ServerKeysResponseSchema,
   UpdateServerKeyRequestSchema,
+  type ProxiedServerStatus,
   type ServerKey as ServerKeyMessage,
+  type ServerKeysResponse,
 } from '@proto/modl/v1/servers_pb.ts';
 import { apiFetch } from '@/lib/api';
 import { protoFetch, protoHttpErrorOf, protoSend } from '@/lib/proto-fetch';
@@ -28,6 +31,20 @@ export interface ServerKey {
   lastSeenAt: string | null;
   connected: boolean;
   allowProxyCommands: boolean;
+}
+
+export type ProxiedServerKeyState = 'no-key' | 'not-connected' | 'connected';
+
+export interface ProxiedServer {
+  name: string;
+  address: string;
+  state: ProxiedServerKeyState;
+  keyId: string | null;
+}
+
+export interface ServerKeyListing {
+  keys: ServerKey[];
+  proxiedServers: ProxiedServer[];
 }
 
 export interface NewServerKey {
@@ -64,11 +81,27 @@ function toServerKey(key: ServerKeyMessage): ServerKey {
   };
 }
 
+const PROXIED_SERVER_KEY_STATES: ReadonlyMap<ProxiedServerState, ProxiedServerKeyState> = new Map([
+  [ProxiedServerState.NO_KEY, 'no-key'],
+  [ProxiedServerState.NOT_CONNECTED, 'not-connected'],
+  [ProxiedServerState.CONNECTED, 'connected'],
+]);
+
+function toProxiedServer(status: ProxiedServerStatus): ProxiedServer[] {
+  const state = PROXIED_SERVER_KEY_STATES.get(status.state);
+  if (status.server === undefined || state === undefined) return [];
+  return [{ name: status.server.name, address: status.server.address, state, keyId: status.keyId ?? null }];
+}
+
+function toServerKeyListing(response: ServerKeysResponse): ServerKeyListing {
+  return { keys: response.keys.map(toServerKey), proxiedServers: response.proxiedServers.flatMap(toProxiedServer) };
+}
+
 export function useServerKeys({ enabled = true }: QueryGate = {}) {
   return useQuery({
     queryKey: [SERVER_KEYS_PATH],
     enabled,
-    queryFn: async () => (await protoFetch(ServerKeysResponseSchema, SERVER_KEYS_PATH)).keys.map(toServerKey),
+    queryFn: async () => toServerKeyListing(await protoFetch(ServerKeysResponseSchema, SERVER_KEYS_PATH)),
     refetchInterval: SERVER_KEYS_REFRESH_MS,
     refetchIntervalInBackground: false,
     retry: false,

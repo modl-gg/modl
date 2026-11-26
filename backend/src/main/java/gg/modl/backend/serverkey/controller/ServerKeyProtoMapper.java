@@ -4,8 +4,12 @@ import gg.modl.backend.infrastructure.proto.ProtoMapperSupport;
 import gg.modl.backend.serverkey.ServerKey;
 import gg.modl.backend.serverkey.ServerKeyScope;
 import gg.modl.backend.serverkey.service.CreatedServerKey;
+import gg.modl.backend.serverkey.service.ListedProxyServer;
 import gg.modl.backend.serverkey.service.ServerKeyService;
 import gg.modl.proto.modl.v1.CreateServerKeyResponse;
+import gg.modl.proto.modl.v1.ProxiedServer;
+import gg.modl.proto.modl.v1.ProxiedServerState;
+import gg.modl.proto.modl.v1.ProxiedServerStatus;
 import gg.modl.proto.modl.v1.ServerKeysResponse;
 import java.util.List;
 import java.util.Optional;
@@ -15,10 +19,29 @@ final class ServerKeyProtoMapper {
     private ServerKeyProtoMapper() {
     }
 
-    static ServerKeysResponse toResponse(List<ServerKey> keys, Set<String> connectedKeyIds) {
+    static ServerKeysResponse toResponse(List<ServerKey> keys, Set<String> connectedKeyIds, List<ListedProxyServer> proxyServers) {
         ServerKeysResponse.Builder response = ServerKeysResponse.newBuilder().setLimit(ServerKeyService.LIMIT);
         keys.forEach(key -> response.addKeys(toProto(key, connectedKeyIds.contains(key.id()))));
+        proxyServers.forEach(listed -> response.addProxiedServers(toProto(listed)));
         return response.build();
+    }
+
+    private static ProxiedServerStatus toProto(ListedProxyServer listed) {
+        ProxiedServerStatus.Builder proto = ProxiedServerStatus.newBuilder()
+            .setServer(ProxiedServer.newBuilder().setName(listed.server().name()).setAddress(listed.server().address()))
+            .setState(toProto(listed.state()));
+        if (listed.keyId() != null) {
+            proto.setKeyId(listed.keyId());
+        }
+        return proto.build();
+    }
+
+    private static ProxiedServerState toProto(ListedProxyServer.State state) {
+        return switch (state) {
+            case NO_KEY -> ProxiedServerState.PROXIED_SERVER_STATE_NO_KEY;
+            case NOT_CONNECTED -> ProxiedServerState.PROXIED_SERVER_STATE_NOT_CONNECTED;
+            case CONNECTED -> ProxiedServerState.PROXIED_SERVER_STATE_CONNECTED;
+        };
     }
 
     static CreateServerKeyResponse toCreated(CreatedServerKey created, String panelUrl) {

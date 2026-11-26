@@ -8,6 +8,7 @@ import static gg.modl.backend.database.jooq.Tables.TICKET_REPLIES;
 import gg.modl.backend.analytics.repository.GroupedCounts;
 import gg.modl.backend.analytics.repository.TimeBucketCount;
 import gg.modl.backend.database.ColumnLookups;
+import gg.modl.backend.database.DerivedColumns;
 import gg.modl.backend.database.FreeText;
 import gg.modl.backend.database.Sequencer;
 import gg.modl.backend.database.UnitOfWork;
@@ -100,8 +101,8 @@ public class JooqStaffActivityRepository implements StaffActivityRepository {
             .and(TICKET_REPLIES.AUTHOR_NAME_LOWER.isNotNull())
             .groupBy(TICKET_REPLIES.AUTHOR_NAME_LOWER, TICKET_REPLIES.TICKET_ID, TICKETS.CREATED_AT)
             .asTable("first_responses");
-        Field<String> staffName = columnOf(firstResponses, author);
-        Field<Long> waitedMillis = columnOf(firstResponses, waited);
+        Field<String> staffName = DerivedColumns.of(firstResponses, author);
+        Field<Long> waitedMillis = DerivedColumns.of(firstResponses, waited);
         Field<BigDecimal> wholeMinutesWaited = DSL.sum(waitedMillis.minus(waitedMillis.mod(DSL.inline(MINUTE_MILLIS))));
         Map<String, Integer> averages = new LinkedHashMap<>();
         dsl.select(staffName, wholeMinutesWaited, DSL.count())
@@ -193,13 +194,5 @@ public class JooqStaffActivityRepository implements StaffActivityRepository {
 
     private static Condition staffRepliesSince(Instant startDate) {
         return TICKET_REPLIES.IS_STAFF.eq(true).and(TICKET_REPLIES.CREATED_AT.ge(startDate));
-    }
-
-    private static <T> Field<T> columnOf(Table<?> derived, Field<T> column) {
-        Field<T> resolved = derived.field(column);
-        if (resolved == null) {
-            throw new IllegalStateException("Derived table " + derived.getName() + " lacks column " + column.getName());
-        }
-        return resolved;
     }
 }

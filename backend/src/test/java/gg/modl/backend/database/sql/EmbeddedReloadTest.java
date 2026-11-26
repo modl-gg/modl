@@ -8,6 +8,7 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 import static org.junit.jupiter.api.Assertions.assertTrue;
 
 import gg.modl.backend.support.sql.DialectTarget;
+import gg.modl.backend.support.sql.ExternalDialectTest;
 import gg.modl.backend.support.sql.TestDialects;
 import java.lang.ref.WeakReference;
 import java.nio.file.Path;
@@ -15,8 +16,6 @@ import java.time.Duration;
 import java.util.concurrent.CompletableFuture;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 class EmbeddedReloadTest {
     private static final Duration COLLECTION_TIMEOUT = Duration.ofSeconds(30);
@@ -70,8 +69,7 @@ class EmbeddedReloadTest {
         System.out.println("MEASURE old loader collected after a password hash in " + collected.toMillis() + " ms");
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void afterCloseOnAnExternalDatabaseTheOldLoaderIsCollected(DialectTarget target) throws Exception {
         SqlDatabaseProperties database = TestDialects.freshDatabase(target);
         IsolatedKernel kernel = IsolatedKernel.create();

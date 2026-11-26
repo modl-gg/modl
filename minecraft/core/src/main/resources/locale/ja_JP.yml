@@ -1143,7 +1143,7 @@ help:
       usage: "unmute <プレイヤー>"
       description: "有効なミュートと待機中のミュートをすべて解除する"
     replay:
-      usage: "replay <status|capture> [プレイヤー]"
+      usage: "replay <status|record|stop|capture> [プレイヤー]"
       description: "リプレイ録画を管理する"
     modl_reload:
       usage: "modl reload"
@@ -1300,9 +1300,11 @@ network:
 replay:
   usage:
     - "&f/replay status [プレイヤー] &7- 録画状態を確認する"
+    - "&f/replay record <プレイヤー> &7- プレイヤーの録画を開始する"
+    - "&f/replay stop <プレイヤー> &7- /replay recordで開始した録画を停止する"
     - "&f/replay capture [プレイヤー] &7- リプレイを保存してアップロードする"
   not_available: "&cこのサーバーではリプレイ録画を利用できません。"
-  status_recording: "&a{player}は現在録画中です"
+  status_recording: "&a{player}は{duration}前から録画中です（{origin}）"
   status_not_recording: "&c{player}は録画されていません"
   no_server_connected: "&cリプレイを保存できるサーバーが接続されていません。"
   no_active_recording: "&c{player}の録画は実行されていません"
@@ -1313,6 +1315,19 @@ replay:
   click_to_view: "[クリックしてリプレイを表示]"
   click_to_view_hover: "リプレイビューアーを開く"
   console_specify_player: "&cコンソールからはプレイヤー名を指定してください。"
+  memory: "&7リプレイのメモリ: {limit} MB中 {used} MB、録画数: {recordings}"
+  record_started: "&a{player}の録画を開始しました"
+  already_recording: "&e{player}はすでに録画中です"
+  record_stopped: "&a{player}の録画を停止しました"
+  recording_kept: "&c{player}の録画は継続されます（{origin}）"
+  player_left: "&c{player}はサーバーから退出しました"
+  status_failed: "&c{player}の録画状態を取得できませんでした"
+  server_unreachable: "&c{player}のサーバーはmodlに接続されていません。"
+  record_failed: "&c{player}の録画を変更できませんでした"
+  origins:
+    auto_record: "自動録画"
+    anticheat_flag: "アンチチートの検知"
+    staff: "/replay record"
 
 standing_gui:
   title: "&fあなたの素行状況"
@@ -1381,6 +1396,7 @@ import:
   source_missing: "このサーバーに{source}のデータが見つかりませんでした。データがあるサーバー（ネットワークの場合はmodlを実行しているプロキシ）で実行してください。"
   source_locked: "{source}が動作中で、データベースファイルを開いたままにしています。jarを削除し（フォルダーは残してください）、再起動してからもう一度実行してください。"
   database_failed: "{source}のデータを読み込めませんでした: {error}"
+  source_reconnect_failed: "プレビューから保持していた{source}への接続が切れ、再接続できませんでした: {error}。/modl import {source_id} をもう一度実行してください。"
   no_space: "{source}のデータベースをコピーするための空きディスク容量が足りません: {error}"
   nothing_to_import: "{source}にインポートするプレイヤーや処罰がありません。"
   nothing_left: "この選択ではインポートするものがありません。"

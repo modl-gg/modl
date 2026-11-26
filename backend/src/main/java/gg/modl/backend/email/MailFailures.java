@@ -25,8 +25,12 @@ final class MailFailures {
     }
 
     static MailFailure classify(Exception failure, Supplier<MailDeliveryOutcome> untypedOutcome) {
+        return typed(failure).orElseGet(() -> new MailFailure(untypedOutcome.get(), detail(failure)));
+    }
+
+    static Optional<MailFailure> typed(Exception failure) {
         List<Throwable> chain = causeChain(failure);
-        return new MailFailure(typedOutcome(chain).orElseGet(untypedOutcome), detail(chain));
+        return typedOutcome(chain).map(outcome -> new MailFailure(outcome, detail(chain)));
     }
 
     static String detail(Exception failure) {

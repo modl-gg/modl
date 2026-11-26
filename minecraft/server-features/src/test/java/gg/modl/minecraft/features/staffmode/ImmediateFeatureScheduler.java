@@ -31,7 +31,18 @@ class ImmediateFeatureScheduler implements FeatureScheduler {
     }
 
     @Override
+    public void runForPlayer(UUID playerUuid, Runnable task, Runnable gone) {
+        if (ops.isOnline(playerUuid)) task.run();
+        else gone.run();
+    }
+
+    @Override
     public void runLater(Runnable task, long delayTicks) {
+        task.run();
+    }
+
+    @Override
+    public void runAsync(Runnable task) {
         task.run();
     }
 

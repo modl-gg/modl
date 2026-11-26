@@ -1,0 +1,9 @@
+general
+punishmentTypes
+statusThresholds
+ticketForms
+quickResponses
+ticketLabels
+webhookSettings
+aiModerationSettings
+replayRetention

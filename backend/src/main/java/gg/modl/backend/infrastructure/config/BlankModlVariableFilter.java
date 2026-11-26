@@ -29,7 +29,7 @@ public class BlankModlVariableFilter implements EnvironmentPostProcessor, Ordere
 
     @Override
     public int getOrder() {
-        return Ordered.LOWEST_PRECEDENCE - 1;
+        return Ordered.LOWEST_PRECEDENCE - 2;
     }
 
     private static boolean containsBlankModlVariable(Map<String, Object> values) {

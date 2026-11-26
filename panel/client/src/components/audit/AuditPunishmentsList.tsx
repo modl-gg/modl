@@ -17,7 +17,6 @@ import {
   type AuditPunishment,
   type AuditPunishmentEvidence,
   type AuditPunishmentEvidenceFilter,
-  type AuditPunishmentPhase,
   type AuditPunishmentQuery,
   type AuditPunishmentSortDirection,
   type AuditPunishmentSortField,
@@ -27,10 +26,9 @@ import { useNow } from '@/hooks/use-now';
 import { usePermissions } from '@/hooks/use-permissions';
 import { cn, openExternalUrl } from '@/lib/utils';
 import { formatDateOnly } from '@/utils/date-utils';
-import type { PunishmentStatusKind } from '@/utils/punishment-status';
 import { BulkPunishmentActionsModal } from './BulkPunishmentActionsModal';
 import { formatCompactDuration } from '@/components/player/punishment-timeline';
-import { DAY_MS, HOUR_MS, MINUTE_MS, pickOption, punishmentTypeBadgeVariant } from './audit-format';
+import { DAY_MS, HOUR_MS, MINUTE_MS, PHASE_STATUS_KINDS, pickOption, punishmentTypeBadgeVariant } from './audit-format';
 import { ChartEmpty } from './chart-kit';
 
 interface SortOrder {
@@ -40,11 +38,6 @@ interface SortOrder {
 
 const ALL = 'all';
 const STATUS_FILTERS: readonly AuditPunishmentStatusFilter[] = ['active', 'unstarted', 'ended', 'all'];
-const PHASE_STATUS_KINDS: Record<AuditPunishmentPhase, PunishmentStatusKind> = {
-  active: 'active',
-  unstarted: 'unstarted',
-  ended: 'inactive',
-};
 const EVIDENCE_FILTERS: readonly AuditPunishmentEvidenceFilter[] = ['all', 'yes', 'no'];
 const NO_PUNISHMENTS: readonly AuditPunishment[] = [];
 const NEWEST_FIRST: SortOrder = { field: 'issued', direction: 'desc' };

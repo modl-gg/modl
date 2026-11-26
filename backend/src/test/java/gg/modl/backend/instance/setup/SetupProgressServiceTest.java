@@ -209,7 +209,7 @@ class SetupProgressServiceTest {
             }
         };
         SetupProgressService service = new SetupProgressService(instanceContext, instanceService, properties(), setupCodeService,
-            ownerSignInReadiness, List.of(importRunning));
+            ownerSignInReadiness, List.of(importRunning), List.of());
         Map<String, String> allButContent = everyStepDoneExcept(SetupStep.CONTENT);
         givenInstance(server("owner@example.com", new SetupProgress(Instant.now(), Instant.now(), null, allButContent)));
 
@@ -246,7 +246,7 @@ class SetupProgressServiceTest {
     }
 
     private SetupProgressService service(InstanceProperties properties) {
-        return new SetupProgressService(instanceContext, instanceService, properties, setupCodeService, ownerSignInReadiness, List.of());
+        return new SetupProgressService(instanceContext, instanceService, properties, setupCodeService, ownerSignInReadiness, List.of(), List.of());
     }
 
     private static InstanceProperties properties() {

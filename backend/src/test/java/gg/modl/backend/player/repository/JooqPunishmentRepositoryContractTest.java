@@ -565,8 +565,12 @@ class JooqPunishmentRepositoryContractTest {
 
             Instant returns = NOW.plusMillis(2 * DAY);
             assertEnforced(store, player, returns, true);
+            assertThat(store.punishments().count(PunishmentPhase.UNSTARTED, returns)).isEqualTo(1);
+            assertThat(store.punishments().count(PunishmentPhase.ACTIVE, returns)).isZero();
 
             assertThat(store.punishments().markStarted("X1BANBAN", returns)).isTrue();
+            assertThat(store.punishments().count(PunishmentPhase.UNSTARTED, returns)).isZero();
+            assertThat(store.punishments().count(PunishmentPhase.ACTIVE, returns)).isEqualTo(1);
             Instant expires = NOW.plusMillis(3 * DAY);
             assertThat(store.activeUntil("X1BANBAN")).isEqualTo(expires);
             assertEnforced(store, player, returns, true);
@@ -584,7 +588,8 @@ class JooqPunishmentRepositoryContractTest {
 
             Instant returns = NOW.plusMillis(2 * DAY);
             assertThat(syncedIds(store, player, returns)).containsExactly("X1MUTEEE");
-            assertThat(store.punishments().countActiveByCategory(returns)).containsEntry(ResolvedCategory.MUTE, 1L);
+            assertThat(store.punishments().countByCategory(PunishmentPhase.ACTIVE, returns)).containsEntry(ResolvedCategory.MUTE, 0L);
+            assertThat(store.punishments().countByCategory(PunishmentPhase.UNSTARTED, returns)).containsEntry(ResolvedCategory.MUTE, 1L);
 
             store.punishments().markStarted("X1MUTEEE", returns);
             Instant expires = NOW.plusMillis(3 * DAY);
@@ -760,6 +765,8 @@ class JooqPunishmentRepositoryContractTest {
             store.issue(player, withTicket(draft("ACTIVE", BAN, null, NOW, null), "T-ACTIVE"), ResolvedCategory.BAN);
             store.issue(player, withTicket(draft("QUEUED", BAN, HOUR, null, PunishmentStatus.UNSTARTED), "T-QUEUED"), ResolvedCategory.BAN);
             store.issue(player, withTicket(draft("ENDED", BAN, HOUR, NOW, null), "T-ENDED"), ResolvedCategory.BAN);
+            store.issue(player, withTicket(draft("WAITING", BAN, HOUR, null, null), "T-WAITING"), ResolvedCategory.BAN);
+            store.issue(player, withTicket(draft("KICK", KICK, null, null, PunishmentStatus.UNSTARTED), "T-KICK"), ResolvedCategory.NONE);
             for (PunishmentModificationType type : PunishmentModificationType.values()) {
                 if (!type.isDurationChange()) {
                     String id = "QUEUED-" + type;
@@ -768,8 +775,8 @@ class JooqPunishmentRepositoryContractTest {
                 }
             }
 
-            Set<String> asked = new HashSet<>(List.of("T-ACTIVE", "T-QUEUED", "T-ENDED", "T-NOBODY"));
-            Set<String> expected = new HashSet<>(List.of("T-ACTIVE", "T-QUEUED"));
+            Set<String> asked = new HashSet<>(List.of("T-ACTIVE", "T-QUEUED", "T-ENDED", "T-WAITING", "T-KICK", "T-NOBODY"));
+            Set<String> expected = new HashSet<>(List.of("T-ACTIVE", "T-QUEUED", "T-WAITING"));
             for (PunishmentModificationType type : PunishmentModificationType.values()) {
                 if (!type.isDurationChange()) {
                     asked.add("T-" + type);
@@ -822,9 +829,14 @@ class JooqPunishmentRepositoryContractTest {
             assertThat(recordIds(store.punishments().findLinkedBans("PARENT"))).containsExactly("L1", "L2");
             assertThat(store.punishments().findLinkedBans("PARENT - PlayerName")).isEmpty();
             List<Integer> types = List.of(Punishment.LINKED_BAN_TYPE_ORDINAL, MUTE);
-            assertThat(store.punishments().pageActiveIdsByTypes(types, NOW, null, 3)).containsExactly("L1", "L2", "L3");
-            assertThat(store.punishments().pageActiveIdsByTypes(types, NOW, "L3", 3)).containsExactly("M1");
-            assertThat(store.punishments().pageActiveIdsByTypes(List.of(), NOW, null, 3)).isEmpty();
+            List<PunishmentPhase> inForceOrWaiting = List.of(PunishmentPhase.ACTIVE, PunishmentPhase.UNSTARTED);
+            assertThat(store.punishments().pageIdsByTypes(types, inForceOrWaiting, NOW, null, 3)).containsExactly("L1", "L2", "L3");
+            assertThat(store.punishments().pageIdsByTypes(types, inForceOrWaiting, NOW, "L3", 3)).containsExactly("M1");
+            assertThat(store.punishments().pageIdsByTypes(types, List.of(PunishmentPhase.ACTIVE), NOW, "L3", 3)).isEmpty();
+            assertThat(store.punishments().pageIdsByTypes(types, List.of(PunishmentPhase.UNSTARTED), NOW, null, 3))
+                .containsExactly("M1");
+            assertThat(store.punishments().pageIdsByTypes(List.of(), inForceOrWaiting, NOW, null, 3)).isEmpty();
+            assertThat(store.punishments().pageIdsByTypes(types, List.of(), NOW, null, 3)).isEmpty();
         }
     }
 
@@ -833,17 +845,21 @@ class JooqPunishmentRepositoryContractTest {
         try (SqlTestDatabase database = SqlTestDatabase.start(target, dataDirectory)) {
             PunishmentStore store = PunishmentStore.on(database);
             String player = store.addPlayer("p1");
-            assertThat(store.punishments().countActiveByCategory(NOW))
+            assertThat(store.punishments().countByCategory(PunishmentPhase.ACTIVE, NOW))
                 .isEqualTo(Map.of(ResolvedCategory.BAN, 0L, ResolvedCategory.MUTE, 0L, ResolvedCategory.NONE, 0L));
-            store.issue(player, issued(draft("B1", BAN, null, null, null), NOW, "Alice", null), ResolvedCategory.BAN);
+            store.issue(player, issued(draft("B1", BAN, null, NOW, null), NOW, "Alice", null), ResolvedCategory.BAN);
             store.issue(player, issued(draft("B2", BAN, HOUR, NOW, null), NOW, "Alice", "staff-a"), ResolvedCategory.BAN);
-            store.issue(player, issued(draft("M1", MUTE, null, null, null), NOW, null, null), ResolvedCategory.MUTE);
-            store.issue(player, issued(draft("N1", 40, null, null, null), NOW, "Alice", null), ResolvedCategory.NONE);
+            store.issue(player, issued(draft("B3", BAN, null, null, null), NOW, "Alice", null), ResolvedCategory.BAN);
+            store.issue(player, issued(draft("M1", MUTE, null, NOW, null), NOW, null, null), ResolvedCategory.MUTE);
+            store.issue(player, issued(draft("N1", 40, null, NOW, null), NOW, "Alice", null), ResolvedCategory.NONE);
 
-            assertThat(store.punishments().countActiveByCategory(NOW))
+            assertThat(store.punishments().countByCategory(PunishmentPhase.ACTIVE, NOW))
                 .isEqualTo(Map.of(ResolvedCategory.BAN, 2L, ResolvedCategory.MUTE, 1L, ResolvedCategory.NONE, 1L));
-            assertThat(store.punishments().countActive(NOW)).isEqualTo(4);
-            assertThat(store.punishments().countActive(NOW.plusMillis(2 * HOUR))).isEqualTo(3);
+            assertThat(store.punishments().countByCategory(PunishmentPhase.UNSTARTED, NOW))
+                .isEqualTo(Map.of(ResolvedCategory.BAN, 1L, ResolvedCategory.MUTE, 0L, ResolvedCategory.NONE, 0L));
+            assertThat(store.punishments().count(PunishmentPhase.ACTIVE, NOW)).isEqualTo(4);
+            assertThat(store.punishments().count(PunishmentPhase.ACTIVE, NOW.plusMillis(2 * HOUR))).isEqualTo(3);
+            assertThat(store.punishments().count(PunishmentPhase.ENDED, NOW.plusMillis(2 * HOUR))).isEqualTo(1);
         }
     }
 
@@ -870,6 +886,7 @@ class JooqPunishmentRepositoryContractTest {
             store.issue(player, importedPardon, ResolvedCategory.BAN);
             store.issue(player, draft("K1", KICK, null, NOW, null), ResolvedCategory.NONE);
             store.issue(player, draft("K2", KICK, null, null, null), ResolvedCategory.NONE);
+            store.issue(player, draft("K3", KICK, null, null, PunishmentStatus.UNSTARTED), ResolvedCategory.NONE);
             store.issue(player, draft("U1", BAN, HOUR, null, PunishmentStatus.UNSTARTED), ResolvedCategory.BAN);
             store.issue(player, draft("U2", MUTE, DAY, null, null), ResolvedCategory.MUTE);
             store.issue(player, draft("U3", BAN, HOUR, NOW, PunishmentStatus.UNSTARTED), ResolvedCategory.BAN);
@@ -889,6 +906,18 @@ class JooqPunishmentRepositoryContractTest {
 
             PunishmentListPage unstarted = store.punishments().pageListed(newestFirst(PunishmentPhase.UNSTARTED), now, null, 10);
             assertThat(recordIds(unstarted.items())).containsExactly("U3", "U2", "U1");
+            assertThat(walk(store, unstartedSorted(PunishmentListQuery.SortKey.ISSUED, false), now)).containsExactly("U3", "U2", "U1");
+            assertThat(walk(store, unstartedSorted(PunishmentListQuery.SortKey.ISSUED, true), now)).containsExactly("U1", "U2", "U3");
+            assertThat(walk(store, unstartedSorted(PunishmentListQuery.SortKey.DURATION, true), now)).containsExactly("U1", "U3", "U2");
+            assertThat(walk(store, unstartedSorted(PunishmentListQuery.SortKey.DURATION, false), now)).containsExactly("U2", "U3", "U1");
+            assertThat(walk(store, unstartedSorted(PunishmentListQuery.SortKey.STARTED, true), now)).containsExactly("U1", "U2", "U3");
+            assertThat(walk(store, unstartedSorted(PunishmentListQuery.SortKey.STARTED, false), now)).containsExactly("U3", "U2", "U1");
+            assertThat(PunishmentPhase.of(store.punishment("K3"), now)).isEqualTo(PunishmentPhase.ENDED);
+            assertThat(store.punishments().count(PunishmentPhase.ACTIVE, now)).isEqualTo(3);
+            assertThat(store.punishments().count(PunishmentPhase.UNSTARTED, now)).isEqualTo(3);
+            assertThat(store.punishments().count(PunishmentPhase.ENDED, now)).isEqualTo(8);
+            assertThat(store.punishments().countByType(PunishmentPhase.UNSTARTED, now))
+                .containsExactly(Map.entry(MUTE, 1L), Map.entry(BAN, 2L));
 
             PunishmentListPage all = store.punishments().pageListed(newestFirst(null), now, null, 20);
             assertThat(recordIds(all.items())).containsExactly("U3", "U2", "U1", "E5", "E4", "E3", "E2", "E1", "A3", "A2", "A1");
@@ -925,7 +954,7 @@ class JooqPunishmentRepositoryContractTest {
 
             assertThat(walk(store, sorted(PunishmentListQuery.SortKey.DURATION, true))).containsExactly("D3", "D1", "D2");
 
-            assertThat(store.punishments().countActiveByType(NOW)).containsExactly(Map.entry(MUTE, 1L), Map.entry(BAN, 2L));
+            assertThat(store.punishments().countByType(PunishmentPhase.ACTIVE, NOW)).containsExactly(Map.entry(MUTE, 1L), Map.entry(BAN, 2L));
         }
     }
 
@@ -997,10 +1026,15 @@ class JooqPunishmentRepositoryContractTest {
         List<Punishment> loaded = store.punishments().findEnforcementRelevant(player, now);
         PlayerStatusCalculator calculator = PunishmentStore.calculatorAt(now);
         assertThat(loaded.stream().anyMatch(calculator::isPunishmentActive)).isEqualTo(enforced);
-        assertThat(store.punishments().countActiveByCategory(now)).containsEntry(ResolvedCategory.BAN, enforced ? 1L : 0L);
-        assertThat(store.players().findActiveBanHolders(List.of(player), now)).hasSize(enforced ? 1 : 0);
+        assertThat(inForceOrWaiting(store, now)).isEqualTo(enforced ? 1 : 0);
+        assertThat(store.players().findEnforcedBanHolders(List.of(player), now)).hasSize(enforced ? 1 : 0);
         assertThat(store.punishments().findTicketIdsHeldByActiveOrUnstarted(List.of("REPORT-1"), now)).hasSize(enforced ? 1 : 0);
-        assertThat(store.punishments().countActive(now)).isEqualTo(enforced ? 1 : 0);
+    }
+
+    private static long inForceOrWaiting(PunishmentStore store, Instant now) {
+        Map<ResolvedCategory, Long> active = store.punishments().countByCategory(PunishmentPhase.ACTIVE, now);
+        Map<ResolvedCategory, Long> unstarted = store.punishments().countByCategory(PunishmentPhase.UNSTARTED, now);
+        return active.get(ResolvedCategory.BAN) + unstarted.get(ResolvedCategory.BAN);
     }
 
     private static List<String> syncedIds(PunishmentStore store, String player, Instant now) {
@@ -1131,11 +1165,19 @@ class JooqPunishmentRepositoryContractTest {
             typeOrdinal, evidence);
     }
 
+    private static PunishmentListQuery unstartedSorted(PunishmentListQuery.SortKey sortKey, boolean ascending) {
+        return new PunishmentListQuery(PunishmentPhase.UNSTARTED, sortKey, ascending, null, null, PunishmentListQuery.Evidence.ANY);
+    }
+
     private static List<String> walk(PunishmentStore store, PunishmentListQuery query) {
+        return walk(store, query, NOW);
+    }
+
+    private static List<String> walk(PunishmentStore store, PunishmentListQuery query, Instant now) {
         List<String> walked = new ArrayList<>();
         PunishmentListCursor cursor = null;
         do {
-            PunishmentListPage page = store.punishments().pageListed(query, NOW, cursor, 1);
+            PunishmentListPage page = store.punishments().pageListed(query, now, cursor, 1);
             walked.addAll(recordIds(page.items()));
             cursor = page.next();
         } while (cursor != null);

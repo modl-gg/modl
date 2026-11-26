@@ -105,8 +105,6 @@ class ServerProvisioningServiceTest {
         assertThat(seeded).extracting(HomepageCard::getTitle)
             .containsExactly("Appeal a punishment", "Apply for staff", "Contact staff", "Rules", "Guides", "News");
         assertThat(seeded).extracting(HomepageCard::getDescription).containsOnlyNulls();
-        assertThat(seeded).extracting(HomepageCard::getActionButtonText)
-            .containsExactly("Appeal", "Apply", "Open a ticket", null, null, null);
         ArgumentCaptor<KnowledgebaseCategory> seededCategories = ArgumentCaptor.forClass(KnowledgebaseCategory.class);
         verify(categories, atLeastOnce()).insert(seededCategories.capture());
         assertThat(seededCategories.getAllValues().subList(0, 3)).extracting(KnowledgebaseCategory::getName)

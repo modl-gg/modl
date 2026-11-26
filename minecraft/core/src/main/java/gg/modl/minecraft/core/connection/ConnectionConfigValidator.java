@@ -31,6 +31,14 @@ public final class ConnectionConfigValidator {
             requireHost(ConnectionYaml.SMTP_HOST, embedded.getSmtp().getHost());
             requirePort(ConnectionYaml.SMTP_PORT, embedded.getSmtp().getPort());
         }
+        if (embedded.getTunnel().isEnabled()) requireTunnel(embedded.getTunnel());
+    }
+
+    private static void requireTunnel(TunnelSettings tunnel) {
+        if (!tunnel.isCloudflare()) {
+            throw invalid(ConnectionYaml.TUNNEL_PROVIDER + " must be " + TunnelSettings.CLOUDFLARE + " or empty, not '"
+                    + tunnel.getProvider() + "'.");
+        }
     }
 
     private static void validateRemote(RemoteSettings remote, RemoteKey key) {

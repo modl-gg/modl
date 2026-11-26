@@ -2,16 +2,20 @@
 // @generated from file modl/v1/replay.proto (package modl.v1, syntax proto3)
 /* eslint-disable */
 
-import type { GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
-import { fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
+import type { GenEnum, GenFile, GenMessage } from "@bufbuild/protobuf/codegenv2";
+import { enumDesc, fileDesc, messageDesc } from "@bufbuild/protobuf/codegenv2";
 import { file_buf_validate_validate } from "../../buf/validate/validate_pb";
+import type { Timestamp } from "@bufbuild/protobuf/wkt";
+import { file_google_protobuf_timestamp } from "@bufbuild/protobuf/wkt";
+import type { SettingsMeta } from "./settings_pb";
+import { file_modl_v1_settings } from "./settings_pb";
 import type { Message } from "@bufbuild/protobuf";
 
 /**
  * Describes the file modl/v1/replay.proto.
  */
 export const file_modl_v1_replay: GenFile = /*@__PURE__*/
-  fileDesc("ChRtb2RsL3YxL3JlcGxheS5wcm90bxIHbW9kbC52MSK0AwoZU3VibWl0UmVwbGF5TGFiZWxzUmVxdWVzdBJJCgdwbGF5ZXJzGAEgAygLMi4ubW9kbC52MS5TdWJtaXRSZXBsYXlMYWJlbHNSZXF1ZXN0LlJlcGxheUxhYmVsQgi6SAWSAQIQFBrLAgoLUmVwbGF5TGFiZWwSDAoEdXVpZBgBIAEoCRITCgtwbGF5ZXJfbmFtZRgCIAEoCRIPCgd2ZXJkaWN0GAMgASgJEhIKCmNvbmZpZGVuY2UYBCABKAUSSgoGY2hlYXRzGAUgAygLMjoubW9kbC52MS5TdWJtaXRSZXBsYXlMYWJlbHNSZXF1ZXN0LlJlcGxheUxhYmVsLkNoZWF0RGV0YWlsEg0KBW5vdGVzGAYgASgJGmoKC0NoZWF0RGV0YWlsEgwKBHR5cGUYASABKAkSTQoLdGltZV9yYW5nZXMYAiADKAsyOC5tb2RsLnYxLlN1Ym1pdFJlcGxheUxhYmVsc1JlcXVlc3QuUmVwbGF5TGFiZWwuVGltZVJhbmdlGi0KCVRpbWVSYW5nZRIQCghzdGFydF9tcxgBIAEoAxIOCgZlbmRfbXMYAiABKAMimAEKFFB1YmxpY1JlcGxheVJlc3BvbnNlEhEKCXJlcGxheV9pZBgBIAEoCRISCgptY192ZXJzaW9uGAIgASgJEhEKCWZpbGVfc2l6ZRgDIAEoAxIRCgl0aW1lc3RhbXAYBCABKAMSEgoKcmVwbGF5X3VybBgFIAEoCRIOCgZzdGF0dXMYBiABKAkSDwoHbGFiZWxlZBgHIAEoCCIlChNSZXBsYXlMYWJlbFJlc3BvbnNlEg4KBnN0YXR1cxgBIAEoCUJhChVnZy5tb2RsLnByb3RvLm1vZGwudjFCC1JlcGxheVByb3RvUAGiAgNNWFiqAgdNb2RsLlYxygIHTW9kbFxWMeICE01vZGxcVjFcR1BCTWV0YWRhdGHqAghNb2RsOjpWMWIGcHJvdG8z", [file_buf_validate_validate]);
+  fileDesc("ChRtb2RsL3YxL3JlcGxheS5wcm90bxIHbW9kbC52MSK0AwoZU3VibWl0UmVwbGF5TGFiZWxzUmVxdWVzdBJJCgdwbGF5ZXJzGAEgAygLMi4ubW9kbC52MS5TdWJtaXRSZXBsYXlMYWJlbHNSZXF1ZXN0LlJlcGxheUxhYmVsQgi6SAWSAQIQFBrLAgoLUmVwbGF5TGFiZWwSDAoEdXVpZBgBIAEoCRITCgtwbGF5ZXJfbmFtZRgCIAEoCRIPCgd2ZXJkaWN0GAMgASgJEhIKCmNvbmZpZGVuY2UYBCABKAUSSgoGY2hlYXRzGAUgAygLMjoubW9kbC52MS5TdWJtaXRSZXBsYXlMYWJlbHNSZXF1ZXN0LlJlcGxheUxhYmVsLkNoZWF0RGV0YWlsEg0KBW5vdGVzGAYgASgJGmoKC0NoZWF0RGV0YWlsEgwKBHR5cGUYASABKAkSTQoLdGltZV9yYW5nZXMYAiADKAsyOC5tb2RsLnYxLlN1Ym1pdFJlcGxheUxhYmVsc1JlcXVlc3QuUmVwbGF5TGFiZWwuVGltZVJhbmdlGi0KCVRpbWVSYW5nZRIQCghzdGFydF9tcxgBIAEoAxIOCgZlbmRfbXMYAiABKAMiJQoTUmVwbGF5TGFiZWxSZXNwb25zZRIOCgZzdGF0dXMYASABKAkigAIKE1BhbmVsUmVwbGF5UmVzcG9uc2USEQoJcmVwbGF5X2lkGAEgASgJEhIKCm1jX3ZlcnNpb24YAiABKAkSDgoGc3RhdHVzGAMgASgJEhEKCWZpbGVfc2l6ZRgEIAEoAxISCgpjcmVhdGVkX2F0GAUgASgDEhMKC3RhcmdldF91dWlkGAYgASgJEhMKC3RhcmdldF9uYW1lGAcgASgJEg8KB2xhYmVsZWQYCCABKAgSEgoKcmVwbGF5X3VybBgJIAEoCRIWCgltYXJrZXJfbXMYCiABKANIAIgBARIWCg5mb3JtYXRfdmVyc2lvbhgLIAEoDUIMCgpfbWFya2VyX21zIo8CCg5SZXBsYXlTZXR0aW5ncxIPCgdlbmFibGVkGAEgASgIEhsKE3JlY29yZF9ldmVyeV9wbGF5ZXIYAiABKAgSIAoYcmVjb3JkX29uX2FudGljaGVhdF9mbGFnGAMgASgIEh0KFWFudGljaGVhdF9pbnRlZ3JhdGlvbhgEIAEoCBIiCg53aW5kb3dfc2Vjb25kcxgFIAEoDUIKukgHKgUYrAIoChIhCg1yYWRpdXNfYmxvY2tzGAYgASgNQgq6SAcqBRiAASgQEiQKEG1lbW9yeV9idWRnZXRfbWIYByABKA1CCrpIByoFGIAIKBASIQoOYW50aWNoZWF0X25hbWUYCCABKAlCCbpIBnIEEAEYICK3AQoWUmVwbGF5U2V0dGluZ3NFbnZlbG9wZRIlCgRkYXRhGAEgASgLMhcubW9kbC52MS5SZXBsYXlTZXR0aW5ncxIqCgRtZXRhGAIgASgLMhUubW9kbC52MS5TZXR0aW5nc01ldGFSBV9tZXRhEjcKDmNob2ljZV9tYWRlX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBQhEKD19jaG9pY2VfbWFkZV9hdCJqChtVcGRhdGVSZXBsYXlTZXR0aW5nc1JlcXVlc3QSGAoQZXhwZWN0ZWRfdmVyc2lvbhgBIAEoAxIxCghzZXR0aW5ncxgCIAEoCzIXLm1vZGwudjEuUmVwbGF5U2V0dGluZ3NCBrpIA8gBASJSChhDcmVhdGVSZXBsYXlTaGFyZVJlcXVlc3QSNgoGZXhwaXJ5GAEgASgOMhoubW9kbC52MS5SZXBsYXlTaGFyZUV4cGlyeUIKukgHggEEEAEgACLFAgoLUmVwbGF5U2hhcmUSCgoCaWQYASABKAkSEgoKY3JlYXRlZF9ieRgCIAEoCRIuCgpjcmVhdGVkX2F0GAMgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcBIzCgpleHBpcmVzX2F0GAQgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBEjMKCnJldm9rZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wSAGIAQESEgoKdmlld19jb3VudBgGIAEoAxI3Cg5sYXN0X3ZpZXdlZF9hdBgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAogBAUINCgtfZXhwaXJlc19hdEINCgtfcmV2b2tlZF9hdEIRCg9fbGFzdF92aWV3ZWRfYXQiXAoZQ3JlYXRlUmVwbGF5U2hhcmVSZXNwb25zZRIjCgVzaGFyZRgBIAEoCzIULm1vZGwudjEuUmVwbGF5U2hhcmUSDQoFdG9rZW4YAiABKAkSCwoDdXJsGAMgASgJIjwKFFJlcGxheVNoYXJlc1Jlc3BvbnNlEiQKBnNoYXJlcxgBIAMoCzIULm1vZGwudjEuUmVwbGF5U2hhcmUiwQEKFFNoYXJlZFJlcGxheVJlc3BvbnNlEhMKC3RhcmdldF9uYW1lGAEgASgJEhMKC3NlcnZlcl9uYW1lGAIgASgJEhIKCm1jX3ZlcnNpb24YAyABKAkSLgoKY3JlYXRlZF9hdBgEIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASFgoOZm9ybWF0X3ZlcnNpb24YBSABKA0SEQoJZmlsZV9zaXplGAYgASgDEhAKCGZpbGVfdXJsGAcgASgJIlEKFEZlYXR1cmVTZXR0aW5nc0V2ZW50EigKB3JlcGxheXMYASABKAsyFy5tb2RsLnYxLlJlcGxheVNldHRpbmdzEg8KB3ZlcnNpb24YAiABKAMqwQEKEVJlcGxheVNoYXJlRXhwaXJ5EiMKH1JFUExBWV9TSEFSRV9FWFBJUllfVU5TUEVDSUZJRUQQABIfChtSRVBMQVlfU0hBUkVfRVhQSVJZX09ORV9EQVkQARIiCh5SRVBMQVlfU0hBUkVfRVhQSVJZX1NFVkVOX0RBWVMQAhIjCh9SRVBMQVlfU0hBUkVfRVhQSVJZX1RISVJUWV9EQVlTEAMSHQoZUkVQTEFZX1NIQVJFX0VYUElSWV9ORVZFUhAEQmEKFWdnLm1vZGwucHJvdG8ubW9kbC52MUILUmVwbGF5UHJvdG9QAaICA01YWKoCB01vZGwuVjHKAgdNb2RsXFYx4gITTW9kbFxWMVxHUEJNZXRhZGF0YeoCCE1vZGw6OlYxYgZwcm90bzM", [file_buf_validate_validate, file_google_protobuf_timestamp, file_modl_v1_settings]);
 
 /**
  * @generated from message modl.v1.SubmitReplayLabelsRequest
@@ -117,53 +121,6 @@ export const SubmitReplayLabelsRequest_ReplayLabel_TimeRangeSchema: GenMessage<S
   messageDesc(file_modl_v1_replay, 0, 0, 1);
 
 /**
- * @generated from message modl.v1.PublicReplayResponse
- */
-export type PublicReplayResponse = Message<"modl.v1.PublicReplayResponse"> & {
-  /**
-   * @generated from field: string replay_id = 1;
-   */
-  replayId: string;
-
-  /**
-   * @generated from field: string mc_version = 2;
-   */
-  mcVersion: string;
-
-  /**
-   * @generated from field: int64 file_size = 3;
-   */
-  fileSize: bigint;
-
-  /**
-   * @generated from field: int64 timestamp = 4;
-   */
-  timestamp: bigint;
-
-  /**
-   * @generated from field: string replay_url = 5;
-   */
-  replayUrl: string;
-
-  /**
-   * @generated from field: string status = 6;
-   */
-  status: string;
-
-  /**
-   * @generated from field: bool labeled = 7;
-   */
-  labeled: boolean;
-};
-
-/**
- * Describes the message modl.v1.PublicReplayResponse.
- * Use `create(PublicReplayResponseSchema)` to create a new message.
- */
-export const PublicReplayResponseSchema: GenMessage<PublicReplayResponse> = /*@__PURE__*/
-  messageDesc(file_modl_v1_replay, 1);
-
-/**
  * @generated from message modl.v1.ReplayLabelResponse
  */
 export type ReplayLabelResponse = Message<"modl.v1.ReplayLabelResponse"> & {
@@ -178,5 +135,386 @@ export type ReplayLabelResponse = Message<"modl.v1.ReplayLabelResponse"> & {
  * Use `create(ReplayLabelResponseSchema)` to create a new message.
  */
 export const ReplayLabelResponseSchema: GenMessage<ReplayLabelResponse> = /*@__PURE__*/
+  messageDesc(file_modl_v1_replay, 1);
+
+/**
+ * @generated from message modl.v1.PanelReplayResponse
+ */
+export type PanelReplayResponse = Message<"modl.v1.PanelReplayResponse"> & {
+  /**
+   * @generated from field: string replay_id = 1;
+   */
+  replayId: string;
+
+  /**
+   * @generated from field: string mc_version = 2;
+   */
+  mcVersion: string;
+
+  /**
+   * @generated from field: string status = 3;
+   */
+  status: string;
+
+  /**
+   * @generated from field: int64 file_size = 4;
+   */
+  fileSize: bigint;
+
+  /**
+   * @generated from field: int64 created_at = 5;
+   */
+  createdAt: bigint;
+
+  /**
+   * @generated from field: string target_uuid = 6;
+   */
+  targetUuid: string;
+
+  /**
+   * @generated from field: string target_name = 7;
+   */
+  targetName: string;
+
+  /**
+   * @generated from field: bool labeled = 8;
+   */
+  labeled: boolean;
+
+  /**
+   * @generated from field: string replay_url = 9;
+   */
+  replayUrl: string;
+
+  /**
+   * @generated from field: optional int64 marker_ms = 10;
+   */
+  markerMs?: bigint | undefined;
+
+  /**
+   * @generated from field: uint32 format_version = 11;
+   */
+  formatVersion: number;
+};
+
+/**
+ * Describes the message modl.v1.PanelReplayResponse.
+ * Use `create(PanelReplayResponseSchema)` to create a new message.
+ */
+export const PanelReplayResponseSchema: GenMessage<PanelReplayResponse> = /*@__PURE__*/
   messageDesc(file_modl_v1_replay, 2);
+
+/**
+ * @generated from message modl.v1.ReplaySettings
+ */
+export type ReplaySettings = Message<"modl.v1.ReplaySettings"> & {
+  /**
+   * @generated from field: bool enabled = 1;
+   */
+  enabled: boolean;
+
+  /**
+   * @generated from field: bool record_every_player = 2;
+   */
+  recordEveryPlayer: boolean;
+
+  /**
+   * @generated from field: bool record_on_anticheat_flag = 3;
+   */
+  recordOnAnticheatFlag: boolean;
+
+  /**
+   * @generated from field: bool anticheat_integration = 4;
+   */
+  anticheatIntegration: boolean;
+
+  /**
+   * @generated from field: uint32 window_seconds = 5;
+   */
+  windowSeconds: number;
+
+  /**
+   * @generated from field: uint32 radius_blocks = 6;
+   */
+  radiusBlocks: number;
+
+  /**
+   * @generated from field: uint32 memory_budget_mb = 7;
+   */
+  memoryBudgetMb: number;
+
+  /**
+   * @generated from field: string anticheat_name = 8;
+   */
+  anticheatName: string;
+};
+
+/**
+ * Describes the message modl.v1.ReplaySettings.
+ * Use `create(ReplaySettingsSchema)` to create a new message.
+ */
+export const ReplaySettingsSchema: GenMessage<ReplaySettings> = /*@__PURE__*/
+  messageDesc(file_modl_v1_replay, 3);
+
+/**
+ * @generated from message modl.v1.ReplaySettingsEnvelope
+ */
+export type ReplaySettingsEnvelope = Message<"modl.v1.ReplaySettingsEnvelope"> & {
+  /**
+   * @generated from field: modl.v1.ReplaySettings data = 1;
+   */
+  data?: ReplaySettings | undefined;
+
+  /**
+   * @generated from field: modl.v1.SettingsMeta meta = 2 [json_name = "_meta"];
+   */
+  meta?: SettingsMeta | undefined;
+
+  /**
+   * @generated from field: optional google.protobuf.Timestamp choice_made_at = 3;
+   */
+  choiceMadeAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message modl.v1.ReplaySettingsEnvelope.
+ * Use `create(ReplaySettingsEnvelopeSchema)` to create a new message.
+ */
+export const ReplaySettingsEnvelopeSchema: GenMessage<ReplaySettingsEnvelope> = /*@__PURE__*/
+  messageDesc(file_modl_v1_replay, 4);
+
+/**
+ * @generated from message modl.v1.UpdateReplaySettingsRequest
+ */
+export type UpdateReplaySettingsRequest = Message<"modl.v1.UpdateReplaySettingsRequest"> & {
+  /**
+   * @generated from field: int64 expected_version = 1;
+   */
+  expectedVersion: bigint;
+
+  /**
+   * @generated from field: modl.v1.ReplaySettings settings = 2;
+   */
+  settings?: ReplaySettings | undefined;
+};
+
+/**
+ * Describes the message modl.v1.UpdateReplaySettingsRequest.
+ * Use `create(UpdateReplaySettingsRequestSchema)` to create a new message.
+ */
+export const UpdateReplaySettingsRequestSchema: GenMessage<UpdateReplaySettingsRequest> = /*@__PURE__*/
+  messageDesc(file_modl_v1_replay, 5);
+
+/**
+ * @generated from message modl.v1.CreateReplayShareRequest
+ */
+export type CreateReplayShareRequest = Message<"modl.v1.CreateReplayShareRequest"> & {
+  /**
+   * @generated from field: modl.v1.ReplayShareExpiry expiry = 1;
+   */
+  expiry: ReplayShareExpiry;
+};
+
+/**
+ * Describes the message modl.v1.CreateReplayShareRequest.
+ * Use `create(CreateReplayShareRequestSchema)` to create a new message.
+ */
+export const CreateReplayShareRequestSchema: GenMessage<CreateReplayShareRequest> = /*@__PURE__*/
+  messageDesc(file_modl_v1_replay, 6);
+
+/**
+ * @generated from message modl.v1.ReplayShare
+ */
+export type ReplayShare = Message<"modl.v1.ReplayShare"> & {
+  /**
+   * @generated from field: string id = 1;
+   */
+  id: string;
+
+  /**
+   * @generated from field: string created_by = 2;
+   */
+  createdBy: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 3;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: optional google.protobuf.Timestamp expires_at = 4;
+   */
+  expiresAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: optional google.protobuf.Timestamp revoked_at = 5;
+   */
+  revokedAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: int64 view_count = 6;
+   */
+  viewCount: bigint;
+
+  /**
+   * @generated from field: optional google.protobuf.Timestamp last_viewed_at = 7;
+   */
+  lastViewedAt?: Timestamp | undefined;
+};
+
+/**
+ * Describes the message modl.v1.ReplayShare.
+ * Use `create(ReplayShareSchema)` to create a new message.
+ */
+export const ReplayShareSchema: GenMessage<ReplayShare> = /*@__PURE__*/
+  messageDesc(file_modl_v1_replay, 7);
+
+/**
+ * @generated from message modl.v1.CreateReplayShareResponse
+ */
+export type CreateReplayShareResponse = Message<"modl.v1.CreateReplayShareResponse"> & {
+  /**
+   * @generated from field: modl.v1.ReplayShare share = 1;
+   */
+  share?: ReplayShare | undefined;
+
+  /**
+   * @generated from field: string token = 2;
+   */
+  token: string;
+
+  /**
+   * @generated from field: string url = 3;
+   */
+  url: string;
+};
+
+/**
+ * Describes the message modl.v1.CreateReplayShareResponse.
+ * Use `create(CreateReplayShareResponseSchema)` to create a new message.
+ */
+export const CreateReplayShareResponseSchema: GenMessage<CreateReplayShareResponse> = /*@__PURE__*/
+  messageDesc(file_modl_v1_replay, 8);
+
+/**
+ * @generated from message modl.v1.ReplaySharesResponse
+ */
+export type ReplaySharesResponse = Message<"modl.v1.ReplaySharesResponse"> & {
+  /**
+   * @generated from field: repeated modl.v1.ReplayShare shares = 1;
+   */
+  shares: ReplayShare[];
+};
+
+/**
+ * Describes the message modl.v1.ReplaySharesResponse.
+ * Use `create(ReplaySharesResponseSchema)` to create a new message.
+ */
+export const ReplaySharesResponseSchema: GenMessage<ReplaySharesResponse> = /*@__PURE__*/
+  messageDesc(file_modl_v1_replay, 9);
+
+/**
+ * @generated from message modl.v1.SharedReplayResponse
+ */
+export type SharedReplayResponse = Message<"modl.v1.SharedReplayResponse"> & {
+  /**
+   * @generated from field: string target_name = 1;
+   */
+  targetName: string;
+
+  /**
+   * @generated from field: string server_name = 2;
+   */
+  serverName: string;
+
+  /**
+   * @generated from field: string mc_version = 3;
+   */
+  mcVersion: string;
+
+  /**
+   * @generated from field: google.protobuf.Timestamp created_at = 4;
+   */
+  createdAt?: Timestamp | undefined;
+
+  /**
+   * @generated from field: uint32 format_version = 5;
+   */
+  formatVersion: number;
+
+  /**
+   * @generated from field: int64 file_size = 6;
+   */
+  fileSize: bigint;
+
+  /**
+   * @generated from field: string file_url = 7;
+   */
+  fileUrl: string;
+};
+
+/**
+ * Describes the message modl.v1.SharedReplayResponse.
+ * Use `create(SharedReplayResponseSchema)` to create a new message.
+ */
+export const SharedReplayResponseSchema: GenMessage<SharedReplayResponse> = /*@__PURE__*/
+  messageDesc(file_modl_v1_replay, 10);
+
+/**
+ * @generated from message modl.v1.FeatureSettingsEvent
+ */
+export type FeatureSettingsEvent = Message<"modl.v1.FeatureSettingsEvent"> & {
+  /**
+   * @generated from field: modl.v1.ReplaySettings replays = 1;
+   */
+  replays?: ReplaySettings | undefined;
+
+  /**
+   * @generated from field: int64 version = 2;
+   */
+  version: bigint;
+};
+
+/**
+ * Describes the message modl.v1.FeatureSettingsEvent.
+ * Use `create(FeatureSettingsEventSchema)` to create a new message.
+ */
+export const FeatureSettingsEventSchema: GenMessage<FeatureSettingsEvent> = /*@__PURE__*/
+  messageDesc(file_modl_v1_replay, 11);
+
+/**
+ * @generated from enum modl.v1.ReplayShareExpiry
+ */
+export enum ReplayShareExpiry {
+  /**
+   * @generated from enum value: REPLAY_SHARE_EXPIRY_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: REPLAY_SHARE_EXPIRY_ONE_DAY = 1;
+   */
+  ONE_DAY = 1,
+
+  /**
+   * @generated from enum value: REPLAY_SHARE_EXPIRY_SEVEN_DAYS = 2;
+   */
+  SEVEN_DAYS = 2,
+
+  /**
+   * @generated from enum value: REPLAY_SHARE_EXPIRY_THIRTY_DAYS = 3;
+   */
+  THIRTY_DAYS = 3,
+
+  /**
+   * @generated from enum value: REPLAY_SHARE_EXPIRY_NEVER = 4;
+   */
+  NEVER = 4,
+}
+
+/**
+ * Describes the enum modl.v1.ReplayShareExpiry.
+ */
+export const ReplayShareExpirySchema: GenEnum<ReplayShareExpiry> = /*@__PURE__*/
+  enumDesc(file_modl_v1_replay, 0);
 

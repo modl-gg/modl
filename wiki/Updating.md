@@ -18,6 +18,7 @@ Back up before a MAJOR.MINOR update ([Backups and Restore](Backups-and-Restore))
 
 - Update now on a built-in panel restarts only the panel; players cannot join for a few seconds and online players stay. If the console asks for it, restart the Minecraft server to finish or roll back.
 - `java -jar modl-server.jar update` downloads and verifies the release; start modl as usual to finish. Flags: `--check`, `--version <v>`, `--prerelease`, `--acknowledge-plugin-update` (needed for another MAJOR.MINOR). A jar updated this way runs under a small supervisor, so two JVMs run; count `-Xms` twice.
+- Release candidates (versions such as `3.0.0-rc.2`) are offered only with Settings > System > Updates > Include pre-releases on (Super Admin), or with `--prerelease` on the `update` command; Docker shows the `MODL_IMAGE_TAG` line to set.
 - The Docker digest is the one the signed release names, so a moved tag cannot change what you run.
 - Releases are signed. Only a release signed with a key built into your modl installs; a build without keys shows no updates, and you replace files by hand.
 - Update checks: a conditional check of the signed release file about every 12 hours, identified only by `User-Agent: modl/<version>`. Turn them off in Settings > System > Updates or with `MODL_UPDATE_CHECK=false`.

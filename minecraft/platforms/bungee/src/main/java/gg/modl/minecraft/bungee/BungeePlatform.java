@@ -4,6 +4,7 @@ import dev.simplix.cirrus.bungee.wrapper.BungeePlayerWrapper;
 import dev.simplix.cirrus.player.CirrusPlayerWrapper;
 import gg.modl.minecraft.api.AbstractPlayer;
 import gg.modl.minecraft.core.Platform;
+import gg.modl.minecraft.core.network.ProxyBackend;
 import net.md_5.bungee.api.plugin.Plugin;
 import revxrsal.commands.Lamp;
 import revxrsal.commands.command.CommandActor;
@@ -20,11 +21,13 @@ import net.md_5.bungee.api.connection.ProxiedPlayer;
 import java.util.function.Consumer;
 import java.io.File;
 import java.net.InetSocketAddress;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Collection;
 import java.util.Collections;
 import java.util.Map;
 import java.util.LinkedHashSet;
+import java.util.List;
 import java.util.Set;
 import java.util.UUID;
 import java.util.logging.Logger;
@@ -147,8 +150,12 @@ public class BungeePlatform implements Platform {
     }
 
     @Override
-    public Set<String> knownServerNames() {
-        return new LinkedHashSet<>(ProxyServer.getInstance().getServers().keySet());
+    public List<ProxyBackend> proxyBackends() {
+        List<ProxyBackend> backends = new ArrayList<>();
+        for (ServerInfo info : new ArrayList<>(ProxyServer.getInstance().getServers().values())) {
+            backends.add(ProxyBackend.of(info.getName(), info.getSocketAddress()));
+        }
+        return backends;
     }
 
     @Override

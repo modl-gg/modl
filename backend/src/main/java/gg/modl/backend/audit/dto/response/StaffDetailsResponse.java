@@ -1,5 +1,6 @@
 package gg.modl.backend.audit.dto.response;
 
+import gg.modl.backend.player.data.punishment.PunishmentPhase;
 import org.jspecify.annotations.Nullable;
 import java.time.Instant;
 import java.util.List;
@@ -21,7 +22,7 @@ public record StaffDetailsResponse(
         String reason,
         @Nullable String duration,
         Instant issued,
-        boolean active,
+        PunishmentPhase phase,
         boolean rolledBack,
         @Nullable String effectiveCategory
     ) {}

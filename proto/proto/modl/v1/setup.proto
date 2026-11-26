@@ -74,6 +74,7 @@ enum SetupStep {
   SETUP_STEP_CONTENT = 9;
   SETUP_STEP_IMPORT = 10;
   SETUP_STEP_PLAYER_ADDRESSES = 11;
+  SETUP_STEP_REPLAYS = 12;
 }
 
 enum SetupStepStatus {

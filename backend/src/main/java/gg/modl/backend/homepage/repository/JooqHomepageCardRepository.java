@@ -38,7 +38,6 @@ public class JooqHomepageCardRepository implements HomepageCardRepository {
         row.setIconColor(TextLimits.requireIfPresent(HOMEPAGE_CARDS.ICON_COLOR, card.getIconColor()));
         row.setActionType(TextLimits.requireIfPresent(HOMEPAGE_CARDS.ACTION_TYPE, card.getActionType()));
         row.setActionUrl(card.getActionUrl());
-        row.setActionButtonText(TextLimits.requireIfPresent(HOMEPAGE_CARDS.ACTION_BUTTON_TEXT, card.getActionButtonText()));
         row.setCategoryId(TextLimits.requireIfPresent(HOMEPAGE_CARDS.CATEGORY_ID, existingCategoryId(card.getCategoryId())));
         row.setBackgroundColor(TextLimits.requireIfPresent(HOMEPAGE_CARDS.BACKGROUND_COLOR, card.getBackgroundColor()));
         row.setOrdinal(card.getOrdinal());
@@ -98,8 +97,6 @@ public class JooqHomepageCardRepository implements HomepageCardRepository {
         ContentRows.putIfPresent(changes, HOMEPAGE_CARDS.ACTION_TYPE,
             TextLimits.requireIfPresent(HOMEPAGE_CARDS.ACTION_TYPE, patch.actionType()));
         ContentRows.putIfPresent(changes, HOMEPAGE_CARDS.ACTION_URL, patch.actionUrl());
-        ContentRows.putIfPresent(changes, HOMEPAGE_CARDS.ACTION_BUTTON_TEXT,
-            TextLimits.requireIfPresent(HOMEPAGE_CARDS.ACTION_BUTTON_TEXT, patch.actionButtonText()));
         if (patch.categoryId() != null) {
             changes.put(HOMEPAGE_CARDS.CATEGORY_ID,
                 TextLimits.requireIfPresent(HOMEPAGE_CARDS.CATEGORY_ID, existingCategoryId(patch.categoryId())));
@@ -141,7 +138,6 @@ public class JooqHomepageCardRepository implements HomepageCardRepository {
             .iconColor(row.getIconColor())
             .actionType(row.getActionType())
             .actionUrl(row.getActionUrl())
-            .actionButtonText(row.getActionButtonText())
             .categoryId(row.getCategoryId())
             .backgroundColor(row.getBackgroundColor())
             .ordinal(row.getOrdinal())

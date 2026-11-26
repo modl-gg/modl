@@ -1,6 +1,6 @@
 # Troubleshooting
 
-Check the console first, then `plugins/modl/server/logs/server.log` (built-in panel), `docker compose logs modl` or the jar's output. `<...>` parts of the messages below vary.
+Check the console first, then `plugins/modl/server/logs/server.log` (built-in panel), `docker compose logs modl`, or the jar's output. `<...>` parts of the messages below vary.
 
 ## The server does not let players in
 
@@ -30,6 +30,8 @@ Players cannot join until this is fixed.
 | `The built-in panel made no startup progress for 180 seconds` | Read `server.log`; usually a slow disk or network. Restart. |
 | `Another process is running the built-in panel from` | Two servers share one `plugins/modl` folder; give each its own. |
 | `Restart the Minecraft server to finish or roll back the update` | Restart the Minecraft server. |
+| `The Cloudflare Tunnel needs the panel's https address` | Set `embedded.public-url` (`MODL_PUBLIC_URL`) to the tunnel's `https://` hostname ([Panel Port and Tunnels](Panel-Port-and-Tunnels#built-in-cloudflare-tunnel)). |
+| `The Cloudflare Tunnel needs its token` or `is not a Cloudflare Tunnel token` | Copy only the token after `--token` from the Cloudflare dashboard. |
 
 Players see `The moderation system on this server is not running`, `is being updated` (version mismatch), `cannot accept players until PacketEvents ... is installed`, or `Connection to panel failed` while the plugin is still connecting.
 
@@ -41,7 +43,7 @@ Players see `The moderation system on this server is not running`, `is being upd
 | `The modl server at <url> rejected the API key` | Copy the key again; it was regenerated or revoked. |
 | `This plugin is modl <a>, but the modl server at <url> runs <b>.` | Run the same MAJOR.MINOR on both ([Updating](Updating)). |
 | `remote.url <url> sends the API key without encryption to a public address` | Use `https://` ([HTTPS and Reverse Proxy](HTTPS-and-Reverse-Proxy)). |
-| `[network] This server has no server key yet` | Create a Behind a proxy key, paste it into `remote.api-key` and run `/modlserver reload`. Players can join meanwhile. |
+| `[network] This server has no server key yet` | Create a Behind a proxy key, paste it into `remote.api-key`, and run `/modlserver reload`. Players can join meanwhile. |
 | `[network] The modl server rejected the server key; retrying` | The key was revoked or belongs to another panel; create a new one. |
 | `[network] Another server connected to the modl network as <name> with this server key, so this server was disconnected` | Two servers use the same key or name. Give every server its own key ([Proxy Network](Proxy-Network)). |
 | `[network] ... its websocket could not be opened` | Your reverse proxy blocks websocket upgrades on `/v1/realtime/ws`. |
@@ -53,6 +55,16 @@ Players see `The moderation system on this server is not running`, `is being upd
 | `This server could not open the panel at <url>. Nothing answers at that address on this machine` | The Panel URL is a local address: start the panel or the proxy in front of it, or fix the Panel URL. |
 | `modl <a> is available (this plugin is <b>).` | An update is out ([Updating](Updating)). |
 | `Players are connecting from <kind> addresses, so their real IPs are not being forwarded` | Turn on real-IP forwarding (PROXY protocol) in the tunnel or DDoS protection in front of your server or proxy. |
+
+## Cloudflare Tunnel
+
+| Message | Fix |
+|---|---|
+| `Cloudflare Tunnel connected: <url>` | Working. |
+| `Cloudflare Tunnel is not connected after 1 minute` | A wrong or deleted token, or the host blocks outbound port 7844. Copy the token again or ask the host to allow it; modl keeps retrying. |
+| `Cloudflare Tunnel cannot start: cloudflared <version> could not be downloaded from <url>` | Allow outbound HTTPS to `github.com`, or put the file from that URL in the folder the message names. |
+| `Cloudflare Tunnel cannot start: cloudflared could not be started from <path>` | The data folder is mounted noexec; ask the host to allow running programs there. |
+| `Cloudflare Tunnel cannot start: modl has no cloudflared build for <platform>` | Run cloudflared yourself ([Panel Port and Tunnels](Panel-Port-and-Tunnels#other-tunnels)). |
 
 ## Database
 
@@ -73,12 +85,12 @@ Players see `The moderation system on this server is not running`, `is being upd
 | `modl copied its data to <database> and exits now; its container restart policy starts it again on the new database.` | Nothing with the compose file. A container without a restart policy stays stopped: start it again. |
 | `Moving the database to <database> stopped: <reason>. modl keeps using <current>.` | Fix the reason, then press Move again in Settings > System > Database. `The copy does not hold every row` names the first tables whose counts differ. |
 | `modl could not reach <database> (<reason>), so it keeps using <previous>.` | The move did not finish. Fix the connection, then move again. `another modl server is using it` means another server holds that database. |
-| `<database> does not hold the copy modl made (<reason>), so modl keeps using <previous>.` | The new database was emptied, restored or replaced before the restart. Move again. |
+| `<database> does not hold the copy modl made (<reason>), so modl keeps using <previous>.` | The new database was emptied, restored, or replaced before the restart. Move again. |
 | `modl cannot start: this database was moved to <database> at <time>.` | modl moved its data away from this database, which no longer receives changes. Use the database it names, or move back in the panel. To use this old copy anyway, start once with the `MODL_DATABASE_REOPEN=<move id>` the line names, then remove it. |
 | `modl cannot start: <database> does not hold the copy modl made, so the next start uses <previous> again.` | Restart modl; it returns to the previous database. Then move again. |
 | `modl reopened this database, which was moved to <database> at <time>.` | Expected after `MODL_DATABASE_REOPEN`. Remove the variable. |
 | `modl now uses <database>. The previous database was kept unchanged.` | Nothing; the move finished. |
-| `Waiting up to 90 seconds for <database> to answer.` | The first start after a move waits for the new database; start it. |
+| `Waiting up to <n> seconds for <database> to answer.` | The first start after a move waits for the new database: 90 seconds when it does not answer (start it), 130 seconds while another modl server holds it (after a crash its lock expires in about 2 minutes). |
 | `The database is set by MODL_DATABASE_URL or connection.yml, so modl no longer uses the one chosen in the panel` | Expected when you set them. Remove them and move in the panel to choose there again. |
 | `<data folder>/database-connection.json is not a valid modl database choice` | Restore the file, or remove it to use SQLite again ([Database and Storage](Database-and-Storage#moving-in-the-panel)). |
 | `Restart the Minecraft server to finish moving the database.` | The built-in panel did not start again after a move. Restart the server. |
@@ -121,13 +133,13 @@ On Velocity 3 with Java 24 or newer, loading SQLite prints four harmless `WARNIN
 | Players hang on "Encrypting..." behind a proxy with LimboAPI | Keep `proxy.packet_interception: auto` (or `disabled`). |
 | Discord messages do not arrive | Settings > General > Webhooks shows the last failure until a restart. Only Discord webhook URLs are accepted. |
 | `proxycheck.io without a key reached its limit of 100 lookups today` | New addresses stay unknown until tomorrow (UTC); save a free key in Settings > Moderation > Player addresses. |
-| `Refused the login of <uuid>: its player name does not follow the Minecraft name rule` | The name is not 1 to 16 letters, digits or underscores (or a Bedrock prefix); fix the name source, such as an offline-mode or Bedrock plugin. |
+| `Refused the login of <uuid>: its player name does not follow the Minecraft name rule` | The name is not 1 to 16 letters, digits, or underscores (or a Bedrock prefix); fix the name source, such as an offline-mode or Bedrock plugin. |
 | `<name> was refused before modl checked their bans, but another plugin allowed the login` | Another plugin overrides login refusals (whitelist, bans); remove that override. |
 | `An earlier import's kept IP history is still being released` | A `standard` import is still releasing kept IP history; try again later. |
 | `There is not enough free disk space to copy the <source> database` | Free disk space on the server; the copy is deleted after the import. |
-| `<source> is running and keeps its database file open` | Remove that plugin's jar (keep its folder), restart and import again ([Migrating from Other Plugins](Migrating-from-Other-Plugins)). |
+| `<source> is running and keeps its database file open` | Remove that plugin's jar (keep its folder), restart, and import again ([Migrating from Other Plugins](Migrating-from-Other-Plugins)). |
 | `Uploaded files are being moved to another storage` | Wait for the move in Settings > System > Storage, then import. |
 | `modl is moving to another database` | Wait for the move in Settings > System > Database, then import. |
 | `Missing locale: <key>` | A bundled message is missing; report it with the key. Your own `locale/<locale>.yml` cannot cause it. |
 
-Still stuck: open an [issue](https://github.com/modl-gg/modl/issues) with the version, platform, mode and log lines, without keys or emails. `/modl status` prints a report without them.
+Still stuck: open an [issue](https://github.com/modl-gg/modl/issues) with the version, platform, mode, and log lines, without keys or emails. `/modl status` prints a report without them.

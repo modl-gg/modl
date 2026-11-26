@@ -290,7 +290,7 @@ public final class ArchiveAnalyzer {
     private void setting(ArchiveDocument document) {
         String type = document.string("type");
         if (type == null) {
-            issues.report(IssueCode.SETTING_IGNORED, "");
+            issues.report(IssueCode.RECORD_UNREADABLE, "");
             return;
         }
         settings.merge(type, document, (first, second) -> SETTINGS_PRECEDENCE.compare(first, second) >= 0 ? first : second);
@@ -316,15 +316,14 @@ public final class ArchiveAnalyzer {
     }
 
     private void reportManifestFacts() {
-        manifest.excludedCollections().forEach(excluded -> issues.report(IssueCode.COLLECTION_EXCLUDED, excluded.name()));
         manifest.skippedObjects().forEach(skipped -> issues.report(IssueCode.FILE_SKIPPED_BY_EXPORT, skipped.key()));
         issues.seen(ImportSubject.FILES, manifest.objects().size());
         issues.seen(ImportSubject.STAFF, staff.size());
-        issues.seen(ImportSubject.ROLES, roles.size());
+        issues.seen(ImportSubject.ROLES, roles.stream().filter(RoleMapper::isImported).count());
         issues.seen(ImportSubject.CATEGORIES, categories.size());
         issues.seen(ImportSubject.ARTICLES, articleCount);
         issues.seen(ImportSubject.CARDS, cards.size());
-        issues.seen(ImportSubject.SETTINGS, settings.size());
+        issues.seen(ImportSubject.SETTINGS, settings.keySet().stream().filter(SettingsImport.IMPORTED::contains).count());
     }
 
     private Instant timeOr(@Nullable Instant value) {

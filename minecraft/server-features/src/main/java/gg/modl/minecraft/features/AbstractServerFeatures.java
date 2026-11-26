@@ -9,6 +9,7 @@ import gg.modl.minecraft.features.link.CoreLink;
 import gg.modl.minecraft.features.moderation.LocalModerationOps;
 import gg.modl.minecraft.features.moderation.ModerationReconciler;
 import gg.modl.minecraft.features.replay.MemberReplayCapture;
+import gg.modl.minecraft.features.replay.SwitchableReplayService;
 import gg.modl.minecraft.features.reporter.AutoReporter;
 import gg.modl.minecraft.features.reporter.TicketCreator;
 import gg.modl.minecraft.features.reporter.detection.ViolationTracker;
@@ -16,6 +17,9 @@ import gg.modl.minecraft.features.reporter.hook.AntiCheatHook;
 import gg.modl.minecraft.features.resource.FeaturesYamlResource;
 import gg.modl.minecraft.features.statwipe.MemberStatWipeHandler;
 import gg.modl.minecraft.features.statwipe.StatWipeHandler;
+import gg.modl.minecraft.core.feature.FeatureSettings;
+import gg.modl.minecraft.core.feature.FeatureSettingsTarget;
+import gg.modl.minecraft.core.feature.FeatureStatus;
 import gg.modl.minecraft.core.locale.LocaleManager;
 import gg.modl.minecraft.core.network.MemberActionSender;
 import gg.modl.minecraft.core.network.MemberStatWipes;
@@ -28,12 +32,13 @@ import org.jspecify.annotations.Nullable;
 import java.io.IOException;
 import java.nio.file.Path;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.List;
 import java.util.UUID;
 import java.util.concurrent.CopyOnWriteArrayList;
 import java.util.function.Supplier;
 
-public abstract class AbstractServerFeatures {
+public abstract class AbstractServerFeatures implements FeatureSettingsTarget {
     private final List<FeaturesReloadStep> reloadSteps = new CopyOnWriteArrayList<>();
     private final OnlinePlayers onlinePlayers = new OnlinePlayers();
     private static final String EMPTY_SERVER_NAME_WARNING = "[server-features] server-name is empty in "
@@ -41,12 +46,16 @@ public abstract class AbstractServerFeatures {
 
     protected final FeaturesPluginContext context;
     protected final PluginLogger pluginLogger;
-    protected final List<AntiCheatHook> hooks = new ArrayList<>();
+    protected final List<AntiCheatHook> hooks = new CopyOnWriteArrayList<>();
     protected final ViolationTracker violationTracker = new ViolationTracker();
+    protected final SwitchableReplayService replays = new SwitchableReplayService();
 
     @Getter protected final ServerFeaturesConfig featuresConfig;
     @Getter private final StatWipeHandler statWipeHandler;
     private volatile @Nullable StartedFeatures started;
+    private volatile FeatureSettings settings = FeatureSettings.NONE;
+    private volatile Runnable statusChanged = AbstractServerFeatures::nobodyListens;
+    private volatile FeatureStatus status = new FeatureStatus(false, false, false, Collections.<String>emptyList(), 0);
 
     protected AbstractServerFeatures(FeaturesPluginContext context, ServerFeaturesConfig featuresConfig,
                                       PluginLogger pluginLogger) {
@@ -90,15 +99,53 @@ public abstract class AbstractServerFeatures {
 
         LocalModerationOps moderationOps = startModerationHandlers(localeManager, staffModeConfig, actions,
                 serverName, coreLink != null);
-        ReplayService replayService = initReplayRecording(featuresConfig);
         AutoReporter autoReporter = new AutoReporter(pluginLogger, featuresConfig, ticketCreator, violationTracker,
-                serverName);
-        if (replayService != null) autoReporter.setReplayService(replayService);
+                serverName, () -> settings.getAnticheatName());
+        autoReporter.setReplayService(replays);
         ModerationReconciler moderationReconciler = ModerationReconciler.start(moderationOps, pluginLogger);
 
-        started = new StartedFeatures(localeManager, staffModeConfig, autoReporter, moderationReconciler,
-                replayService);
+        started = new StartedFeatures(localeManager, staffModeConfig, autoReporter, moderationReconciler);
         registerRuntimeHooks(localeManager, coreLink);
+        applyReplaySettings(FeatureSettings.NONE, settings);
+        featureStatusChanged();
+    }
+
+    @Override
+    public final void applyFeatureSettings(FeatureSettings next) {
+        context.getScheduler().runOnMainThread(() -> applyOnMainThread(next));
+    }
+
+    @Override
+    public final FeatureStatus featureStatus() {
+        return status;
+    }
+
+    @Override
+    public final void reportStatusTo(Runnable listener) {
+        statusChanged = listener;
+    }
+
+    protected final void featureStatusChanged() {
+        boolean replaysSupported = supportsReplays();
+        status = new FeatureStatus(replaysSupported, replays.isActive(), !hooks.isEmpty(), detectedAnticheats(),
+                replaysSupported ? settings.effectiveMemoryBudgetMb() : 0);
+        statusChanged.run();
+    }
+
+    protected final FeatureSettings settings() {
+        return settings;
+    }
+
+    private void applyOnMainThread(FeatureSettings next) {
+        FeatureSettings previous = settings;
+        settings = next;
+        if (started == null || previous.equals(next)) return;
+        applyReplaySettings(previous, next);
+        if (previous.isAnticheatIntegration() != next.isAnticheatIntegration()) applyAntiCheatHookSetting();
+        featureStatusChanged();
+    }
+
+    private static void nobodyListens() {
     }
 
     public void disable() {
@@ -119,12 +166,11 @@ public abstract class AbstractServerFeatures {
     }
 
     public @Nullable ReplayService getReplayService() {
-        StartedFeatures running = started;
-        return running == null ? null : running.replayService;
+        return started == null ? null : replays;
     }
 
     public ReplayCaptureHandler memberReplayCaptures() {
-        return new MemberReplayCapture(context.getScheduler(), context.getPlayerProvider(), this::getReplayService, pluginLogger);
+        return new MemberReplayCapture(context.getPlayerProvider(), this::getReplayService, pluginLogger);
     }
 
     public MemberStatWipes memberStatWipes(Supplier<ModlHttpClient> httpClient, Supplier<String> serverName) {
@@ -222,15 +268,15 @@ public abstract class AbstractServerFeatures {
 
     protected final void applyAntiCheatHookSetting() {
         unregisterAntiCheatHooks();
-        if (!featuresConfig.isAnticheatHookEnabled()) {
-            pluginLogger.info("[anticheat] Anticheat auto-reporting is disabled by anticheat-hook-enabled");
+        if (!settings.isAnticheatIntegration()) {
+            pluginLogger.debug("[anticheat] The anticheat integration is off in the panel");
             return;
         }
         registerAntiCheatHooks(hooks, started().autoReporter);
     }
 
     public final boolean isAnticheatHookEnabled() {
-        return featuresConfig.isAnticheatHookEnabled();
+        return settings.isAnticheatIntegration();
     }
 
     private void unregisterAntiCheatHooks() {
@@ -254,7 +300,11 @@ public abstract class AbstractServerFeatures {
 
     protected abstract void registerAntiCheatHooks(List<AntiCheatHook> hooks, AutoReporter autoReporter);
 
-    protected abstract @Nullable ReplayService initReplayRecording(ServerFeaturesConfig config);
+    protected abstract void applyReplaySettings(FeatureSettings previous, FeatureSettings next);
+
+    protected abstract boolean supportsReplays();
+
+    protected abstract List<String> detectedAnticheats();
 
     protected abstract void registerPlatformEvents();
 
@@ -267,16 +317,13 @@ public abstract class AbstractServerFeatures {
         private final StaffModeConfig staffModeConfig;
         private final AutoReporter autoReporter;
         private final ModerationReconciler moderationReconciler;
-        private final @Nullable ReplayService replayService;
 
         private StartedFeatures(FeaturesLocaleManager localeManager, StaffModeConfig staffModeConfig,
-                                AutoReporter autoReporter, ModerationReconciler moderationReconciler,
-                                @Nullable ReplayService replayService) {
+                                AutoReporter autoReporter, ModerationReconciler moderationReconciler) {
             this.localeManager = localeManager;
             this.staffModeConfig = staffModeConfig;
             this.autoReporter = autoReporter;
             this.moderationReconciler = moderationReconciler;
-            this.replayService = replayService;
         }
     }
 }

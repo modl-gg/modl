@@ -39,8 +39,7 @@ public class CirrusSpigot {
         if (IS_FOLIA) {
             try {
                 foliaGetGlobalScheduler = Bukkit.class.getMethod("getGlobalRegionScheduler");
-                Object scheduler = foliaGetGlobalScheduler.invoke(null);
-                foliaGlobalRun = scheduler.getClass().getMethod("run",
+                foliaGlobalRun = foliaGetGlobalScheduler.getReturnType().getMethod("run",
                         Plugin.class, Consumer.class);
             } catch (Exception e) {
                 // Will fall back to direct execution in foliaRunGlobal
@@ -97,8 +96,9 @@ public class CirrusSpigot {
     private static void foliaRunAsyncTimer(JavaPlugin plugin, Runnable task,
                                             long delay, long period, TimeUnit unit) {
         try {
-            Object asyncScheduler = Bukkit.class.getMethod("getAsyncScheduler").invoke(null);
-            Method runAtFixedRate = asyncScheduler.getClass().getMethod("runAtFixedRate",
+            Method getAsyncScheduler = Bukkit.class.getMethod("getAsyncScheduler");
+            Object asyncScheduler = getAsyncScheduler.invoke(null);
+            Method runAtFixedRate = getAsyncScheduler.getReturnType().getMethod("runAtFixedRate",
                     Plugin.class, Consumer.class, long.class, long.class, TimeUnit.class);
             Consumer<Object> consumer = (scheduledTask) -> task.run();
             runAtFixedRate.invoke(asyncScheduler, plugin, consumer, delay, period, unit);

@@ -13,6 +13,7 @@ import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.Mockito.doAnswer;
 import static org.mockito.Mockito.mock;
 import static org.mockito.Mockito.never;
+import static org.mockito.Mockito.timeout;
 import static org.mockito.Mockito.verify;
 import static org.mockito.Mockito.when;
 
@@ -25,6 +26,7 @@ import gg.modl.backend.database.backup.ArchivingDatabaseBackup;
 import gg.modl.backend.database.backup.BackupTestData;
 import gg.modl.backend.database.backup.DatabaseCopy;
 import gg.modl.backend.database.backup.RowCountMismatch;
+import gg.modl.backend.database.selection.ArrivalWait;
 import gg.modl.backend.database.selection.DatabaseChoiceFile;
 import gg.modl.backend.database.selection.DatabaseConnection;
 import gg.modl.backend.database.selection.DatabaseSelection;
@@ -52,6 +54,7 @@ import gg.modl.backend.server.data.Server;
 import gg.modl.backend.storage.OldCopyRemovals;
 import gg.modl.backend.storage.StorageMoves;
 import gg.modl.backend.support.sql.DialectTarget;
+import gg.modl.backend.support.sql.ExternalDialectTest;
 import gg.modl.backend.support.sql.SqlTestDatabase;
 import gg.modl.backend.support.sql.TestDialects;
 import gg.modl.backend.update.install.InstanceRestart;
@@ -68,13 +71,14 @@ import java.time.Duration;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
+import java.util.concurrent.CompletableFuture;
+import java.util.concurrent.CopyOnWriteArrayList;
+import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
 import org.junit.jupiter.api.AfterEach;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 class DatabaseMoveServiceTest {
     private static final String KEY = "storage-signing-key";
@@ -90,6 +94,7 @@ class DatabaseMoveServiceTest {
     private final StorageMoves storageMoves = mock(StorageMoves.class);
     private final OldCopyRemovals oldCopyRemovals = mock(OldCopyRemovals.class);
     private final LogService logService = mock(LogService.class);
+    private final ImportExclusion importExclusion = new ImportExclusion();
     private final RealtimeEventPublisher realtime = mock(RealtimeEventPublisher.class);
     private final List<ConcurrentImport> imports = new ArrayList<>();
     private final List<AutoCloseable> opened = new ArrayList<>();
@@ -129,8 +134,7 @@ class DatabaseMoveServiceTest {
         }
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void aMoveCopiesEverythingKeepsWritesPausedAndRestartsOntoTheNewDatabase(DialectTarget target) throws Exception {
         DatabaseConnection connection = connectionTo(TestDialects.freshDatabase(target), target.dialect());
 
@@ -141,7 +145,7 @@ class DatabaseMoveServiceTest {
         assertThat(finished.phase()).isEqualTo(DatabaseMovePhase.RESTARTING);
         assertThat(finished.copiedRows()).isPositive();
         assertThat(service.isMovingDatabase()).isTrue();
-        verify(restart).restart();
+        verify(restart, timeout(SETTLED.toMillis())).restart();
         verify(auditor).recordStaffAction(eq(server), eq(OWNER), contains("Started moving the database"));
         PanelDatabaseChoice stored = new DatabaseChoiceFile(dataDirectory.root()).read().orElseThrow();
         assertThat(stored.selected()).isEqualTo(connection);
@@ -152,14 +156,13 @@ class DatabaseMoveServiceTest {
         assertThat(live.dsl().fetchCount(PLAYERS)).isEqualTo(BackupTestData.PLAYER_COUNT);
         assertThat(live.dsl().selectFrom(DATABASE_DEPARTURE).fetchSingle().getMoveToken()).isEqualTo(stored.moveToken());
         assertThat(PendingTargetCheck.check(connection.properties(SqlDatabaseProperties.builtIn()), dataDirectory,
-            stored.moveToken()).outcome()).as("the target lock is held until modl restarts").isEqualTo(PendingTargetCheck.Outcome.RETRY);
+            stored.moveToken()).outcome()).as("the target lock is held until modl restarts").isEqualTo(PendingTargetCheck.Outcome.HELD);
         service.stop();
         assertThat(PendingTargetCheck.check(connection.properties(SqlDatabaseProperties.builtIn()), dataDirectory,
             stored.moveToken()).outcome()).as("the copy carries the move token").isEqualTo(PendingTargetCheck.Outcome.READY);
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void aMoveThatCannotBeRecordedResumesWritesAndRemovesItsMark(DialectTarget target) throws Exception {
         assumeTrue(FileSystems.getDefault().supportedFileAttributeViews().contains("posix"));
         DatabaseConnection connection = connectionTo(TestDialects.freshDatabase(target), target.dialect());
@@ -195,8 +198,7 @@ class DatabaseMoveServiceTest {
         verify(restart, never()).restart();
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void aCopyThatCannotBeToldApartFromAFinishedMoveKeepsWritesPaused(DialectTarget target) throws Exception {
         assumeTrue(FileSystems.getDefault().supportedFileAttributeViews().contains("posix"));
         SqlDatabaseProperties external = TestDialects.freshDatabase(target);
@@ -282,8 +284,7 @@ class DatabaseMoveServiceTest {
         assertThat(service.isMovingDatabase()).isFalse();
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void withoutAnAutomaticRestartTheMoveWaitsForTheOperator(DialectTarget target) throws InterruptedException {
         when(restart.mode()).thenReturn(Mode.MANUAL);
         DatabaseConnection connection = connectionTo(TestDialects.freshDatabase(target), target.dialect());
@@ -297,12 +298,11 @@ class DatabaseMoveServiceTest {
             .isInstanceOfSatisfying(ConflictException.class, refused -> assertThat(refused.getMachineCode()).isEqualTo("DATABASE_MOVE_RUNNING"));
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void aContainerExitsOnlyAfterTheNewDatabaseIsRecordedWithWritesPaused(DialectTarget target) throws Exception {
         when(restart.mode()).thenReturn(Mode.EXIT);
         DatabaseConnection connection = connectionTo(TestDialects.freshDatabase(target), target.dialect());
-        List<Boolean> recordedAtExit = new ArrayList<>();
+        List<Boolean> recordedAtExit = new CopyOnWriteArrayList<>();
         doAnswer(invocation -> {
             PanelDatabaseChoice stored = new DatabaseChoiceFile(dataDirectory.root()).read().orElseThrow();
             recordedAtExit.add(stored.pending() && stored.selected().equals(connection) && !writesAdmitted());
@@ -312,6 +312,7 @@ class DatabaseMoveServiceTest {
         service.move(server, OWNER, connection, true);
 
         assertThat(settled().phase()).isEqualTo(DatabaseMovePhase.RESTARTING);
+        verify(restart, timeout(SETTLED.toMillis())).restart();
         assertThat(recordedAtExit).containsExactly(true);
         assertThat(service.view().restartMode()).isEqualTo(Mode.EXIT);
     }
@@ -333,6 +334,39 @@ class DatabaseMoveServiceTest {
         verify(restart, never()).restart();
         verify(auditor).recordStaffAction(eq(server), eq(OWNER), contains("failed"));
         assertThat(live.dsl().fetchCount(DATABASE_DEPARTURE)).as("a mark left by an earlier attempt is removed").isZero();
+    }
+
+    @Test
+    void startingAMoveIsAuditedWithItsEndsAndRestartOutsideTheServiceLocks() throws InterruptedException {
+        when(restart.mode()).thenReturn(Mode.EXIT);
+        DatabaseConnection closed = new DatabaseConnection(DatabaseDialect.POSTGRESQL, "127.0.0.1", 1, "modl", false, "modl", "secret");
+        List<Boolean> auditedOutsideLocks = new ArrayList<>();
+        doAnswer(invocation -> {
+            boolean exclusionFree = CompletableFuture.supplyAsync(() -> importExclusion.exclusively(() -> true))
+                .completeOnTimeout(false, 5, TimeUnit.SECONDS).join();
+            auditedOutsideLocks.add(!Thread.holdsLock(service) && exclusionFree && service.isMovingDatabase());
+            return null;
+        }).when(auditor).recordStaffAction(eq(server), eq(OWNER), contains("Started"));
+
+        service.move(server, OWNER, closed, true);
+        settled();
+
+        verify(auditor).recordStaffAction(server, OWNER, "Started moving the database from SQLite to PostgreSQL; restart: container restart");
+        assertThat(auditedOutsideLocks).containsExactly(true);
+    }
+
+    @Test
+    void aMoveWhoseStartCannotBeAuditedIsNotStarted() {
+        DatabaseConnection closed = new DatabaseConnection(DatabaseDialect.POSTGRESQL, "127.0.0.1", 1, "modl", false, "modl", "secret");
+        doAnswer(invocation -> {
+            throw new IllegalStateException("audit log unavailable");
+        }).when(auditor).recordStaffAction(eq(server), eq(OWNER), contains("Started"));
+
+        assertThatThrownBy(() -> service.move(server, OWNER, closed, true)).hasMessage("audit log unavailable");
+
+        assertThat(service.isMovingDatabase()).isFalse();
+        assertThat(service.view().move()).isEmpty();
+        assertThat(writesAdmitted()).isTrue();
     }
 
     @Test
@@ -375,7 +409,7 @@ class DatabaseMoveServiceTest {
 
     private DatabaseMoveService service(SqlDatabaseProperties configured) {
         selection = DatabaseSelection.resolve(configured, dataDirectory, (database, token) -> PendingTargetCheck.Result.READY,
-            Duration.ZERO, new OperatorNotice());
+            ArrivalWait.atStart(), new OperatorNotice());
         InstanceSecretsService secrets = mock(InstanceSecretsService.class);
         when(secrets.storageSigningKey()).thenReturn(KEY);
         OfflineDatabase source = OfflineDatabase.open(SqlDatabaseProperties.builtIn(), dataDirectory);
@@ -384,7 +418,7 @@ class DatabaseMoveServiceTest {
             Clock.systemUTC());
         DatabaseCopy copy = new DatabaseCopy(backup, dataDirectory.temporary(), BackupDiskSpace.SYSTEM, Clock.systemUTC());
         return new DatabaseMoveService(selection, new DatabaseTargets(selection, dataDirectory, secrets), copy, departures,
-            live.unitOfWork(), live.bean(WritePause.class), restart, new ImportExclusion(), TestImports.running(() -> imports), storageMoves,
+            live.unitOfWork(), live.bean(WritePause.class), restart, importExclusion, TestImports.running(() -> imports), storageMoves,
             oldCopyRemovals, auditor, logService, mock(InstanceContext.class), realtime,
             new OperatorNotice(), Clock.systemUTC());
     }

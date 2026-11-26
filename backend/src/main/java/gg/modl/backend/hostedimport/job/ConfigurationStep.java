@@ -37,6 +37,7 @@ public class ConfigurationStep implements PhaseStep {
         ContentMapper content = new ContentMapper(run.context());
         if (run.cursor() < CONFIGURED) {
             List<HomepageCard> cards = content.cards();
+            run.plan().countConfiguration(run.issues());
             run.commitState(CONFIGURED, () -> {
                 writer.write(run.server(), run.plan(), content, cards, clock.instant());
                 roleService.createDefaultRoles(run.server());

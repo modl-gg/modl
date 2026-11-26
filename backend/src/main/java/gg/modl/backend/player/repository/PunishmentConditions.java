@@ -6,11 +6,13 @@ import static gg.modl.backend.database.jooq.Tables.PUNISHMENT_MODIFICATIONS;
 
 import gg.modl.backend.database.ColumnLookups;
 import gg.modl.backend.database.jooq.tables.Punishments;
+import gg.modl.backend.player.data.punishment.Punishment;
 import gg.modl.backend.player.data.punishment.PunishmentModificationType;
 import gg.modl.backend.player.data.punishment.PunishmentPhase;
 import gg.modl.backend.player.data.punishment.PunishmentStatus;
 import java.time.Instant;
 import java.util.Arrays;
+import java.util.Collection;
 import java.util.List;
 import org.jooq.Condition;
 import org.jooq.Record1;
@@ -18,7 +20,6 @@ import org.jooq.Select;
 import org.jooq.impl.DSL;
 
 final class PunishmentConditions {
-    private static final int KICK_ORDINAL = 0;
     private static final List<String> ENFORCEMENT_ENDING_TYPES = Arrays.stream(PunishmentModificationType.values())
         .filter(PunishmentModificationType::endsEnforcement)
         .map(Enum::name)
@@ -32,20 +33,45 @@ final class PunishmentConditions {
     }
 
     static Condition inPhase(PunishmentPhase phase, Instant now) {
+        return DSL.or(phaseBranches(phase, now));
+    }
+
+    static Condition inAnyPhase(Collection<PunishmentPhase> phases, Instant now) {
+        return DSL.or(phases.stream().map(phase -> inPhase(phase, now)).toList());
+    }
+
+    static Condition notEnded(Instant now) {
+        return inAnyPhase(PunishmentPhase.NOT_ENDED, now);
+    }
+
+    static List<Condition> listed(PunishmentListQuery query, Instant now) {
+        Condition filters = listingFilters(query);
+        if (query.phase() == null) {
+            return List.of(filters);
+        }
+        return phaseBranches(query.phase(), now).stream().map(filters::and).toList();
+    }
+
+    private static List<Condition> phaseBranches(PunishmentPhase phase, Instant now) {
         return switch (phase) {
-            case ACTIVE -> activeAt(now).and(PUNISHMENTS.STARTED_AT.isNotNull());
-            case UNSTARTED -> activeAt(now).and(PUNISHMENTS.STARTED_AT.isNull())
-                .or(PUNISHMENTS.ACTIVE_UNTIL_AT.lt(now).and(waitingToStart()));
-            case ENDED -> PUNISHMENTS.ACTIVE_UNTIL_AT.lt(now).and(DSL.or(
-                PUNISHMENTS.STATUS.isNull(), PUNISHMENTS.STATUS.ne(PunishmentStatus.UNSTARTED), enforcementEnded()));
+            case ACTIVE -> List.of(activeAt(now).and(PUNISHMENTS.STARTED_AT.isNotNull()));
+            case UNSTARTED -> List.of(neverStarted(now), queuedAfterStart(now));
+            case ENDED -> List.of(isKick().or(PUNISHMENTS.ACTIVE_UNTIL_AT.lt(now).and(DSL.or(
+                PUNISHMENTS.STATUS.isNull(), PUNISHMENTS.STATUS.ne(PunishmentStatus.UNSTARTED), enforcementEnded()))));
         };
     }
 
-    static Condition listed(PunishmentListQuery query, Instant now) {
-        Condition listed = PUNISHMENTS.TYPE_ORDINAL.ne(KICK_ORDINAL);
-        if (query.phase() != null) {
-            listed = listed.and(inPhase(query.phase(), now));
-        }
+    private static Condition neverStarted(Instant now) {
+        return PUNISHMENTS.STARTED_AT.isNull().andNot(isKick()).and(activeAt(now).or(waitingToStart()));
+    }
+
+    private static Condition queuedAfterStart(Instant now) {
+        return PUNISHMENTS.STARTED_AT.isNotNull().andNot(isKick())
+            .and(PUNISHMENTS.ACTIVE_UNTIL_AT.lt(now)).and(waitingToStart());
+    }
+
+    private static Condition listingFilters(PunishmentListQuery query) {
+        Condition listed = DSL.not(isKick());
         if (query.issuer() != null) {
             listed = listed.and(issuedBy(query.issuer()));
         }
@@ -76,10 +102,6 @@ final class PunishmentConditions {
             PUNISHMENTS.ISSUED_AT.gt(lastSync),
             hasUnstartedStatus(),
             undeliveredKick());
-    }
-
-    static Condition activeOrUnstartedAt(Instant now) {
-        return activeAt(now).or(waitingToStart());
     }
 
     private static Condition waitingToStart() {
@@ -114,6 +136,10 @@ final class PunishmentConditions {
     }
 
     private static Condition undeliveredKick() {
-        return PUNISHMENTS.TYPE_ORDINAL.eq(KICK_ORDINAL).and(PUNISHMENTS.STARTED_AT.isNull());
+        return isKick().and(PUNISHMENTS.STARTED_AT.isNull());
+    }
+
+    private static Condition isKick() {
+        return PUNISHMENTS.TYPE_ORDINAL.eq(Punishment.KICK_TYPE_ORDINAL);
     }
 }

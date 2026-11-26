@@ -1,9 +1,9 @@
 import { useMemo, useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { MessageCircle } from 'lucide-react';
+import { ChevronRight, MessageCircle } from 'lucide-react';
 import { BrandLogo } from '@/components/brand/BrandLogo';
+import { HOME_ROW_ACTION_CLASS, HOME_ROW_CHEVRON_CLASS, HOME_ROW_CLASS, HomeRowBody } from '@/components/home/HomeRow';
 import { Button } from '@/components/ui/button';
-import { Card, CardContent } from '@/components/ui/card';
 import { Input } from '@/components/ui/input';
 import { usePublicFont, useStyleVariables } from '@/hooks/use-public-theme';
 import { publicBackdropStyle, publicThemeVariables, type ColorScheme, type PublicTheme } from '@/lib/public-theme';
@@ -28,16 +28,17 @@ function PreviewPane({ theme, scheme }: { theme: PublicTheme; scheme: ColorSchem
         <BrandLogo icon="homepage" wordmarkClassName="flex h-full w-full items-center justify-center text-xl" imageClassName="h-full w-full object-contain" />
       </div>
       <Input type="search" placeholder={t('home.searchPlaceholder')} aria-label={t('home.searchPlaceholder')} />
-      <Card className="shadow-card">
-        <CardContent className="space-y-4 p-6 text-center">
-          <MessageCircle className={cn('mx-auto h-6 w-6', theme.accentColor === '' ? 'text-muted-foreground' : 'text-accent')} aria-hidden="true" />
-          <div>
-            <h3 className="text-base font-semibold">{t('home.defaults.contactTitle')}</h3>
-            <p className="mt-1 text-sm text-muted-foreground">{t('home.defaults.contactDesc')}</p>
-          </div>
-          <Button type="button" variant="outline" size="sm" className="w-full">{t('home.defaults.contactAction')}</Button>
-        </CardContent>
-      </Card>
+      <div className={HOME_ROW_CLASS}>
+        <div className={HOME_ROW_ACTION_CLASS}>
+          <HomeRowBody
+            icon={MessageCircle}
+            title={t('home.defaults.contactTitle')}
+            description={t('home.defaults.contactDesc')}
+            accent={theme.accentColor !== ''}
+            trailing={<ChevronRight className={HOME_ROW_CHEVRON_CLASS} aria-hidden="true" />}
+          />
+        </div>
+      </div>
       <Button type="button" className="w-full">{t('submitTicket.submitTicket')}</Button>
     </div>
   );

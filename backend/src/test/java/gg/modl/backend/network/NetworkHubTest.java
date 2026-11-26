@@ -15,6 +15,7 @@ import gg.modl.backend.serverkey.service.ServerKeyCache;
 import gg.modl.backend.support.MutableClock;
 import gg.modl.backend.support.TestServers;
 import gg.modl.proto.fixtures.NetworkEnvelopeFixtures;
+import gg.modl.proto.modl.v1.FeatureSettingsEvent;
 import gg.modl.proto.modl.v1.FrozenPlayer;
 import gg.modl.proto.modl.v1.HostedPlayersEvent;
 import gg.modl.proto.modl.v1.MemberActionKind;
@@ -22,12 +23,17 @@ import gg.modl.proto.modl.v1.MemberActionRequest;
 import gg.modl.proto.modl.v1.MemberActionResult;
 import gg.modl.proto.modl.v1.MemberActionStatus;
 import gg.modl.proto.modl.v1.ModerationStateEvent;
+import gg.modl.proto.modl.v1.ProxiedServer;
+import gg.modl.proto.modl.v1.ProxyServersEvent;
 import gg.modl.proto.modl.v1.RealtimeEnvelope;
 import gg.modl.proto.modl.v1.RealtimeEnvelope.PayloadCase;
 import gg.modl.proto.modl.v1.ReplayCaptureOutcome;
 import gg.modl.proto.modl.v1.ReplayCaptureRequest;
 import gg.modl.proto.modl.v1.RealtimeCloseCode;
 import gg.modl.proto.modl.v1.ReplayCaptureResult;
+import gg.modl.proto.modl.v1.ReplayRequestAction;
+import gg.modl.proto.modl.v1.ReplaySettings;
+import gg.modl.proto.modl.v1.ServerFeatureStatus;
 import gg.modl.proto.modl.v1.ServerRole;
 import gg.modl.proto.modl.v1.StatWipePushEvent;
 import gg.modl.proto.modl.v1.SyncPendingStatWipe;
@@ -54,7 +60,8 @@ class NetworkHubTest {
     @BeforeEach
     void setUp() {
         hub = new NetworkHub(registry, outbound, new ModerationStateCache(clock), new HostedPlayerIndex(),
-            new PendingMemberActions(clock), new PendingReplayCaptures(clock), serverKeys, clock);
+            new PendingMemberActions(clock), new PendingReplayCaptures(clock), serverKeys,
+            FeatureSettingsEvent::getDefaultInstance, clock);
         when(serverKeys.findById("lobby-key")).thenReturn(Optional.of(key(false)));
     }
 
@@ -245,6 +252,20 @@ class NetworkHubTest {
     }
 
     @Test
+    void aReplayRequestWithoutAnActionIsRefusedBeforeItReachesAMember() {
+        RealtimeConnectionState core = core("proxy-instance");
+        RealtimeConnectionState member = member("lobby-key", "lobby");
+        outbound.sent.clear();
+
+        hub.accept(core, RealtimeEnvelope.newBuilder().setReplayCaptureRequest(ReplayCaptureRequest.newBuilder()
+            .setRequestId("r1").setTargetUuid(TARGET).setTargetName("Steve").setExpectedServer("lobby")).build());
+
+        assertThat(only(core, PayloadCase.REPLAY_CAPTURE_RESULT).getReplayCaptureResult().getOutcome())
+            .isEqualTo(ReplayCaptureOutcome.REPLAY_CAPTURE_OUTCOME_ERROR);
+        assertThat(outbound.to(member.getConnectionId())).isEmpty();
+    }
+
+    @Test
     void theHubTurnsTheSharedEnvelopesIntoExactlyTheBytesThePluginsTestAgainst() {
         RealtimeConnectionState core = core(NetworkEnvelopeFixtures.CORE_INSTANCE);
         RealtimeConnectionState member = member("lobby-key", NetworkEnvelopeFixtures.MEMBER_NAME);
@@ -257,17 +278,21 @@ class NetworkHubTest {
         accept(core, NetworkEnvelopeFixtures.CORE_ACTION_RESULT);
         accept(core, NetworkEnvelopeFixtures.CORE_CAPTURE_REQUEST);
         accept(member, NetworkEnvelopeFixtures.MEMBER_CAPTURE_RESULT);
+        accept(core, NetworkEnvelopeFixtures.CORE_RECORD_REQUEST);
+        accept(member, NetworkEnvelopeFixtures.MEMBER_RECORDING_RESULT);
         accept(core, NetworkEnvelopeFixtures.CORE_STAT_WIPES);
         hub.publishRosterIfChanged();
 
         assertThat(outbound.to(core.getConnectionId())).extracting(RealtimeEnvelope::toByteArray).containsExactly(
             NetworkEnvelopeFixtures.CORE_MEMBER_ACTION.bytes(),
             NetworkEnvelopeFixtures.CORE_CAPTURE_RESULT.bytes(),
+            NetworkEnvelopeFixtures.CORE_RECORDING_RESULT.bytes(),
             NetworkEnvelopeFixtures.CORE_ROSTER.bytes());
         assertThat(outbound.to(member.getConnectionId())).extracting(RealtimeEnvelope::toByteArray).containsExactly(
             NetworkEnvelopeFixtures.MEMBER_MODERATION_STATE.bytes(),
             NetworkEnvelopeFixtures.MEMBER_ACTION_RESULT.bytes(),
             NetworkEnvelopeFixtures.MEMBER_CAPTURE_REQUEST.bytes(),
+            NetworkEnvelopeFixtures.MEMBER_RECORD_REQUEST.bytes(),
             NetworkEnvelopeFixtures.MEMBER_STAT_WIPES.bytes());
     }
 
@@ -385,6 +410,125 @@ class NetworkHubTest {
         assertThat(applied).containsExactly("before");
     }
 
+    @Test
+    void onlyACoreReportsItsProxyServersAndTheyEndWithItsSession() {
+        RealtimeConnectionState core = core(NetworkEnvelopeFixtures.CORE_INSTANCE);
+        RealtimeConnectionState member = member("lobby-key", "lobby");
+
+        accept(core, NetworkEnvelopeFixtures.CORE_PROXY_SERVERS);
+        assertThat(proxyServersOf(NetworkEnvelopeFixtures.CORE_INSTANCE))
+            .containsExactly(new ProxyServer(NetworkEnvelopeFixtures.MEMBER_NAME, NetworkEnvelopeFixtures.MEMBER_ADDRESS));
+
+        assertThat(hub.accept(member, NetworkEnvelopeFixtures.CORE_PROXY_SERVERS.envelope())).isEqualTo(NetworkHub.Disposition.FORBIDDEN);
+        assertThat(proxyServersOf("lobby-instance")).isEmpty();
+
+        clock.advance(Duration.ofSeconds(1));
+        hub.accept(core, RealtimeEnvelope.newBuilder().setProxyServers(ProxyServersEvent.newBuilder()
+            .addServers(ProxiedServer.newBuilder().setName("not a key name").setAddress("10.0.0.3:25565"))).build());
+        assertThat(proxyServersOf(NetworkEnvelopeFixtures.CORE_INSTANCE)).hasSize(1);
+
+        hub.onClosed(new RealtimeConnectionClosedEvent(core));
+        assertThat(registry.sessions()).extracting(LiveNetworkSession::instanceId).doesNotContain(NetworkEnvelopeFixtures.CORE_INSTANCE);
+    }
+
+    @Test
+    void everyPluginSubscribedToFeatureSettingsGetsThemAtWelcomeAndOnEachChange() {
+        RealtimeConnectionState core = join(principal(ServerRole.SERVER_ROLE_CORE, MinecraftCredential.instanceKey(), "paper", "Paper"),
+            Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS);
+        RealtimeConnectionState member = join(principal(ServerRole.SERVER_ROLE_MEMBER,
+                new MinecraftCredential(ServerKeyScope.BEHIND_PROXY, "lobby-key", "lobby"), "lobby-instance", "lobby"),
+            Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS);
+        RealtimeConnectionState older = core("old-plugin");
+
+        assertThat(only(core, PayloadCase.FEATURE_SETTINGS).getFeatureSettings().getVersion()).isZero();
+        assertThat(only(member, PayloadCase.FEATURE_SETTINGS).getFeatureSettings().getVersion()).isZero();
+        outbound.sent.clear();
+
+        hub.onFeatureSettingsChanged(new FeatureSettingsChanged(FeatureSettingsEvent.newBuilder().setVersion(4)
+            .setReplays(ReplaySettings.newBuilder().setEnabled(true)).build()));
+
+        assertThat(only(core, PayloadCase.FEATURE_SETTINGS).getFeatureSettings().getReplays().getEnabled()).isTrue();
+        assertThat(only(member, PayloadCase.FEATURE_SETTINGS).getFeatureSettings().getVersion()).isEqualTo(4);
+        assertThat(outbound.to(older.getConnectionId())).extracting(RealtimeEnvelope::getPayloadCase)
+            .doesNotContain(PayloadCase.FEATURE_SETTINGS);
+    }
+
+    @Test
+    void featureSettingsReplaceTheUnsentOnesInsteadOfQueueing() {
+        RealtimeConnectionState core = join(principal(ServerRole.SERVER_ROLE_CORE, MinecraftCredential.instanceKey(), "paper", "Paper"),
+            Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS);
+        outbound.sent.clear();
+
+        hub.onFeatureSettingsChanged(new FeatureSettingsChanged(FeatureSettingsEvent.newBuilder().setVersion(5).build()));
+
+        assertThat(outbound.sent).filteredOn(sent -> sent.connectionId().equals(core.getConnectionId()))
+            .extracting(RecordingOutbound.Sent::slot).containsExactly("feature-settings");
+    }
+
+    @Test
+    void aServerWelcomedAfterAChangeNeverGetsOlderSettingsThanTheChange() {
+        hub.onFeatureSettingsChanged(new FeatureSettingsChanged(FeatureSettingsEvent.newBuilder().setVersion(4).build()));
+
+        RealtimeConnectionState core = join(principal(ServerRole.SERVER_ROLE_CORE, MinecraftCredential.instanceKey(), "paper", "Paper"),
+            Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS);
+
+        assertThat(only(core, PayloadCase.FEATURE_SETTINGS).getFeatureSettings().getVersion()).isEqualTo(4);
+    }
+
+    @Test
+    void aServerIsWelcomedEvenWhenTheFeatureSettingsCannotBeRead() {
+        hub = new NetworkHub(registry, outbound, new ModerationStateCache(clock), new HostedPlayerIndex(),
+            new PendingMemberActions(clock), new PendingReplayCaptures(clock), serverKeys,
+            () -> {
+                throw new IllegalStateException("settings unavailable");
+            }, clock);
+
+        RealtimeConnectionState core = join(principal(ServerRole.SERVER_ROLE_CORE, MinecraftCredential.instanceKey(), "paper", "Paper"),
+            Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS, Topic.TOPIC_NETWORK_ROSTER);
+
+        assertThat(outbound.to(core.getConnectionId())).extracting(RealtimeEnvelope::getPayloadCase)
+            .contains(PayloadCase.NETWORK_ROSTER)
+            .doesNotContain(PayloadCase.FEATURE_SETTINGS);
+    }
+
+    @Test
+    void aServerWhoseSettingsReadFailsGetsTheLastKnownOnes() {
+        hub = new NetworkHub(registry, outbound, new ModerationStateCache(clock), new HostedPlayerIndex(),
+            new PendingMemberActions(clock), new PendingReplayCaptures(clock), serverKeys,
+            () -> {
+                throw new IllegalStateException("settings unavailable");
+            }, clock);
+        hub.onFeatureSettingsChanged(new FeatureSettingsChanged(FeatureSettingsEvent.newBuilder().setVersion(7).build()));
+
+        RealtimeConnectionState core = join(principal(ServerRole.SERVER_ROLE_CORE, MinecraftCredential.instanceKey(), "paper", "Paper"),
+            Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS);
+
+        assertThat(only(core, PayloadCase.FEATURE_SETTINGS).getFeatureSettings().getVersion()).isEqualTo(7);
+    }
+
+    @Test
+    void aServerReportsItsFeatureStatusAndInvalidReportsAreIgnored() {
+        RealtimeConnectionState member = member("lobby-key", "lobby");
+        ServerFeatureStatus status = ServerFeatureStatus.newBuilder().setReplaysSupported(true).setReplaysActive(true)
+            .addDetectedAnticheats("GrimAC").setReplayMemoryBudgetMb(48).build();
+
+        assertThat(hub.accept(member, RealtimeEnvelope.newBuilder().setFeatureStatus(status).build()))
+            .isEqualTo(NetworkHub.Disposition.HANDLED);
+        clock.advance(Duration.ofSeconds(2));
+        hub.accept(member, RealtimeEnvelope.newBuilder().setFeatureStatus(ServerFeatureStatus.newBuilder()
+            .addDetectedAnticheats("x".repeat(40))).build());
+
+        assertThat(registry.sessions()).singleElement().extracting(LiveNetworkSession::features)
+            .isEqualTo(new FeatureStatus(true, true, false, List.of("GrimAC"), 48));
+    }
+
+    private List<ProxyServer> proxyServersOf(String instanceId) {
+        return registry.sessions().stream()
+            .filter(session -> session.instanceId().equals(instanceId))
+            .flatMap(session -> session.proxyServers().stream())
+            .toList();
+    }
+
     private void accept(RealtimeConnectionState from, NetworkEnvelopeFixtures fixture) {
         assertThat(hub.accept(from, fixture.envelope())).isEqualTo(NetworkHub.Disposition.HANDLED);
     }
@@ -476,6 +620,7 @@ class NetworkHubTest {
 
     private static RealtimeEnvelope capture(String requestId, String server) {
         return RealtimeEnvelope.newBuilder().setReplayCaptureRequest(ReplayCaptureRequest.newBuilder().setRequestId(requestId)
-            .setTargetUuid(TARGET).setTargetName("Steve").setExpectedServer(server)).build();
+            .setTargetUuid(TARGET).setTargetName("Steve").setExpectedServer(server)
+            .setAction(ReplayRequestAction.REPLAY_REQUEST_ACTION_CAPTURE)).build();
     }
 }

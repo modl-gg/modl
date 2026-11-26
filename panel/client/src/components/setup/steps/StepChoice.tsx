@@ -1,4 +1,4 @@
-import { useId } from 'react';
+import { useId, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { Label } from '@/components/ui/label';
 import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
@@ -19,6 +19,8 @@ interface StepChoiceMemory<T extends string> {
   done: boolean;
   none: T;
   configured?: boolean;
+  persisted?: T | null;
+  slot?: string;
 }
 
 export interface StepChoiceState<T extends string> {
@@ -27,18 +29,20 @@ export interface StepChoiceState<T extends string> {
   onChange: (value: T) => void;
 }
 
-export function useStepChoice<T extends string>({ step, options, saved, done, none, configured = saved !== null }: StepChoiceMemory<T>): StepChoiceState<T> {
-  const [remembered, remember] = useRememberedChoice(step);
-  const value = stepChoiceOf({ remembered, options: options.map((option) => option.value), saved, done, none });
+export function useStepChoice<T extends string>({ step, options, saved, done, none, configured = saved !== null, persisted = null, slot = '' }: StepChoiceMemory<T>): StepChoiceState<T> {
+  const [remembered, remember] = useRememberedChoice(step, slot);
+  const value = stepChoiceOf({ remembered, options: options.map((option) => option.value), saved, done, none, persisted });
   useContinueReady(stepContinueReady({ value, configured, done, none }));
   return { value, locked: lockedStepChoices({ saved, none }), onChange: remember };
 }
 
 interface StepChoiceProps<T extends string> extends StepChoiceState<T> {
   options: readonly StepOption<T>[];
+  labelledBy?: string;
+  details?: Partial<Record<T, ReactNode>>;
 }
 
-export function StepChoice<T extends string>({ options, value, locked, onChange }: StepChoiceProps<T>) {
+export function StepChoice<T extends string>({ options, value, locked, onChange, labelledBy = SETUP_TITLE_ID, details }: StepChoiceProps<T>) {
   const { t } = useTranslation();
   const id = useId();
 
@@ -48,11 +52,14 @@ export function StepChoice<T extends string>({ options, value, locked, onChange 
   };
 
   return (
-    <RadioGroup value={value ?? ''} onValueChange={select} aria-labelledby={SETUP_TITLE_ID}>
+    <RadioGroup value={value ?? ''} onValueChange={select} aria-labelledby={labelledBy}>
       {options.map((option) => (
-        <div key={option.value} className="flex items-center gap-2">
-          <RadioGroupItem id={`${id}-${option.value}`} value={option.value} disabled={locked.includes(option.value)} />
-          <Label htmlFor={`${id}-${option.value}`}>{t(option.labelKey)}</Label>
+        <div key={option.value} className="space-y-2">
+          <div className="flex items-center gap-2">
+            <RadioGroupItem id={`${id}-${option.value}`} value={option.value} disabled={locked.includes(option.value)} />
+            <Label htmlFor={`${id}-${option.value}`}>{t(option.labelKey)}</Label>
+          </div>
+          {option.value === value && details?.[option.value]}
         </div>
       ))}
     </RadioGroup>

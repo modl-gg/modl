@@ -69,7 +69,8 @@ class MinecraftStartupServiceTest {
                 Topic.TOPIC_MINECRAFT_STAFF_2FA.name(),
                 Topic.TOPIC_NETWORK_MEMBER_ACTIONS.name(),
                 Topic.TOPIC_NETWORK_REPLAY_CAPTURE.name(),
-                Topic.TOPIC_NETWORK_ROSTER.name()
+                Topic.TOPIC_NETWORK_ROSTER.name(),
+                Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS.name()
             ),
             (List<?>) response.get("realtimeTopics")
         );
@@ -80,7 +81,8 @@ class MinecraftStartupServiceTest {
         Map<String, Object> response = service(properties(true)).handleStartup(MEMBER_KEY, MEMBER_REPORT);
 
         assertIterableEquals(
-            List.of(Topic.TOPIC_NETWORK_MODERATION.name(), Topic.TOPIC_NETWORK_REPLAY_CAPTURE.name()),
+            List.of(Topic.TOPIC_NETWORK_MODERATION.name(), Topic.TOPIC_NETWORK_REPLAY_CAPTURE.name(),
+                Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS.name()),
             (List<?>) response.get("realtimeTopics"));
     }
 

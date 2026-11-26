@@ -2,7 +2,6 @@ package gg.modl.backend.hostedimport.mapping;
 
 import gg.modl.backend.database.JsonColumns;
 import gg.modl.backend.hostedimport.archive.ArchiveDocument;
-import gg.modl.backend.hostedimport.model.ImportSubject;
 import gg.modl.backend.hostedimport.model.IssueCode;
 import gg.modl.backend.hostedimport.model.IssueLog;
 import gg.modl.backend.hostedimport.storage.ImportedUrls;
@@ -74,6 +73,7 @@ public final class SettingsImport {
     private final ImportedUrls urls;
     private final IssueLog issues;
     private final ImportFit fit;
+    private final Set<String> unreadable = new TreeSet<>();
 
     public SettingsImport(ArchiveIndex index, Validator validator, ImportedUrls urls, ImportFit fit) {
         this.index = index;
@@ -88,8 +88,8 @@ public final class SettingsImport {
             case GENERAL, PUNISHMENT_TYPES, STATUS_THRESHOLDS, TICKET_FORMS, QUICK_RESPONSES, TICKET_LABELS, WEBHOOKS,
                  AI_MODERATION, REPLAY_RETENTION -> true;
             case DELETED_PUNISHMENT_TYPES, DATA_RETENTION, SIGN_IN, MAIL, AI_PROVIDER, AI_USAGE, PLAYER_ADDRESSES,
-                 ADDRESS_FORWARDING, OPERATOR_LIMITS, STORAGE_BACKEND, PUBLIC_THEME, PUBLIC_CUSTOM_CSS, HOSTED_IMPORT,
-                 HOSTED_IMPORT_CHOICES, HOSTED_IMPORT_ALIASES -> false;
+                 ADDRESS_FORWARDING, OPERATOR_LIMITS, STORAGE_BACKEND, PUBLIC_THEME, PUBLIC_CUSTOM_CSS, PUBLIC_HOMEPAGE,
+                 HOSTED_IMPORT, HOSTED_IMPORT_CHOICES, HOSTED_IMPORT_ALIASES, REPLAYS -> false;
         };
     }
 
@@ -101,9 +101,6 @@ public final class SettingsImport {
     }
 
     public SettingsImportPlan plan(List<PunishmentType> currentTypes) {
-        index.settingsByType().keySet().stream()
-            .filter(type -> !IMPORTED.contains(type))
-            .forEach(type -> issues.report(IssueCode.SETTING_IGNORED, type));
         Optional<ArchiveDocument> general = data(GENERAL);
         Map<String, Map<String, Object>> documents = new TreeMap<>();
         general.ifPresent(document -> documents.put(GENERAL, general(document)));
@@ -117,9 +114,13 @@ public final class SettingsImport {
             .ifPresent(settings -> documents.put(TICKET_LABELS, SettingsCodec.toDocument(settings)));
         webhooks(general).ifPresent(settings -> documents.put(WEBHOOKS, SettingsCodec.toDocument(settings)));
         aiModeration().ifPresent(settings -> documents.put(AI_MODERATION, SettingsCodec.toDocument(settings)));
-        documents.keySet().forEach(type -> issues.imported(ImportSubject.SETTINGS));
-        return new SettingsImportPlan(serverName(general), types(currentTypes), documents,
-            decoded(REPLAY_RETENTION, ReplayRetentionSettings.class, ReplayRetentionSettings::defaults).orElse(null));
+        ImportedTypes types = types(currentTypes);
+        ReplayRetentionSettings replayRetention = decoded(REPLAY_RETENTION, ReplayRetentionSettings.class,
+            ReplayRetentionSettings::defaults).orElse(null);
+        Set<String> imported = index.settingsByType().keySet().stream()
+            .filter(type -> IMPORTED.contains(type) && !unreadable.contains(type))
+            .collect(Collectors.toCollection(TreeSet::new));
+        return new SettingsImportPlan(serverName(general), types, documents, replayRetention, imported, unreadable);
     }
 
     private Optional<String> serverName(Optional<ArchiveDocument> general) {
@@ -184,15 +185,19 @@ public final class SettingsImport {
     }
 
     private ImportedTypes types(List<PunishmentType> currentTypes) {
-        Optional<Object> archived = index.setting(PUNISHMENT_TYPES).map(document -> document.raw("data"));
-        if (archived.isEmpty() || !(archived.get() instanceof List<?> sources)) {
+        Optional<ArchiveDocument> archived = index.setting(PUNISHMENT_TYPES);
+        if (archived.isEmpty()) {
+            return new ImportedTypes(currentTypes, tombstones(currentTypes), false);
+        }
+        if (!(archived.get().raw("data") instanceof List<?> sources)) {
+            unreadable(PUNISHMENT_TYPES);
             return new ImportedTypes(currentTypes, tombstones(currentTypes), false);
         }
         List<PunishmentType> types = new ArrayList<>();
         Set<Integer> ordinals = new HashSet<>();
         for (Object source : sources) {
             if (types.size() >= MAX_TYPES) {
-                issues.report(IssueCode.TYPE_INVALID, "too many types");
+                issues.report(IssueCode.TYPE_INVALID, "");
                 break;
             }
             Optional<PunishmentType> type = type(source);
@@ -203,6 +208,7 @@ public final class SettingsImport {
             types.add(type.get());
         }
         if (types.isEmpty()) {
+            unreadable(PUNISHMENT_TYPES);
             return new ImportedTypes(currentTypes, tombstones(currentTypes), false);
         }
         for (PunishmentType core : DefaultPunishmentTypes.getAll()) {
@@ -277,7 +283,18 @@ public final class SettingsImport {
     }
 
     private Optional<ArchiveDocument> data(String type) {
-        return index.setting(type).flatMap(document -> document.document("data"));
+        Optional<ArchiveDocument> archived = index.setting(type);
+        Optional<ArchiveDocument> data = archived.flatMap(document -> document.document("data"));
+        if (archived.isPresent() && data.isEmpty()) {
+            unreadable(type);
+        }
+        return data;
+    }
+
+    private void unreadable(String type) {
+        if (unreadable.add(type)) {
+            issues.report(IssueCode.SETTING_UNREADABLE, type);
+        }
     }
 
     private <T> Optional<T> decoded(String type, Class<T> target, Supplier<T> defaults) {
@@ -288,12 +305,12 @@ public final class SettingsImport {
         try {
             T settings = SettingsCodec.of(target, defaults).decodeStrict(SettingsTrees.withIds(data.get().fields()));
             if (SIZES.write(settings).length() > MAX_SETTING_CHARACTERS) {
-                issues.report(IssueCode.SETTING_IGNORED, type);
+                unreadable(type);
                 return Optional.empty();
             }
             return Optional.of(settings);
         } catch (JacksonException | IllegalArgumentException e) {
-            issues.report(IssueCode.SETTING_IGNORED, type);
+            unreadable(type);
             return Optional.empty();
         }
     }
@@ -311,6 +328,11 @@ public final class SettingsImport {
     }
 
     public record SettingsImportPlan(Optional<String> serverName, ImportedTypes types, Map<String, Map<String, Object>> documents,
-                                     @Nullable ReplayRetentionSettings archivedReplayRetention) {
+                                     @Nullable ReplayRetentionSettings archivedReplayRetention, Set<String> importedTypes,
+                                     Set<String> unreadableTypes) {
+        public SettingsImportPlan {
+            importedTypes = Set.copyOf(importedTypes);
+            unreadableTypes = Set.copyOf(unreadableTypes);
+        }
     }
 }

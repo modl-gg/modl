@@ -11,6 +11,7 @@ import gg.modl.backend.ticket.data.Ticket;
 import gg.modl.backend.ticket.repository.TicketRepository;
 import gg.modl.backend.ticket.service.TicketPublicLinks;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.HashSet;
 import java.util.LinkedHashMap;
 import java.util.List;
@@ -43,13 +44,15 @@ public class PlayerReplayListingService {
             responses.put(response.deduplicationKey(), response);
         }
 
+        Map<String, String> replayIdsByStorageKey = new HashMap<>();
+        directReplays.forEach(replay -> replay.completedStorageKey().ifPresent(key -> replayIdsByStorageKey.put(key, replay.getId())));
         List<Ticket> tickets = ticketRepository.findPlayerTicketsWithReplayUrl(normalizedPlayerUuid, 100);
         for (Ticket ticket : tickets) {
             String replayUrl = ReplayReferenceUtil.normalize(ticket.getReplayUrl());
             if (replayUrl == null) {
                 continue;
             }
-            String replayId = ReplayReferenceUtil.extractReplayId(replayUrl);
+            String replayId = referencedReplayId(replayUrl, replayIdsByStorageKey);
             if (replayId != null && orphanedReplayIds.contains(replayId)) {
                 continue;
             }
@@ -64,6 +67,14 @@ public class PlayerReplayListingService {
         }
 
         return List.copyOf(responses.values());
+    }
+
+    private @Nullable String referencedReplayId(String replayUrl, Map<String, String> replayIdsByStorageKey) {
+        String replayId = ReplayReferenceUtil.extractReplayId(replayUrl);
+        if (replayId != null) {
+            return replayId;
+        }
+        return objectStorage.keyFromPublicUrl(replayUrl).map(replayIdsByStorageKey::get).orElse(null);
     }
 
     private Set<String> orphanedCompleteReplayIds(Server server, List<ReplayDocument> replays) {
@@ -90,7 +101,7 @@ public class PlayerReplayListingService {
     }
 
     private PlayerReplayResponse toPlayerReplayResponse(ReplayDocument replay, PlayerReplayResponse.MatchSource matchSource) {
-        String replayUrl = replay.completedStorageKey().map(objectStorage::publicUrl).orElse(null);
+        String replayUrl = replay.completedStorageKey().map(key -> ReplayService.panelFileUrl(replay.getId())).orElse(null);
         return new PlayerReplayResponse(
             replay.getId(),
             replay.getTargetUuid(),

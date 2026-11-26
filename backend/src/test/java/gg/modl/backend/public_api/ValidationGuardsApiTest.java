@@ -21,7 +21,7 @@ class ValidationGuardsApiTest {
 
     @Test
     void aNulInBoundTextIsABadRequest() throws Exception {
-        JsonHelper.assertStatus(api.panelPost("/v1/panel/homepage-cards", Map.of("title", "before\u0000after")), 400);
+        JsonHelper.assertStatus(api.panelPost("/v1/panel/knowledgebase/categories", Map.of("name", "before\u0000after")), 400);
     }
 
     @Test

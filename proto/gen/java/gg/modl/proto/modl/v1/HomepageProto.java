@@ -27,16 +27,6 @@ public final class HomepageProto extends com.google.protobuf.GeneratedFile {
         (com.google.protobuf.ExtensionRegistryLite) registry);
   }
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_modl_v1_CreateCardRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_modl_v1_CreateCardRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_modl_v1_UpdateCardRequest_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_modl_v1_UpdateCardRequest_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_modl_v1_HomepageCardResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -52,30 +42,10 @@ public final class HomepageProto extends com.google.protobuf.GeneratedFile {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_modl_v1_HomepageCardResponse_ArticleStub_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_modl_v1_PanelHomepageCardResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_modl_v1_PanelHomepageCardResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_modl_v1_PanelHomepageCardResponse_EmbeddedCategory_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_modl_v1_PanelHomepageCardResponse_EmbeddedCategory_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_modl_v1_PanelHomepageCardsResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_modl_v1_PanelHomepageCardsResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_modl_v1_PublicHomepageCardsResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_modl_v1_PublicHomepageCardsResponse_fieldAccessorTable;
-  static final com.google.protobuf.Descriptors.Descriptor
-    internal_static_modl_v1_HomepageCardMutationResponse_descriptor;
-  static final 
-    com.google.protobuf.GeneratedMessage.FieldAccessorTable
-      internal_static_modl_v1_HomepageCardMutationResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -85,113 +55,46 @@ public final class HomepageProto extends com.google.protobuf.GeneratedFile {
       descriptor;
   static {
     java.lang.String[] descriptorData = {
-      "\n\026modl/v1/homepage.proto\022\007modl.v1\032\033buf/v" +
-      "alidate/validate.proto\032\037google/protobuf/" +
-      "timestamp.proto\"\371\004\n\021CreateCardRequest\022,\n" +
-      "\005title\030\001 \001(\tB\026\272H\023r\021\020\001\030\200\0012\n(?s).*\\S.*R\005ti" +
-      "tle\022/\n\013description\030\002 \001(\tB\010\272H\005r\003\030\364\003H\000R\013de" +
-      "scription\210\001\001\022!\n\004icon\030\003 \001(\tB\010\272H\005r\003\030\200\001H\001R\004" +
-      "icon\210\001\001\022+\n\nicon_color\030\004 \001(\tB\007\272H\004r\002\030 H\002R\t" +
-      "iconColor\210\001\001\022-\n\013action_type\030\005 \001(\tB\007\272H\004r\002" +
-      "\030@H\003R\nactionType\210\001\001\022,\n\naction_url\030\006 \001(\tB" +
-      "\010\272H\005r\003\030\200\020H\004R\tactionUrl\210\001\001\022:\n\022action_butt" +
-      "on_text\030\007 \001(\tB\007\272H\004r\002\030@H\005R\020actionButtonTe" +
-      "xt\210\001\001\022-\n\013category_id\030\010 \001(\tB\007\272H\004r\002\030@H\006R\nc" +
-      "ategoryId\210\001\001\0227\n\020background_color\030\t \001(\tB\007" +
-      "\272H\004r\002\030 H\007R\017backgroundColor\210\001\001\022\"\n\nis_enab" +
-      "led\030\n \001(\010H\010R\tisEnabled\210\001\001B\016\n\014_descriptio" +
-      "nB\007\n\005_iconB\r\n\013_icon_colorB\016\n\014_action_typ" +
-      "eB\r\n\013_action_urlB\025\n\023_action_button_textB" +
-      "\016\n\014_category_idB\023\n\021_background_colorB\r\n\013" +
-      "_is_enabled\"\372\004\n\021UpdateCardRequest\022#\n\005tit" +
-      "le\030\001 \001(\tB\010\272H\005r\003\030\200\001H\000R\005title\210\001\001\022/\n\013descri" +
-      "ption\030\002 \001(\tB\010\272H\005r\003\030\364\003H\001R\013description\210\001\001\022" +
-      "!\n\004icon\030\003 \001(\tB\010\272H\005r\003\030\200\001H\002R\004icon\210\001\001\022+\n\nic" +
-      "on_color\030\004 \001(\tB\007\272H\004r\002\030 H\003R\ticonColor\210\001\001\022" +
-      "-\n\013action_type\030\005 \001(\tB\007\272H\004r\002\030@H\004R\nactionT" +
-      "ype\210\001\001\022,\n\naction_url\030\006 \001(\tB\010\272H\005r\003\030\200\020H\005R\t" +
-      "actionUrl\210\001\001\022:\n\022action_button_text\030\007 \001(\t" +
-      "B\007\272H\004r\002\030@H\006R\020actionButtonText\210\001\001\022-\n\013cate" +
-      "gory_id\030\010 \001(\tB\007\272H\004r\002\030@H\007R\ncategoryId\210\001\001\022" +
-      "7\n\020background_color\030\t \001(\tB\007\272H\004r\002\030 H\010R\017ba" +
-      "ckgroundColor\210\001\001\022\"\n\nis_enabled\030\n \001(\010H\tR\t" +
-      "isEnabled\210\001\001B\010\n\006_titleB\016\n\014_descriptionB\007" +
-      "\n\005_iconB\r\n\013_icon_colorB\016\n\014_action_typeB\r" +
-      "\n\013_action_urlB\025\n\023_action_button_textB\016\n\014" +
-      "_category_idB\023\n\021_background_colorB\r\n\013_is" +
-      "_enabled\"\337\006\n\024HomepageCardResponse\022\016\n\002id\030" +
-      "\001 \001(\tR\002id\022\024\n\005title\030\002 \001(\tR\005title\022 \n\013descr" +
-      "iption\030\003 \001(\tR\013description\022\022\n\004icon\030\004 \001(\tR" +
-      "\004icon\022\035\n\nicon_color\030\005 \001(\tR\ticonColor\022\037\n\013" +
-      "action_type\030\006 \001(\tR\nactionType\022\035\n\naction_" +
-      "url\030\007 \001(\tR\tactionUrl\022,\n\022action_button_te" +
-      "xt\030\010 \001(\tR\020actionButtonText\022\037\n\013category_i" +
-      "d\030\t \001(\tR\ncategoryId\022)\n\020background_color\030" +
-      "\n \001(\tR\017backgroundColor\022\030\n\007ordinal\030\013 \001(\005R" +
-      "\007ordinal\022\035\n\nis_enabled\030\014 \001(\010R\tisEnabled\022" +
-      "9\n\ncreated_at\030\r \001(\0132\032.google.protobuf.Ti" +
-      "mestampR\tcreatedAt\0229\n\nupdated_at\030\016 \001(\0132\032" +
-      ".google.protobuf.TimestampR\tupdatedAt\022J\n" +
-      "\010category\030\017 \001(\0132..modl.v1.HomepageCardRe" +
-      "sponse.EmbeddedCategoryR\010category\032\263\001\n\020Em" +
-      "beddedCategory\022\016\n\002id\030\001 \001(\tR\002id\022\022\n\004name\030\002" +
-      " \001(\tR\004name\022\022\n\004slug\030\003 \001(\tR\004slug\022 \n\013descri" +
-      "ption\030\004 \001(\tR\013description\022E\n\010articles\030\005 \003" +
-      "(\0132).modl.v1.HomepageCardResponse.Articl" +
-      "eStubR\010articles\032a\n\013ArticleStub\022\016\n\002id\030\001 \001" +
-      "(\tR\002id\022\024\n\005title\030\002 \001(\tR\005title\022\022\n\004slug\030\003 \001" +
-      "(\tR\004slug\022\030\n\007ordinal\030\004 \001(\005R\007ordinal\"\256\005\n\031P" +
-      "anelHomepageCardResponse\022\016\n\002id\030\001 \001(\tR\002id" +
-      "\022\024\n\005title\030\002 \001(\tR\005title\022 \n\013description\030\003 " +
-      "\001(\tR\013description\022\022\n\004icon\030\004 \001(\tR\004icon\022\035\n\n" +
-      "icon_color\030\005 \001(\tR\ticonColor\022\037\n\013action_ty" +
-      "pe\030\006 \001(\tR\nactionType\022\035\n\naction_url\030\007 \001(\t" +
-      "R\tactionUrl\022,\n\022action_button_text\030\010 \001(\tR" +
-      "\020actionButtonText\022\037\n\013category_id\030\t \001(\tR\n" +
-      "categoryId\022)\n\020background_color\030\n \001(\tR\017ba" +
-      "ckgroundColor\022\035\n\nis_enabled\030\013 \001(\010R\tisEna" +
-      "bled\022\030\n\007ordinal\030\014 \001(\005R\007ordinal\0229\n\ncreate" +
-      "d_at\030\r \001(\0132\032.google.protobuf.TimestampR\t" +
-      "createdAt\0229\n\nupdated_at\030\016 \001(\0132\032.google.p" +
-      "rotobuf.TimestampR\tupdatedAt\022T\n\010category" +
-      "\030\017 \001(\01323.modl.v1.PanelHomepageCardRespon" +
-      "se.EmbeddedCategoryH\000R\010category\210\001\001\032J\n\020Em" +
-      "beddedCategory\022\016\n\002id\030\001 \001(\tR\002id\022\022\n\004name\030\002" +
-      " \001(\tR\004name\022\022\n\004slug\030\003 \001(\tR\004slugB\013\n\t_categ" +
-      "ory\"V\n\032PanelHomepageCardsResponse\0228\n\005car" +
-      "ds\030\001 \003(\0132\".modl.v1.PanelHomepageCardResp" +
-      "onseR\005cards\"R\n\033PublicHomepageCardsRespon" +
-      "se\0223\n\005cards\030\001 \003(\0132\035.modl.v1.HomepageCard" +
-      "ResponseR\005cards\"8\n\034HomepageCardMutationR" +
-      "esponse\022\030\n\007message\030\001 \001(\tR\007messageBc\n\025gg." +
-      "modl.proto.modl.v1B\rHomepageProtoP\001\242\002\003MX" +
-      "X\252\002\007Modl.V1\312\002\007Modl\\V1\342\002\023Modl\\V1\\GPBMetad" +
-      "ata\352\002\010Modl::V1b\006proto3"
+      "\n\026modl/v1/homepage.proto\022\007modl.v1\032\037googl" +
+      "e/protobuf/timestamp.proto\"\313\006\n\024HomepageC" +
+      "ardResponse\022\016\n\002id\030\001 \001(\tR\002id\022\024\n\005title\030\002 \001" +
+      "(\tR\005title\022 \n\013description\030\003 \001(\tR\013descript" +
+      "ion\022\022\n\004icon\030\004 \001(\tR\004icon\022\035\n\nicon_color\030\005 " +
+      "\001(\tR\ticonColor\022\037\n\013action_type\030\006 \001(\tR\nact" +
+      "ionType\022\035\n\naction_url\030\007 \001(\tR\tactionUrl\022\037" +
+      "\n\013category_id\030\t \001(\tR\ncategoryId\022)\n\020backg" +
+      "round_color\030\n \001(\tR\017backgroundColor\022\030\n\007or" +
+      "dinal\030\013 \001(\005R\007ordinal\022\035\n\nis_enabled\030\014 \001(\010" +
+      "R\tisEnabled\0229\n\ncreated_at\030\r \001(\0132\032.google" +
+      ".protobuf.TimestampR\tcreatedAt\0229\n\nupdate" +
+      "d_at\030\016 \001(\0132\032.google.protobuf.TimestampR\t" +
+      "updatedAt\022J\n\010category\030\017 \001(\0132..modl.v1.Ho" +
+      "mepageCardResponse.EmbeddedCategoryR\010cat" +
+      "egory\032\263\001\n\020EmbeddedCategory\022\016\n\002id\030\001 \001(\tR\002" +
+      "id\022\022\n\004name\030\002 \001(\tR\004name\022\022\n\004slug\030\003 \001(\tR\004sl" +
+      "ug\022 \n\013description\030\004 \001(\tR\013description\022E\n\010" +
+      "articles\030\005 \003(\0132).modl.v1.HomepageCardRes" +
+      "ponse.ArticleStubR\010articles\032a\n\013ArticleSt" +
+      "ub\022\016\n\002id\030\001 \001(\tR\002id\022\024\n\005title\030\002 \001(\tR\005title" +
+      "\022\022\n\004slug\030\003 \001(\tR\004slug\022\030\n\007ordinal\030\004 \001(\005R\007o" +
+      "rdinalJ\004\010\010\020\tR\022action_button_text\"R\n\033Publ" +
+      "icHomepageCardsResponse\0223\n\005cards\030\001 \003(\0132\035" +
+      ".modl.v1.HomepageCardResponseR\005cardsBc\n\025" +
+      "gg.modl.proto.modl.v1B\rHomepageProtoP\001\242\002" +
+      "\003MXX\252\002\007Modl.V1\312\002\007Modl\\V1\342\002\023Modl\\V1\\GPBMe" +
+      "tadata\352\002\010Modl::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
         new com.google.protobuf.Descriptors.FileDescriptor[] {
-          com.buf.validate.ValidateProto.getDescriptor(),
           com.google.protobuf.TimestampProto.getDescriptor(),
         });
-    internal_static_modl_v1_CreateCardRequest_descriptor =
-      getDescriptor().getMessageType(0);
-    internal_static_modl_v1_CreateCardRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_modl_v1_CreateCardRequest_descriptor,
-        new java.lang.String[] { "Title", "Description", "Icon", "IconColor", "ActionType", "ActionUrl", "ActionButtonText", "CategoryId", "BackgroundColor", "IsEnabled", });
-    internal_static_modl_v1_UpdateCardRequest_descriptor =
-      getDescriptor().getMessageType(1);
-    internal_static_modl_v1_UpdateCardRequest_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_modl_v1_UpdateCardRequest_descriptor,
-        new java.lang.String[] { "Title", "Description", "Icon", "IconColor", "ActionType", "ActionUrl", "ActionButtonText", "CategoryId", "BackgroundColor", "IsEnabled", });
     internal_static_modl_v1_HomepageCardResponse_descriptor =
-      getDescriptor().getMessageType(2);
+      getDescriptor().getMessageType(0);
     internal_static_modl_v1_HomepageCardResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_HomepageCardResponse_descriptor,
-        new java.lang.String[] { "Id", "Title", "Description", "Icon", "IconColor", "ActionType", "ActionUrl", "ActionButtonText", "CategoryId", "BackgroundColor", "Ordinal", "IsEnabled", "CreatedAt", "UpdatedAt", "Category", });
+        new java.lang.String[] { "Id", "Title", "Description", "Icon", "IconColor", "ActionType", "ActionUrl", "CategoryId", "BackgroundColor", "Ordinal", "IsEnabled", "CreatedAt", "UpdatedAt", "Category", });
     internal_static_modl_v1_HomepageCardResponse_EmbeddedCategory_descriptor =
       internal_static_modl_v1_HomepageCardResponse_descriptor.getNestedType(0);
     internal_static_modl_v1_HomepageCardResponse_EmbeddedCategory_fieldAccessorTable = new
@@ -204,44 +107,14 @@ public final class HomepageProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_HomepageCardResponse_ArticleStub_descriptor,
         new java.lang.String[] { "Id", "Title", "Slug", "Ordinal", });
-    internal_static_modl_v1_PanelHomepageCardResponse_descriptor =
-      getDescriptor().getMessageType(3);
-    internal_static_modl_v1_PanelHomepageCardResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_modl_v1_PanelHomepageCardResponse_descriptor,
-        new java.lang.String[] { "Id", "Title", "Description", "Icon", "IconColor", "ActionType", "ActionUrl", "ActionButtonText", "CategoryId", "BackgroundColor", "IsEnabled", "Ordinal", "CreatedAt", "UpdatedAt", "Category", });
-    internal_static_modl_v1_PanelHomepageCardResponse_EmbeddedCategory_descriptor =
-      internal_static_modl_v1_PanelHomepageCardResponse_descriptor.getNestedType(0);
-    internal_static_modl_v1_PanelHomepageCardResponse_EmbeddedCategory_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_modl_v1_PanelHomepageCardResponse_EmbeddedCategory_descriptor,
-        new java.lang.String[] { "Id", "Name", "Slug", });
-    internal_static_modl_v1_PanelHomepageCardsResponse_descriptor =
-      getDescriptor().getMessageType(4);
-    internal_static_modl_v1_PanelHomepageCardsResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_modl_v1_PanelHomepageCardsResponse_descriptor,
-        new java.lang.String[] { "Cards", });
     internal_static_modl_v1_PublicHomepageCardsResponse_descriptor =
-      getDescriptor().getMessageType(5);
+      getDescriptor().getMessageType(1);
     internal_static_modl_v1_PublicHomepageCardsResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_PublicHomepageCardsResponse_descriptor,
         new java.lang.String[] { "Cards", });
-    internal_static_modl_v1_HomepageCardMutationResponse_descriptor =
-      getDescriptor().getMessageType(6);
-    internal_static_modl_v1_HomepageCardMutationResponse_fieldAccessorTable = new
-      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
-        internal_static_modl_v1_HomepageCardMutationResponse_descriptor,
-        new java.lang.String[] { "Message", });
     descriptor.resolveAllFeaturesImmutable();
-    com.buf.validate.ValidateProto.getDescriptor();
     com.google.protobuf.TimestampProto.getDescriptor();
-    com.google.protobuf.ExtensionRegistry registry =
-        com.google.protobuf.ExtensionRegistry.newInstance();
-    registry.add(com.buf.validate.ValidateProto.field);
-    com.google.protobuf.Descriptors.FileDescriptor
-        .internalUpdateFileDescriptor(descriptor, registry);
   }
 
   // @@protoc_insertion_point(outer_class_scope)

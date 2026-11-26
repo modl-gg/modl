@@ -97,6 +97,9 @@ private static final long serialVersionUID = 0L;
     REPLAY_CAPTURE_RESULT(74),
     HOSTED_PLAYERS(75),
     NETWORK_ROSTER(76),
+    PROXY_SERVERS(77),
+    FEATURE_SETTINGS(78),
+    FEATURE_STATUS(79),
     PAYLOAD_NOT_SET(0);
     private final int value;
     private PayloadCase(int value) {
@@ -148,6 +151,9 @@ private static final long serialVersionUID = 0L;
         case 74: return REPLAY_CAPTURE_RESULT;
         case 75: return HOSTED_PLAYERS;
         case 76: return NETWORK_ROSTER;
+        case 77: return PROXY_SERVERS;
+        case 78: return FEATURE_SETTINGS;
+        case 79: return FEATURE_STATUS;
         case 0: return PAYLOAD_NOT_SET;
         default: return null;
       }
@@ -1301,6 +1307,99 @@ private static final long serialVersionUID = 0L;
     return gg.modl.proto.modl.v1.NetworkRosterEvent.getDefaultInstance();
   }
 
+  public static final int PROXY_SERVERS_FIELD_NUMBER = 77;
+  /**
+   * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+   * @return Whether the proxyServers field is set.
+   */
+  @java.lang.Override
+  public boolean hasProxyServers() {
+    return payloadCase_ == 77;
+  }
+  /**
+   * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+   * @return The proxyServers.
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ProxyServersEvent getProxyServers() {
+    if (payloadCase_ == 77) {
+       return (gg.modl.proto.modl.v1.ProxyServersEvent) payload_;
+    }
+    return gg.modl.proto.modl.v1.ProxyServersEvent.getDefaultInstance();
+  }
+  /**
+   * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ProxyServersEventOrBuilder getProxyServersOrBuilder() {
+    if (payloadCase_ == 77) {
+       return (gg.modl.proto.modl.v1.ProxyServersEvent) payload_;
+    }
+    return gg.modl.proto.modl.v1.ProxyServersEvent.getDefaultInstance();
+  }
+
+  public static final int FEATURE_SETTINGS_FIELD_NUMBER = 78;
+  /**
+   * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+   * @return Whether the featureSettings field is set.
+   */
+  @java.lang.Override
+  public boolean hasFeatureSettings() {
+    return payloadCase_ == 78;
+  }
+  /**
+   * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+   * @return The featureSettings.
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.FeatureSettingsEvent getFeatureSettings() {
+    if (payloadCase_ == 78) {
+       return (gg.modl.proto.modl.v1.FeatureSettingsEvent) payload_;
+    }
+    return gg.modl.proto.modl.v1.FeatureSettingsEvent.getDefaultInstance();
+  }
+  /**
+   * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.FeatureSettingsEventOrBuilder getFeatureSettingsOrBuilder() {
+    if (payloadCase_ == 78) {
+       return (gg.modl.proto.modl.v1.FeatureSettingsEvent) payload_;
+    }
+    return gg.modl.proto.modl.v1.FeatureSettingsEvent.getDefaultInstance();
+  }
+
+  public static final int FEATURE_STATUS_FIELD_NUMBER = 79;
+  /**
+   * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+   * @return Whether the featureStatus field is set.
+   */
+  @java.lang.Override
+  public boolean hasFeatureStatus() {
+    return payloadCase_ == 79;
+  }
+  /**
+   * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+   * @return The featureStatus.
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ServerFeatureStatus getFeatureStatus() {
+    if (payloadCase_ == 79) {
+       return (gg.modl.proto.modl.v1.ServerFeatureStatus) payload_;
+    }
+    return gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance();
+  }
+  /**
+   * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder getFeatureStatusOrBuilder() {
+    if (payloadCase_ == 79) {
+       return (gg.modl.proto.modl.v1.ServerFeatureStatus) payload_;
+    }
+    return gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance();
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -1425,6 +1524,15 @@ private static final long serialVersionUID = 0L;
     }
     if (payloadCase_ == 76) {
       output.writeMessage(76, (gg.modl.proto.modl.v1.NetworkRosterEvent) payload_);
+    }
+    if (payloadCase_ == 77) {
+      output.writeMessage(77, (gg.modl.proto.modl.v1.ProxyServersEvent) payload_);
+    }
+    if (payloadCase_ == 78) {
+      output.writeMessage(78, (gg.modl.proto.modl.v1.FeatureSettingsEvent) payload_);
+    }
+    if (payloadCase_ == 79) {
+      output.writeMessage(79, (gg.modl.proto.modl.v1.ServerFeatureStatus) payload_);
     }
     getUnknownFields().writeTo(output);
   }
@@ -1580,6 +1688,18 @@ private static final long serialVersionUID = 0L;
     if (payloadCase_ == 76) {
       size += com.google.protobuf.CodedOutputStream
         .computeMessageSize(76, (gg.modl.proto.modl.v1.NetworkRosterEvent) payload_);
+    }
+    if (payloadCase_ == 77) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(77, (gg.modl.proto.modl.v1.ProxyServersEvent) payload_);
+    }
+    if (payloadCase_ == 78) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(78, (gg.modl.proto.modl.v1.FeatureSettingsEvent) payload_);
+    }
+    if (payloadCase_ == 79) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(79, (gg.modl.proto.modl.v1.ServerFeatureStatus) payload_);
     }
     return size;
   }
@@ -1753,6 +1873,18 @@ private static final long serialVersionUID = 0L;
         if (!getNetworkRoster()
             .equals(other.getNetworkRoster())) return false;
         break;
+      case 77:
+        if (!getProxyServers()
+            .equals(other.getProxyServers())) return false;
+        break;
+      case 78:
+        if (!getFeatureSettings()
+            .equals(other.getFeatureSettings())) return false;
+        break;
+      case 79:
+        if (!getFeatureStatus()
+            .equals(other.getFeatureStatus())) return false;
+        break;
       case 0:
       default:
     }
@@ -1911,6 +2043,18 @@ private static final long serialVersionUID = 0L;
       case 76:
         hash = (37 * hash) + NETWORK_ROSTER_FIELD_NUMBER;
         hash = (53 * hash) + getNetworkRoster().hashCode();
+        break;
+      case 77:
+        hash = (37 * hash) + PROXY_SERVERS_FIELD_NUMBER;
+        hash = (53 * hash) + getProxyServers().hashCode();
+        break;
+      case 78:
+        hash = (37 * hash) + FEATURE_SETTINGS_FIELD_NUMBER;
+        hash = (53 * hash) + getFeatureSettings().hashCode();
+        break;
+      case 79:
+        hash = (37 * hash) + FEATURE_STATUS_FIELD_NUMBER;
+        hash = (53 * hash) + getFeatureStatus().hashCode();
         break;
       case 0:
       default:
@@ -2169,6 +2313,15 @@ private static final long serialVersionUID = 0L;
       if (networkRosterBuilder_ != null) {
         networkRosterBuilder_.clear();
       }
+      if (proxyServersBuilder_ != null) {
+        proxyServersBuilder_.clear();
+      }
+      if (featureSettingsBuilder_ != null) {
+        featureSettingsBuilder_.clear();
+      }
+      if (featureStatusBuilder_ != null) {
+        featureStatusBuilder_.clear();
+      }
       payloadCase_ = 0;
       payload_ = null;
       return this;
@@ -2365,6 +2518,18 @@ private static final long serialVersionUID = 0L;
           networkRosterBuilder_ != null) {
         result.payload_ = networkRosterBuilder_.build();
       }
+      if (payloadCase_ == 77 &&
+          proxyServersBuilder_ != null) {
+        result.payload_ = proxyServersBuilder_.build();
+      }
+      if (payloadCase_ == 78 &&
+          featureSettingsBuilder_ != null) {
+        result.payload_ = featureSettingsBuilder_.build();
+      }
+      if (payloadCase_ == 79 &&
+          featureStatusBuilder_ != null) {
+        result.payload_ = featureStatusBuilder_.build();
+      }
     }
 
     @java.lang.Override
@@ -2525,6 +2690,18 @@ private static final long serialVersionUID = 0L;
         }
         case NETWORK_ROSTER: {
           mergeNetworkRoster(other.getNetworkRoster());
+          break;
+        }
+        case PROXY_SERVERS: {
+          mergeProxyServers(other.getProxyServers());
+          break;
+        }
+        case FEATURE_SETTINGS: {
+          mergeFeatureSettings(other.getFeatureSettings());
+          break;
+        }
+        case FEATURE_STATUS: {
+          mergeFeatureStatus(other.getFeatureStatus());
           break;
         }
         case PAYLOAD_NOT_SET: {
@@ -2810,6 +2987,27 @@ private static final long serialVersionUID = 0L;
               payloadCase_ = 76;
               break;
             } // case 610
+            case 618: {
+              input.readMessage(
+                  internalGetProxyServersFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              payloadCase_ = 77;
+              break;
+            } // case 618
+            case 626: {
+              input.readMessage(
+                  internalGetFeatureSettingsFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              payloadCase_ = 78;
+              break;
+            } // case 626
+            case 634: {
+              input.readMessage(
+                  internalGetFeatureStatusFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              payloadCase_ = 79;
+              break;
+            } // case 634
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -7844,6 +8042,426 @@ private static final long serialVersionUID = 0L;
       payloadCase_ = 76;
       onChanged();
       return networkRosterBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.ProxyServersEvent, gg.modl.proto.modl.v1.ProxyServersEvent.Builder, gg.modl.proto.modl.v1.ProxyServersEventOrBuilder> proxyServersBuilder_;
+    /**
+     * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+     * @return Whether the proxyServers field is set.
+     */
+    @java.lang.Override
+    public boolean hasProxyServers() {
+      return payloadCase_ == 77;
+    }
+    /**
+     * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+     * @return The proxyServers.
+     */
+    @java.lang.Override
+    public gg.modl.proto.modl.v1.ProxyServersEvent getProxyServers() {
+      if (proxyServersBuilder_ == null) {
+        if (payloadCase_ == 77) {
+          return (gg.modl.proto.modl.v1.ProxyServersEvent) payload_;
+        }
+        return gg.modl.proto.modl.v1.ProxyServersEvent.getDefaultInstance();
+      } else {
+        if (payloadCase_ == 77) {
+          return proxyServersBuilder_.getMessage();
+        }
+        return gg.modl.proto.modl.v1.ProxyServersEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+     */
+    public Builder setProxyServers(gg.modl.proto.modl.v1.ProxyServersEvent value) {
+      if (proxyServersBuilder_ == null) {
+        java.util.Objects.requireNonNull(value);
+        payload_ = value;
+        onChanged();
+      } else {
+        proxyServersBuilder_.setMessage(value);
+      }
+      payloadCase_ = 77;
+      return this;
+    }
+    /**
+     * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+     */
+    public Builder setProxyServers(
+        gg.modl.proto.modl.v1.ProxyServersEvent.Builder builderForValue) {
+      if (proxyServersBuilder_ == null) {
+        payload_ = builderForValue.build();
+        onChanged();
+      } else {
+        proxyServersBuilder_.setMessage(builderForValue.build());
+      }
+      payloadCase_ = 77;
+      return this;
+    }
+    /**
+     * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+     */
+    public Builder mergeProxyServers(gg.modl.proto.modl.v1.ProxyServersEvent value) {
+      if (proxyServersBuilder_ == null) {
+        if (payloadCase_ == 77 &&
+            payload_ != gg.modl.proto.modl.v1.ProxyServersEvent.getDefaultInstance()) {
+          payload_ = gg.modl.proto.modl.v1.ProxyServersEvent.newBuilder((gg.modl.proto.modl.v1.ProxyServersEvent) payload_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          payload_ = value;
+        }
+        onChanged();
+      } else {
+        if (payloadCase_ == 77) {
+          proxyServersBuilder_.mergeFrom(value);
+        } else {
+          proxyServersBuilder_.setMessage(value);
+        }
+      }
+      payloadCase_ = 77;
+      return this;
+    }
+    /**
+     * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+     */
+    public Builder clearProxyServers() {
+      if (proxyServersBuilder_ == null) {
+        if (payloadCase_ == 77) {
+          payloadCase_ = 0;
+          payload_ = null;
+          onChanged();
+        }
+      } else {
+        if (payloadCase_ == 77) {
+          payloadCase_ = 0;
+          payload_ = null;
+        }
+        proxyServersBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+     */
+    public gg.modl.proto.modl.v1.ProxyServersEvent.Builder getProxyServersBuilder() {
+      return internalGetProxyServersFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+     */
+    @java.lang.Override
+    public gg.modl.proto.modl.v1.ProxyServersEventOrBuilder getProxyServersOrBuilder() {
+      if ((payloadCase_ == 77) && (proxyServersBuilder_ != null)) {
+        return proxyServersBuilder_.getMessageOrBuilder();
+      } else {
+        if (payloadCase_ == 77) {
+          return (gg.modl.proto.modl.v1.ProxyServersEvent) payload_;
+        }
+        return gg.modl.proto.modl.v1.ProxyServersEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.ProxyServersEvent, gg.modl.proto.modl.v1.ProxyServersEvent.Builder, gg.modl.proto.modl.v1.ProxyServersEventOrBuilder> 
+        internalGetProxyServersFieldBuilder() {
+      if (proxyServersBuilder_ == null) {
+        if (!(payloadCase_ == 77)) {
+          payload_ = gg.modl.proto.modl.v1.ProxyServersEvent.getDefaultInstance();
+        }
+        proxyServersBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+            gg.modl.proto.modl.v1.ProxyServersEvent, gg.modl.proto.modl.v1.ProxyServersEvent.Builder, gg.modl.proto.modl.v1.ProxyServersEventOrBuilder>(
+                (gg.modl.proto.modl.v1.ProxyServersEvent) payload_,
+                getParentForChildren(),
+                isClean());
+        payload_ = null;
+      }
+      payloadCase_ = 77;
+      onChanged();
+      return proxyServersBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.FeatureSettingsEvent, gg.modl.proto.modl.v1.FeatureSettingsEvent.Builder, gg.modl.proto.modl.v1.FeatureSettingsEventOrBuilder> featureSettingsBuilder_;
+    /**
+     * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+     * @return Whether the featureSettings field is set.
+     */
+    @java.lang.Override
+    public boolean hasFeatureSettings() {
+      return payloadCase_ == 78;
+    }
+    /**
+     * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+     * @return The featureSettings.
+     */
+    @java.lang.Override
+    public gg.modl.proto.modl.v1.FeatureSettingsEvent getFeatureSettings() {
+      if (featureSettingsBuilder_ == null) {
+        if (payloadCase_ == 78) {
+          return (gg.modl.proto.modl.v1.FeatureSettingsEvent) payload_;
+        }
+        return gg.modl.proto.modl.v1.FeatureSettingsEvent.getDefaultInstance();
+      } else {
+        if (payloadCase_ == 78) {
+          return featureSettingsBuilder_.getMessage();
+        }
+        return gg.modl.proto.modl.v1.FeatureSettingsEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+     */
+    public Builder setFeatureSettings(gg.modl.proto.modl.v1.FeatureSettingsEvent value) {
+      if (featureSettingsBuilder_ == null) {
+        java.util.Objects.requireNonNull(value);
+        payload_ = value;
+        onChanged();
+      } else {
+        featureSettingsBuilder_.setMessage(value);
+      }
+      payloadCase_ = 78;
+      return this;
+    }
+    /**
+     * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+     */
+    public Builder setFeatureSettings(
+        gg.modl.proto.modl.v1.FeatureSettingsEvent.Builder builderForValue) {
+      if (featureSettingsBuilder_ == null) {
+        payload_ = builderForValue.build();
+        onChanged();
+      } else {
+        featureSettingsBuilder_.setMessage(builderForValue.build());
+      }
+      payloadCase_ = 78;
+      return this;
+    }
+    /**
+     * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+     */
+    public Builder mergeFeatureSettings(gg.modl.proto.modl.v1.FeatureSettingsEvent value) {
+      if (featureSettingsBuilder_ == null) {
+        if (payloadCase_ == 78 &&
+            payload_ != gg.modl.proto.modl.v1.FeatureSettingsEvent.getDefaultInstance()) {
+          payload_ = gg.modl.proto.modl.v1.FeatureSettingsEvent.newBuilder((gg.modl.proto.modl.v1.FeatureSettingsEvent) payload_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          payload_ = value;
+        }
+        onChanged();
+      } else {
+        if (payloadCase_ == 78) {
+          featureSettingsBuilder_.mergeFrom(value);
+        } else {
+          featureSettingsBuilder_.setMessage(value);
+        }
+      }
+      payloadCase_ = 78;
+      return this;
+    }
+    /**
+     * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+     */
+    public Builder clearFeatureSettings() {
+      if (featureSettingsBuilder_ == null) {
+        if (payloadCase_ == 78) {
+          payloadCase_ = 0;
+          payload_ = null;
+          onChanged();
+        }
+      } else {
+        if (payloadCase_ == 78) {
+          payloadCase_ = 0;
+          payload_ = null;
+        }
+        featureSettingsBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+     */
+    public gg.modl.proto.modl.v1.FeatureSettingsEvent.Builder getFeatureSettingsBuilder() {
+      return internalGetFeatureSettingsFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+     */
+    @java.lang.Override
+    public gg.modl.proto.modl.v1.FeatureSettingsEventOrBuilder getFeatureSettingsOrBuilder() {
+      if ((payloadCase_ == 78) && (featureSettingsBuilder_ != null)) {
+        return featureSettingsBuilder_.getMessageOrBuilder();
+      } else {
+        if (payloadCase_ == 78) {
+          return (gg.modl.proto.modl.v1.FeatureSettingsEvent) payload_;
+        }
+        return gg.modl.proto.modl.v1.FeatureSettingsEvent.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.FeatureSettingsEvent, gg.modl.proto.modl.v1.FeatureSettingsEvent.Builder, gg.modl.proto.modl.v1.FeatureSettingsEventOrBuilder> 
+        internalGetFeatureSettingsFieldBuilder() {
+      if (featureSettingsBuilder_ == null) {
+        if (!(payloadCase_ == 78)) {
+          payload_ = gg.modl.proto.modl.v1.FeatureSettingsEvent.getDefaultInstance();
+        }
+        featureSettingsBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+            gg.modl.proto.modl.v1.FeatureSettingsEvent, gg.modl.proto.modl.v1.FeatureSettingsEvent.Builder, gg.modl.proto.modl.v1.FeatureSettingsEventOrBuilder>(
+                (gg.modl.proto.modl.v1.FeatureSettingsEvent) payload_,
+                getParentForChildren(),
+                isClean());
+        payload_ = null;
+      }
+      payloadCase_ = 78;
+      onChanged();
+      return featureSettingsBuilder_;
+    }
+
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.ServerFeatureStatus, gg.modl.proto.modl.v1.ServerFeatureStatus.Builder, gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder> featureStatusBuilder_;
+    /**
+     * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+     * @return Whether the featureStatus field is set.
+     */
+    @java.lang.Override
+    public boolean hasFeatureStatus() {
+      return payloadCase_ == 79;
+    }
+    /**
+     * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+     * @return The featureStatus.
+     */
+    @java.lang.Override
+    public gg.modl.proto.modl.v1.ServerFeatureStatus getFeatureStatus() {
+      if (featureStatusBuilder_ == null) {
+        if (payloadCase_ == 79) {
+          return (gg.modl.proto.modl.v1.ServerFeatureStatus) payload_;
+        }
+        return gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance();
+      } else {
+        if (payloadCase_ == 79) {
+          return featureStatusBuilder_.getMessage();
+        }
+        return gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+     */
+    public Builder setFeatureStatus(gg.modl.proto.modl.v1.ServerFeatureStatus value) {
+      if (featureStatusBuilder_ == null) {
+        java.util.Objects.requireNonNull(value);
+        payload_ = value;
+        onChanged();
+      } else {
+        featureStatusBuilder_.setMessage(value);
+      }
+      payloadCase_ = 79;
+      return this;
+    }
+    /**
+     * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+     */
+    public Builder setFeatureStatus(
+        gg.modl.proto.modl.v1.ServerFeatureStatus.Builder builderForValue) {
+      if (featureStatusBuilder_ == null) {
+        payload_ = builderForValue.build();
+        onChanged();
+      } else {
+        featureStatusBuilder_.setMessage(builderForValue.build());
+      }
+      payloadCase_ = 79;
+      return this;
+    }
+    /**
+     * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+     */
+    public Builder mergeFeatureStatus(gg.modl.proto.modl.v1.ServerFeatureStatus value) {
+      if (featureStatusBuilder_ == null) {
+        if (payloadCase_ == 79 &&
+            payload_ != gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance()) {
+          payload_ = gg.modl.proto.modl.v1.ServerFeatureStatus.newBuilder((gg.modl.proto.modl.v1.ServerFeatureStatus) payload_)
+              .mergeFrom(value).buildPartial();
+        } else {
+          payload_ = value;
+        }
+        onChanged();
+      } else {
+        if (payloadCase_ == 79) {
+          featureStatusBuilder_.mergeFrom(value);
+        } else {
+          featureStatusBuilder_.setMessage(value);
+        }
+      }
+      payloadCase_ = 79;
+      return this;
+    }
+    /**
+     * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+     */
+    public Builder clearFeatureStatus() {
+      if (featureStatusBuilder_ == null) {
+        if (payloadCase_ == 79) {
+          payloadCase_ = 0;
+          payload_ = null;
+          onChanged();
+        }
+      } else {
+        if (payloadCase_ == 79) {
+          payloadCase_ = 0;
+          payload_ = null;
+        }
+        featureStatusBuilder_.clear();
+      }
+      return this;
+    }
+    /**
+     * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+     */
+    public gg.modl.proto.modl.v1.ServerFeatureStatus.Builder getFeatureStatusBuilder() {
+      return internalGetFeatureStatusFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+     */
+    @java.lang.Override
+    public gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder getFeatureStatusOrBuilder() {
+      if ((payloadCase_ == 79) && (featureStatusBuilder_ != null)) {
+        return featureStatusBuilder_.getMessageOrBuilder();
+      } else {
+        if (payloadCase_ == 79) {
+          return (gg.modl.proto.modl.v1.ServerFeatureStatus) payload_;
+        }
+        return gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance();
+      }
+    }
+    /**
+     * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.ServerFeatureStatus, gg.modl.proto.modl.v1.ServerFeatureStatus.Builder, gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder> 
+        internalGetFeatureStatusFieldBuilder() {
+      if (featureStatusBuilder_ == null) {
+        if (!(payloadCase_ == 79)) {
+          payload_ = gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance();
+        }
+        featureStatusBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+            gg.modl.proto.modl.v1.ServerFeatureStatus, gg.modl.proto.modl.v1.ServerFeatureStatus.Builder, gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder>(
+                (gg.modl.proto.modl.v1.ServerFeatureStatus) payload_,
+                getParentForChildren(),
+                isClean());
+        payload_ = null;
+      }
+      payloadCase_ = 79;
+      onChanged();
+      return featureStatusBuilder_;
     }
 
     // @@protoc_insertion_point(builder_scope:modl.v1.RealtimeEnvelope)

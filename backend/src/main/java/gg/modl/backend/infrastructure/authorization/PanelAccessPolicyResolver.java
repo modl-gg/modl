@@ -101,6 +101,7 @@ public class PanelAccessPolicyResolver {
             case PUNISHMENT_TYPE_ACCESS -> PunishmentTypeAccessPolicy.INSTANCE;
             case TICKET_WORKFLOW_ACCESS -> TicketWorkflowAccessPolicy.INSTANCE;
             case APPEAL_REPLY -> AppealReplyPolicy.INSTANCE;
+            case REPLAY_SHARING -> ReplaySharingPolicy.INSTANCE;
             case SUPER_ADMIN -> SuperAdminOnlyPolicy.INSTANCE;
             case REQUIRE_PERMISSION -> new ReadWritePermissionPolicy(viewPermission(annotation), modifyPermission(annotation));
         };

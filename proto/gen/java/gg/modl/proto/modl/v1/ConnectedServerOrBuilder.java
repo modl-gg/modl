@@ -135,4 +135,19 @@ public interface ConnectedServerOrBuilder extends
    * @return The compatibility.
    */
   gg.modl.proto.modl.v1.ServerCompatibility getCompatibility();
+
+  /**
+   * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+   * @return Whether the features field is set.
+   */
+  boolean hasFeatures();
+  /**
+   * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+   * @return The features.
+   */
+  gg.modl.proto.modl.v1.ServerFeatureStatus getFeatures();
+  /**
+   * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+   */
+  gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder getFeaturesOrBuilder();
 }

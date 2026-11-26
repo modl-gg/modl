@@ -4,6 +4,7 @@ import gg.modl.minecraft.api.http.ApiClientException;
 import gg.modl.minecraft.api.http.ImportApi;
 import gg.modl.minecraft.api.http.request.EndImportJobRequest;
 import gg.modl.minecraft.api.http.response.ImportJob;
+import gg.modl.minecraft.core.imports.source.ImportProblem;
 import gg.modl.minecraft.core.imports.source.ImportSource;
 import gg.modl.minecraft.core.imports.source.SourceReader;
 import gg.modl.minecraft.core.locale.LocaleManager;
@@ -86,13 +87,18 @@ public final class Imports {
 
     public void preview(String sourceId) {
         ImportSource source = knownSource(sourceId);
-        if (source == null || !claimSlot()) return;
+        if (source == null) return;
+        Slot slot = claimSlot();
+        if (slot == null) return;
         confirmation.disarm();
         previewed.discardLater();
         inBackground(() -> {
             runtime.getSources().detect();
-            if (new ImportPreview(runtime, source, previewing, previewed).show()) confirmation.arm(source.id());
-        }, source);
+            new ImportPreview(runtime, source, previewing, previewed).show(() -> {
+                confirmation.arm(source.id());
+                slot.release();
+            });
+        }, source, slot);
     }
 
     public void confirm(String sourceId, @Nullable String scopedWord, @Nullable String historyWord) {
@@ -108,9 +114,10 @@ public final class Imports {
             reporter.say(source, "import.confirm_first");
             return;
         }
-        if (!claimSlot()) return;
+        Slot slot = claimSlot();
+        if (slot == null) return;
         if (!confirmation.consume(source.id())) {
-            busy.set(false);
+            slot.release();
             reporter.say(source, "import.confirm_first");
             return;
         }
@@ -122,7 +129,7 @@ public final class Imports {
             } finally {
                 current = null;
             }
-        }, source)) {
+        }, source, slot)) {
             current = null;
         }
     }
@@ -160,7 +167,7 @@ public final class Imports {
             for (String jobId : runtime.getFiles().discardExportsAndListInterruptedJobs()) {
                 runtime.getFollower().resume(jobId);
             }
-        });
+        }, null, new Slot());
     }
 
     public void shutdown() {
@@ -201,29 +208,25 @@ public final class Imports {
         return source;
     }
 
-    private boolean claimSlot() {
-        if (runtime.getLifecycle().isSet()) return false;
-        if (busy.compareAndSet(false, true)) return true;
+    private @Nullable Slot claimSlot() {
+        if (runtime.getLifecycle().isSet()) return null;
+        if (busy.compareAndSet(false, true)) return new Slot();
         reporter.say("import.busy");
-        return false;
+        return null;
     }
 
-    private void inBackground(Runnable task) {
-        inBackground(task, null);
-    }
-
-    private boolean inBackground(Runnable task, @Nullable ImportSource source) {
+    private boolean inBackground(Runnable task, @Nullable ImportSource source, Slot slot) {
         try {
-            worker.execute(() -> runReporting(task, source));
+            worker.execute(() -> runReporting(task, source, slot));
             return true;
         } catch (RejectedExecutionException stopped) {
-            busy.set(false);
+            slot.release();
             runtime.getLogger().debug("The import worker has already stopped");
             return false;
         }
     }
 
-    private void runReporting(Runnable task, @Nullable ImportSource source) {
+    private void runReporting(Runnable task, @Nullable ImportSource source, Slot slot) {
         try {
             if (!runtime.getLifecycle().isSet()) task.run();
         } catch (ImportFailure failure) {
@@ -231,13 +234,13 @@ public final class Imports {
             if (failure.getCause() != null) runtime.getLogger().warning("The import failed", failure.getCause());
             reportFailure(source, failure.getMessageKey(), failure.getMessage());
         } catch (ApiClientException refused) {
-            reportFailure(source, "import.request_failed", refused.getMessage());
+            reportFailure(source, ImportProblem.REQUEST_FAILED.messageKey(), refused.getMessage());
         } catch (RuntimeException | LinkageError failure) {
             if (runtime.getLifecycle().isSet()) return;
             runtime.getLogger().warning("The import failed", failure);
-            reportFailure(source, "import.request_failed", failure.toString());
+            reportFailure(source, ImportProblem.REQUEST_FAILED.messageKey(), failure.toString());
         } finally {
-            busy.set(false);
+            slot.release();
         }
     }
 
@@ -255,7 +258,7 @@ public final class Imports {
     }
 
     private Void requestFailed(Throwable failure) {
-        reporter.failed("import.request_failed", ImportCalls.unwrap(failure).getMessage());
+        reporter.failed(ImportProblem.REQUEST_FAILED.messageKey(), ImportCalls.unwrap(failure).getMessage());
         return null;
     }
 
@@ -265,5 +268,13 @@ public final class Imports {
             thread.setDaemon(true);
             return thread;
         };
+    }
+
+    private final class Slot {
+        private final AtomicBoolean held = new AtomicBoolean(true);
+
+        private void release() {
+            if (held.compareAndSet(true, false)) busy.set(false);
+        }
     }
 }

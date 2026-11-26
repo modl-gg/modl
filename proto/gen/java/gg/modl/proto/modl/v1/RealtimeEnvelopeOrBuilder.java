@@ -561,5 +561,50 @@ public interface RealtimeEnvelopeOrBuilder extends
    */
   gg.modl.proto.modl.v1.NetworkRosterEventOrBuilder getNetworkRosterOrBuilder();
 
+  /**
+   * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+   * @return Whether the proxyServers field is set.
+   */
+  boolean hasProxyServers();
+  /**
+   * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+   * @return The proxyServers.
+   */
+  gg.modl.proto.modl.v1.ProxyServersEvent getProxyServers();
+  /**
+   * <code>.modl.v1.ProxyServersEvent proxy_servers = 77 [json_name = "proxyServers"];</code>
+   */
+  gg.modl.proto.modl.v1.ProxyServersEventOrBuilder getProxyServersOrBuilder();
+
+  /**
+   * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+   * @return Whether the featureSettings field is set.
+   */
+  boolean hasFeatureSettings();
+  /**
+   * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+   * @return The featureSettings.
+   */
+  gg.modl.proto.modl.v1.FeatureSettingsEvent getFeatureSettings();
+  /**
+   * <code>.modl.v1.FeatureSettingsEvent feature_settings = 78 [json_name = "featureSettings"];</code>
+   */
+  gg.modl.proto.modl.v1.FeatureSettingsEventOrBuilder getFeatureSettingsOrBuilder();
+
+  /**
+   * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+   * @return Whether the featureStatus field is set.
+   */
+  boolean hasFeatureStatus();
+  /**
+   * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+   * @return The featureStatus.
+   */
+  gg.modl.proto.modl.v1.ServerFeatureStatus getFeatureStatus();
+  /**
+   * <code>.modl.v1.ServerFeatureStatus feature_status = 79 [json_name = "featureStatus"];</code>
+   */
+  gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder getFeatureStatusOrBuilder();
+
   gg.modl.proto.modl.v1.RealtimeEnvelope.PayloadCase getPayloadCase();
 }

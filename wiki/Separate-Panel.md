@@ -10,7 +10,7 @@ Run the panel with Docker or the jar, then point your servers at it. Settings ar
    cd modl
    cp .env.example .env
    ```
-2. Edit `.env`: `MODL_PORT` (host port, default 8080), and `MODL_PUBLIC_URL` if the panel has a domain.
+2. Edit `.env`: `MODL_PORT` (host port, default 8080), and `MODL_PUBLIC_URL` if the panel has a domain. Domain on Cloudflare? Use the [built-in Cloudflare Tunnel](Panel-Port-and-Tunnels#built-in-cloudflare-tunnel) (no open port): set `MODL_TUNNEL` and `MODL_TUNNEL_TOKEN` too.
 3. Start it and read the setup code:
    ```bash
    docker compose up -d

@@ -90,7 +90,7 @@ public class S3ConnectionTester {
         }
         if (e.statusCode() == FORBIDDEN) {
             return S3ConnectionResult.failed(S3ConnectionResult.ACCESS_DENIED,
-                "The keys were refused, or they may not read, write and delete in this bucket");
+                "The keys were refused, or they may not read, write, and delete in this bucket");
         }
         if (e.statusCode() == NOT_FOUND || "NoSuchBucket".equals(errorCode)) {
             return S3ConnectionResult.failed(S3ConnectionResult.BUCKET_NOT_FOUND, "The bucket does not exist at this endpoint");

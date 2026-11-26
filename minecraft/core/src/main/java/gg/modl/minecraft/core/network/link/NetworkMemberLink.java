@@ -4,6 +4,7 @@ import gg.modl.minecraft.api.http.response.StartupResponse;
 import gg.modl.minecraft.core.connection.PanelLocations;
 import gg.modl.minecraft.core.connection.WikiPages;
 import gg.modl.minecraft.core.member.MemberSession;
+import gg.modl.minecraft.core.feature.FeatureSettingsChannel;
 import gg.modl.minecraft.core.network.MemberAction;
 import gg.modl.minecraft.core.network.MemberActionKind;
 import gg.modl.minecraft.core.network.MemberActionOutcome;
@@ -17,6 +18,8 @@ import gg.modl.minecraft.core.realtime.RealtimeTopics;
 import gg.modl.minecraft.core.realtime.TerminationReason;
 import gg.modl.minecraft.core.service.ReplayCaptureResult;
 import gg.modl.minecraft.core.service.ReplayCaptureStatus;
+import gg.modl.minecraft.core.service.ReplayRecordingOutcome;
+import gg.modl.minecraft.core.service.ReplayRecordingResult;
 import gg.modl.minecraft.core.util.Futures;
 import gg.modl.minecraft.core.util.PluginLogger;
 import gg.modl.proto.modl.v1.MemberActionResult;
@@ -37,6 +40,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 import java.util.UUID;
+import java.util.concurrent.CompletableFuture;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executors;
 import java.util.concurrent.RejectedExecutionException;
@@ -58,6 +62,7 @@ public final class NetworkMemberLink implements MemberActionSender {
     private final ModerationSnapshotListener moderation;
     private final ReplayCaptureHandler captures;
     private final MemberStatWipes statWipes;
+    private final FeatureSettingsChannel featureSettings;
     private final IntSupplier onlinePlayerCount;
     private final Supplier<String> serverName;
     private final Runnable credentialsRejected;
@@ -70,11 +75,12 @@ public final class NetworkMemberLink implements MemberActionSender {
 
     @Builder
     private NetworkMemberLink(ModerationSnapshotListener moderation, ReplayCaptureHandler captures, MemberStatWipes statWipes,
-                              IntSupplier onlinePlayerCount, Supplier<String> serverName,
+                              FeatureSettingsChannel featureSettings, IntSupplier onlinePlayerCount, Supplier<String> serverName,
                               Runnable credentialsRejected, String configPath, PluginLogger logger, boolean debugMode) {
         this.moderation = moderation;
         this.captures = captures;
         this.statWipes = statWipes;
+        this.featureSettings = featureSettings;
         this.onlinePlayerCount = onlinePlayerCount;
         this.serverName = serverName;
         this.credentialsRejected = credentialsRejected;
@@ -121,15 +127,17 @@ public final class NetworkMemberLink implements MemberActionSender {
     public synchronized void connect(MemberSession session) {
         disconnect();
         StartupResponse startup = session.getStartup();
-        Set<Topic> topics = RealtimeTopics.memberNetworkTopicsGrantedBy(startup);
+        Set<Topic> topics = RealtimeTopics.union(RealtimeTopics.memberNetworkTopicsGrantedBy(startup),
+                RealtimeTopics.featureTopicsGrantedBy(startup));
         if (topics.isEmpty()) return;
         RealtimeConnection connection = new RealtimeConnection(session.getConnections(), protocolVersion(startup), topics,
                 serverName, startup.getServerInstanceId(), ServerRole.SERVER_ROLE_MEMBER, logger, debugMode);
         Connection created = new Connection(connection, session.getConnections().baseUrl());
         connection.register(PayloadCase.MODERATION_STATE, envelope -> onModeration(envelope.getModerationState()));
         connection.register(PayloadCase.MEMBER_ACTION_RESULT, envelope -> onResult(envelope.getMemberActionResult()));
-        connection.register(PayloadCase.REPLAY_CAPTURE_REQUEST, envelope -> created.onCapture(envelope.getReplayCaptureRequest()));
+        connection.register(PayloadCase.REPLAY_CAPTURE_REQUEST, envelope -> onReplayRequest(envelope.getReplayCaptureRequest(), connection::send));
         connection.register(PayloadCase.STAT_WIPE_PUSH, envelope -> onStatWipes(envelope.getStatWipePush()));
+        featureSettings.attachTo(connection);
         connection.addListener(created);
         current = created;
         created.start();
@@ -210,6 +218,52 @@ public final class NetworkMemberLink implements MemberActionSender {
             default:
                 return ReplayCaptureOutcome.REPLAY_CAPTURE_OUTCOME_ERROR;
         }
+    }
+
+    void onReplayRequest(ReplayCaptureRequest request, Consumer<RealtimeEnvelope> reply) {
+        UUID target = Uuids.parse(request.getTargetUuid());
+        String requestId = request.getRequestId();
+        if (target == null) {
+            answerCapture(reply, requestId, ReplayCaptureResult.error());
+            return;
+        }
+        String name = request.getTargetName();
+        switch (request.getAction()) {
+            case REPLAY_REQUEST_ACTION_CAPTURE:
+                Futures.whenComplete(captures.capture(target, name), (result, failure) -> answerCapture(reply, requestId,
+                        failure != null || result == null ? ReplayCaptureResult.error() : result), logger);
+                return;
+            case REPLAY_REQUEST_ACTION_START_RECORDING:
+                answerRecording(reply, requestId, captures.startRecording(target, name));
+                return;
+            case REPLAY_REQUEST_ACTION_STOP_RECORDING:
+                answerRecording(reply, requestId, captures.stopRecording(target, name));
+                return;
+            case REPLAY_REQUEST_ACTION_RECORDING_STATUS:
+                answerRecording(reply, requestId, captures.recordingStatus(target, name));
+                return;
+            default:
+                answerCapture(reply, requestId, ReplayCaptureResult.error());
+        }
+    }
+
+    private static void answerCapture(Consumer<RealtimeEnvelope> reply, String requestId, ReplayCaptureResult result) {
+        gg.modl.proto.modl.v1.ReplayCaptureResult.Builder answer = gg.modl.proto.modl.v1.ReplayCaptureResult.newBuilder()
+                .setRequestId(requestId)
+                .setOutcome(outcomeOf(result.getStatus()));
+        String replayId = result.getReplayId();
+        if (replayId != null) answer.setReplayId(replayId);
+        reply.accept(RealtimeEnvelope.newBuilder().setReplayCaptureResult(answer).build());
+    }
+
+    private void answerRecording(Consumer<RealtimeEnvelope> reply, String requestId,
+                                 CompletableFuture<ReplayRecordingResult> pending) {
+        Futures.whenComplete(pending, (result, failure) -> {
+            ReplayRecordingResult answer = failure != null || result == null
+                    ? ReplayRecordingResult.of(ReplayRecordingOutcome.ERROR) : result;
+            reply.accept(RealtimeEnvelope.newBuilder()
+                    .setReplayCaptureResult(ReplayRecordingProtos.toResult(requestId, answer)).build());
+        }, logger);
     }
 
     private void complete(String requestId, MemberActionOutcome outcome) {
@@ -314,26 +368,6 @@ public final class NetworkMemberLink implements MemberActionSender {
             if (stopped || reason != TerminationReason.CREDENTIALS_REJECTED) return;
             logger.warning(rejectedKeyNotice(configPath));
             credentialsRejected.run();
-        }
-
-        private void onCapture(ReplayCaptureRequest request) {
-            UUID target = Uuids.parse(request.getTargetUuid());
-            if (target == null) {
-                answerCapture(request.getRequestId(), ReplayCaptureResult.error());
-                return;
-            }
-            Futures.whenComplete(captures.capture(target, request.getTargetName()), (result, failure) ->
-                    answerCapture(request.getRequestId(), failure != null || result == null ? ReplayCaptureResult.error() : result),
-                    logger);
-        }
-
-        private void answerCapture(String requestId, ReplayCaptureResult result) {
-            gg.modl.proto.modl.v1.ReplayCaptureResult.Builder answer = gg.modl.proto.modl.v1.ReplayCaptureResult.newBuilder()
-                    .setRequestId(requestId)
-                    .setOutcome(outcomeOf(result.getStatus()));
-            String replayId = result.getReplayId();
-            if (replayId != null) answer.setReplayId(replayId);
-            realtime.send(RealtimeEnvelope.newBuilder().setReplayCaptureResult(answer).build());
         }
 
         private @Nullable ScheduledFuture<?> scheduleRepeating(Runnable task) {

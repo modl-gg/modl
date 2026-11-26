@@ -35,7 +35,6 @@ private static final long serialVersionUID = 0L;
     iconColor_ = "";
     actionType_ = "";
     actionUrl_ = "";
-    actionButtonText_ = "";
     categoryId_ = "";
     backgroundColor_ = "";
   }
@@ -2555,45 +2554,6 @@ private static final long serialVersionUID = 0L;
     }
   }
 
-  public static final int ACTION_BUTTON_TEXT_FIELD_NUMBER = 8;
-  @SuppressWarnings("serial")
-  private volatile java.lang.Object actionButtonText_ = "";
-  /**
-   * <code>string action_button_text = 8 [json_name = "actionButtonText"];</code>
-   * @return The actionButtonText.
-   */
-  @java.lang.Override
-  public java.lang.String getActionButtonText() {
-    java.lang.Object ref = actionButtonText_;
-    if (ref instanceof java.lang.String) {
-      return (java.lang.String) ref;
-    } else {
-      com.google.protobuf.ByteString bs = 
-          (com.google.protobuf.ByteString) ref;
-      java.lang.String s = bs.toStringUtf8();
-      actionButtonText_ = s;
-      return s;
-    }
-  }
-  /**
-   * <code>string action_button_text = 8 [json_name = "actionButtonText"];</code>
-   * @return The bytes for actionButtonText.
-   */
-  @java.lang.Override
-  public com.google.protobuf.ByteString
-      getActionButtonTextBytes() {
-    java.lang.Object ref = actionButtonText_;
-    if (ref instanceof java.lang.String) {
-      com.google.protobuf.ByteString b = 
-          com.google.protobuf.ByteString.copyFromUtf8(
-              (java.lang.String) ref);
-      actionButtonText_ = b;
-      return b;
-    } else {
-      return (com.google.protobuf.ByteString) ref;
-    }
-  }
-
   public static final int CATEGORY_ID_FIELD_NUMBER = 9;
   @SuppressWarnings("serial")
   private volatile java.lang.Object categoryId_ = "";
@@ -2807,9 +2767,6 @@ private static final long serialVersionUID = 0L;
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(actionUrl_)) {
       com.google.protobuf.GeneratedMessage.writeString(output, 7, actionUrl_);
     }
-    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(actionButtonText_)) {
-      com.google.protobuf.GeneratedMessage.writeString(output, 8, actionButtonText_);
-    }
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(categoryId_)) {
       com.google.protobuf.GeneratedMessage.writeString(output, 9, categoryId_);
     }
@@ -2855,9 +2812,6 @@ private static final long serialVersionUID = 0L;
     }
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(actionUrl_)) {
       size += com.google.protobuf.GeneratedMessage.computeStringSize(7, actionUrl_);
-    }
-    if (!com.google.protobuf.GeneratedMessage.isStringEmpty(actionButtonText_)) {
-      size += com.google.protobuf.GeneratedMessage.computeStringSize(8, actionButtonText_);
     }
     if (!com.google.protobuf.GeneratedMessage.isStringEmpty(categoryId_)) {
       size += com.google.protobuf.GeneratedMessage.computeStringSize(9, categoryId_);
@@ -2923,8 +2877,6 @@ private static final long serialVersionUID = 0L;
         .equals(other.getActionType())) return false;
     if (!getActionUrl()
         .equals(other.getActionUrl())) return false;
-    if (!getActionButtonText()
-        .equals(other.getActionButtonText())) return false;
     if (!getCategoryId()
         .equals(other.getCategoryId())) return false;
     if (!getBackgroundColor()
@@ -2973,8 +2925,6 @@ private static final long serialVersionUID = 0L;
     hash = (53 * hash) + getActionType().hashCode();
     hash = (37 * hash) + ACTION_URL_FIELD_NUMBER;
     hash = (53 * hash) + getActionUrl().hashCode();
-    hash = (37 * hash) + ACTION_BUTTON_TEXT_FIELD_NUMBER;
-    hash = (53 * hash) + getActionButtonText().hashCode();
     hash = (37 * hash) + CATEGORY_ID_FIELD_NUMBER;
     hash = (53 * hash) + getCategoryId().hashCode();
     hash = (37 * hash) + BACKGROUND_COLOR_FIELD_NUMBER;
@@ -3142,7 +3092,6 @@ private static final long serialVersionUID = 0L;
       iconColor_ = "";
       actionType_ = "";
       actionUrl_ = "";
-      actionButtonText_ = "";
       categoryId_ = "";
       backgroundColor_ = "";
       ordinal_ = 0;
@@ -3217,34 +3166,31 @@ private static final long serialVersionUID = 0L;
         result.actionUrl_ = actionUrl_;
       }
       if (((from_bitField0_ & 0x00000080) != 0)) {
-        result.actionButtonText_ = actionButtonText_;
-      }
-      if (((from_bitField0_ & 0x00000100) != 0)) {
         result.categoryId_ = categoryId_;
       }
-      if (((from_bitField0_ & 0x00000200) != 0)) {
+      if (((from_bitField0_ & 0x00000100) != 0)) {
         result.backgroundColor_ = backgroundColor_;
       }
-      if (((from_bitField0_ & 0x00000400) != 0)) {
+      if (((from_bitField0_ & 0x00000200) != 0)) {
         result.ordinal_ = ordinal_;
       }
-      if (((from_bitField0_ & 0x00000800) != 0)) {
+      if (((from_bitField0_ & 0x00000400) != 0)) {
         result.isEnabled_ = isEnabled_;
       }
       int to_bitField0_ = 0;
-      if (((from_bitField0_ & 0x00001000) != 0)) {
+      if (((from_bitField0_ & 0x00000800) != 0)) {
         result.createdAt_ = createdAtBuilder_ == null
             ? createdAt_
             : createdAtBuilder_.build();
         to_bitField0_ |= 0x00000001;
       }
-      if (((from_bitField0_ & 0x00002000) != 0)) {
+      if (((from_bitField0_ & 0x00001000) != 0)) {
         result.updatedAt_ = updatedAtBuilder_ == null
             ? updatedAt_
             : updatedAtBuilder_.build();
         to_bitField0_ |= 0x00000002;
       }
-      if (((from_bitField0_ & 0x00004000) != 0)) {
+      if (((from_bitField0_ & 0x00002000) != 0)) {
         result.category_ = categoryBuilder_ == null
             ? category_
             : categoryBuilder_.build();
@@ -3300,19 +3246,14 @@ private static final long serialVersionUID = 0L;
         bitField0_ |= 0x00000040;
         onChanged();
       }
-      if (!other.getActionButtonText().isEmpty()) {
-        actionButtonText_ = other.actionButtonText_;
-        bitField0_ |= 0x00000080;
-        onChanged();
-      }
       if (!other.getCategoryId().isEmpty()) {
         categoryId_ = other.categoryId_;
-        bitField0_ |= 0x00000100;
+        bitField0_ |= 0x00000080;
         onChanged();
       }
       if (!other.getBackgroundColor().isEmpty()) {
         backgroundColor_ = other.backgroundColor_;
-        bitField0_ |= 0x00000200;
+        bitField0_ |= 0x00000100;
         onChanged();
       }
       if (other.getOrdinal() != 0) {
@@ -3389,50 +3330,45 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000040;
               break;
             } // case 58
-            case 66: {
-              actionButtonText_ = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000080;
-              break;
-            } // case 66
             case 74: {
               categoryId_ = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000100;
+              bitField0_ |= 0x00000080;
               break;
             } // case 74
             case 82: {
               backgroundColor_ = input.readStringRequireUtf8();
-              bitField0_ |= 0x00000200;
+              bitField0_ |= 0x00000100;
               break;
             } // case 82
             case 88: {
               ordinal_ = input.readInt32();
-              bitField0_ |= 0x00000400;
+              bitField0_ |= 0x00000200;
               break;
             } // case 88
             case 96: {
               isEnabled_ = input.readBool();
-              bitField0_ |= 0x00000800;
+              bitField0_ |= 0x00000400;
               break;
             } // case 96
             case 106: {
               input.readMessage(
                   internalGetCreatedAtFieldBuilder().getBuilder(),
                   extensionRegistry);
-              bitField0_ |= 0x00001000;
+              bitField0_ |= 0x00000800;
               break;
             } // case 106
             case 114: {
               input.readMessage(
                   internalGetUpdatedAtFieldBuilder().getBuilder(),
                   extensionRegistry);
-              bitField0_ |= 0x00002000;
+              bitField0_ |= 0x00001000;
               break;
             } // case 114
             case 122: {
               input.readMessage(
                   internalGetCategoryFieldBuilder().getBuilder(),
                   extensionRegistry);
-              bitField0_ |= 0x00004000;
+              bitField0_ |= 0x00002000;
               break;
             } // case 122
             default: {
@@ -3956,78 +3892,6 @@ private static final long serialVersionUID = 0L;
       return this;
     }
 
-    private java.lang.Object actionButtonText_ = "";
-    /**
-     * <code>string action_button_text = 8 [json_name = "actionButtonText"];</code>
-     * @return The actionButtonText.
-     */
-    public java.lang.String getActionButtonText() {
-      java.lang.Object ref = actionButtonText_;
-      if (!(ref instanceof java.lang.String)) {
-        com.google.protobuf.ByteString bs =
-            (com.google.protobuf.ByteString) ref;
-        java.lang.String s = bs.toStringUtf8();
-        actionButtonText_ = s;
-        return s;
-      } else {
-        return (java.lang.String) ref;
-      }
-    }
-    /**
-     * <code>string action_button_text = 8 [json_name = "actionButtonText"];</code>
-     * @return The bytes for actionButtonText.
-     */
-    public com.google.protobuf.ByteString
-        getActionButtonTextBytes() {
-      java.lang.Object ref = actionButtonText_;
-      if (ref instanceof String) {
-        com.google.protobuf.ByteString b = 
-            com.google.protobuf.ByteString.copyFromUtf8(
-                (java.lang.String) ref);
-        actionButtonText_ = b;
-        return b;
-      } else {
-        return (com.google.protobuf.ByteString) ref;
-      }
-    }
-    /**
-     * <code>string action_button_text = 8 [json_name = "actionButtonText"];</code>
-     * @param value The actionButtonText to set.
-     * @return This builder for chaining.
-     */
-    public Builder setActionButtonText(
-        java.lang.String value) {
-      java.util.Objects.requireNonNull(value);
-      actionButtonText_ = value;
-      bitField0_ |= 0x00000080;
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string action_button_text = 8 [json_name = "actionButtonText"];</code>
-     * @return This builder for chaining.
-     */
-    public Builder clearActionButtonText() {
-      actionButtonText_ = getDefaultInstance().getActionButtonText();
-      bitField0_ = (bitField0_ & ~0x00000080);
-      onChanged();
-      return this;
-    }
-    /**
-     * <code>string action_button_text = 8 [json_name = "actionButtonText"];</code>
-     * @param value The bytes for actionButtonText to set.
-     * @return This builder for chaining.
-     */
-    public Builder setActionButtonTextBytes(
-        com.google.protobuf.ByteString value) {
-      java.util.Objects.requireNonNull(value);
-      checkByteStringIsUtf8(value);
-      actionButtonText_ = value;
-      bitField0_ |= 0x00000080;
-      onChanged();
-      return this;
-    }
-
     private java.lang.Object categoryId_ = "";
     /**
      * <code>string category_id = 9 [json_name = "categoryId"];</code>
@@ -4071,7 +3935,7 @@ private static final long serialVersionUID = 0L;
         java.lang.String value) {
       java.util.Objects.requireNonNull(value);
       categoryId_ = value;
-      bitField0_ |= 0x00000100;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -4081,7 +3945,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearCategoryId() {
       categoryId_ = getDefaultInstance().getCategoryId();
-      bitField0_ = (bitField0_ & ~0x00000100);
+      bitField0_ = (bitField0_ & ~0x00000080);
       onChanged();
       return this;
     }
@@ -4095,7 +3959,7 @@ private static final long serialVersionUID = 0L;
       java.util.Objects.requireNonNull(value);
       checkByteStringIsUtf8(value);
       categoryId_ = value;
-      bitField0_ |= 0x00000100;
+      bitField0_ |= 0x00000080;
       onChanged();
       return this;
     }
@@ -4143,7 +4007,7 @@ private static final long serialVersionUID = 0L;
         java.lang.String value) {
       java.util.Objects.requireNonNull(value);
       backgroundColor_ = value;
-      bitField0_ |= 0x00000200;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -4153,7 +4017,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder clearBackgroundColor() {
       backgroundColor_ = getDefaultInstance().getBackgroundColor();
-      bitField0_ = (bitField0_ & ~0x00000200);
+      bitField0_ = (bitField0_ & ~0x00000100);
       onChanged();
       return this;
     }
@@ -4167,7 +4031,7 @@ private static final long serialVersionUID = 0L;
       java.util.Objects.requireNonNull(value);
       checkByteStringIsUtf8(value);
       backgroundColor_ = value;
-      bitField0_ |= 0x00000200;
+      bitField0_ |= 0x00000100;
       onChanged();
       return this;
     }
@@ -4189,7 +4053,7 @@ private static final long serialVersionUID = 0L;
     public Builder setOrdinal(int value) {
 
       ordinal_ = value;
-      bitField0_ |= 0x00000400;
+      bitField0_ |= 0x00000200;
       onChanged();
       return this;
     }
@@ -4198,7 +4062,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearOrdinal() {
-      bitField0_ = (bitField0_ & ~0x00000400);
+      bitField0_ = (bitField0_ & ~0x00000200);
       ordinal_ = 0;
       onChanged();
       return this;
@@ -4221,7 +4085,7 @@ private static final long serialVersionUID = 0L;
     public Builder setIsEnabled(boolean value) {
 
       isEnabled_ = value;
-      bitField0_ |= 0x00000800;
+      bitField0_ |= 0x00000400;
       onChanged();
       return this;
     }
@@ -4230,7 +4094,7 @@ private static final long serialVersionUID = 0L;
      * @return This builder for chaining.
      */
     public Builder clearIsEnabled() {
-      bitField0_ = (bitField0_ & ~0x00000800);
+      bitField0_ = (bitField0_ & ~0x00000400);
       isEnabled_ = false;
       onChanged();
       return this;
@@ -4244,7 +4108,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the createdAt field is set.
      */
     public boolean hasCreatedAt() {
-      return ((bitField0_ & 0x00001000) != 0);
+      return ((bitField0_ & 0x00000800) != 0);
     }
     /**
      * <code>.google.protobuf.Timestamp created_at = 13 [json_name = "createdAt"];</code>
@@ -4267,7 +4131,7 @@ private static final long serialVersionUID = 0L;
       } else {
         createdAtBuilder_.setMessage(value);
       }
-      bitField0_ |= 0x00001000;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -4281,7 +4145,7 @@ private static final long serialVersionUID = 0L;
       } else {
         createdAtBuilder_.setMessage(builderForValue.build());
       }
-      bitField0_ |= 0x00001000;
+      bitField0_ |= 0x00000800;
       onChanged();
       return this;
     }
@@ -4290,7 +4154,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeCreatedAt(com.google.protobuf.Timestamp value) {
       if (createdAtBuilder_ == null) {
-        if (((bitField0_ & 0x00001000) != 0) &&
+        if (((bitField0_ & 0x00000800) != 0) &&
           createdAt_ != null &&
           createdAt_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
           getCreatedAtBuilder().mergeFrom(value);
@@ -4301,7 +4165,7 @@ private static final long serialVersionUID = 0L;
         createdAtBuilder_.mergeFrom(value);
       }
       if (createdAt_ != null) {
-        bitField0_ |= 0x00001000;
+        bitField0_ |= 0x00000800;
         onChanged();
       }
       return this;
@@ -4310,7 +4174,7 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp created_at = 13 [json_name = "createdAt"];</code>
      */
     public Builder clearCreatedAt() {
-      bitField0_ = (bitField0_ & ~0x00001000);
+      bitField0_ = (bitField0_ & ~0x00000800);
       createdAt_ = null;
       if (createdAtBuilder_ != null) {
         createdAtBuilder_.dispose();
@@ -4323,7 +4187,7 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp created_at = 13 [json_name = "createdAt"];</code>
      */
     public com.google.protobuf.Timestamp.Builder getCreatedAtBuilder() {
-      bitField0_ |= 0x00001000;
+      bitField0_ |= 0x00000800;
       onChanged();
       return internalGetCreatedAtFieldBuilder().getBuilder();
     }
@@ -4363,7 +4227,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the updatedAt field is set.
      */
     public boolean hasUpdatedAt() {
-      return ((bitField0_ & 0x00002000) != 0);
+      return ((bitField0_ & 0x00001000) != 0);
     }
     /**
      * <code>.google.protobuf.Timestamp updated_at = 14 [json_name = "updatedAt"];</code>
@@ -4386,7 +4250,7 @@ private static final long serialVersionUID = 0L;
       } else {
         updatedAtBuilder_.setMessage(value);
       }
-      bitField0_ |= 0x00002000;
+      bitField0_ |= 0x00001000;
       onChanged();
       return this;
     }
@@ -4400,7 +4264,7 @@ private static final long serialVersionUID = 0L;
       } else {
         updatedAtBuilder_.setMessage(builderForValue.build());
       }
-      bitField0_ |= 0x00002000;
+      bitField0_ |= 0x00001000;
       onChanged();
       return this;
     }
@@ -4409,7 +4273,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeUpdatedAt(com.google.protobuf.Timestamp value) {
       if (updatedAtBuilder_ == null) {
-        if (((bitField0_ & 0x00002000) != 0) &&
+        if (((bitField0_ & 0x00001000) != 0) &&
           updatedAt_ != null &&
           updatedAt_ != com.google.protobuf.Timestamp.getDefaultInstance()) {
           getUpdatedAtBuilder().mergeFrom(value);
@@ -4420,7 +4284,7 @@ private static final long serialVersionUID = 0L;
         updatedAtBuilder_.mergeFrom(value);
       }
       if (updatedAt_ != null) {
-        bitField0_ |= 0x00002000;
+        bitField0_ |= 0x00001000;
         onChanged();
       }
       return this;
@@ -4429,7 +4293,7 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp updated_at = 14 [json_name = "updatedAt"];</code>
      */
     public Builder clearUpdatedAt() {
-      bitField0_ = (bitField0_ & ~0x00002000);
+      bitField0_ = (bitField0_ & ~0x00001000);
       updatedAt_ = null;
       if (updatedAtBuilder_ != null) {
         updatedAtBuilder_.dispose();
@@ -4442,7 +4306,7 @@ private static final long serialVersionUID = 0L;
      * <code>.google.protobuf.Timestamp updated_at = 14 [json_name = "updatedAt"];</code>
      */
     public com.google.protobuf.Timestamp.Builder getUpdatedAtBuilder() {
-      bitField0_ |= 0x00002000;
+      bitField0_ |= 0x00001000;
       onChanged();
       return internalGetUpdatedAtFieldBuilder().getBuilder();
     }
@@ -4482,7 +4346,7 @@ private static final long serialVersionUID = 0L;
      * @return Whether the category field is set.
      */
     public boolean hasCategory() {
-      return ((bitField0_ & 0x00004000) != 0);
+      return ((bitField0_ & 0x00002000) != 0);
     }
     /**
      * <code>.modl.v1.HomepageCardResponse.EmbeddedCategory category = 15 [json_name = "category"];</code>
@@ -4505,7 +4369,7 @@ private static final long serialVersionUID = 0L;
       } else {
         categoryBuilder_.setMessage(value);
       }
-      bitField0_ |= 0x00004000;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -4519,7 +4383,7 @@ private static final long serialVersionUID = 0L;
       } else {
         categoryBuilder_.setMessage(builderForValue.build());
       }
-      bitField0_ |= 0x00004000;
+      bitField0_ |= 0x00002000;
       onChanged();
       return this;
     }
@@ -4528,7 +4392,7 @@ private static final long serialVersionUID = 0L;
      */
     public Builder mergeCategory(gg.modl.proto.modl.v1.HomepageCardResponse.EmbeddedCategory value) {
       if (categoryBuilder_ == null) {
-        if (((bitField0_ & 0x00004000) != 0) &&
+        if (((bitField0_ & 0x00002000) != 0) &&
           category_ != null &&
           category_ != gg.modl.proto.modl.v1.HomepageCardResponse.EmbeddedCategory.getDefaultInstance()) {
           getCategoryBuilder().mergeFrom(value);
@@ -4539,7 +4403,7 @@ private static final long serialVersionUID = 0L;
         categoryBuilder_.mergeFrom(value);
       }
       if (category_ != null) {
-        bitField0_ |= 0x00004000;
+        bitField0_ |= 0x00002000;
         onChanged();
       }
       return this;
@@ -4548,7 +4412,7 @@ private static final long serialVersionUID = 0L;
      * <code>.modl.v1.HomepageCardResponse.EmbeddedCategory category = 15 [json_name = "category"];</code>
      */
     public Builder clearCategory() {
-      bitField0_ = (bitField0_ & ~0x00004000);
+      bitField0_ = (bitField0_ & ~0x00002000);
       category_ = null;
       if (categoryBuilder_ != null) {
         categoryBuilder_.dispose();
@@ -4561,7 +4425,7 @@ private static final long serialVersionUID = 0L;
      * <code>.modl.v1.HomepageCardResponse.EmbeddedCategory category = 15 [json_name = "category"];</code>
      */
     public gg.modl.proto.modl.v1.HomepageCardResponse.EmbeddedCategory.Builder getCategoryBuilder() {
-      bitField0_ |= 0x00004000;
+      bitField0_ |= 0x00002000;
       onChanged();
       return internalGetCategoryFieldBuilder().getBuilder();
     }

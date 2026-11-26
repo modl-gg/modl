@@ -4,7 +4,6 @@ table modl_audit_logs
   column source VARCHAR(254) String not null
   column description CLOB String not null
   column metadata_json CLOB String null
-  column can_rollback BOOLEAN Boolean not null default TRUE
   column created_at BIGINT Instant not null
   primary key pk_modl_audit_logs (id)
   index modl_idx_audit_logs_source (source, id)
@@ -61,7 +60,6 @@ table modl_homepage_cards
   column icon_color VARCHAR(32) String null
   column action_type VARCHAR(64) String null
   column action_url CLOB String null
-  column action_button_text VARCHAR(255) String null
   column category_id VARCHAR(36) String null
   column background_color VARCHAR(32) String null
   column ordinal INTEGER Integer not null default 0
@@ -383,7 +381,23 @@ table modl_punishments
   index modl_idx_punishments_issuer_name (issuer_name_lower, issued_at)
   index modl_idx_punishments_linked_ban (linked_ban_id)
   index modl_idx_punishments_player (player_id, issued_at)
+  index modl_idx_punishments_started (started_at, issued_at, id)
+  index modl_idx_punishments_status (status, issued_at, id)
   foreign key modl_fk_punishments_player (player_id) references modl_players (id) on delete CASCADE
+table modl_replay_shares
+  column id VARCHAR(36) String not null
+  column replay_id VARCHAR(64) String not null
+  column token_hash VARCHAR(64) String not null
+  column created_by VARCHAR(64) String not null
+  column created_at BIGINT Instant not null
+  column expires_at BIGINT Instant null
+  column revoked_at BIGINT Instant null
+  column view_count BIGINT Long not null default 0
+  column last_viewed_at BIGINT Instant null
+  primary key pk_modl_replay_shares (id)
+  index modl_idx_replay_shares_replay (replay_id, created_at, id)
+  unique index modl_uq_replay_shares_token_hash (token_hash)
+  foreign key modl_fk_replay_shares_replay (replay_id) references modl_replays (id) on delete CASCADE
 table modl_replays
   column id VARCHAR(64) String not null
   column mc_version VARCHAR(32) String null
@@ -394,6 +408,8 @@ table modl_replays
   column status VARCHAR(16) String not null
   column labels_json CLOB String null
   column created_at BIGINT Instant not null
+  column format_version INTEGER Integer null
+  column validation_lease_expires_at BIGINT Instant null
   primary key pk_modl_replays (id)
   index modl_idx_replays_status_created (status, created_at, id)
   index modl_idx_replays_storage_key (storage_key)

@@ -20,6 +20,7 @@ import gg.modl.backend.infrastructure.logging.OperatorNotice;
 import gg.modl.backend.storage.local.LocalObjectStorage;
 import gg.modl.backend.storage.local.UploadSigner;
 import gg.modl.backend.support.sql.DialectTarget;
+import gg.modl.backend.support.sql.ExternalDialectTest;
 import gg.modl.backend.support.sql.SqlTestDatabase;
 import gg.modl.backend.support.sql.TestDialects;
 import java.io.ByteArrayInputStream;
@@ -53,8 +54,6 @@ import java.util.zip.ZipOutputStream;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
 import org.junit.jupiter.api.io.TempDir;
-import org.junit.jupiter.params.ParameterizedTest;
-import org.junit.jupiter.params.provider.MethodSource;
 
 class ModlCliTest {
     private static final String PASSWORD_VARIABLE = "COPY_TARGET_PASSWORD";
@@ -352,8 +351,7 @@ class ModlCliTest {
         assertThat(archive).doesNotExist();
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void copyDatabaseMovesEveryRowToAnExternalDatabaseAndBack(DialectTarget target) throws Exception {
         Map<String, List<String>> saved;
         try (SqlTestDatabase database = startDatabase()) {
@@ -385,8 +383,7 @@ class ModlCliTest {
         }
     }
 
-    @ParameterizedTest(name = "{0}", allowZeroInvocations = true)
-    @MethodSource("gg.modl.backend.support.sql.TestDialects#external")
+    @ExternalDialectTest
     void copyDatabaseIsRefusedWhileTheTargetLockIsHeld(DialectTarget target) {
         addPlayers("a");
         SqlDatabaseProperties external = TestDialects.freshDatabase(target);

@@ -47,6 +47,6 @@ ENV MODL_DATA_DIR=/data \
 VOLUME /data
 EXPOSE 8080
 USER modl
-HEALTHCHECK --interval=30s --timeout=5s --start-period=90s --retries=3 \
+HEALTHCHECK --interval=30s --timeout=5s --start-period=180s --retries=3 \
     CMD curl -fsS -o /dev/null "http://127.0.0.1:${MODL_PORT}/actuator/health" || exit 1
 ENTRYPOINT ["java", "-XX:MaxRAMPercentage=75", "-XX:+UseG1GC", "-XX:+ExitOnOutOfMemoryError", "-jar", "/app/modl-server.jar"]

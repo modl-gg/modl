@@ -29,6 +29,9 @@ embedded:
     password: ""
     from: ""
     starttls: true
+  tunnel:                    # optional Cloudflare Tunnel to embedded.public-url; the panel then listens on 127.0.0.1
+    provider: ""             # cloudflare, or empty for none
+    token: ""                # the tunnel token from the Cloudflare dashboard
 
 remote:
   url: "http://localhost:8080"   # address of the panel

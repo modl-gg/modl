@@ -19,16 +19,22 @@ public enum NetworkEnvelopeFixtures {
     MEMBER_CAPTURE_REQUEST("hub-to-member.replay-capture-request"),
     MEMBER_CAPTURE_RESULT("member-to-hub.replay-capture-result"),
     CORE_CAPTURE_RESULT("hub-to-core.replay-capture-result"),
+    CORE_RECORD_REQUEST("core-to-hub.replay-record-request"),
+    MEMBER_RECORD_REQUEST("hub-to-member.replay-record-request"),
+    MEMBER_RECORDING_RESULT("member-to-hub.replay-recording-result"),
+    CORE_RECORDING_RESULT("hub-to-core.replay-recording-result"),
     CORE_HOSTED_PLAYERS("core-to-hub.hosted-players"),
     MEMBER_HOSTED_PLAYERS("member-to-hub.hosted-players"),
     CORE_ROSTER("hub-to-core.network-roster"),
     CORE_STAT_WIPES("core-to-hub.stat-wipe-push"),
-    MEMBER_STAT_WIPES("hub-to-member.stat-wipe-push");
+    MEMBER_STAT_WIPES("hub-to-member.stat-wipe-push"),
+    CORE_PROXY_SERVERS("core-to-hub.proxy-servers");
 
     public static final String STAFF = "0f8fad5b-d9cb-469f-a165-70867728950e";
     public static final String TARGET = "1f8fad5b-d9cb-469f-a165-70867728950e";
     public static final String CORE_INSTANCE = "proxy-instance";
     public static final String MEMBER_NAME = "lobby";
+    public static final String MEMBER_ADDRESS = "lobby:25565";
 
     private static final String DIRECTORY = "/network/";
     private static final String EXTENSION = ".binpb";

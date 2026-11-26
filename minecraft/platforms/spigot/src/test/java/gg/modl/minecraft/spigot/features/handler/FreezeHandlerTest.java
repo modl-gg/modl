@@ -275,7 +275,17 @@ class FreezeHandlerTest {
         }
 
         @Override
+        public void runForPlayer(UUID playerUuid, Runnable task, Runnable gone) {
+            if (running) task.run();
+            else gone.run();
+        }
+
+        @Override
         public void runLater(Runnable task, long delayTicks) {
+        }
+
+        @Override
+        public void runAsync(Runnable task) {
         }
 
         @Override

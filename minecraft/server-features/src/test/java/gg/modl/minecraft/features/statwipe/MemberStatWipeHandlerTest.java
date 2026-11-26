@@ -118,7 +118,9 @@ class MemberStatWipeHandlerTest {
         return new FeatureScheduler() {
             @Override public void runOnMainThread(Runnable task) { mainThread.add(task); }
             @Override public void runForPlayer(UUID playerUuid, Runnable task) { mainThread.add(task); }
+            @Override public void runForPlayer(UUID playerUuid, Runnable task, Runnable gone) { mainThread.add(task); }
             @Override public void runLater(Runnable task, long delayTicks) { mainThread.add(task); }
+            @Override public void runAsync(Runnable task) { task.run(); }
             @Override public void runForPlayerLater(UUID playerUuid, Runnable task, long delayTicks) { mainThread.add(task); }
             @Override public FeatureTask runTimerAsync(Runnable task, long delay, long period, TimeUnit unit) { return null; }
             @Override public void cancelTask(FeatureTask task) { }

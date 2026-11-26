@@ -40,5 +40,20 @@ class ReplayServiceTest {
         public ReplayCaptureStatus getReplayStatus(UUID playerUuid) {
             return status;
         }
+
+        @Override
+        public CompletableFuture<ReplayRecordingResult> startRecording(UUID targetUuid, String targetName) {
+            return CompletableFuture.completedFuture(ReplayRecordingResult.of(ReplayRecordingOutcome.NOT_AVAILABLE));
+        }
+
+        @Override
+        public CompletableFuture<ReplayRecordingResult> stopRecording(UUID targetUuid, String targetName) {
+            return CompletableFuture.completedFuture(ReplayRecordingResult.of(ReplayRecordingOutcome.NOT_AVAILABLE));
+        }
+
+        @Override
+        public CompletableFuture<ReplayRecordingResult> recordingStatus(UUID targetUuid, String targetName) {
+            return CompletableFuture.completedFuture(ReplayRecordingResult.of(ReplayRecordingOutcome.NOT_AVAILABLE));
+        }
     }
 }

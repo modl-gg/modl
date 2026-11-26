@@ -151,7 +151,7 @@ public enum ErrorCode
   }
   public static com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(7);
+    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(9);
   }
 
   private static final ErrorCode[] VALUES = values();

@@ -8,6 +8,7 @@ import java.nio.file.Path;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.sql.Statement;
+import java.time.Duration;
 import lombok.extern.slf4j.Slf4j;
 
 @Slf4j
@@ -17,16 +18,28 @@ public final class PendingTargetCheck {
     static final String NO_FILE = "the database file is missing";
 
     public enum Outcome {
-        READY,
-        RETRY,
-        REFUSED
+        READY(Duration.ZERO),
+        UNREACHABLE(Duration.ofSeconds(90)),
+        HELD(AdvisoryLockStatements.SESSION_TIMEOUT.plus(Duration.ofSeconds(10))),
+        REFUSED(Duration.ZERO);
+
+        private final Duration waitBudget;
+
+        Outcome(Duration waitBudget) {
+            this.waitBudget = waitBudget;
+        }
+
+        public Duration waitBudget() {
+            return waitBudget;
+        }
     }
 
     public record Result(Outcome outcome, String reason) {
         public static final Result READY = new Result(Outcome.READY, "");
+        public static final Result HELD = new Result(Outcome.HELD, IN_USE);
 
-        public static Result retry(String reason) {
-            return new Result(Outcome.RETRY, reason);
+        public static Result unreachable(String reason) {
+            return new Result(Outcome.UNREACHABLE, reason);
         }
 
         public static Result refused(String reason) {
@@ -49,14 +62,14 @@ public final class PendingTargetCheck {
         DatabaseDialect dialect = target.dialect();
         try (Connection connection = ConnectionCheck.connect(target)) {
             if (!lockIsFree(connection, dialect)) {
-                return Result.retry(IN_USE);
+                return Result.HELD;
             }
             return holdsCopy(connection, dialect, moveToken);
         } catch (ConnectFailedException e) {
-            return Result.retry(e.description());
+            return Result.unreachable(e.description());
         } catch (SQLException e) {
             log.debug("The new database could not be checked", e);
-            return Result.retry(ConnectionCheck.describe(e));
+            return Result.unreachable(ConnectionCheck.describe(e));
         }
     }
 

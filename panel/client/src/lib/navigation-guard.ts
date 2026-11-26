@@ -1,12 +1,18 @@
 export interface NavigationBlock {
   path: string;
+  state?: unknown;
   onBlocked: () => void;
+}
+
+export interface RestoredLocation {
+  readonly path: string;
+  readonly state: unknown;
 }
 
 export interface NavigationGuard {
   activate: (block: NavigationBlock) => () => void;
   intercept: (target: string, currentHref: string) => boolean;
-  restoreTarget: (currentHref: string) => string | null;
+  restoreTarget: (currentHref: string) => RestoredLocation | null;
 }
 
 export function pathOf(target: string, currentHref: string): string {
@@ -33,9 +39,9 @@ export function createNavigationGuard(): NavigationGuard {
     },
     restoreTarget: (currentHref) => {
       const block = current();
-      if (block === undefined || block.path === pathOf(currentHref, currentHref)) return null;
+      if (block === undefined || pathOf(block.path, currentHref) === pathOf(currentHref, currentHref)) return null;
       block.onBlocked();
-      return block.path;
+      return { path: block.path, state: block.state ?? null };
     },
   };
 }

@@ -161,7 +161,7 @@ public final class AuditProto extends com.google.protobuf.GeneratedFile {
       "\022-\n\022punishments_issued\030\006 \001(\005R\021punishment" +
       "sIssued\022*\n\021avg_response_time\030\007 \001(\005R\017avgR" +
       "esponseTime\022;\n\013last_active\030\010 \001(\0132\032.googl" +
-      "e.protobuf.TimestampR\nlastActive\"\245\013\n\024Sta" +
+      "e.protobuf.TimestampR\nlastActive\"\320\013\n\024Sta" +
       "ffDetailsResponse\022\032\n\010username\030\001 \001(\tR\010use" +
       "rname\022\026\n\006period\030\002 \001(\tR\006period\022P\n\013punishm" +
       "ents\030\003 \003(\0132..modl.v1.StaffDetailsRespons" +
@@ -174,85 +174,87 @@ public final class AuditProto extends com.google.protobuf.GeneratedFile {
       "ilsResponse.PunishmentTypeBreakdownR\027pun" +
       "ishmentTypeBreakdown\022?\n\007summary\030\010 \001(\0132%." +
       "modl.v1.StaffDetailsResponse.SummaryR\007su" +
-      "mmary\032\340\002\n\020PunishmentDetail\022\016\n\002id\030\001 \001(\tR\002" +
+      "mmary\032\213\003\n\020PunishmentDetail\022\016\n\002id\030\001 \001(\tR\002" +
       "id\022\033\n\tplayer_id\030\002 \001(\tR\010playerId\022\037\n\013playe" +
       "r_name\030\003 \001(\tR\nplayerName\022\022\n\004type\030\004 \001(\tR\004" +
       "type\022\026\n\006reason\030\005 \001(\tR\006reason\022\032\n\010duration" +
       "\030\006 \001(\tR\010duration\0222\n\006issued\030\007 \001(\0132\032.googl" +
-      "e.protobuf.TimestampR\006issued\022\026\n\006active\030\010" +
-      " \001(\010R\006active\022\037\n\013rolled_back\030\t \001(\010R\nrolle" +
-      "dBack\0222\n\022effective_category\030\n \001(\tH\000R\021eff" +
-      "ectiveCategory\210\001\001B\025\n\023_effective_category" +
-      "\032\322\001\n\014TicketDetail\022\016\n\002id\030\001 \001(\tR\002id\022\030\n\007sub" +
-      "ject\030\002 \001(\tR\007subject\022\032\n\010category\030\003 \001(\tR\010c" +
-      "ategory\022\026\n\006status\030\004 \001(\tR\006status\022?\n\rlast_" +
-      "activity\030\005 \001(\0132\032.google.protobuf.Timesta" +
-      "mpR\014lastActivity\022#\n\rresponse_time\030\006 \001(\005R" +
-      "\014responseTime\032o\n\rDailyActivity\022\022\n\004date\030\001" +
-      " \001(\tR\004date\022 \n\013punishments\030\002 \001(\005R\013punishm" +
-      "ents\022\030\n\007tickets\030\003 \001(\005R\007ticketsJ\004\010\004\020\005R\010ev" +
-      "idence\032C\n\027PunishmentTypeBreakdown\022\022\n\004typ" +
-      "e\030\001 \001(\tR\004type\022\024\n\005count\030\002 \001(\005R\005count\032\262\001\n\007" +
-      "Summary\022+\n\021total_punishments\030\001 \001(\005R\020tota" +
-      "lPunishments\022#\n\rtotal_tickets\030\002 \001(\005R\014tot" +
-      "alTickets\022*\n\021avg_response_time\030\003 \001(\005R\017av" +
-      "gResponseTime\022)\n\020evidence_uploads\030\004 \001(\005R" +
-      "\017evidenceUploadsJ\004\010\007\020\010R\020evidence_uploads" +
-      "\"\351\006\n\017AuditPunishment\022\016\n\002id\030\001 \001(\tR\002id\022\033\n\t" +
-      "player_id\030\002 \001(\tR\010playerId\022\037\n\013player_name" +
-      "\030\003 \001(\tR\nplayerName\022\022\n\004type\030\004 \001(\tR\004type\022!" +
-      "\n\014type_ordinal\030\005 \001(\005R\013typeOrdinal\022\032\n\010cat" +
-      "egory\030\006 \001(\tR\010category\022\035\n\nstaff_name\030\007 \001(" +
-      "\tR\tstaffName\022\026\n\006reason\030\010 \001(\tR\006reason\022\037\n\010" +
-      "duration\030\t \001(\003H\000R\010duration\210\001\001\0222\n\006issued\030" +
-      "\n \001(\0132\032.google.protobuf.TimestampR\006issue" +
-      "d\0224\n\007started\030\013 \001(\0132\032.google.protobuf.Tim" +
-      "estampR\007started\0224\n\007expires\030\014 \001(\0132\032.googl" +
-      "e.protobuf.TimestampR\007expires\022!\n\014has_evi" +
-      "dence\030\016 \001(\010R\013hasEvidence\022%\n\016evidence_cou" +
-      "nt\030\017 \001(\005R\revidenceCount\022A\n\010evidence\030\020 \003(" +
-      "\0132%.modl.v1.AuditPunishment.EvidenceItem" +
-      "R\010evidence\022.\n\023attached_ticket_ids\030\021 \003(\tR" +
-      "\021attachedTicketIds\0222\n\022effective_category" +
-      "\030\022 \001(\tH\001R\021effectiveCategory\210\001\001\0223\n\005phase\030" +
-      "\023 \001(\0162\035.modl.v1.AuditPunishmentPhaseR\005ph" +
-      "ase\032e\n\014EvidenceItem\022\022\n\004text\030\001 \001(\tR\004text\022" +
-      "\020\n\003url\030\002 \001(\tR\003url\022\022\n\004type\030\003 \001(\tR\004type\022\033\n" +
-      "\tfile_name\030\004 \001(\tR\010fileNameB\013\n\t_durationB" +
-      "\025\n\023_effective_categoryJ\004\010\r\020\016R\006active\"W\n\034" +
-      "StaffPerformanceListResponse\0227\n\005staff\030\001 " +
-      "\003(\0132!.modl.v1.StaffPerformanceResponseR\005" +
-      "staff\"\247\001\n\030AuditPunishmentsResponse\022:\n\013pu" +
-      "nishments\030\001 \003(\0132\030.modl.v1.AuditPunishmen" +
-      "tR\013punishments\022$\n\013next_cursor\030\002 \001(\tH\000R\nn" +
-      "extCursor\210\001\001\022\031\n\010has_more\030\003 \001(\010R\007hasMoreB" +
-      "\016\n\014_next_cursor\"\303\001\n\034AuditPunishmentTypes" +
-      "Response\022E\n\005types\030\001 \003(\0132/.modl.v1.AuditP" +
-      "unishmentTypesResponse.TypeEntryR\005types\032" +
-      "\\\n\tTypeEntry\022\030\n\007ordinal\030\001 \001(\005R\007ordinal\022\022" +
-      "\n\004name\030\002 \001(\tR\004name\022!\n\014active_count\030\003 \001(\005" +
-      "R\013activeCount\"K\n\025AuditRollbackResponse\022\030" +
-      "\n\007success\030\001 \001(\010R\007success\022\030\n\007message\030\002 \001(" +
-      "\tR\007message\"f\n\032AuditBulkOperationResponse" +
-      "\022\030\n\007success\030\001 \001(\010R\007success\022\024\n\005count\030\002 \001(" +
-      "\005R\005count\022\030\n\007message\030\003 \001(\tR\007message\"\211\001\n\032A" +
-      "uditDatabaseTableResponse\022+\n\004data\030\001 \003(\0132" +
-      "\027.google.protobuf.StructR\004data\022\024\n\005total\030" +
-      "\002 \001(\003R\005total\022\024\n\005limit\030\003 \001(\005R\005limit\022\022\n\004sk" +
-      "ip\030\004 \001(\005R\004skip\"\250\001\n\020PanelLogResponse\022\016\n\002i" +
-      "d\030\001 \001(\tR\002id\022 \n\013description\030\002 \001(\tR\013descri" +
-      "ption\022\024\n\005level\030\003 \001(\tR\005level\022\026\n\006source\030\004 " +
-      "\001(\tR\006source\0224\n\007created\030\005 \001(\0132\032.google.pr" +
-      "otobuf.TimestampR\007created\"B\n\021PanelLogsRe" +
-      "sponse\022-\n\004logs\030\001 \003(\0132\031.modl.v1.PanelLogR" +
-      "esponseR\004logs*\251\001\n\024AuditPunishmentPhase\022&" +
-      "\n\"AUDIT_PUNISHMENT_PHASE_UNSPECIFIED\020\000\022!" +
-      "\n\035AUDIT_PUNISHMENT_PHASE_ACTIVE\020\001\022$\n AUD" +
-      "IT_PUNISHMENT_PHASE_UNSTARTED\020\002\022 \n\034AUDIT" +
-      "_PUNISHMENT_PHASE_ENDED\020\003B`\n\025gg.modl.pro" +
-      "to.modl.v1B\nAuditProtoP\001\242\002\003MXX\252\002\007Modl.V1" +
-      "\312\002\007Modl\\V1\342\002\023Modl\\V1\\GPBMetadata\352\002\010Modl:" +
-      ":V1b\006proto3"
+      "e.protobuf.TimestampR\006issued\022\037\n\013rolled_b" +
+      "ack\030\t \001(\010R\nrolledBack\0222\n\022effective_categ" +
+      "ory\030\n \001(\tH\000R\021effectiveCategory\210\001\001\0223\n\005pha" +
+      "se\030\013 \001(\0162\035.modl.v1.AuditPunishmentPhaseR" +
+      "\005phaseB\025\n\023_effective_categoryJ\004\010\010\020\tR\006act" +
+      "ive\032\322\001\n\014TicketDetail\022\016\n\002id\030\001 \001(\tR\002id\022\030\n\007" +
+      "subject\030\002 \001(\tR\007subject\022\032\n\010category\030\003 \001(\t" +
+      "R\010category\022\026\n\006status\030\004 \001(\tR\006status\022?\n\rla" +
+      "st_activity\030\005 \001(\0132\032.google.protobuf.Time" +
+      "stampR\014lastActivity\022#\n\rresponse_time\030\006 \001" +
+      "(\005R\014responseTime\032o\n\rDailyActivity\022\022\n\004dat" +
+      "e\030\001 \001(\tR\004date\022 \n\013punishments\030\002 \001(\005R\013puni" +
+      "shments\022\030\n\007tickets\030\003 \001(\005R\007ticketsJ\004\010\004\020\005R" +
+      "\010evidence\032C\n\027PunishmentTypeBreakdown\022\022\n\004" +
+      "type\030\001 \001(\tR\004type\022\024\n\005count\030\002 \001(\005R\005count\032\262" +
+      "\001\n\007Summary\022+\n\021total_punishments\030\001 \001(\005R\020t" +
+      "otalPunishments\022#\n\rtotal_tickets\030\002 \001(\005R\014" +
+      "totalTickets\022*\n\021avg_response_time\030\003 \001(\005R" +
+      "\017avgResponseTime\022)\n\020evidence_uploads\030\004 \001" +
+      "(\005R\017evidenceUploadsJ\004\010\007\020\010R\020evidence_uplo" +
+      "ads\"\351\006\n\017AuditPunishment\022\016\n\002id\030\001 \001(\tR\002id\022" +
+      "\033\n\tplayer_id\030\002 \001(\tR\010playerId\022\037\n\013player_n" +
+      "ame\030\003 \001(\tR\nplayerName\022\022\n\004type\030\004 \001(\tR\004typ" +
+      "e\022!\n\014type_ordinal\030\005 \001(\005R\013typeOrdinal\022\032\n\010" +
+      "category\030\006 \001(\tR\010category\022\035\n\nstaff_name\030\007" +
+      " \001(\tR\tstaffName\022\026\n\006reason\030\010 \001(\tR\006reason\022" +
+      "\037\n\010duration\030\t \001(\003H\000R\010duration\210\001\001\0222\n\006issu" +
+      "ed\030\n \001(\0132\032.google.protobuf.TimestampR\006is" +
+      "sued\0224\n\007started\030\013 \001(\0132\032.google.protobuf." +
+      "TimestampR\007started\0224\n\007expires\030\014 \001(\0132\032.go" +
+      "ogle.protobuf.TimestampR\007expires\022!\n\014has_" +
+      "evidence\030\016 \001(\010R\013hasEvidence\022%\n\016evidence_" +
+      "count\030\017 \001(\005R\revidenceCount\022A\n\010evidence\030\020" +
+      " \003(\0132%.modl.v1.AuditPunishment.EvidenceI" +
+      "temR\010evidence\022.\n\023attached_ticket_ids\030\021 \003" +
+      "(\tR\021attachedTicketIds\0222\n\022effective_categ" +
+      "ory\030\022 \001(\tH\001R\021effectiveCategory\210\001\001\0223\n\005pha" +
+      "se\030\023 \001(\0162\035.modl.v1.AuditPunishmentPhaseR" +
+      "\005phase\032e\n\014EvidenceItem\022\022\n\004text\030\001 \001(\tR\004te" +
+      "xt\022\020\n\003url\030\002 \001(\tR\003url\022\022\n\004type\030\003 \001(\tR\004type" +
+      "\022\033\n\tfile_name\030\004 \001(\tR\010fileNameB\013\n\t_durati" +
+      "onB\025\n\023_effective_categoryJ\004\010\r\020\016R\006active\"" +
+      "W\n\034StaffPerformanceListResponse\0227\n\005staff" +
+      "\030\001 \003(\0132!.modl.v1.StaffPerformanceRespons" +
+      "eR\005staff\"\247\001\n\030AuditPunishmentsResponse\022:\n" +
+      "\013punishments\030\001 \003(\0132\030.modl.v1.AuditPunish" +
+      "mentR\013punishments\022$\n\013next_cursor\030\002 \001(\tH\000" +
+      "R\nnextCursor\210\001\001\022\031\n\010has_more\030\003 \001(\010R\007hasMo" +
+      "reB\016\n\014_next_cursor\"\355\001\n\034AuditPunishmentTy" +
+      "pesResponse\022E\n\005types\030\001 \003(\0132/.modl.v1.Aud" +
+      "itPunishmentTypesResponse.TypeEntryR\005typ" +
+      "es\032\205\001\n\tTypeEntry\022\030\n\007ordinal\030\001 \001(\005R\007ordin" +
+      "al\022\022\n\004name\030\002 \001(\tR\004name\022!\n\014active_count\030\003" +
+      " \001(\005R\013activeCount\022\'\n\017unstarted_count\030\004 \001" +
+      "(\005R\016unstartedCount\"K\n\025AuditRollbackRespo" +
+      "nse\022\030\n\007success\030\001 \001(\010R\007success\022\030\n\007message" +
+      "\030\002 \001(\tR\007message\"f\n\032AuditBulkOperationRes" +
+      "ponse\022\030\n\007success\030\001 \001(\010R\007success\022\024\n\005count" +
+      "\030\002 \001(\005R\005count\022\030\n\007message\030\003 \001(\tR\007message\"" +
+      "\211\001\n\032AuditDatabaseTableResponse\022+\n\004data\030\001" +
+      " \003(\0132\027.google.protobuf.StructR\004data\022\024\n\005t" +
+      "otal\030\002 \001(\003R\005total\022\024\n\005limit\030\003 \001(\005R\005limit\022" +
+      "\022\n\004skip\030\004 \001(\005R\004skip\"\250\001\n\020PanelLogResponse" +
+      "\022\016\n\002id\030\001 \001(\tR\002id\022 \n\013description\030\002 \001(\tR\013d" +
+      "escription\022\024\n\005level\030\003 \001(\tR\005level\022\026\n\006sour" +
+      "ce\030\004 \001(\tR\006source\0224\n\007created\030\005 \001(\0132\032.goog" +
+      "le.protobuf.TimestampR\007created\"B\n\021PanelL" +
+      "ogsResponse\022-\n\004logs\030\001 \003(\0132\031.modl.v1.Pane" +
+      "lLogResponseR\004logs*\251\001\n\024AuditPunishmentPh" +
+      "ase\022&\n\"AUDIT_PUNISHMENT_PHASE_UNSPECIFIE" +
+      "D\020\000\022!\n\035AUDIT_PUNISHMENT_PHASE_ACTIVE\020\001\022$" +
+      "\n AUDIT_PUNISHMENT_PHASE_UNSTARTED\020\002\022 \n\034" +
+      "AUDIT_PUNISHMENT_PHASE_ENDED\020\003B`\n\025gg.mod" +
+      "l.proto.modl.v1B\nAuditProtoP\001\242\002\003MXX\252\002\007Mo" +
+      "dl.V1\312\002\007Modl\\V1\342\002\023Modl\\V1\\GPBMetadata\352\002\010" +
+      "Modl::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -296,7 +298,7 @@ public final class AuditProto extends com.google.protobuf.GeneratedFile {
     internal_static_modl_v1_StaffDetailsResponse_PunishmentDetail_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_StaffDetailsResponse_PunishmentDetail_descriptor,
-        new java.lang.String[] { "Id", "PlayerId", "PlayerName", "Type", "Reason", "Duration", "Issued", "Active", "RolledBack", "EffectiveCategory", });
+        new java.lang.String[] { "Id", "PlayerId", "PlayerName", "Type", "Reason", "Duration", "Issued", "RolledBack", "EffectiveCategory", "Phase", });
     internal_static_modl_v1_StaffDetailsResponse_TicketDetail_descriptor =
       internal_static_modl_v1_StaffDetailsResponse_descriptor.getNestedType(1);
     internal_static_modl_v1_StaffDetailsResponse_TicketDetail_fieldAccessorTable = new
@@ -356,7 +358,7 @@ public final class AuditProto extends com.google.protobuf.GeneratedFile {
     internal_static_modl_v1_AuditPunishmentTypesResponse_TypeEntry_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_AuditPunishmentTypesResponse_TypeEntry_descriptor,
-        new java.lang.String[] { "Ordinal", "Name", "ActiveCount", });
+        new java.lang.String[] { "Ordinal", "Name", "ActiveCount", "UnstartedCount", });
     internal_static_modl_v1_AuditRollbackResponse_descriptor =
       getDescriptor().getMessageType(9);
     internal_static_modl_v1_AuditRollbackResponse_fieldAccessorTable = new

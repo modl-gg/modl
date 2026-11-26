@@ -46,7 +46,7 @@ class SequencerContractTest {
         SqlDatabaseProperties sameDatabase = TestDialects.freshDatabase(target);
         long storedId = Sequencer.floorAt(KernelRows.NOW.plus(Duration.ofDays(30)));
         try (SqlTestDatabase database = SqlTestDatabase.start(target, dataDirectory, sameDatabase, WriteAttemptHook.NONE)) {
-            KernelRows.insert(database, new AuditLogsRecord(storedId, "info", "system", "from the future", null, true, KernelRows.NOW));
+            KernelRows.insert(database, new AuditLogsRecord(storedId, "info", "system", "from the future", null, KernelRows.NOW));
         }
 
         try (SqlTestDatabase restarted = SqlTestDatabase.start(target, dataDirectory, sameDatabase, WriteAttemptHook.NONE)) {

@@ -383,6 +383,32 @@ private static final long serialVersionUID = 0L;
     return result == null ? gg.modl.proto.modl.v1.ServerCompatibility.UNRECOGNIZED : result;
   }
 
+  public static final int FEATURES_FIELD_NUMBER = 14;
+  private gg.modl.proto.modl.v1.ServerFeatureStatus features_;
+  /**
+   * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+   * @return Whether the features field is set.
+   */
+  @java.lang.Override
+  public boolean hasFeatures() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+   * @return The features.
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ServerFeatureStatus getFeatures() {
+    return features_ == null ? gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance() : features_;
+  }
+  /**
+   * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder getFeaturesOrBuilder() {
+    return features_ == null ? gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance() : features_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -430,6 +456,9 @@ private static final long serialVersionUID = 0L;
     if (compatibility_ != gg.modl.proto.modl.v1.ServerCompatibility.SERVER_COMPATIBILITY_UNSPECIFIED.getNumber()) {
       output.writeEnum(13, compatibility_);
     }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      output.writeMessage(14, getFeatures());
+    }
     getUnknownFields().writeTo(output);
   }
   private int computeSerializedSize_0() {
@@ -471,6 +500,10 @@ private static final long serialVersionUID = 0L;
     if (compatibility_ != gg.modl.proto.modl.v1.ServerCompatibility.SERVER_COMPATIBILITY_UNSPECIFIED.getNumber()) {
       size += com.google.protobuf.CodedOutputStream
         .computeEnumSize(13, compatibility_);
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(14, getFeatures());
     }
     return size;
   }
@@ -522,6 +555,11 @@ private static final long serialVersionUID = 0L;
     if (getHubConnected()
         != other.getHubConnected()) return false;
     if (compatibility_ != other.compatibility_) return false;
+    if (hasFeatures() != other.hasFeatures()) return false;
+    if (hasFeatures()) {
+      if (!getFeatures()
+          .equals(other.getFeatures())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -560,6 +598,10 @@ private static final long serialVersionUID = 0L;
         getHubConnected());
     hash = (37 * hash) + COMPATIBILITY_FIELD_NUMBER;
     hash = (53 * hash) + compatibility_;
+    if (hasFeatures()) {
+      hash = (37 * hash) + FEATURES_FIELD_NUMBER;
+      hash = (53 * hash) + getFeatures().hashCode();
+    }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
     return hash;
@@ -691,6 +733,7 @@ private static final long serialVersionUID = 0L;
       if (com.google.protobuf.GeneratedMessage
               .alwaysUseFieldBuilders) {
         internalGetLastSeenFieldBuilder();
+        internalGetFeaturesFieldBuilder();
       }
     }
     @java.lang.Override
@@ -712,6 +755,11 @@ private static final long serialVersionUID = 0L;
       keyName_ = "";
       hubConnected_ = false;
       compatibility_ = 0;
+      features_ = null;
+      if (featuresBuilder_ != null) {
+        featuresBuilder_.dispose();
+        featuresBuilder_ = null;
+      }
       return this;
     }
 
@@ -783,6 +831,12 @@ private static final long serialVersionUID = 0L;
       if (((from_bitField0_ & 0x00000400) != 0)) {
         result.compatibility_ = compatibility_;
       }
+      if (((from_bitField0_ & 0x00000800) != 0)) {
+        result.features_ = featuresBuilder_ == null
+            ? features_
+            : featuresBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -842,6 +896,9 @@ private static final long serialVersionUID = 0L;
       }
       if (other.compatibility_ != 0) {
         setCompatibilityValue(other.getCompatibilityValue());
+      }
+      if (other.hasFeatures()) {
+        mergeFeatures(other.getFeatures());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -924,6 +981,13 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000400;
               break;
             } // case 104
+            case 114: {
+              input.readMessage(
+                  internalGetFeaturesFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000800;
+              break;
+            } // case 114
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -1665,6 +1729,125 @@ private static final long serialVersionUID = 0L;
       compatibility_ = 0;
       onChanged();
       return this;
+    }
+
+    private gg.modl.proto.modl.v1.ServerFeatureStatus features_;
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.ServerFeatureStatus, gg.modl.proto.modl.v1.ServerFeatureStatus.Builder, gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder> featuresBuilder_;
+    /**
+     * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+     * @return Whether the features field is set.
+     */
+    public boolean hasFeatures() {
+      return ((bitField0_ & 0x00000800) != 0);
+    }
+    /**
+     * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+     * @return The features.
+     */
+    public gg.modl.proto.modl.v1.ServerFeatureStatus getFeatures() {
+      if (featuresBuilder_ == null) {
+        return features_ == null ? gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance() : features_;
+      } else {
+        return featuresBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+     */
+    public Builder setFeatures(gg.modl.proto.modl.v1.ServerFeatureStatus value) {
+      if (featuresBuilder_ == null) {
+        java.util.Objects.requireNonNull(value);
+        features_ = value;
+      } else {
+        featuresBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000800;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+     */
+    public Builder setFeatures(
+        gg.modl.proto.modl.v1.ServerFeatureStatus.Builder builderForValue) {
+      if (featuresBuilder_ == null) {
+        features_ = builderForValue.build();
+      } else {
+        featuresBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000800;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+     */
+    public Builder mergeFeatures(gg.modl.proto.modl.v1.ServerFeatureStatus value) {
+      if (featuresBuilder_ == null) {
+        if (((bitField0_ & 0x00000800) != 0) &&
+          features_ != null &&
+          features_ != gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance()) {
+          getFeaturesBuilder().mergeFrom(value);
+        } else {
+          features_ = value;
+        }
+      } else {
+        featuresBuilder_.mergeFrom(value);
+      }
+      if (features_ != null) {
+        bitField0_ |= 0x00000800;
+        onChanged();
+      }
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+     */
+    public Builder clearFeatures() {
+      bitField0_ = (bitField0_ & ~0x00000800);
+      features_ = null;
+      if (featuresBuilder_ != null) {
+        featuresBuilder_.dispose();
+        featuresBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+     */
+    public gg.modl.proto.modl.v1.ServerFeatureStatus.Builder getFeaturesBuilder() {
+      bitField0_ |= 0x00000800;
+      onChanged();
+      return internalGetFeaturesFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+     */
+    public gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder getFeaturesOrBuilder() {
+      if (featuresBuilder_ != null) {
+        return featuresBuilder_.getMessageOrBuilder();
+      } else {
+        return features_ == null ?
+            gg.modl.proto.modl.v1.ServerFeatureStatus.getDefaultInstance() : features_;
+      }
+    }
+    /**
+     * <code>optional .modl.v1.ServerFeatureStatus features = 14 [json_name = "features"];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.ServerFeatureStatus, gg.modl.proto.modl.v1.ServerFeatureStatus.Builder, gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder> 
+        internalGetFeaturesFieldBuilder() {
+      if (featuresBuilder_ == null) {
+        featuresBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+            gg.modl.proto.modl.v1.ServerFeatureStatus, gg.modl.proto.modl.v1.ServerFeatureStatus.Builder, gg.modl.proto.modl.v1.ServerFeatureStatusOrBuilder>(
+                getFeatures(),
+                getParentForChildren(),
+                isClean());
+        features_ = null;
+      }
+      return featuresBuilder_;
     }
 
     // @@protoc_insertion_point(builder_scope:modl.v1.ConnectedServer)

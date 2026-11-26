@@ -4,6 +4,7 @@ import gg.modl.minecraft.core.connection.AiSettings;
 import gg.modl.minecraft.core.connection.DatabaseSettings;
 import gg.modl.minecraft.core.connection.EmbeddedSettings;
 import gg.modl.minecraft.core.connection.SmtpSettings;
+import gg.modl.minecraft.core.connection.TunnelSettings;
 import gg.modl.minecraft.core.util.StringUtil;
 
 import java.util.Collections;
@@ -27,6 +28,7 @@ final class EmbeddedServerProperties {
         putDatabase(properties, settings.getDatabase());
         putAi(properties, settings.getAi());
         putSmtp(properties, settings.getSmtp());
+        putTunnel(properties, settings.getTunnel());
         properties.put("MODL_DATA_DIR", paths.getDataDirectory().toString());
         properties.put("MODL_LOG_DIR", paths.getLogDirectory().toString());
         properties.put("MODL_SETUP_CODE_FILE", paths.getSetupCodeFile().toString());
@@ -57,6 +59,12 @@ final class EmbeddedServerProperties {
         putIfPresent(properties, "MODL_SMTP_PASSWORD", smtp.getPassword());
         putIfPresent(properties, "MODL_SMTP_FROM", smtp.getFrom());
         properties.put("MODL_SMTP_STARTTLS", String.valueOf(smtp.isStarttls()));
+    }
+
+    private static void putTunnel(Map<String, String> properties, TunnelSettings tunnel) {
+        if (!tunnel.isEnabled()) return;
+        properties.put("MODL_TUNNEL", tunnel.getProvider().trim());
+        putIfPresent(properties, "MODL_TUNNEL_TOKEN", tunnel.getToken());
     }
 
     private static void putIfPresent(Map<String, String> properties, String key, String value) {

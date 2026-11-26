@@ -4,6 +4,9 @@ import static org.assertj.core.api.Assertions.assertThat;
 
 import gg.modl.backend.hostedimport.HostedArchiveFixture;
 import gg.modl.backend.hostedimport.ImportTestContexts;
+import gg.modl.backend.hostedimport.model.ImportSubject;
+import gg.modl.backend.hostedimport.model.IssueCode;
+import gg.modl.backend.hostedimport.model.IssueEntry;
 import gg.modl.backend.role.data.Permission;
 import gg.modl.backend.role.data.StaffRole;
 import gg.modl.backend.settings.data.PunishmentType;
@@ -32,11 +35,14 @@ class StaffAndRoleMappingTest {
                 + "[\"punishment.apply.chat-abuse\",\"punishment.apply.cheating\",\"ticket\",\"admin.settings.modify\",\"punishment.apply.gone\"]}")
             .line("staffroles", "{\"_id\":\"super-admin\",\"name\":\"Owner role\",\"permissions\":[\"*\"]}"), directory);
         List<PunishmentType> types = List.of(type(6, "Chat Abuse"), type(7, "Cheating"), type(8, "Cheating.Fly"));
-        RoleMapper roles = new RoleMapper(ImportTestContexts.context(index, types, Map.of(), false), BASE, Set.of());
+        ImportContext context = ImportTestContexts.context(index, types, Map.of(), false);
+        RoleMapper roles = new RoleMapper(context, BASE, Set.of());
 
         assertThat(roles.roles()).hasSize(1);
         StaffRole role = roles.roles().getFirst();
         assertThat(role.getName()).isEqualTo("Super Admin (imported)");
+        assertThat(context.issues().tally().issues().get(IssueCode.ROLE_RENAMED)).isEqualTo(new IssueEntry(1, List.of("Super Admin (imported)")));
+        assertThat(context.issues().tally().counts()).doesNotContainKey(ImportSubject.ROLES);
         assertThat(role.getOrder()).isEqualTo(1);
         assertThat(role.getPermissions()).containsExactlyInAnyOrder("punishment.apply.6", "punishment.apply.7", "punishment.apply.8",
             "ticket.view.all", "ticket.reply.all", "player.note", "player.warn");
@@ -54,10 +60,14 @@ class StaffAndRoleMappingTest {
                 + "[\"ticket.view.all\",\"ticket.reply.all\",\"staff.maintenance\",\"ticket.delete.all\",\"ticket.manage.subscribe\"]}")
             .line("staffroles", "{\"_id\":\"reader\",\"name\":\"Reader\",\"permissions\":[\"ticket.view.all.notes\"]}"), directory);
 
-        RoleMapper roles = new RoleMapper(ImportTestContexts.context(index), catalog, Set.of());
+        ImportContext context = ImportTestContexts.context(index);
+        RoleMapper roles = new RoleMapper(context, catalog, Set.of());
 
         assertThat(roles.roleFor("support").orElseThrow().getPermissions()).containsExactlyInAnyOrder(
             "ticket.view.all", "ticket.view.all.notes", "ticket.reply.all", "ticket.reply.all.notes", "player.note", "player.warn");
+        IssueEntry dropped = context.issues().tally().issues().get(IssueCode.PERMISSION_DROPPED);
+        assertThat(dropped.count()).isEqualTo(3);
+        assertThat(dropped.samples()).containsExactlyInAnyOrder("Maintenance Mode", "Delete Tickets", "Manage Subscriptions");
         assertThat(roles.roleFor("reader").orElseThrow().getPermissions())
             .containsExactlyInAnyOrder("ticket.view.all.notes", "player.note", "player.warn");
     }

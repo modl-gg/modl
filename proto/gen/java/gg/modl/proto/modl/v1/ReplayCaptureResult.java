@@ -156,6 +156,58 @@ private static final long serialVersionUID = 0L;
     }
   }
 
+  public static final int RECORDING_FIELD_NUMBER = 4;
+  private gg.modl.proto.modl.v1.ReplayRecordingState recording_;
+  /**
+   * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+   * @return Whether the recording field is set.
+   */
+  @java.lang.Override
+  public boolean hasRecording() {
+    return ((bitField0_ & 0x00000002) != 0);
+  }
+  /**
+   * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+   * @return The recording.
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ReplayRecordingState getRecording() {
+    return recording_ == null ? gg.modl.proto.modl.v1.ReplayRecordingState.getDefaultInstance() : recording_;
+  }
+  /**
+   * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ReplayRecordingStateOrBuilder getRecordingOrBuilder() {
+    return recording_ == null ? gg.modl.proto.modl.v1.ReplayRecordingState.getDefaultInstance() : recording_;
+  }
+
+  public static final int MEMORY_FIELD_NUMBER = 5;
+  private gg.modl.proto.modl.v1.ReplayMemoryUse memory_;
+  /**
+   * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+   * @return Whether the memory field is set.
+   */
+  @java.lang.Override
+  public boolean hasMemory() {
+    return ((bitField0_ & 0x00000004) != 0);
+  }
+  /**
+   * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+   * @return The memory.
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ReplayMemoryUse getMemory() {
+    return memory_ == null ? gg.modl.proto.modl.v1.ReplayMemoryUse.getDefaultInstance() : memory_;
+  }
+  /**
+   * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+   */
+  @java.lang.Override
+  public gg.modl.proto.modl.v1.ReplayMemoryUseOrBuilder getMemoryOrBuilder() {
+    return memory_ == null ? gg.modl.proto.modl.v1.ReplayMemoryUse.getDefaultInstance() : memory_;
+  }
+
   private byte memoizedIsInitialized = -1;
   @java.lang.Override
   public final boolean isInitialized() {
@@ -179,6 +231,12 @@ private static final long serialVersionUID = 0L;
     if (((bitField0_ & 0x00000001) != 0)) {
       com.google.protobuf.GeneratedMessage.writeString(output, 3, replayId_);
     }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      output.writeMessage(4, getRecording());
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      output.writeMessage(5, getMemory());
+    }
     getUnknownFields().writeTo(output);
   }
   private int computeSerializedSize_0() {
@@ -192,6 +250,14 @@ private static final long serialVersionUID = 0L;
     }
     if (((bitField0_ & 0x00000001) != 0)) {
       size += com.google.protobuf.GeneratedMessage.computeStringSize(3, replayId_);
+    }
+    if (((bitField0_ & 0x00000002) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(4, getRecording());
+    }
+    if (((bitField0_ & 0x00000004) != 0)) {
+      size += com.google.protobuf.CodedOutputStream
+        .computeMessageSize(5, getMemory());
     }
     return size;
   }
@@ -225,6 +291,16 @@ private static final long serialVersionUID = 0L;
       if (!getReplayId()
           .equals(other.getReplayId())) return false;
     }
+    if (hasRecording() != other.hasRecording()) return false;
+    if (hasRecording()) {
+      if (!getRecording()
+          .equals(other.getRecording())) return false;
+    }
+    if (hasMemory() != other.hasMemory()) return false;
+    if (hasMemory()) {
+      if (!getMemory()
+          .equals(other.getMemory())) return false;
+    }
     if (!getUnknownFields().equals(other.getUnknownFields())) return false;
     return true;
   }
@@ -243,6 +319,14 @@ private static final long serialVersionUID = 0L;
     if (hasReplayId()) {
       hash = (37 * hash) + REPLAY_ID_FIELD_NUMBER;
       hash = (53 * hash) + getReplayId().hashCode();
+    }
+    if (hasRecording()) {
+      hash = (37 * hash) + RECORDING_FIELD_NUMBER;
+      hash = (53 * hash) + getRecording().hashCode();
+    }
+    if (hasMemory()) {
+      hash = (37 * hash) + MEMORY_FIELD_NUMBER;
+      hash = (53 * hash) + getMemory().hashCode();
     }
     hash = (29 * hash) + getUnknownFields().hashCode();
     memoizedHashCode = hash;
@@ -363,13 +447,20 @@ private static final long serialVersionUID = 0L;
 
     // Construct using gg.modl.proto.modl.v1.ReplayCaptureResult.newBuilder()
     private Builder() {
-
+      maybeForceBuilderInitialization();
     }
 
     private Builder(
         com.google.protobuf.GeneratedMessage.BuilderParent parent) {
       super(parent);
-
+      maybeForceBuilderInitialization();
+    }
+    private void maybeForceBuilderInitialization() {
+      if (com.google.protobuf.GeneratedMessage
+              .alwaysUseFieldBuilders) {
+        internalGetRecordingFieldBuilder();
+        internalGetMemoryFieldBuilder();
+      }
     }
     @java.lang.Override
     public Builder clear() {
@@ -378,6 +469,16 @@ private static final long serialVersionUID = 0L;
       requestId_ = "";
       outcome_ = 0;
       replayId_ = "";
+      recording_ = null;
+      if (recordingBuilder_ != null) {
+        recordingBuilder_.dispose();
+        recordingBuilder_ = null;
+      }
+      memory_ = null;
+      if (memoryBuilder_ != null) {
+        memoryBuilder_.dispose();
+        memoryBuilder_ = null;
+      }
       return this;
     }
 
@@ -422,6 +523,18 @@ private static final long serialVersionUID = 0L;
         result.replayId_ = replayId_;
         to_bitField0_ |= 0x00000001;
       }
+      if (((from_bitField0_ & 0x00000008) != 0)) {
+        result.recording_ = recordingBuilder_ == null
+            ? recording_
+            : recordingBuilder_.build();
+        to_bitField0_ |= 0x00000002;
+      }
+      if (((from_bitField0_ & 0x00000010) != 0)) {
+        result.memory_ = memoryBuilder_ == null
+            ? memory_
+            : memoryBuilder_.build();
+        to_bitField0_ |= 0x00000004;
+      }
       result.bitField0_ |= to_bitField0_;
     }
 
@@ -449,6 +562,12 @@ private static final long serialVersionUID = 0L;
         replayId_ = other.replayId_;
         bitField0_ |= 0x00000004;
         onChanged();
+      }
+      if (other.hasRecording()) {
+        mergeRecording(other.getRecording());
+      }
+      if (other.hasMemory()) {
+        mergeMemory(other.getMemory());
       }
       this.mergeUnknownFields(other.getUnknownFields());
       onChanged();
@@ -489,6 +608,20 @@ private static final long serialVersionUID = 0L;
               bitField0_ |= 0x00000004;
               break;
             } // case 26
+            case 34: {
+              input.readMessage(
+                  internalGetRecordingFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000008;
+              break;
+            } // case 34
+            case 42: {
+              input.readMessage(
+                  internalGetMemoryFieldBuilder().getBuilder(),
+                  extensionRegistry);
+              bitField0_ |= 0x00000010;
+              break;
+            } // case 42
             default: {
               if (!super.parseUnknownField(input, extensionRegistry, tag)) {
                 done = true; // was an endgroup tag
@@ -707,6 +840,244 @@ private static final long serialVersionUID = 0L;
       bitField0_ |= 0x00000004;
       onChanged();
       return this;
+    }
+
+    private gg.modl.proto.modl.v1.ReplayRecordingState recording_;
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.ReplayRecordingState, gg.modl.proto.modl.v1.ReplayRecordingState.Builder, gg.modl.proto.modl.v1.ReplayRecordingStateOrBuilder> recordingBuilder_;
+    /**
+     * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+     * @return Whether the recording field is set.
+     */
+    public boolean hasRecording() {
+      return ((bitField0_ & 0x00000008) != 0);
+    }
+    /**
+     * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+     * @return The recording.
+     */
+    public gg.modl.proto.modl.v1.ReplayRecordingState getRecording() {
+      if (recordingBuilder_ == null) {
+        return recording_ == null ? gg.modl.proto.modl.v1.ReplayRecordingState.getDefaultInstance() : recording_;
+      } else {
+        return recordingBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+     */
+    public Builder setRecording(gg.modl.proto.modl.v1.ReplayRecordingState value) {
+      if (recordingBuilder_ == null) {
+        java.util.Objects.requireNonNull(value);
+        recording_ = value;
+      } else {
+        recordingBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+     */
+    public Builder setRecording(
+        gg.modl.proto.modl.v1.ReplayRecordingState.Builder builderForValue) {
+      if (recordingBuilder_ == null) {
+        recording_ = builderForValue.build();
+      } else {
+        recordingBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+     */
+    public Builder mergeRecording(gg.modl.proto.modl.v1.ReplayRecordingState value) {
+      if (recordingBuilder_ == null) {
+        if (((bitField0_ & 0x00000008) != 0) &&
+          recording_ != null &&
+          recording_ != gg.modl.proto.modl.v1.ReplayRecordingState.getDefaultInstance()) {
+          getRecordingBuilder().mergeFrom(value);
+        } else {
+          recording_ = value;
+        }
+      } else {
+        recordingBuilder_.mergeFrom(value);
+      }
+      if (recording_ != null) {
+        bitField0_ |= 0x00000008;
+        onChanged();
+      }
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+     */
+    public Builder clearRecording() {
+      bitField0_ = (bitField0_ & ~0x00000008);
+      recording_ = null;
+      if (recordingBuilder_ != null) {
+        recordingBuilder_.dispose();
+        recordingBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+     */
+    public gg.modl.proto.modl.v1.ReplayRecordingState.Builder getRecordingBuilder() {
+      bitField0_ |= 0x00000008;
+      onChanged();
+      return internalGetRecordingFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+     */
+    public gg.modl.proto.modl.v1.ReplayRecordingStateOrBuilder getRecordingOrBuilder() {
+      if (recordingBuilder_ != null) {
+        return recordingBuilder_.getMessageOrBuilder();
+      } else {
+        return recording_ == null ?
+            gg.modl.proto.modl.v1.ReplayRecordingState.getDefaultInstance() : recording_;
+      }
+    }
+    /**
+     * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.ReplayRecordingState, gg.modl.proto.modl.v1.ReplayRecordingState.Builder, gg.modl.proto.modl.v1.ReplayRecordingStateOrBuilder> 
+        internalGetRecordingFieldBuilder() {
+      if (recordingBuilder_ == null) {
+        recordingBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+            gg.modl.proto.modl.v1.ReplayRecordingState, gg.modl.proto.modl.v1.ReplayRecordingState.Builder, gg.modl.proto.modl.v1.ReplayRecordingStateOrBuilder>(
+                getRecording(),
+                getParentForChildren(),
+                isClean());
+        recording_ = null;
+      }
+      return recordingBuilder_;
+    }
+
+    private gg.modl.proto.modl.v1.ReplayMemoryUse memory_;
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.ReplayMemoryUse, gg.modl.proto.modl.v1.ReplayMemoryUse.Builder, gg.modl.proto.modl.v1.ReplayMemoryUseOrBuilder> memoryBuilder_;
+    /**
+     * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+     * @return Whether the memory field is set.
+     */
+    public boolean hasMemory() {
+      return ((bitField0_ & 0x00000010) != 0);
+    }
+    /**
+     * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+     * @return The memory.
+     */
+    public gg.modl.proto.modl.v1.ReplayMemoryUse getMemory() {
+      if (memoryBuilder_ == null) {
+        return memory_ == null ? gg.modl.proto.modl.v1.ReplayMemoryUse.getDefaultInstance() : memory_;
+      } else {
+        return memoryBuilder_.getMessage();
+      }
+    }
+    /**
+     * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+     */
+    public Builder setMemory(gg.modl.proto.modl.v1.ReplayMemoryUse value) {
+      if (memoryBuilder_ == null) {
+        java.util.Objects.requireNonNull(value);
+        memory_ = value;
+      } else {
+        memoryBuilder_.setMessage(value);
+      }
+      bitField0_ |= 0x00000010;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+     */
+    public Builder setMemory(
+        gg.modl.proto.modl.v1.ReplayMemoryUse.Builder builderForValue) {
+      if (memoryBuilder_ == null) {
+        memory_ = builderForValue.build();
+      } else {
+        memoryBuilder_.setMessage(builderForValue.build());
+      }
+      bitField0_ |= 0x00000010;
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+     */
+    public Builder mergeMemory(gg.modl.proto.modl.v1.ReplayMemoryUse value) {
+      if (memoryBuilder_ == null) {
+        if (((bitField0_ & 0x00000010) != 0) &&
+          memory_ != null &&
+          memory_ != gg.modl.proto.modl.v1.ReplayMemoryUse.getDefaultInstance()) {
+          getMemoryBuilder().mergeFrom(value);
+        } else {
+          memory_ = value;
+        }
+      } else {
+        memoryBuilder_.mergeFrom(value);
+      }
+      if (memory_ != null) {
+        bitField0_ |= 0x00000010;
+        onChanged();
+      }
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+     */
+    public Builder clearMemory() {
+      bitField0_ = (bitField0_ & ~0x00000010);
+      memory_ = null;
+      if (memoryBuilder_ != null) {
+        memoryBuilder_.dispose();
+        memoryBuilder_ = null;
+      }
+      onChanged();
+      return this;
+    }
+    /**
+     * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+     */
+    public gg.modl.proto.modl.v1.ReplayMemoryUse.Builder getMemoryBuilder() {
+      bitField0_ |= 0x00000010;
+      onChanged();
+      return internalGetMemoryFieldBuilder().getBuilder();
+    }
+    /**
+     * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+     */
+    public gg.modl.proto.modl.v1.ReplayMemoryUseOrBuilder getMemoryOrBuilder() {
+      if (memoryBuilder_ != null) {
+        return memoryBuilder_.getMessageOrBuilder();
+      } else {
+        return memory_ == null ?
+            gg.modl.proto.modl.v1.ReplayMemoryUse.getDefaultInstance() : memory_;
+      }
+    }
+    /**
+     * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+     */
+    private com.google.protobuf.SingleFieldBuilder<
+        gg.modl.proto.modl.v1.ReplayMemoryUse, gg.modl.proto.modl.v1.ReplayMemoryUse.Builder, gg.modl.proto.modl.v1.ReplayMemoryUseOrBuilder> 
+        internalGetMemoryFieldBuilder() {
+      if (memoryBuilder_ == null) {
+        memoryBuilder_ = new com.google.protobuf.SingleFieldBuilder<
+            gg.modl.proto.modl.v1.ReplayMemoryUse, gg.modl.proto.modl.v1.ReplayMemoryUse.Builder, gg.modl.proto.modl.v1.ReplayMemoryUseOrBuilder>(
+                getMemory(),
+                getParentForChildren(),
+                isClean());
+        memory_ = null;
+      }
+      return memoryBuilder_;
     }
 
     // @@protoc_insertion_point(builder_scope:modl.v1.ReplayCaptureResult)

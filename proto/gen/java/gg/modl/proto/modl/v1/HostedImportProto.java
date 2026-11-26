@@ -135,115 +135,174 @@ public final class HostedImportProto extends com.google.protobuf.GeneratedFile {
       "subject\030\001 \001(\tR\007subject\022\024\n\005total\030\002 \001(\003R\005t" +
       "otal\022\032\n\010imported\030\003 \001(\003R\010imported\022\030\n\007chan" +
       "ged\030\004 \001(\003R\007changed\022\030\n\007skipped\030\005 \001(\003R\007ski" +
-      "pped\"\222\001\n\021HostedImportIssue\022\022\n\004code\030\001 \001(\t" +
-      "R\004code\0229\n\010severity\030\002 \001(\0162\035.modl.v1.Hoste" +
-      "dImportSeverityR\010severity\022\024\n\005count\030\003 \001(\003" +
-      "R\005count\022\030\n\007samples\030\004 \003(\tR\007samples\"\350\003\n\031Ho" +
-      "stedImportRetentionPlan\0226\n\006option\030\001 \001(\0162" +
-      "\036.modl.v1.HostedImportRetentionR\006option\022" +
-      "\"\n\rchat_log_days\030\002 \001(\005R\013chatLogDays\022$\n\016a" +
-      "udit_log_days\030\003 \001(\005R\014auditLogDays\0228\n\030rep" +
-      "lay_retention_enabled\030\004 \001(\010R\026replayReten" +
-      "tionEnabled\022\037\n\013replay_days\030\005 \001(\005R\nreplay" +
-      "Days\022\"\n\rrows_not_kept\030\006 \001(\003R\013rowsNotKept" +
-      "\022\'\n\017estimated_bytes\030\007 \001(\003R\016estimatedByte" +
-      "s\022(\n\020keeps_ip_history\030\010 \001(\010R\016keepsIpHist" +
-      "ory\022&\n\017ip_history_days\030\t \001(\005R\ripHistoryD" +
-      "ays\022(\n\020replays_not_kept\030\n \001(\003R\016replaysNo" +
-      "tKept\022%\n\016required_bytes\030\013 \001(\003R\rrequiredB" +
-      "ytes\"\346\005\n\023HostedImportPreview\022\033\n\timport_i" +
-      "d\030\001 \001(\tR\010importId\022\037\n\013server_name\030\002 \001(\tR\n" +
-      "serverName\022\034\n\tsubdomain\030\003 \001(\tR\tsubdomain" +
-      "\022;\n\013exported_at\030\004 \001(\0132\032.google.protobuf." +
-      "TimestampR\nexportedAt\0220\n\024archived_owner_" +
-      "email\030\005 \001(\tR\022archivedOwnerEmail\022*\n\021local" +
-      "_owner_email\030\006 \001(\tR\017localOwnerEmail\022,\n\022o" +
-      "wner_emails_match\030\007 \001(\010R\020ownerEmailsMatc" +
-      "h\0222\n\006counts\030\010 \003(\0132\032.modl.v1.HostedImport" +
-      "CountR\006counts\0222\n\006issues\030\t \003(\0132\032.modl.v1." +
-      "HostedImportIssueR\006issues\022@\n\tretention\030\n" +
-      " \003(\0132\".modl.v1.HostedImportRetentionPlan" +
-      "R\tretention\022%\n\016required_bytes\030\013 \001(\003R\rreq" +
-      "uiredBytes\022\'\n\017available_bytes\030\014 \001(\003R\016ava" +
-      "ilableBytes\022\037\n\013staff_total\030\r \001(\005R\nstaffT" +
-      "otal\022I\n!archived_owner_minecraft_usernam" +
-      "e\030\016 \001(\tR\036archivedOwnerMinecraftUsername\022" +
-      "D\n\037archived_owner_has_staff_record\030\017 \001(\010" +
-      "R\033archivedOwnerHasStaffRecord\"\303\002\n\032Hosted" +
-      "ImportStaffCandidate\022\033\n\tsource_id\030\001 \001(\tR" +
-      "\010sourceId\022\024\n\005email\030\002 \001(\tR\005email\022\032\n\010usern" +
-      "ame\030\003 \001(\tR\010username\022\033\n\trole_name\030\004 \001(\tR\010" +
-      "roleName\022 \n\013permissions\030\005 \003(\tR\013permissio" +
-      "ns\022%\n\016minecraft_uuid\030\006 \001(\tR\rminecraftUui" +
-      "d\022-\n\022minecraft_username\030\007 \001(\tR\021minecraft" +
-      "Username\022\036\n\nselectable\030\010 \001(\010R\nselectable" +
-      "\022!\n\014blocked_code\030\t \001(\tR\013blockedCode\"s\n\025H" +
-      "ostedImportStaffPage\0229\n\005staff\030\001 \003(\0132#.mo" +
-      "dl.v1.HostedImportStaffCandidateR\005staff\022" +
-      "\037\n\013next_cursor\030\002 \001(\tR\nnextCursor\"\227\002\n\030Sta" +
-      "rtHostedImportRequest\022&\n\timport_id\030\001 \001(\t" +
-      "B\t\272H\006r\004\020\001\030$R\010importId\022.\n\tstaff_ids\030\002 \003(\t" +
-      "B\021\272H\016\222\001\013\020\210\'\"\006r\004\020\001\030@R\010staffIds\0220\n\024merge_a" +
-      "rchived_owner\030\003 \001(\010R\022mergeArchivedOwner\022" +
-      "J\n\tretention\030\004 \001(\0162\036.modl.v1.HostedImpor" +
-      "tRetentionB\014\272H\t\202\001\006\020\001\030\001\030\002R\tretention\022%\n\tc" +
-      "onfirmed\030\005 \001(\010B\007\272H\004j\002\010\001R\tconfirmed\"p\n\025Ho" +
-      "stedImportExclusion\022\022\n\004name\030\001 \001(\tR\004name\022" +
-      "\026\n\006reason\030\002 \001(\tR\006reason\022+\n\021approximate_c" +
-      "ount\030\003 \001(\003R\020approximateCount\"\216\005\n\022HostedI" +
-      "mportReport\022\033\n\timport_id\030\001 \001(\tR\010importId" +
-      "\0223\n\006status\030\002 \001(\0162\033.modl.v1.HostedImportS" +
-      "tatusR\006status\022\033\n\texport_id\030\003 \001(\tR\010export" +
-      "Id\022%\n\016source_version\030\004 \001(\tR\rsourceVersio" +
-      "n\022;\n\013exported_at\030\005 \001(\0132\032.google.protobuf" +
-      ".TimestampR\nexportedAt\022;\n\013finished_at\030\006 " +
-      "\001(\0132\032.google.protobuf.TimestampR\nfinishe" +
-      "dAt\0222\n\006counts\030\007 \003(\0132\032.modl.v1.HostedImpo" +
-      "rtCountR\006counts\0222\n\006issues\030\010 \003(\0132\032.modl.v" +
-      "1.HostedImportIssueR\006issues\022Q\n\024excluded_" +
-      "collections\030\t \003(\0132\036.modl.v1.HostedImport" +
-      "ExclusionR\023excludedCollections\022G\n\017skippe" +
-      "d_objects\030\n \003(\0132\036.modl.v1.HostedImportEx" +
-      "clusionR\016skippedObjects\022&\n\017follow_up_cod" +
-      "es\030\013 \003(\tR\rfollowUpCodes\022<\n\tretention\030\014 \001" +
-      "(\0162\036.modl.v1.HostedImportRetentionR\trete" +
-      "ntion*\225\003\n\022HostedImportStatus\022$\n HOSTED_I" +
-      "MPORT_STATUS_UNSPECIFIED\020\000\022\035\n\031HOSTED_IMP" +
-      "ORT_STATUS_NONE\020\001\022\"\n\036HOSTED_IMPORT_STATU" +
-      "S_RECEIVING\020\002\022$\n HOSTED_IMPORT_STATUS_DO" +
-      "WNLOADING\020\003\022\"\n\036HOSTED_IMPORT_STATUS_VERI" +
-      "FYING\020\004\022\037\n\033HOSTED_IMPORT_STATUS_REVIEW\020\005" +
-      "\022!\n\035HOSTED_IMPORT_STATUS_APPLYING\020\006\022\037\n\033H" +
-      "OSTED_IMPORT_STATUS_PAUSED\020\007\022\"\n\036HOSTED_I" +
-      "MPORT_STATUS_COMPLETED\020\010\022\"\n\036HOSTED_IMPOR" +
-      "T_STATUS_ABANDONED\020\t\022\037\n\033HOSTED_IMPORT_ST" +
-      "ATUS_FAILED\020\n*\273\004\n\021HostedImportPhase\022#\n\037H" +
-      "OSTED_IMPORT_PHASE_UNSPECIFIED\020\000\022\036\n\032HOST" +
-      "ED_IMPORT_PHASE_VERIFY\020\001\022\035\n\031HOSTED_IMPOR" +
-      "T_PHASE_BEGIN\020\002\022%\n!HOSTED_IMPORT_PHASE_C" +
-      "ONFIGURATION\020\003\022\035\n\031HOSTED_IMPORT_PHASE_FI" +
-      "LES\020\004\022\037\n\033HOSTED_IMPORT_PHASE_PLAYERS\020\006\022\035" +
-      "\n\031HOSTED_IMPORT_PHASE_LINKS\020\007\022\037\n\033HOSTED_" +
-      "IMPORT_PHASE_TICKETS\020\010\022\037\n\033HOSTED_IMPORT_" +
-      "PHASE_REPLAYS\020\t\022!\n\035HOSTED_IMPORT_PHASE_C" +
-      "HAT_LOGS\020\n\022$\n HOSTED_IMPORT_PHASE_COMMAN" +
-      "D_LOGS\020\013\022\"\n\036HOSTED_IMPORT_PHASE_AUDIT_LO" +
-      "GS\020\014\022\036\n\032HOSTED_IMPORT_PHASE_ACCESS\020\r\022%\n!" +
-      "HOSTED_IMPORT_PHASE_SUBSCRIPTIONS\020\016\022\036\n\032H" +
-      "OSTED_IMPORT_PHASE_FINISH\020\017\"\004\010\005\020\005* HOSTE" +
-      "D_IMPORT_PHASE_FILE_RECORDS*\220\001\n\025HostedIm" +
-      "portRetention\022\'\n#HOSTED_IMPORT_RETENTION" +
-      "_UNSPECIFIED\020\000\022(\n$HOSTED_IMPORT_RETENTIO" +
-      "N_KEEP_HISTORY\020\001\022$\n HOSTED_IMPORT_RETENT" +
-      "ION_STANDARD\020\002*\307\001\n\024HostedImportSeverity\022" +
-      "&\n\"HOSTED_IMPORT_SEVERITY_UNSPECIFIED\020\000\022" +
-      "\037\n\033HOSTED_IMPORT_SEVERITY_INFO\020\001\022\"\n\036HOST" +
-      "ED_IMPORT_SEVERITY_CHANGED\020\002\022\037\n\033HOSTED_I" +
-      "MPORT_SEVERITY_LOST\020\003\022!\n\035HOSTED_IMPORT_S" +
-      "EVERITY_ACTION\020\004Bg\n\025gg.modl.proto.modl.v" +
-      "1B\021HostedImportProtoP\001\242\002\003MXX\252\002\007Modl.V1\312\002" +
-      "\007Modl\\V1\342\002\023Modl\\V1\\GPBMetadata\352\002\010Modl::V" +
-      "1b\006proto3"
+      "pped\"\270\001\n\021HostedImportIssue\0222\n\004code\030\005 \001(\016" +
+      "2\036.modl.v1.HostedImportIssueCodeR\004code\0229" +
+      "\n\010severity\030\002 \001(\0162\035.modl.v1.HostedImportS" +
+      "everityR\010severity\022\024\n\005count\030\003 \001(\003R\005count\022" +
+      "\030\n\007samples\030\004 \003(\tR\007samplesJ\004\010\001\020\002\"\350\003\n\031Host" +
+      "edImportRetentionPlan\0226\n\006option\030\001 \001(\0162\036." +
+      "modl.v1.HostedImportRetentionR\006option\022\"\n" +
+      "\rchat_log_days\030\002 \001(\005R\013chatLogDays\022$\n\016aud" +
+      "it_log_days\030\003 \001(\005R\014auditLogDays\0228\n\030repla" +
+      "y_retention_enabled\030\004 \001(\010R\026replayRetenti" +
+      "onEnabled\022\037\n\013replay_days\030\005 \001(\005R\nreplayDa" +
+      "ys\022\"\n\rrows_not_kept\030\006 \001(\003R\013rowsNotKept\022\'" +
+      "\n\017estimated_bytes\030\007 \001(\003R\016estimatedBytes\022" +
+      "(\n\020keeps_ip_history\030\010 \001(\010R\016keepsIpHistor" +
+      "y\022&\n\017ip_history_days\030\t \001(\005R\ripHistoryDay" +
+      "s\022(\n\020replays_not_kept\030\n \001(\003R\016replaysNotK" +
+      "ept\022%\n\016required_bytes\030\013 \001(\003R\rrequiredByt" +
+      "es\"\346\005\n\023HostedImportPreview\022\033\n\timport_id\030" +
+      "\001 \001(\tR\010importId\022\037\n\013server_name\030\002 \001(\tR\nse" +
+      "rverName\022\034\n\tsubdomain\030\003 \001(\tR\tsubdomain\022;" +
+      "\n\013exported_at\030\004 \001(\0132\032.google.protobuf.Ti" +
+      "mestampR\nexportedAt\0220\n\024archived_owner_em" +
+      "ail\030\005 \001(\tR\022archivedOwnerEmail\022*\n\021local_o" +
+      "wner_email\030\006 \001(\tR\017localOwnerEmail\022,\n\022own" +
+      "er_emails_match\030\007 \001(\010R\020ownerEmailsMatch\022" +
+      "2\n\006counts\030\010 \003(\0132\032.modl.v1.HostedImportCo" +
+      "untR\006counts\0222\n\006issues\030\t \003(\0132\032.modl.v1.Ho" +
+      "stedImportIssueR\006issues\022@\n\tretention\030\n \003" +
+      "(\0132\".modl.v1.HostedImportRetentionPlanR\t" +
+      "retention\022%\n\016required_bytes\030\013 \001(\003R\rrequi" +
+      "redBytes\022\'\n\017available_bytes\030\014 \001(\003R\016avail" +
+      "ableBytes\022\037\n\013staff_total\030\r \001(\005R\nstaffTot" +
+      "al\022I\n!archived_owner_minecraft_username\030" +
+      "\016 \001(\tR\036archivedOwnerMinecraftUsername\022D\n" +
+      "\037archived_owner_has_staff_record\030\017 \001(\010R\033" +
+      "archivedOwnerHasStaffRecord\"\303\002\n\032HostedIm" +
+      "portStaffCandidate\022\033\n\tsource_id\030\001 \001(\tR\010s" +
+      "ourceId\022\024\n\005email\030\002 \001(\tR\005email\022\032\n\010usernam" +
+      "e\030\003 \001(\tR\010username\022\033\n\trole_name\030\004 \001(\tR\010ro" +
+      "leName\022 \n\013permissions\030\005 \003(\tR\013permissions" +
+      "\022%\n\016minecraft_uuid\030\006 \001(\tR\rminecraftUuid\022" +
+      "-\n\022minecraft_username\030\007 \001(\tR\021minecraftUs" +
+      "ername\022\036\n\nselectable\030\010 \001(\010R\nselectable\022!" +
+      "\n\014blocked_code\030\t \001(\tR\013blockedCode\"s\n\025Hos" +
+      "tedImportStaffPage\0229\n\005staff\030\001 \003(\0132#.modl" +
+      ".v1.HostedImportStaffCandidateR\005staff\022\037\n" +
+      "\013next_cursor\030\002 \001(\tR\nnextCursor\"\227\002\n\030Start" +
+      "HostedImportRequest\022&\n\timport_id\030\001 \001(\tB\t" +
+      "\272H\006r\004\020\001\030$R\010importId\022.\n\tstaff_ids\030\002 \003(\tB\021" +
+      "\272H\016\222\001\013\020\210\'\"\006r\004\020\001\030@R\010staffIds\0220\n\024merge_arc" +
+      "hived_owner\030\003 \001(\010R\022mergeArchivedOwner\022J\n" +
+      "\tretention\030\004 \001(\0162\036.modl.v1.HostedImportR" +
+      "etentionB\014\272H\t\202\001\006\020\001\030\001\030\002R\tretention\022%\n\tcon" +
+      "firmed\030\005 \001(\010B\007\272H\004j\002\010\001R\tconfirmed\"p\n\025Host" +
+      "edImportExclusion\022\022\n\004name\030\001 \001(\tR\004name\022\026\n" +
+      "\006reason\030\002 \001(\tR\006reason\022+\n\021approximate_cou" +
+      "nt\030\003 \001(\003R\020approximateCount\"\216\005\n\022HostedImp" +
+      "ortReport\022\033\n\timport_id\030\001 \001(\tR\010importId\0223" +
+      "\n\006status\030\002 \001(\0162\033.modl.v1.HostedImportSta" +
+      "tusR\006status\022\033\n\texport_id\030\003 \001(\tR\010exportId" +
+      "\022%\n\016source_version\030\004 \001(\tR\rsourceVersion\022" +
+      ";\n\013exported_at\030\005 \001(\0132\032.google.protobuf.T" +
+      "imestampR\nexportedAt\022;\n\013finished_at\030\006 \001(" +
+      "\0132\032.google.protobuf.TimestampR\nfinishedA" +
+      "t\0222\n\006counts\030\007 \003(\0132\032.modl.v1.HostedImport" +
+      "CountR\006counts\0222\n\006issues\030\010 \003(\0132\032.modl.v1." +
+      "HostedImportIssueR\006issues\022Q\n\024excluded_co" +
+      "llections\030\t \003(\0132\036.modl.v1.HostedImportEx" +
+      "clusionR\023excludedCollections\022G\n\017skipped_" +
+      "objects\030\n \003(\0132\036.modl.v1.HostedImportExcl" +
+      "usionR\016skippedObjects\022&\n\017follow_up_codes" +
+      "\030\013 \003(\tR\rfollowUpCodes\022<\n\tretention\030\014 \001(\016" +
+      "2\036.modl.v1.HostedImportRetentionR\tretent" +
+      "ion*\225\003\n\022HostedImportStatus\022$\n HOSTED_IMP" +
+      "ORT_STATUS_UNSPECIFIED\020\000\022\035\n\031HOSTED_IMPOR" +
+      "T_STATUS_NONE\020\001\022\"\n\036HOSTED_IMPORT_STATUS_" +
+      "RECEIVING\020\002\022$\n HOSTED_IMPORT_STATUS_DOWN" +
+      "LOADING\020\003\022\"\n\036HOSTED_IMPORT_STATUS_VERIFY" +
+      "ING\020\004\022\037\n\033HOSTED_IMPORT_STATUS_REVIEW\020\005\022!" +
+      "\n\035HOSTED_IMPORT_STATUS_APPLYING\020\006\022\037\n\033HOS" +
+      "TED_IMPORT_STATUS_PAUSED\020\007\022\"\n\036HOSTED_IMP" +
+      "ORT_STATUS_COMPLETED\020\010\022\"\n\036HOSTED_IMPORT_" +
+      "STATUS_ABANDONED\020\t\022\037\n\033HOSTED_IMPORT_STAT" +
+      "US_FAILED\020\n*\273\004\n\021HostedImportPhase\022#\n\037HOS" +
+      "TED_IMPORT_PHASE_UNSPECIFIED\020\000\022\036\n\032HOSTED" +
+      "_IMPORT_PHASE_VERIFY\020\001\022\035\n\031HOSTED_IMPORT_" +
+      "PHASE_BEGIN\020\002\022%\n!HOSTED_IMPORT_PHASE_CON" +
+      "FIGURATION\020\003\022\035\n\031HOSTED_IMPORT_PHASE_FILE" +
+      "S\020\004\022\037\n\033HOSTED_IMPORT_PHASE_PLAYERS\020\006\022\035\n\031" +
+      "HOSTED_IMPORT_PHASE_LINKS\020\007\022\037\n\033HOSTED_IM" +
+      "PORT_PHASE_TICKETS\020\010\022\037\n\033HOSTED_IMPORT_PH" +
+      "ASE_REPLAYS\020\t\022!\n\035HOSTED_IMPORT_PHASE_CHA" +
+      "T_LOGS\020\n\022$\n HOSTED_IMPORT_PHASE_COMMAND_" +
+      "LOGS\020\013\022\"\n\036HOSTED_IMPORT_PHASE_AUDIT_LOGS" +
+      "\020\014\022\036\n\032HOSTED_IMPORT_PHASE_ACCESS\020\r\022%\n!HO" +
+      "STED_IMPORT_PHASE_SUBSCRIPTIONS\020\016\022\036\n\032HOS" +
+      "TED_IMPORT_PHASE_FINISH\020\017\"\004\010\005\020\005* HOSTED_" +
+      "IMPORT_PHASE_FILE_RECORDS*\220\001\n\025HostedImpo" +
+      "rtRetention\022\'\n#HOSTED_IMPORT_RETENTION_U" +
+      "NSPECIFIED\020\000\022(\n$HOSTED_IMPORT_RETENTION_" +
+      "KEEP_HISTORY\020\001\022$\n HOSTED_IMPORT_RETENTIO" +
+      "N_STANDARD\020\002*\307\001\n\024HostedImportSeverity\022&\n" +
+      "\"HOSTED_IMPORT_SEVERITY_UNSPECIFIED\020\000\022\037\n" +
+      "\033HOSTED_IMPORT_SEVERITY_INFO\020\001\022\"\n\036HOSTED" +
+      "_IMPORT_SEVERITY_CHANGED\020\002\022\037\n\033HOSTED_IMP" +
+      "ORT_SEVERITY_LOST\020\003\022!\n\035HOSTED_IMPORT_SEV" +
+      "ERITY_ACTION\020\004*\252\022\n\025HostedImportIssueCode" +
+      "\022(\n$HOSTED_IMPORT_ISSUE_CODE_UNSPECIFIED" +
+      "\020\000\022.\n*HOSTED_IMPORT_ISSUE_CODE_RECORD_UN" +
+      "READABLE\020\001\022,\n(HOSTED_IMPORT_ISSUE_CODE_R" +
+      "ECORD_REJECTED\020\002\022-\n)HOSTED_IMPORT_ISSUE_" +
+      "CODE_RECORD_TOO_LARGE\020\003\022,\n(HOSTED_IMPORT" +
+      "_ISSUE_CODE_VALUE_TRUNCATED\020\004\022,\n(HOSTED_" +
+      "IMPORT_ISSUE_CODE_VALUE_DEFAULTED\020\005\022(\n$H" +
+      "OSTED_IMPORT_ISSUE_CODE_ID_REMAPPED\020\006\022\'\n" +
+      "#HOSTED_IMPORT_ISSUE_CODE_ID_ALIASED\020\007\022/" +
+      "\n+HOSTED_IMPORT_ISSUE_CODE_REFERENCE_DAN" +
+      "GLING\020\010\0220\n,HOSTED_IMPORT_ISSUE_CODE_PLAY" +
+      "ER_INVALID_UUID\020\t\022*\n&HOSTED_IMPORT_ISSUE" +
+      "_CODE_PLAYER_MERGED\020\n\022(\n$HOSTED_IMPORT_I" +
+      "SSUE_CODE_IP_NOT_KEPT\020\013\022\'\n#HOSTED_IMPORT" +
+      "_ISSUE_CODE_IP_INVALID\020\014\022)\n%HOSTED_IMPOR" +
+      "T_ISSUE_CODE_LOG_NOT_KEPT\020\r\0221\n-HOSTED_IM" +
+      "PORT_ISSUE_CODE_NOTIFICATION_EXPIRED\020\016\0224" +
+      "\n0HOSTED_IMPORT_ISSUE_CODE_PUNISHMENT_WI" +
+      "THOUT_DATA\020\017\0225\n1HOSTED_IMPORT_ISSUE_CODE" +
+      "_PUNISHMENT_ROLLBACK_ENDS\020\020\022=\n9HOSTED_IM" +
+      "PORT_ISSUE_CODE_PUNISHMENT_DELETED_TYPE_" +
+      "ENFORCED\020\021\0228\n4HOSTED_IMPORT_ISSUE_CODE_P" +
+      "UNISHMENT_CATEGORY_UNKNOWN\020\022\022;\n7HOSTED_I" +
+      "MPORT_ISSUE_CODE_PUNISHMENT_RESTRICTION_" +
+      "UNKNOWN\020\023\0223\n/HOSTED_IMPORT_ISSUE_CODE_PU" +
+      "NISHMENT_STORED_NONE\020\024\022:\n6HOSTED_IMPORT_" +
+      "ISSUE_CODE_PUNISHMENT_DURATION_SATURATED" +
+      "\020\025\022.\n*HOSTED_IMPORT_ISSUE_CODE_STAT_WIPE" +
+      "_PENDING\020\026\0222\n.HOSTED_IMPORT_ISSUE_CODE_K" +
+      "ICK_MARKED_DELIVERED\020\027\022)\n%HOSTED_IMPORT_" +
+      "ISSUE_CODE_TYPE_INVALID\020\030\022+\n\'HOSTED_IMPO" +
+      "RT_ISSUE_CODE_TYPE_TOMBSTONE\020\031\022)\n%HOSTED" +
+      "_IMPORT_ISSUE_CODE_ROLE_RENAMED\020\032\022/\n+HOS" +
+      "TED_IMPORT_ISSUE_CODE_PERMISSION_DROPPED" +
+      "\020\033\022/\n+HOSTED_IMPORT_ISSUE_CODE_STAFF_NOT" +
+      "_RESTORED\020\034\0226\n2HOSTED_IMPORT_ISSUE_CODE_" +
+      "STAFF_ACCESS_NOT_RESTORED\020\035\0227\n3HOSTED_IM" +
+      "PORT_ISSUE_CODE_SUBSCRIPTIONS_NOT_RESTOR" +
+      "ED\020\036\022*\n&HOSTED_IMPORT_ISSUE_CODE_STAFF_R" +
+      "ENAMED\020\037\022/\n+HOSTED_IMPORT_ISSUE_CODE_STA" +
+      "FF_LINK_DROPPED\020 \022/\n+HOSTED_IMPORT_ISSUE" +
+      "_CODE_SETTING_UNREADABLE\020!\022-\n)HOSTED_IMP" +
+      "ORT_ISSUE_CODE_WEBHOOK_DISABLED\020\"\022(\n$HOS" +
+      "TED_IMPORT_ISSUE_CODE_AI_DISABLED\020#\022)\n%H" +
+      "OSTED_IMPORT_ISSUE_CODE_SLUG_RENAMED\020$\022-" +
+      "\n)HOSTED_IMPORT_ISSUE_CODE_ARTICLE_ORPHA" +
+      "NED\020%\022\'\n#HOSTED_IMPORT_ISSUE_CODE_URL_UN" +
+      "SAFE\020&\022,\n(HOSTED_IMPORT_ISSUE_CODE_URL_L" +
+      "EFT_REMOTE\020\'\022-\n)HOSTED_IMPORT_ISSUE_CODE" +
+      "_FILE_KEY_RENAMED\020(\022/\n+HOSTED_IMPORT_ISS" +
+      "UE_CODE_FILE_CASE_CONFLICT\020)\0222\n.HOSTED_I" +
+      "MPORT_ISSUE_CODE_FILE_TYPE_NEUTRALISED\020*" +
+      "\0223\n/HOSTED_IMPORT_ISSUE_CODE_FILE_SKIPPE" +
+      "D_BY_EXPORT\020+\022*\n&HOSTED_IMPORT_ISSUE_COD" +
+      "E_FILE_CONFLICT\020,\0220\n,HOSTED_IMPORT_ISSUE" +
+      "_CODE_REPLAY_FILE_MISSING\020-\022-\n)HOSTED_IM" +
+      "PORT_ISSUE_CODE_COMMAND_REDACTED\020.\022/\n+HO" +
+      "STED_IMPORT_ISSUE_CODE_COLLECTION_UNKNOW" +
+      "N\020/Bg\n\025gg.modl.proto.modl.v1B\021HostedImpo" +
+      "rtProtoP\001\242\002\003MXX\252\002\007Modl.V1\312\002\007Modl\\V1\342\002\023Mo" +
+      "dl\\V1\\GPBMetadata\352\002\010Modl::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,

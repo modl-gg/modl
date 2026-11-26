@@ -60,7 +60,6 @@ import org.springframework.stereotype.Service;
 @RequiredArgsConstructor
 public class MinecraftPlayerService {
     private static final int REPORT_LIMIT = 50;
-    private static final int KICK_ORDINAL = 0;
     private static final long MILLIS_PER_SECOND = 1000L;
 
     private final PlayerService playerService;
@@ -151,7 +150,7 @@ public class MinecraftPlayerService {
             delivered.add(punishment);
         }
         for (Punishment punishment : player.getPunishments()) {
-            if (punishment.getTypeOrdinal() == KICK_ORDINAL && punishment.getStarted() == null
+            if (punishment.getTypeOrdinal() == Punishment.KICK_TYPE_ORDINAL && punishment.getStarted() == null
                 && !punishment.hasEndedEnforcement()) {
                 delivered.add(punishment);
             }

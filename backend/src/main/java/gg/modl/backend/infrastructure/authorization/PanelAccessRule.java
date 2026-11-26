@@ -8,5 +8,6 @@ public enum PanelAccessRule {
     PUNISHMENT_TYPE_ACCESS,
     TICKET_WORKFLOW_ACCESS,
     APPEAL_REPLY,
+    REPLAY_SHARING,
     SUPER_ADMIN
 }

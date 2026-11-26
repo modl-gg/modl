@@ -40,7 +40,6 @@ final class PunishmentMapper {
     private static final String SYSTEM_ISSUER = "System";
     private static final String NO_DATA_REASON = "Imported without data; modl.gg did not enforce it";
     private static final String IMPORTED_ID = "importedId";
-    private static final int KICK_ORDINAL = 0;
     private static final String TEXT_EVIDENCE = "text";
     private static final String LINK_EVIDENCE = "link";
     private static final Set<String> STRUCTURED_SOURCE_KEYS = Set.of(PunishmentData.PENDING_ACKNOWLEDGEMENT, IMPORTED_ID);
@@ -96,12 +95,12 @@ final class PunishmentMapper {
         if (ordinalOrNull == null) {
             context.issues().report(IssueCode.VALUE_DEFAULTED, id);
         }
-        int ordinal = ordinalOrNull == null ? KICK_ORDINAL : ordinalOrNull;
+        int ordinal = ordinalOrNull == null ? Punishment.KICK_TYPE_ORDINAL : ordinalOrNull;
         List<ArchiveDocument> modificationSources = source.documents("modifications");
         List<ArchiveDocument> noteSources = source.documents("notes");
         Instant issued = issued(source, modificationSources, noteSources);
         Instant started = source.instant("started");
-        if (ordinal == KICK_ORDINAL && started == null) {
+        if (ordinal == Punishment.KICK_TYPE_ORDINAL && started == null) {
             started = issued;
             context.issues().report(IssueCode.KICK_MARKED_DELIVERED, id);
         }
@@ -299,7 +298,7 @@ final class PunishmentMapper {
 
     private ResolvedCategory category(Punishment punishment, @Nullable PunishmentType type, @Nullable String stored) {
         PunishmentDataView data = punishment.data();
-        if (punishment.getTypeOrdinal() == KICK_ORDINAL) {
+        if (punishment.getTypeOrdinal() == Punishment.KICK_TYPE_ORDINAL) {
             return ResolvedCategory.NONE;
         }
         if (ResolvedCategory.NONE.name().equals(stored)) {

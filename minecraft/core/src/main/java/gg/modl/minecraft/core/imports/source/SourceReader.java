@@ -7,6 +7,8 @@ public interface SourceReader extends AutoCloseable {
 
     PlayerRecords players() throws SourceException;
 
+    boolean isReusable();
+
     void cancelRunning();
 
     @Override

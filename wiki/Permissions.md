@@ -7,6 +7,17 @@ Permissions belong to roles, edited in Panel > Settings > Staff > Roles or the i
 - Default roles are created once; later edits are yours.
 - A role needs a name; its description is optional.
 
+## Staff team
+
+[![Video: Set up your staff team](https://img.youtube.com/vi/4F8k7IQJkG0/maxresdefault.jpg)](https://youtu.be/4F8k7IQJkG0)
+
+1. Settings > Staff > Members > Invite staff: their email and a role. Without SMTP the invitation link is shown in the panel and printed to the console; it lasts 24 hours.
+2. Settings > Staff > Roles: what each role may do (table below).
+3. Settings > Account > Security: set up an authenticator app and save the recovery codes.
+4. Add passkey in the same place (needs HTTPS or `localhost`).
+5. Settings > Staff > Sign-in: Require two-factor authentication for all staff, then Save. Staff without an authenticator or passkey add one at their next sign-in.
+6. Sign in with a passkey next time ([Email and Sign-in](Email-and-Sign-in)).
+
 ## Default roles
 
 | Permission | Allows | Super Admin | Admin | Moderator | Helper |
@@ -20,8 +31,8 @@ Permissions belong to roles, edited in Panel > Settings > Staff > Roles or the i
 | `admin.settings.modify.content` | Change knowledgebase, homepage cards, public site theme, media | yes | | | |
 | `admin.settings.modify.storage` | Change upload limits and backups, move uploads, retry a move | yes | | | |
 | `admin.staff.manage` | Staff tab (both below) | yes | yes | | |
-| `admin.staff.manage.members` | Invite, remove and reassign staff | yes | yes | | |
-| `admin.staff.manage.roles` | Create, edit and delete roles, in the panel and in game | yes | yes | | |
+| `admin.staff.manage.members` | Invite, remove, and reassign staff | yes | yes | | |
+| `admin.staff.manage.roles` | Create, edit, and delete roles, in the panel and in game | yes | yes | | |
 | `admin.audit.view` | All three below | yes | yes | | |
 | `admin.audit.view.dashboard` | Dashboard | yes | yes | | |
 | `admin.audit.view.analytics` | Analytics | yes | yes | | |
@@ -38,12 +49,13 @@ Permissions belong to roles, edited in Panel > Settings > Staff > Roles or the i
 | `punishment.apply.<ordinal>` | Issue that punishment type (one per type) | yes | yes | all but 5 | |
 | `player.note` | Notes on player profiles | yes | yes | yes | yes |
 | `player.warn` | `/warn` | yes | yes | yes | yes |
+| `replay.share` | Create and revoke public replay links ([Replays](Replays#share-links)); also needs the player view rule | yes | yes | | |
 | `ticket.view.all` | View tickets and appeals, without internal notes; receive ticket and report alerts in game | yes | yes | yes | yes |
 | `ticket.view.all.notes` | View internal staff notes on tickets (granted on its own) | yes | yes | yes | yes |
 | `ticket.reply.all` | Reply to tickets, create tickets | yes | yes | yes | yes |
 | `ticket.reply.all.notes` | Add internal staff notes to tickets (granted on its own) | yes | yes | yes | yes |
 | `appeal.modify` | Reply to and decide appeals | yes | yes | yes | yes |
-| `ticket.close.all` | Close, reopen and lock tickets; resolve and dismiss reports in game | yes | yes | yes | |
+| `ticket.close.all` | Close, reopen, and lock tickets; resolve and dismiss reports in game | yes | yes | yes | |
 | `ticket.manage` | Both below | yes | yes | yes | |
 | `ticket.manage.tags` | Add and remove ticket tags | yes | yes | yes | |
 | `ticket.manage.hide` | Hide tickets | yes | yes | yes | |
@@ -55,14 +67,14 @@ Permissions belong to roles, edited in Panel > Settings > Staff > Roles or the i
 | `staff.chatlogs` | `/chatlogs` | yes | yes | yes | |
 | `staff.commandlogs` | `/commandlogs` | yes | yes | yes | |
 
-Owner only, whatever the role: Settings > General > Panel (including server icons), the API key and server keys, sign-in settings, email, player addresses, the database, updates, status, data and replay retention changes, the S3 connection and its test, removing old storage copies, the AI connection, the public site custom CSS, staff security resets, raw audit tables, setup and imports. `/modl reload` and the in-game Reload button need the owner or the console.
+Owner only, whatever the role: Settings > General > Panel (including server icons), the API key and server keys, sign-in settings, email, player addresses, the database, updates, status, data and replay retention changes, the S3 connection and its test, removing old storage copies, the AI connection, the public site custom CSS, staff security resets, raw audit tables, setup, and imports. `/modl reload` and the in-game Reload button need the owner or the console.
 
 Notes:
-- Viewing players needs `punishment.view`, `punishment.modify` or any `punishment.apply.<ordinal>`.
+- Viewing players needs `punishment.view`, `punishment.modify`, or any `punishment.apply.<ordinal>`. The same rule opens replays; a replay is public only through a share link, which `replay.share` creates and revokes.
 - Replying to an appeal also works with `ticket.reply.all`.
-- Each ticket change needs its own permission: replying, assigning and editing details `ticket.reply.all`, status and lock `ticket.close.all`, visibility `ticket.manage.hide`, tags `ticket.manage.tags`, internal notes `ticket.reply.all.notes`; bulk ticket changes need `ticket.close.all`.
+- Each ticket change needs its own permission: replying, assigning, and editing details `ticket.reply.all`, status and lock `ticket.close.all`, visibility `ticket.manage.hide`, tags `ticket.manage.tags`, internal notes `ticket.reply.all.notes`; bulk ticket changes need `ticket.close.all`.
 - Shortening a punishment (including an appeal reduction, and switching alt-blocking off while it holds automatic linked bans) needs `punishment.modify.duration` and `punishment.modify.pardon`. The console may always shorten.
-- In game, punishment, pardon and warning notices reach only staff who can view players; ticket and report alerts only staff with `ticket.view.all`.
+- In game, punishment, pardon, and warning notices reach only staff who can view players; ticket and report alerts only staff with `ticket.view.all`.
 
 ## Punishment types
 
@@ -89,6 +101,6 @@ Notes:
 | 16 | Account Abuse | gameplay, ban | `/punish` |
 | 17 | Systems Abuse | gameplay, ban | `/punish` |
 
-In Settings > Moderation > Punishment types, types 6 and up can be renamed, edited and deleted, and types 1 to 4 configured but not renamed or deleted; Kick and Blacklist cannot be changed. A new type gets the ordinal after the highest ever used; deleted ordinals are not reused.
+In Settings > Moderation > Punishment types, types 6 and up can be renamed, edited, and deleted, and types 1 to 4 configured but not renamed or deleted; Kick and Blacklist cannot be changed. A new type gets the ordinal after the highest ever used; deleted ordinals are not reused.
 
 A ban until skin change needs the player's Mojang skin: it is refused for players without one (offline mode, Floodgate) and ignores skins set by plugins such as SkinsRestorer. On an offline-mode server a new name is a new player with a new UUID, so a ban until username change never lifts on the old account and does not cover the new one.

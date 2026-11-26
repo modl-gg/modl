@@ -15,7 +15,7 @@ import type { Message } from "@bufbuild/protobuf";
  * Describes the file modl/v1/servers.proto.
  */
 export const file_modl_v1_servers: GenFile = /*@__PURE__*/
-  fileDesc("ChVtb2RsL3YxL3NlcnZlcnMucHJvdG8SB21vZGwudjEi+QIKD0Nvbm5lY3RlZFNlcnZlchITCgtpbnN0YW5jZV9pZBgBIAEoCRIMCgRuYW1lGAIgASgJEhAKCHBsYXRmb3JtGAMgASgJEhYKDnBsdWdpbl92ZXJzaW9uGAQgASgJEhYKDnNlcnZlcl92ZXJzaW9uGAUgASgJEhYKDm9ubGluZV9wbGF5ZXJzGAYgASgFEi0KCWxhc3Rfc2VlbhgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASIQoEcm9sZRgKIAEoDjITLm1vZGwudjEuU2VydmVyUm9sZRIVCghrZXlfbmFtZRgLIAEoCUgAiAEBEhUKDWh1Yl9jb25uZWN0ZWQYDCABKAgSMwoNY29tcGF0aWJpbGl0eRgNIAEoDjIcLm1vZGwudjEuU2VydmVyQ29tcGF0aWJpbGl0eUILCglfa2V5X25hbWVKBAgIEAlKBAgJEApSDmJyaWRnZV9zZXJ2ZXJzUgticmlkZ2VfcG9ydCJbChhDb25uZWN0ZWRTZXJ2ZXJzUmVzcG9uc2USKQoHc2VydmVycxgBIAMoCzIYLm1vZGwudjEuQ29ubmVjdGVkU2VydmVyEhQKDG1vZGxfdmVyc2lvbhgCIAEoCSKwAgoJU2VydmVyS2V5EgoKAmlkGAEgASgJEgwKBG5hbWUYAiABKAkSJgoFc2NvcGUYAyABKA4yFy5tb2RsLnYxLlNlcnZlcktleVNjb3BlEhAKCGtleV9oaW50GAQgASgJEi4KCmNyZWF0ZWRfYXQYBSABKAsyGi5nb29nbGUucHJvdG9idWYuVGltZXN0YW1wEjUKDGxhc3Rfc2Vlbl9hdBgGIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXBIAIgBARIXCgpjcmVhdGVkX2J5GAcgASgJSAGIAQESEQoJY29ubmVjdGVkGAggASgIEhwKFGFsbG93X3Byb3h5X2NvbW1hbmRzGAkgASgIQg8KDV9sYXN0X3NlZW5fYXRCDQoLX2NyZWF0ZWRfYnkiRQoSU2VydmVyS2V5c1Jlc3BvbnNlEiAKBGtleXMYASADKAsyEi5tb2RsLnYxLlNlcnZlcktleRINCgVsaW1pdBgCIAEoBSKXAQoWQ3JlYXRlU2VydmVyS2V5UmVxdWVzdBIrCgRuYW1lGAEgASgJQh26SBpyGDIWXltBLVphLXowLTlfLi1dezEsNjR9JBIyCgVzY29wZRgCIAEoDjIXLm1vZGwudjEuU2VydmVyS2V5U2NvcGVCCrpIB4IBBBABIAASHAoUYWxsb3dfcHJveHlfY29tbWFuZHMYAyABKAgiNgoWVXBkYXRlU2VydmVyS2V5UmVxdWVzdBIcChRhbGxvd19wcm94eV9jb21tYW5kcxgBIAEoCCJdChdDcmVhdGVTZXJ2ZXJLZXlSZXNwb25zZRIfCgNrZXkYASABKAsyEi5tb2RsLnYxLlNlcnZlcktleRIOCgZzZWNyZXQYAiABKAkSEQoJcGFuZWxfdXJsGAMgASgJKtABChNTZXJ2ZXJDb21wYXRpYmlsaXR5EiQKIFNFUlZFUl9DT01QQVRJQklMSVRZX1VOU1BFQ0lGSUVEEAASIwofU0VSVkVSX0NPTVBBVElCSUxJVFlfQ09NUEFUSUJMRRABEiUKIVNFUlZFUl9DT01QQVRJQklMSVRZX1BMVUdJTl9PTERFUhACEiUKIVNFUlZFUl9DT01QQVRJQklMSVRZX1NFUlZFUl9PTERFUhADEiAKHFNFUlZFUl9DT01QQVRJQklMSVRZX1VOS05PV04QBCpwCg5TZXJ2ZXJLZXlTY29wZRIgChxTRVJWRVJfS0VZX1NDT1BFX1VOU1BFQ0lGSUVEEAASGQoVU0VSVkVSX0tFWV9TQ09QRV9GVUxMEAESIQodU0VSVkVSX0tFWV9TQ09QRV9CRUhJTkRfUFJPWFkQAkJiChVnZy5tb2RsLnByb3RvLm1vZGwudjFCDFNlcnZlcnNQcm90b1ABogIDTVhYqgIHTW9kbC5WMcoCB01vZGxcVjHiAhNNb2RsXFYxXEdQQk1ldGFkYXRh6gIITW9kbDo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp, file_modl_v1_common]);
+  fileDesc("ChVtb2RsL3YxL3NlcnZlcnMucHJvdG8SB21vZGwudjEiuwMKD0Nvbm5lY3RlZFNlcnZlchITCgtpbnN0YW5jZV9pZBgBIAEoCRIMCgRuYW1lGAIgASgJEhAKCHBsYXRmb3JtGAMgASgJEhYKDnBsdWdpbl92ZXJzaW9uGAQgASgJEhYKDnNlcnZlcl92ZXJzaW9uGAUgASgJEhYKDm9ubGluZV9wbGF5ZXJzGAYgASgFEi0KCWxhc3Rfc2VlbhgHIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASIQoEcm9sZRgKIAEoDjITLm1vZGwudjEuU2VydmVyUm9sZRIVCghrZXlfbmFtZRgLIAEoCUgAiAEBEhUKDWh1Yl9jb25uZWN0ZWQYDCABKAgSMwoNY29tcGF0aWJpbGl0eRgNIAEoDjIcLm1vZGwudjEuU2VydmVyQ29tcGF0aWJpbGl0eRIzCghmZWF0dXJlcxgOIAEoCzIcLm1vZGwudjEuU2VydmVyRmVhdHVyZVN0YXR1c0gBiAEBQgsKCV9rZXlfbmFtZUILCglfZmVhdHVyZXNKBAgIEAlKBAgJEApSDmJyaWRnZV9zZXJ2ZXJzUgticmlkZ2VfcG9ydCLIAQoTU2VydmVyRmVhdHVyZVN0YXR1cxIZChFyZXBsYXlzX3N1cHBvcnRlZBgBIAEoCBIWCg5yZXBsYXlzX2FjdGl2ZRgCIAEoCBIkChxhbnRpY2hlYXRfaW50ZWdyYXRpb25fYWN0aXZlGAMgASgIEi0KE2RldGVjdGVkX2FudGljaGVhdHMYBCADKAlCELpIDZIBChAIIgZyBBABGCASKQoXcmVwbGF5X21lbW9yeV9idWRnZXRfbWIYBSABKA1CCLpIBSoDGIAIIlsKGENvbm5lY3RlZFNlcnZlcnNSZXNwb25zZRIpCgdzZXJ2ZXJzGAEgAygLMhgubW9kbC52MS5Db25uZWN0ZWRTZXJ2ZXISFAoMbW9kbF92ZXJzaW9uGAIgASgJIrACCglTZXJ2ZXJLZXkSCgoCaWQYASABKAkSDAoEbmFtZRgCIAEoCRImCgVzY29wZRgDIAEoDjIXLm1vZGwudjEuU2VydmVyS2V5U2NvcGUSEAoIa2V5X2hpbnQYBCABKAkSLgoKY3JlYXRlZF9hdBgFIAEoCzIaLmdvb2dsZS5wcm90b2J1Zi5UaW1lc3RhbXASNQoMbGFzdF9zZWVuX2F0GAYgASgLMhouZ29vZ2xlLnByb3RvYnVmLlRpbWVzdGFtcEgAiAEBEhcKCmNyZWF0ZWRfYnkYByABKAlIAYgBARIRCgljb25uZWN0ZWQYCCABKAgSHAoUYWxsb3dfcHJveHlfY29tbWFuZHMYCSABKAhCDwoNX2xhc3Rfc2Vlbl9hdEINCgtfY3JlYXRlZF9ieSJ8ChJTZXJ2ZXJLZXlzUmVzcG9uc2USIAoEa2V5cxgBIAMoCzISLm1vZGwudjEuU2VydmVyS2V5Eg0KBWxpbWl0GAIgASgFEjUKD3Byb3hpZWRfc2VydmVycxgDIAMoCzIcLm1vZGwudjEuUHJveGllZFNlcnZlclN0YXR1cyJXCg1Qcm94aWVkU2VydmVyEisKBG5hbWUYASABKAlCHbpIGnIYMhZeW0EtWmEtejAtOV8uLV17MSw2NH0kEhkKB2FkZHJlc3MYAiABKAlCCLpIBXIDKIABIokBChNQcm94aWVkU2VydmVyU3RhdHVzEiYKBnNlcnZlchgBIAEoCzIWLm1vZGwudjEuUHJveGllZFNlcnZlchIqCgVzdGF0ZRgCIAEoDjIbLm1vZGwudjEuUHJveGllZFNlcnZlclN0YXRlEhMKBmtleV9pZBgDIAEoCUgAiAEBQgkKB19rZXlfaWQilwEKFkNyZWF0ZVNlcnZlcktleVJlcXVlc3QSKwoEbmFtZRgBIAEoCUIdukgachgyFl5bQS1aYS16MC05Xy4tXXsxLDY0fSQSMgoFc2NvcGUYAiABKA4yFy5tb2RsLnYxLlNlcnZlcktleVNjb3BlQgq6SAeCAQQQASAAEhwKFGFsbG93X3Byb3h5X2NvbW1hbmRzGAMgASgIIjYKFlVwZGF0ZVNlcnZlcktleVJlcXVlc3QSHAoUYWxsb3dfcHJveHlfY29tbWFuZHMYASABKAgiXQoXQ3JlYXRlU2VydmVyS2V5UmVzcG9uc2USHwoDa2V5GAEgASgLMhIubW9kbC52MS5TZXJ2ZXJLZXkSDgoGc2VjcmV0GAIgASgJEhEKCXBhbmVsX3VybBgDIAEoCSrQAQoTU2VydmVyQ29tcGF0aWJpbGl0eRIkCiBTRVJWRVJfQ09NUEFUSUJJTElUWV9VTlNQRUNJRklFRBAAEiMKH1NFUlZFUl9DT01QQVRJQklMSVRZX0NPTVBBVElCTEUQARIlCiFTRVJWRVJfQ09NUEFUSUJJTElUWV9QTFVHSU5fT0xERVIQAhIlCiFTRVJWRVJfQ09NUEFUSUJJTElUWV9TRVJWRVJfT0xERVIQAxIgChxTRVJWRVJfQ09NUEFUSUJJTElUWV9VTktOT1dOEAQqcAoOU2VydmVyS2V5U2NvcGUSIAocU0VSVkVSX0tFWV9TQ09QRV9VTlNQRUNJRklFRBAAEhkKFVNFUlZFUl9LRVlfU0NPUEVfRlVMTBABEiEKHVNFUlZFUl9LRVlfU0NPUEVfQkVISU5EX1BST1hZEAIqpwEKElByb3hpZWRTZXJ2ZXJTdGF0ZRIkCiBQUk9YSUVEX1NFUlZFUl9TVEFURV9VTlNQRUNJRklFRBAAEh8KG1BST1hJRURfU0VSVkVSX1NUQVRFX05PX0tFWRABEiYKIlBST1hJRURfU0VSVkVSX1NUQVRFX05PVF9DT05ORUNURUQQAhIiCh5QUk9YSUVEX1NFUlZFUl9TVEFURV9DT05ORUNURUQQA0JiChVnZy5tb2RsLnByb3RvLm1vZGwudjFCDFNlcnZlcnNQcm90b1ABogIDTVhYqgIHTW9kbC5WMcoCB01vZGxcVjHiAhNNb2RsXFYxXEdQQk1ldGFkYXRh6gIITW9kbDo6VjFiBnByb3RvMw", [file_buf_validate_validate, file_google_protobuf_timestamp, file_modl_v1_common]);
 
 /**
  * @generated from message modl.v1.ConnectedServer
@@ -75,6 +75,11 @@ export type ConnectedServer = Message<"modl.v1.ConnectedServer"> & {
    * @generated from field: modl.v1.ServerCompatibility compatibility = 13;
    */
   compatibility: ServerCompatibility;
+
+  /**
+   * @generated from field: optional modl.v1.ServerFeatureStatus features = 14;
+   */
+  features?: ServerFeatureStatus | undefined;
 };
 
 /**
@@ -83,6 +88,43 @@ export type ConnectedServer = Message<"modl.v1.ConnectedServer"> & {
  */
 export const ConnectedServerSchema: GenMessage<ConnectedServer> = /*@__PURE__*/
   messageDesc(file_modl_v1_servers, 0);
+
+/**
+ * @generated from message modl.v1.ServerFeatureStatus
+ */
+export type ServerFeatureStatus = Message<"modl.v1.ServerFeatureStatus"> & {
+  /**
+   * @generated from field: bool replays_supported = 1;
+   */
+  replaysSupported: boolean;
+
+  /**
+   * @generated from field: bool replays_active = 2;
+   */
+  replaysActive: boolean;
+
+  /**
+   * @generated from field: bool anticheat_integration_active = 3;
+   */
+  anticheatIntegrationActive: boolean;
+
+  /**
+   * @generated from field: repeated string detected_anticheats = 4;
+   */
+  detectedAnticheats: string[];
+
+  /**
+   * @generated from field: uint32 replay_memory_budget_mb = 5;
+   */
+  replayMemoryBudgetMb: number;
+};
+
+/**
+ * Describes the message modl.v1.ServerFeatureStatus.
+ * Use `create(ServerFeatureStatusSchema)` to create a new message.
+ */
+export const ServerFeatureStatusSchema: GenMessage<ServerFeatureStatus> = /*@__PURE__*/
+  messageDesc(file_modl_v1_servers, 1);
 
 /**
  * @generated from message modl.v1.ConnectedServersResponse
@@ -104,7 +146,7 @@ export type ConnectedServersResponse = Message<"modl.v1.ConnectedServersResponse
  * Use `create(ConnectedServersResponseSchema)` to create a new message.
  */
 export const ConnectedServersResponseSchema: GenMessage<ConnectedServersResponse> = /*@__PURE__*/
-  messageDesc(file_modl_v1_servers, 1);
+  messageDesc(file_modl_v1_servers, 2);
 
 /**
  * @generated from message modl.v1.ServerKey
@@ -161,7 +203,7 @@ export type ServerKey = Message<"modl.v1.ServerKey"> & {
  * Use `create(ServerKeySchema)` to create a new message.
  */
 export const ServerKeySchema: GenMessage<ServerKey> = /*@__PURE__*/
-  messageDesc(file_modl_v1_servers, 2);
+  messageDesc(file_modl_v1_servers, 3);
 
 /**
  * @generated from message modl.v1.ServerKeysResponse
@@ -176,6 +218,11 @@ export type ServerKeysResponse = Message<"modl.v1.ServerKeysResponse"> & {
    * @generated from field: int32 limit = 2;
    */
   limit: number;
+
+  /**
+   * @generated from field: repeated modl.v1.ProxiedServerStatus proxied_servers = 3;
+   */
+  proxiedServers: ProxiedServerStatus[];
 };
 
 /**
@@ -183,7 +230,56 @@ export type ServerKeysResponse = Message<"modl.v1.ServerKeysResponse"> & {
  * Use `create(ServerKeysResponseSchema)` to create a new message.
  */
 export const ServerKeysResponseSchema: GenMessage<ServerKeysResponse> = /*@__PURE__*/
-  messageDesc(file_modl_v1_servers, 3);
+  messageDesc(file_modl_v1_servers, 4);
+
+/**
+ * @generated from message modl.v1.ProxiedServer
+ */
+export type ProxiedServer = Message<"modl.v1.ProxiedServer"> & {
+  /**
+   * @generated from field: string name = 1;
+   */
+  name: string;
+
+  /**
+   * @generated from field: string address = 2;
+   */
+  address: string;
+};
+
+/**
+ * Describes the message modl.v1.ProxiedServer.
+ * Use `create(ProxiedServerSchema)` to create a new message.
+ */
+export const ProxiedServerSchema: GenMessage<ProxiedServer> = /*@__PURE__*/
+  messageDesc(file_modl_v1_servers, 5);
+
+/**
+ * @generated from message modl.v1.ProxiedServerStatus
+ */
+export type ProxiedServerStatus = Message<"modl.v1.ProxiedServerStatus"> & {
+  /**
+   * @generated from field: modl.v1.ProxiedServer server = 1;
+   */
+  server?: ProxiedServer | undefined;
+
+  /**
+   * @generated from field: modl.v1.ProxiedServerState state = 2;
+   */
+  state: ProxiedServerState;
+
+  /**
+   * @generated from field: optional string key_id = 3;
+   */
+  keyId?: string | undefined;
+};
+
+/**
+ * Describes the message modl.v1.ProxiedServerStatus.
+ * Use `create(ProxiedServerStatusSchema)` to create a new message.
+ */
+export const ProxiedServerStatusSchema: GenMessage<ProxiedServerStatus> = /*@__PURE__*/
+  messageDesc(file_modl_v1_servers, 6);
 
 /**
  * @generated from message modl.v1.CreateServerKeyRequest
@@ -210,7 +306,7 @@ export type CreateServerKeyRequest = Message<"modl.v1.CreateServerKeyRequest"> &
  * Use `create(CreateServerKeyRequestSchema)` to create a new message.
  */
 export const CreateServerKeyRequestSchema: GenMessage<CreateServerKeyRequest> = /*@__PURE__*/
-  messageDesc(file_modl_v1_servers, 4);
+  messageDesc(file_modl_v1_servers, 7);
 
 /**
  * @generated from message modl.v1.UpdateServerKeyRequest
@@ -227,7 +323,7 @@ export type UpdateServerKeyRequest = Message<"modl.v1.UpdateServerKeyRequest"> &
  * Use `create(UpdateServerKeyRequestSchema)` to create a new message.
  */
 export const UpdateServerKeyRequestSchema: GenMessage<UpdateServerKeyRequest> = /*@__PURE__*/
-  messageDesc(file_modl_v1_servers, 5);
+  messageDesc(file_modl_v1_servers, 8);
 
 /**
  * @generated from message modl.v1.CreateServerKeyResponse
@@ -254,7 +350,7 @@ export type CreateServerKeyResponse = Message<"modl.v1.CreateServerKeyResponse">
  * Use `create(CreateServerKeyResponseSchema)` to create a new message.
  */
 export const CreateServerKeyResponseSchema: GenMessage<CreateServerKeyResponse> = /*@__PURE__*/
-  messageDesc(file_modl_v1_servers, 6);
+  messageDesc(file_modl_v1_servers, 9);
 
 /**
  * @generated from enum modl.v1.ServerCompatibility
@@ -317,4 +413,35 @@ export enum ServerKeyScope {
  */
 export const ServerKeyScopeSchema: GenEnum<ServerKeyScope> = /*@__PURE__*/
   enumDesc(file_modl_v1_servers, 1);
+
+/**
+ * @generated from enum modl.v1.ProxiedServerState
+ */
+export enum ProxiedServerState {
+  /**
+   * @generated from enum value: PROXIED_SERVER_STATE_UNSPECIFIED = 0;
+   */
+  UNSPECIFIED = 0,
+
+  /**
+   * @generated from enum value: PROXIED_SERVER_STATE_NO_KEY = 1;
+   */
+  NO_KEY = 1,
+
+  /**
+   * @generated from enum value: PROXIED_SERVER_STATE_NOT_CONNECTED = 2;
+   */
+  NOT_CONNECTED = 2,
+
+  /**
+   * @generated from enum value: PROXIED_SERVER_STATE_CONNECTED = 3;
+   */
+  CONNECTED = 3,
+}
+
+/**
+ * Describes the enum modl.v1.ProxiedServerState.
+ */
+export const ProxiedServerStateSchema: GenEnum<ProxiedServerState> = /*@__PURE__*/
+  enumDesc(file_modl_v1_servers, 2);
 

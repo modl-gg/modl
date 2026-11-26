@@ -1,20 +1,18 @@
 package gg.modl.minecraft.core.imports.sql;
 
 import gg.modl.minecraft.core.imports.support.FileTrees;
+import gg.modl.minecraft.core.util.OwnerOnlyFiles;
 
 import java.io.IOException;
 import java.nio.file.DirectoryStream;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.nio.file.StandardCopyOption;
-import java.nio.file.attribute.PosixFileAttributeView;
-import java.nio.file.attribute.PosixFilePermissions;
 import java.util.Arrays;
 import java.util.List;
 import java.util.UUID;
 
 public final class DatabaseCopy implements AutoCloseable {
-    private static final String OWNER_ONLY = "rwx------";
     private static final long SPACE_MARGIN_BYTES = 256L * 1024 * 1024;
     private static final long BYTES_PER_MEBIBYTE = 1024L * 1024;
     private static final List<String> SKIPPED_SUFFIXES = Arrays.asList(".lck", ".lock.db", ".trace.db", ".tmp");
@@ -33,10 +31,7 @@ public final class DatabaseCopy implements AutoCloseable {
         String baseName = String.valueOf(original.getFileName());
         requireSpace(scratch, folder, baseName);
         Path directory = scratch.toAbsolutePath().resolve(UUID.randomUUID().toString());
-        Files.createDirectories(directory);
-        if (Files.getFileStore(directory).supportsFileAttributeView(PosixFileAttributeView.class)) {
-            Files.setPosixFilePermissions(directory, PosixFilePermissions.fromString(OWNER_ONLY));
-        }
+        OwnerOnlyFiles.createDirectories(directory);
         DatabaseCopy copy = new DatabaseCopy(directory, directory.resolve(baseName));
         try (DirectoryStream<Path> files = Files.newDirectoryStream(folder, baseName + ".*")) {
             for (Path file : files) {

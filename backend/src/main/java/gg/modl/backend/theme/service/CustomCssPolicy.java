@@ -9,7 +9,7 @@ import java.util.Optional;
 import java.util.regex.Pattern;
 
 public final class CustomCssPolicy {
-    public static final int MAX_BYTES = 64 * 1024;
+    public static final int MAX_BYTES = 1024 * 1024;
 
     private static final Pattern COMMENT = Pattern.compile("/\\*.*?(\\*/|\\z)", Pattern.DOTALL);
     private static final Pattern WHITESPACE = Pattern.compile("\\s+");

@@ -38,8 +38,12 @@ final class PunishmentListOrder {
     }
 
     static List<SortField<?>> orderBy(Field<Long> key, boolean ascending) {
+        return orderBy(key, PUNISHMENTS.ID, ascending);
+    }
+
+    static List<SortField<?>> orderBy(Field<Long> key, Field<String> id, boolean ascending) {
         return ascending
-            ? List.of(key.asc(), PUNISHMENTS.ID.asc())
-            : List.of(key.desc(), PUNISHMENTS.ID.desc());
+            ? List.of(key.asc(), id.asc())
+            : List.of(key.desc(), id.desc());
     }
 }

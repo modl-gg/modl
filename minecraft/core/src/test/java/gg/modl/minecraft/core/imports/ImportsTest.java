@@ -101,10 +101,9 @@ class ImportsTest {
         imports.preview("LiteBans");
         await(() -> console.contains("import.preview.confirm"));
 
-        await(() -> {
-            if (backend.starts().isEmpty()) imports.confirm("litebans", "SKIP", "keep");
-            return !backend.starts().isEmpty();
-        });
+        imports.confirm("litebans", "SKIP", "keep");
+        await(() -> !backend.starts().isEmpty());
+        ImportSourceConnectionTest.assertRightAfterThePreview(console);
         await(() -> console.contains("import.completed"));
 
         StartImportJobRequest start = backend.starts().get(0);
@@ -132,10 +131,9 @@ class ImportsTest {
         imports.preview("litebans");
         await(() -> console.contains("import.preview.confirm"));
 
-        await(() -> {
-            if (backend.starts().isEmpty()) imports.confirm("litebans", "skip", "standard");
-            return !backend.starts().isEmpty();
-        });
+        imports.confirm("litebans", "skip", "standard");
+        await(() -> !backend.starts().isEmpty());
+        ImportSourceConnectionTest.assertRightAfterThePreview(console);
         await(() -> console.contains(message));
 
         assertTrue(backend.uploads().isEmpty());

@@ -7,10 +7,11 @@ import java.security.MessageDigest;
 import java.security.NoSuchAlgorithmException;
 import java.sql.Connection;
 import java.sql.SQLException;
+import java.time.Duration;
 import java.util.Optional;
 
 interface AdvisoryLockStatements {
-    int SESSION_TIMEOUT_SECONDS = 120;
+    Duration SESSION_TIMEOUT = Duration.ofMinutes(2);
 
     static AdvisoryLockStatements of(DatabaseDialect dialect, Connection connection) throws SQLException {
         String catalog = String.valueOf(connection.getCatalog());

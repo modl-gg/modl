@@ -124,7 +124,7 @@ public enum ReconnectAction
   }
   public static com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(9);
+    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(11);
   }
 
   private static final ReconnectAction[] VALUES = values();

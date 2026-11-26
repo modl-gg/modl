@@ -80,6 +80,7 @@ final class SetupProtoMapper {
             case STAFF -> gg.modl.proto.modl.v1.SetupStep.SETUP_STEP_STAFF;
             case PLAYER_ADDRESSES -> gg.modl.proto.modl.v1.SetupStep.SETUP_STEP_PLAYER_ADDRESSES;
             case AI -> gg.modl.proto.modl.v1.SetupStep.SETUP_STEP_AI;
+            case REPLAYS -> gg.modl.proto.modl.v1.SetupStep.SETUP_STEP_REPLAYS;
             case CONTENT -> gg.modl.proto.modl.v1.SetupStep.SETUP_STEP_CONTENT;
         };
     }

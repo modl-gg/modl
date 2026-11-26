@@ -71,6 +71,7 @@ const STEPS: ReadonlyMap<SetupStep, SetupStepId | null> = new Map<SetupStep, Set
   [SetupStep.STAFF, 'staff'],
   [SetupStep.PLAYER_ADDRESSES, 'player-addresses'],
   [SetupStep.AI, 'ai'],
+  [SetupStep.REPLAYS, 'replays'],
   [SetupStep.CONTENT, 'content'],
 ]);
 

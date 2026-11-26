@@ -100,7 +100,7 @@ public class ServerKeyService {
 
     private static void requireName(String name) {
         if (name == null || !NAME.matcher(name).matches()) {
-            throw new ValidationException("A server key name is 1 to 64 letters, digits, dots, dashes or underscores",
+            throw new ValidationException("A server key name is 1 to 64 letters, digits, dots, dashes, or underscores",
                 "INVALID_ARGUMENT");
         }
     }

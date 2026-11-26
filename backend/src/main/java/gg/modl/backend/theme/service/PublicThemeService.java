@@ -5,18 +5,26 @@ import gg.modl.backend.log.service.PanelActionAuditor;
 import gg.modl.backend.server.data.Server;
 import gg.modl.backend.settings.data.SettingsType;
 import gg.modl.backend.settings.service.CachedSettingsDocument;
+import gg.modl.backend.settings.service.FieldChanges;
 import gg.modl.backend.settings.service.SettingsCodec;
 import gg.modl.backend.settings.service.SettingsDocumentService;
 import gg.modl.backend.settings.service.VersionedSettings;
 import gg.modl.backend.storage.StorageOrigins;
 import gg.modl.backend.theme.data.PublicSiteTheme;
-import java.util.List;
 import org.springframework.stereotype.Service;
 
 @Service
 public class PublicThemeService {
-    private static final String AUDIT_PREFIX = "Changed the public site theme: ";
-    private static final String AUDIT_SEPARATOR = ", ";
+    private static final FieldChanges<PublicSiteTheme> CHANGES = FieldChanges.<PublicSiteTheme>summarizedAs(
+            "Changed the public site theme: ")
+        .compare("primary color", PublicSiteTheme::primaryColor)
+        .compare("accent color", PublicSiteTheme::accentColor)
+        .compare("background color", PublicSiteTheme::backgroundColor)
+        .compare("background image", PublicSiteTheme::backgroundImageUrl)
+        .compare("font", PublicSiteTheme::font)
+        .compare("corner radius", PublicSiteTheme::radius)
+        .compare("default color scheme", PublicSiteTheme::colorScheme)
+        .build();
 
     private final CachedSettingsDocument<PublicSiteTheme> document;
     private final PanelActionAuditor auditor;
@@ -43,10 +51,7 @@ public class PublicThemeService {
         PublicSiteTheme validated = PublicThemeValues.validated(requested, storageOrigins.origins());
         PublicSiteTheme previous = current();
         VersionedSettings<PublicSiteTheme> saved = document.updateExpecting(expectedVersion, stored -> validated);
-        List<String> changed = PublicThemeChanges.between(previous, saved.data());
-        if (!changed.isEmpty()) {
-            auditor.recordStaffAction(server, actorEmail, AUDIT_PREFIX + String.join(AUDIT_SEPARATOR, changed));
-        }
+        CHANGES.summary(previous, saved.data()).ifPresent(summary -> auditor.recordStaffAction(server, actorEmail, summary));
         return saved;
     }
 }

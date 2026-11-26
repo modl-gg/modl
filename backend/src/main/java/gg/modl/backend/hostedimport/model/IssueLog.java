@@ -19,7 +19,13 @@ public final class IssueLog {
     }
 
     public void imported(ImportSubject subject) {
-        counts.merge(subject, new SubjectCount(0, 1, 0, 0), SubjectCount::plus);
+        imported(subject, 1);
+    }
+
+    public void imported(ImportSubject subject, long count) {
+        if (count > 0) {
+            counts.merge(subject, new SubjectCount(0, count, 0, 0), SubjectCount::plus);
+        }
     }
 
     public void changed(ImportSubject subject) {
@@ -27,11 +33,19 @@ public final class IssueLog {
     }
 
     public void skipped(ImportSubject subject) {
-        counts.merge(subject, new SubjectCount(0, 0, 0, 1), SubjectCount::plus);
+        skipped(subject, 1);
+    }
+
+    public void skipped(ImportSubject subject, long count) {
+        if (count > 0) {
+            counts.merge(subject, new SubjectCount(0, 0, 0, count), SubjectCount::plus);
+        }
     }
 
     public void seen(ImportSubject subject, long total) {
-        counts.merge(subject, new SubjectCount(total, 0, 0, 0), SubjectCount::plus);
+        if (total > 0) {
+            counts.merge(subject, new SubjectCount(total, 0, 0, 0), SubjectCount::plus);
+        }
     }
 
     public ImportTally tally() {

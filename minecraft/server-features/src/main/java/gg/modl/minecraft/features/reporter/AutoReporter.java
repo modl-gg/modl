@@ -29,6 +29,7 @@ public class AutoReporter {
     private final TicketCreator ticketCreator;
     private final ViolationTracker violationTracker;
     private final Supplier<String> serverName;
+    private final Supplier<String> displayedAnticheatName;
 
     @Setter private volatile @Nullable ReplayService replayService;
 
@@ -43,6 +44,8 @@ public class AutoReporter {
             }
             return;
         }
+        ReplayService replays = replayService;
+        if (replays != null) replays.recordOnSuspicion(uuid);
         int vl = violationTracker.getViolationCount(uuid, source, checkName);
         int threshold = config.getReportViolationThreshold(checkName);
 
@@ -86,7 +89,7 @@ public class AutoReporter {
     }
 
     private void submitReport(UUID uuid, String playerName, DetectionSource source, String checkName, int vl) {
-        String anticheatName = config.getAnticheatName();
+        String anticheatName = displayedAnticheatName.get();
         String uuidStr = uuid.toString();
         String subject = "[" + anticheatName + "] " + checkName + " - " + playerName + " (VL: " + vl + ")";
         String description = buildDescription(uuid, playerName, source, checkName, vl);

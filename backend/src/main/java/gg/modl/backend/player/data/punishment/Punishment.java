@@ -17,6 +17,7 @@ import org.jspecify.annotations.Nullable;
 @NoArgsConstructor
 @AllArgsConstructor
 public class Punishment {
+    public static final int KICK_TYPE_ORDINAL = 0;
     public static final int LINKED_BAN_TYPE_ORDINAL = 4;
 
     private String id;

@@ -15,6 +15,7 @@ import gg.modl.backend.instance.PublicUrls;
 import gg.modl.backend.instance.setup.PublicUrlCheck;
 import gg.modl.backend.instance.setup.PublicUrlProbe;
 import gg.modl.backend.instance.setup.PublicUrlVerdict;
+import gg.modl.backend.tunnel.TunnelProperties;
 import java.time.Clock;
 import java.util.Optional;
 import org.junit.jupiter.api.BeforeEach;
@@ -33,8 +34,21 @@ class PanelReachabilityCheckTest {
         probe = mock(PublicUrlProbe.class);
         urls = mock(PublicUrls.class);
         notice = mock(OperatorNotice.class);
-        check = new PanelReachabilityCheck(probe, urls, notice, Clock.systemUTC(), Runnable::run);
+        check = new PanelReachabilityCheck(probe, urls, notice, Clock.systemUTC(), Runnable::run, TunnelProperties.off());
         when(urls.knownOrigin()).thenReturn(HttpOrigin.parseExact(PANEL));
+    }
+
+    @Test
+    void withTheBuiltInTunnelTheCheckWaitsForTheTunnelInsteadOfTheCommit() {
+        PanelReachabilityCheck tunnelled = new PanelReachabilityCheck(probe, urls, notice, Clock.systemUTC(), Runnable::run,
+            new TunnelProperties("cloudflare", "token"));
+        when(probe.check(PANEL)).thenReturn(new PublicUrlCheck(PublicUrlVerdict.UNREACHABLE, PANEL));
+
+        tunnelled.checkAfterCommit();
+        verify(probe, never()).check(any());
+
+        tunnelled.checkAfterTunnelConnected();
+        verify(probe).check(PANEL);
     }
 
     @Test

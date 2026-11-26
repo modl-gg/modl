@@ -11,15 +11,18 @@ import org.springframework.stereotype.Component;
 @Component
 @RequiredArgsConstructor
 public class MailTester {
+    static final String STARTTLS_NOT_OFFERED = "The mail server does not offer STARTTLS";
+
     private final JavaMailSenderFactory javaMailSenderFactory;
     private final InstanceContext instanceContext;
+    private final StartTlsProbe startTlsProbe;
 
     public Optional<MailFailure> verify(MailConfiguration configuration) {
         try {
             connect(configuration);
             return Optional.empty();
         } catch (MessagingException | MailException e) {
-            return Optional.of(MailFailures.classify(e, () -> unexplainedConnectionOutcome(configuration)));
+            return Optional.of(MailFailures.typed(e).orElseGet(() -> unexplainedConnectionFailure(configuration, e)));
         }
     }
 
@@ -38,19 +41,12 @@ public class MailTester {
         }
     }
 
-    private MailDeliveryOutcome unexplainedConnectionOutcome(MailConfiguration configuration) {
-        return configuration.usesStartTls() && connects(configuration.plainProbe())
-            ? MailDeliveryOutcome.TLS_FAILED
-            : MailDeliveryOutcome.CONNECT_FAILED;
-    }
-
-    private boolean connects(MailConfiguration configuration) {
-        try {
-            connect(configuration);
-            return true;
-        } catch (MessagingException | MailException e) {
-            return false;
+    private MailFailure unexplainedConnectionFailure(MailConfiguration configuration, Exception failure) {
+        if (configuration.usesStartTls()
+            && startTlsProbe.probe(configuration.host(), configuration.port()) == StartTlsProbe.Support.NOT_OFFERED) {
+            return new MailFailure(MailDeliveryOutcome.TLS_FAILED, STARTTLS_NOT_OFFERED);
         }
+        return new MailFailure(MailDeliveryOutcome.CONNECT_FAILED, MailFailures.detail(failure));
     }
 
     private void connect(MailConfiguration configuration) throws MessagingException {

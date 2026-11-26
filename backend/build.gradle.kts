@@ -75,6 +75,7 @@ dependencies {
     implementation(project(":proto"))
     implementation(project(":libs:address-scope"))
     implementation(project(":libs:update-protocol"))
+    implementation(project(":libs:replay-format"))
     implementation(libs.protobuf.java.util)
     implementation(libs.protovalidate)
 
@@ -262,9 +263,20 @@ val verifyJooqVersion = tasks.register<VerifyVersionsEqual>("verifyJooqVersion")
 }
 
 val requireAllDialects = providers.environmentVariable("MODL_REQUIRE_ALL_DIALECTS").map { it.toBoolean() }.orElse(false)
+val selectedDialects = providers.environmentVariable("MODL_TEST_DIALECTS").orElse("")
+val externalDialectsSelected = requireAllDialects.zip(selectedDialects) { all, selected ->
+    all || selected.split(",").map { it.trim() }.any { it.isNotEmpty() && it != "sqlite" }
+}
+val cpuTestForks = (Runtime.getRuntime().availableProcessors() / 2).coerceAtLeast(1)
+val externalDialectTestForks = 2
+val testForks = providers.gradleProperty("modl.testForks").map { it.toInt() }
+    .orElse(externalDialectsSelected.map { if (it) minOf(cpuTestForks, externalDialectTestForks) else cpuTestForks })
+val sqlTestTag = "sql"
+val httpTestTag = "http"
 
 tasks.withType<Test>().configureEach {
     inputs.property("requireAllDialects", requireAllDialects)
+    inputs.property("selectedDialects", selectedDialects)
     testLogging {
         events("failed", "skipped")
         exceptionFormat = TestExceptionFormat.FULL
@@ -272,30 +284,46 @@ tasks.withType<Test>().configureEach {
     }
 }
 
+tasks.test {
+    maxParallelForks = testForks.get()
+}
+
+val sqlTest = tasks.register<Test>("sqlTest") {
+    group = "verification"
+    description = "Runs only the SQL contract tests, on the dialects MODL_TEST_DIALECTS or MODL_REQUIRE_ALL_DIALECTS select"
+    testClassesDirs = sourceSets.test.get().output.classesDirs
+    classpath = sourceSets.test.get().runtimeClasspath
+    useJUnitPlatform {
+        includeTags(sqlTestTag)
+    }
+    maxParallelForks = testForks.get()
+    mustRunAfter(tasks.test)
+}
+
 val externalHttpTests = mapOf(
-    "Mysql" to "mysql-8.4",
-    "Mariadb" to "mariadb-10.11",
-    "MariadbLatest" to "mariadb-11.4",
-    "Postgresql" to "postgresql-15",
-    "PostgresqlLatest" to "postgresql-17",
-).map { (name, dialect) ->
+    "mysql-8.4" to "Mysql",
+    "mariadb-10.11" to "Mariadb",
+    "mariadb-11.4" to "MariadbLatest",
+    "postgresql-15" to "Postgresql",
+    "postgresql-17" to "PostgresqlLatest",
+).mapValues { (dialect, name) ->
     tasks.register<Test>("httpTest$name") {
         group = "verification"
         description = "Runs the HTTP integration tests in-process on $dialect"
         testClassesDirs = sourceSets.test.get().output.classesDirs
         classpath = sourceSets.test.get().runtimeClasspath
         useJUnitPlatform {
-            includeTags("http")
+            includeTags(httpTestTag)
         }
         environment("MODL_TEST_HTTP_DIALECT", dialect)
-        mustRunAfter(tasks.test)
+        mustRunAfter(tasks.test, sqlTest)
     }
 }
 
-if (requireAllDialects.get()) {
-    tasks.check {
-        dependsOn(externalHttpTests)
-    }
+val selectedDialectNames = selectedDialects.get().split(",").map { it.trim() }.toSet()
+
+tasks.check {
+    dependsOn(externalHttpTests.filterKeys { requireAllDialects.get() || it in selectedDialectNames }.values)
 }
 
 fun booleanFlag(name: String): Boolean =

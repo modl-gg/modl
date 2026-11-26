@@ -3,6 +3,7 @@ package gg.modl.minecraft.core.imports;
 import gg.modl.minecraft.api.http.ApiClientException;
 import gg.modl.minecraft.api.http.request.EndImportJobRequest;
 import gg.modl.minecraft.api.http.response.ImportJob;
+import gg.modl.minecraft.core.imports.source.ImportProblem;
 import lombok.RequiredArgsConstructor;
 import org.jspecify.annotations.Nullable;
 
@@ -83,7 +84,7 @@ final class ImportJobFollower {
             files.forget(jobId);
             reporter.say("import.job_gone");
         } else {
-            reporter.failed("import.request_failed", refused.getMessage());
+            reporter.failed(ImportProblem.REQUEST_FAILED.messageKey(), refused.getMessage());
         }
     }
 

@@ -19,6 +19,7 @@ import gg.modl.backend.hostedimport.service.ImportStateView;
 import gg.modl.proto.modl.v1.HostedImportCount;
 import gg.modl.proto.modl.v1.HostedImportExclusion;
 import gg.modl.proto.modl.v1.HostedImportIssue;
+import gg.modl.proto.modl.v1.HostedImportIssueCode;
 import gg.modl.proto.modl.v1.HostedImportPhase;
 import gg.modl.proto.modl.v1.HostedImportPreview;
 import gg.modl.proto.modl.v1.HostedImportReport;
@@ -40,6 +41,7 @@ import java.util.Optional;
 final class HostedImportProtoMapper {
     static final List<String> FOLLOW_UPS = List.of("apiKey", "passkeys", "invitations", "address", "mail", "webhooks", "ai", "minecraft",
         "oldLinks");
+    private static final String ISSUE_CODE_PREFIX = "HOSTED_IMPORT_ISSUE_CODE_";
 
     private HostedImportProtoMapper() {
     }
@@ -160,7 +162,7 @@ final class HostedImportProtoMapper {
             .sorted(Comparator.comparing((Map.Entry<IssueCode, IssueEntry> entry) -> entry.getKey().severity()).reversed()
                 .thenComparing(Map.Entry::getKey))
             .map(entry -> HostedImportIssue.newBuilder()
-                .setCode(entry.getKey().name())
+                .setCode(toProto(entry.getKey()))
                 .setSeverity(toProto(entry.getKey().severity()))
                 .setCount(entry.getValue().count())
                 .addAllSamples(entry.getValue().samples())
@@ -196,6 +198,10 @@ final class HostedImportProtoMapper {
             case KEEP_HISTORY -> HostedImportRetention.HOSTED_IMPORT_RETENTION_KEEP_HISTORY;
             case STANDARD -> HostedImportRetention.HOSTED_IMPORT_RETENTION_STANDARD;
         };
+    }
+
+    static HostedImportIssueCode toProto(IssueCode code) {
+        return HostedImportIssueCode.valueOf(ISSUE_CODE_PREFIX + code.name());
     }
 
     private static HostedImportSeverity toProto(IssueSeverity severity) {

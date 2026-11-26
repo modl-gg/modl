@@ -41,10 +41,6 @@ public record MailConfiguration(
             && (encryptsConnection() || !existing.encryptsConnection());
     }
 
-    public MailConfiguration plainProbe() {
-        return new MailConfiguration(host, port, null, null, from, false);
-    }
-
     public MailConfiguration withPassword(@Nullable String newPassword) {
         return new MailConfiguration(host, port, username, newPassword, from, starttls);
     }

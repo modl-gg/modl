@@ -29,9 +29,6 @@ public final class FoliaScheduler {
     private final JavaPlugin plugin;
 
     private volatile @Nullable FoliaApi api;
-    private volatile @Nullable Method entityRunMethod;
-    private volatile @Nullable Method entityExecuteDelayedMethod;
-    private volatile @Nullable Method scheduledTaskCancelMethod;
 
     public FoliaScheduler(JavaPlugin plugin) {
         this.plugin = plugin;
@@ -66,16 +63,15 @@ public final class FoliaScheduler {
     }
 
     public void runForEntity(Entity entity, Runnable task) {
+        runForEntity(entity, task, null);
+    }
+
+    public boolean runForEntity(Entity entity, Runnable task, @Nullable Runnable retired) {
         FoliaApi folia = api();
         try {
             Object entityScheduler = folia.entityGetScheduler.invoke(entity);
-            Method run = entityRunMethod;
-            if (run == null) {
-                run = entityScheduler.getClass().getMethod("run", Plugin.class, Consumer.class, Runnable.class);
-                entityRunMethod = run;
-            }
             Consumer<Object> consumer = scheduledTask -> task.run();
-            run.invoke(entityScheduler, plugin, consumer, (Runnable) null);
+            return folia.entityRun.invoke(entityScheduler, plugin, consumer, retired) != null;
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException("[server-features] Failed to run entity Folia task", e);
         }
@@ -85,13 +81,7 @@ public final class FoliaScheduler {
         FoliaApi folia = api();
         try {
             Object entityScheduler = folia.entityGetScheduler.invoke(entity);
-            Method executeDelayed = entityExecuteDelayedMethod;
-            if (executeDelayed == null) {
-                executeDelayed = entityScheduler.getClass().getMethod("execute",
-                        Plugin.class, Runnable.class, Runnable.class, long.class);
-                entityExecuteDelayedMethod = executeDelayed;
-            }
-            executeDelayed.invoke(entityScheduler, plugin, task, (Runnable) null, delayTicks);
+            folia.entityExecute.invoke(entityScheduler, plugin, task, (Runnable) null, delayTicks);
         } catch (ReflectiveOperationException e) {
             throw new IllegalStateException("[server-features] Failed to run delayed entity Folia task", e);
         }
@@ -108,15 +98,21 @@ public final class FoliaScheduler {
         }
     }
 
+    public void runAsync(Runnable task) {
+        FoliaApi folia = api();
+        try {
+            Object asyncScheduler = folia.getAsyncScheduler.invoke(null);
+            Consumer<Object> consumer = scheduledTask -> task.run();
+            folia.asyncRunNow.invoke(asyncScheduler, plugin, consumer);
+        } catch (ReflectiveOperationException e) {
+            throw new IllegalStateException("[server-features] Failed to run async Folia task", e);
+        }
+    }
+
     public void cancelFoliaTask(@Nullable Object scheduledTask) {
         if (scheduledTask == null) return;
         try {
-            Method cancel = scheduledTaskCancelMethod;
-            if (cancel == null) {
-                cancel = scheduledTask.getClass().getMethod("cancel");
-                scheduledTaskCancelMethod = cancel;
-            }
-            cancel.invoke(scheduledTask);
+            api().taskCancel.invoke(scheduledTask);
         } catch (ReflectiveOperationException e) {
             plugin.getLogger().log(Level.WARNING, "[server-features] Failed to cancel Folia task", e);
         }
@@ -127,36 +123,49 @@ public final class FoliaScheduler {
         private final Method globalRun;
         private final Method getAsyncScheduler;
         private final Method asyncRunAtFixedRate;
+        private final Method asyncRunNow;
         private final Method entityGetScheduler;
+        private final Method entityRun;
+        private final Method entityExecute;
+        private final Method taskCancel;
 
-        private FoliaApi(Method getGlobalRegionScheduler, Method globalRun, Method getAsyncScheduler,
-                         Method asyncRunAtFixedRate, Method entityGetScheduler) {
+        private FoliaApi(Method getGlobalRegionScheduler, Method globalRun, Method getAsyncScheduler, Method asyncRunAtFixedRate,
+                         Method asyncRunNow, Method entityGetScheduler, Method entityRun, Method entityExecute, Method taskCancel) {
             this.getGlobalRegionScheduler = getGlobalRegionScheduler;
             this.globalRun = globalRun;
             this.getAsyncScheduler = getAsyncScheduler;
             this.asyncRunAtFixedRate = asyncRunAtFixedRate;
+            this.asyncRunNow = asyncRunNow;
             this.entityGetScheduler = entityGetScheduler;
+            this.entityRun = entityRun;
+            this.entityExecute = entityExecute;
+            this.taskCancel = taskCancel;
         }
 
         private static FoliaApi resolve() {
             try {
                 Method getGlobalRegionScheduler = Bukkit.class.getMethod("getGlobalRegionScheduler");
-                Method globalRun = schedulerType(getGlobalRegionScheduler)
-                        .getMethod("run", Plugin.class, Consumer.class);
+                Class<?> globalScheduler = getGlobalRegionScheduler.getReturnType();
                 Method getAsyncScheduler = Bukkit.class.getMethod("getAsyncScheduler");
-                Method asyncRunAtFixedRate = schedulerType(getAsyncScheduler).getMethod("runAtFixedRate",
+                Class<?> asyncScheduler = getAsyncScheduler.getReturnType();
+                Method asyncRunAtFixedRate = asyncScheduler.getMethod("runAtFixedRate",
                         Plugin.class, Consumer.class, long.class, long.class, TimeUnit.class);
-                return new FoliaApi(getGlobalRegionScheduler, globalRun, getAsyncScheduler, asyncRunAtFixedRate,
-                        Entity.class.getMethod("getScheduler"));
-            } catch (ReflectiveOperationException e) {
+                Class<?> scheduledTask = asyncRunAtFixedRate.getReturnType();
+                Method entityGetScheduler = Entity.class.getMethod("getScheduler");
+                Class<?> entityScheduler = entityGetScheduler.getReturnType();
+                return new FoliaApi(
+                        getGlobalRegionScheduler,
+                        globalScheduler.getMethod("run", Plugin.class, Consumer.class),
+                        getAsyncScheduler,
+                        asyncRunAtFixedRate,
+                        asyncScheduler.getMethod("runNow", Plugin.class, Consumer.class),
+                        entityGetScheduler,
+                        entityScheduler.getMethod("run", Plugin.class, Consumer.class, Runnable.class),
+                        entityScheduler.getMethod("execute", Plugin.class, Runnable.class, Runnable.class, long.class),
+                        scheduledTask.getMethod("cancel"));
+            } catch (NoSuchMethodException e) {
                 throw new IllegalStateException("[server-features] Folia scheduler API unavailable", e);
             }
-        }
-
-        private static Class<?> schedulerType(Method accessor) throws ReflectiveOperationException {
-            Object scheduler = accessor.invoke(null);
-            if (scheduler == null) throw new NoSuchMethodException(accessor.getName() + " returned no scheduler");
-            return scheduler.getClass();
         }
     }
 }

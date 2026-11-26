@@ -5,6 +5,8 @@ import "buf/validate/validate.proto";
 import "google/protobuf/struct.proto";
 import "google/protobuf/timestamp.proto";
 import "modl/v1/common.proto";
+import "modl/v1/replay.proto";
+import "modl/v1/servers.proto";
 import "modl/v1/sync.proto";
 
 // Realtime transport messages for websocket-style delivery.
@@ -53,6 +55,9 @@ message RealtimeEnvelope {
     ReplayCaptureResult replay_capture_result = 74;
     HostedPlayersEvent hosted_players = 75;
     NetworkRosterEvent network_roster = 76;
+    ProxyServersEvent proxy_servers = 77;
+    FeatureSettingsEvent feature_settings = 78;
+    ServerFeatureStatus feature_status = 79;
   }
 }
 
@@ -400,6 +405,35 @@ enum ReplayCaptureOutcome {
   REPLAY_CAPTURE_OUTCOME_ERROR = 5;
   REPLAY_CAPTURE_OUTCOME_TIMED_OUT = 6;
   REPLAY_CAPTURE_OUTCOME_MEMBER_DISCONNECTED = 7;
+  REPLAY_CAPTURE_OUTCOME_ALREADY_RECORDING = 8;
+  REPLAY_CAPTURE_OUTCOME_NOT_STARTED_BY_STAFF = 9;
+  REPLAY_CAPTURE_OUTCOME_NOT_AVAILABLE = 10;
+}
+
+enum ReplayRequestAction {
+  REPLAY_REQUEST_ACTION_UNSPECIFIED = 0;
+  REPLAY_REQUEST_ACTION_CAPTURE = 1;
+  REPLAY_REQUEST_ACTION_START_RECORDING = 2;
+  REPLAY_REQUEST_ACTION_STOP_RECORDING = 3;
+  REPLAY_REQUEST_ACTION_RECORDING_STATUS = 4;
+}
+
+enum ReplayRecordingOrigin {
+  REPLAY_RECORDING_ORIGIN_UNSPECIFIED = 0;
+  REPLAY_RECORDING_ORIGIN_AUTO_RECORD = 1;
+  REPLAY_RECORDING_ORIGIN_ANTICHEAT_FLAG = 2;
+  REPLAY_RECORDING_ORIGIN_STAFF = 3;
+}
+
+message ReplayRecordingState {
+  ReplayRecordingOrigin origin = 1 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
+  uint64 recording_ms = 2 [json_name = "recordingMs"];
+}
+
+message ReplayMemoryUse {
+  uint64 used_bytes = 1 [json_name = "usedBytes"];
+  uint64 limit_bytes = 2 [json_name = "limitBytes"];
+  uint32 recordings = 3;
 }
 
 message ReplayCaptureRequest {
@@ -423,6 +457,7 @@ message ReplayCaptureRequest {
     json_name = "requesterInstanceId",
     (buf.validate.field).string.max_len = 64
   ];
+  ReplayRequestAction action = 6 [(buf.validate.field).enum = {defined_only: true, not_in: [0]}];
 }
 
 message ReplayCaptureResult {
@@ -435,6 +470,8 @@ message ReplayCaptureResult {
     json_name = "replayId",
     (buf.validate.field).string.pattern = "^[A-Za-z0-9_-]{1,64}$"
   ];
+  optional ReplayRecordingState recording = 4;
+  optional ReplayMemoryUse memory = 5;
 }
 
 message HostedPlayersEvent {
@@ -458,6 +495,10 @@ message HostedPlayersEvent {
     json_name = "onlineCount",
     (buf.validate.field).int32 = {gte: 0, lte: 100000}
   ];
+}
+
+message ProxyServersEvent {
+  repeated ProxiedServer servers = 1 [(buf.validate.field).repeated.max_items = 256];
 }
 
 message NetworkRosterEvent {
@@ -563,4 +604,5 @@ enum Topic {
   TOPIC_NETWORK_MEMBER_ACTIONS = 26;
   TOPIC_NETWORK_REPLAY_CAPTURE = 27;
   TOPIC_NETWORK_ROSTER = 28;
+  TOPIC_MINECRAFT_FEATURE_SETTINGS = 29;
 }

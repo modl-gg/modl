@@ -14,6 +14,7 @@ public enum SetupStep {
     STAFF("staff"),
     PLAYER_ADDRESSES("player-addresses"),
     AI("ai"),
+    REPLAYS("replays"),
     CONTENT("content");
 
     private final String pathName;

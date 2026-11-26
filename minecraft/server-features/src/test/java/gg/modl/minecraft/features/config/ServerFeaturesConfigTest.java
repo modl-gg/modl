@@ -5,7 +5,6 @@ import org.junit.jupiter.api.io.TempDir;
 
 import java.io.IOException;
 import java.io.InputStream;
-import java.nio.charset.StandardCharsets;
 import java.nio.file.Files;
 import java.nio.file.Path;
 import java.util.Arrays;
@@ -26,30 +25,12 @@ class ServerFeaturesConfigTest {
     Path tempDir;
 
     @Test
-    void defaultReplayPolicyIsOptInWhenKeysAreMissing() throws IOException {
-        writeServerFeaturesConfig(
-                "server-name: \"Hub\"",
-                "report-cooldown: 30"
-        );
-
-        ServerFeaturesConfig config = ServerFeaturesConfig.load(tempDir);
-
-        assertFalse(config.isReplayEnabled());
-        assertFalse(config.isReplayAutoRecord());
-    }
-
-    @Test
-    void aReplayTtlThatIsNotPositiveKeepsReplaysForTheDefaultTime() throws IOException {
-        writeServerFeaturesConfig("replay-local-ttl: 0");
-
-        assertEquals(ServerFeaturesConfig.builder().build().getReplayLocalTtl(), ServerFeaturesConfig.load(tempDir).getReplayLocalTtl());
-    }
-
-    @Test
-    void packagedServerFeaturesConfigUsesSafeReplayDefaults() throws IOException {
+    void replayAndAnticheatSettingsLiveInThePanelNotInTheFile() throws IOException {
         Map<String, Object> defaults = loadClasspathServerFeaturesConfig();
 
-        assertSafeReplayDefaults(defaults);
+        for (String key : defaults.keySet()) {
+            assertFalse(key.startsWith("replay-") || key.startsWith("anticheat-"), key + " belongs to the panel settings");
+        }
     }
 
     @Test
@@ -57,18 +38,13 @@ class ServerFeaturesConfigTest {
         ServerFeaturesConfig current = ServerFeaturesConfig.builder().build();
         ServerFeaturesConfig reloaded = ServerFeaturesConfig.builder()
                 .serverName("Hub")
-                .replayEnabled(true)
-                .replayAutoRecord(true)
                 .build();
 
-        assertEquals(Arrays.asList("replay-enabled", "replay-auto-record", "server-name"),
-                current.settingsNeedingRestart(reloaded));
+        assertEquals(Arrays.asList("server-name"), current.settingsNeedingRestart(reloaded));
 
         current.applyReloadableSettings(reloaded);
 
         assertEquals("", current.getServerName());
-        assertFalse(current.isReplayEnabled());
-        assertFalse(current.isReplayAutoRecord());
     }
 
     @Test
@@ -105,26 +81,11 @@ class ServerFeaturesConfigTest {
         thresholds.put("default", 3);
         return ServerFeaturesConfig.builder()
                 .statWipeCommands(Arrays.asList("wipe {player}"))
-                .anticheatName("Grim")
-                .anticheatHookEnabled(false)
                 .serverName("Hub")
                 .reportCooldown(5)
                 .reportViolationThresholds(thresholds)
                 .debug(true)
-                .replayEnabled(true)
-                .replayAutoRecord(true)
-                .replayBufferDuration(60)
-                .replayMaxDuration(150)
-                .replayRadius(32)
-                .replayMoveThrottle(25)
-                .replaySaveLocal(false)
-                .replayLocalTtl(30)
                 .build();
-    }
-
-    private void writeServerFeaturesConfig(String... lines) throws IOException {
-        Files.write(tempDir.resolve("server-features.yml"),
-                String.join(System.lineSeparator(), lines).getBytes(StandardCharsets.UTF_8));
     }
 
     @SuppressWarnings("unchecked")
@@ -140,11 +101,5 @@ class ServerFeaturesConfigTest {
         try (InputStream input = Files.newInputStream(path)) {
             return (Map<String, Object>) new Yaml().load(input);
         }
-    }
-
-    private void assertSafeReplayDefaults(Map<String, Object> defaults) {
-        assertEquals(false, defaults.get("replay-enabled"));
-        assertEquals(false, defaults.get("replay-auto-record"));
-        assertEquals(true, defaults.get("replay-save-local"));
     }
 }

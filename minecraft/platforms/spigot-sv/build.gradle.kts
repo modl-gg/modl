@@ -10,10 +10,13 @@ modlJava {
 
 dependencies {
     compileOnly(libs.paper.api)
+    compileOnly(libs.packetevents.spigot)
     implementation(project(":minecraft:core"))
 
     testImplementation(platform(libs.junit.bom))
     testImplementation(libs.junit.jupiter)
+    testImplementation(libs.paper.api)
+    testImplementation(libs.packetevents.spigot)
     testRuntimeOnly(libs.junit.platform.launcher)
 }
 

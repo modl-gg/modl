@@ -58,9 +58,11 @@ public final class RESTMappingV1 {
     public static final String PANEL_SETTINGS_SERVER_KEYS = PANEL_SETTINGS + "/server-keys";
     public static final String PANEL_SETTINGS_PUBLIC_THEME = PANEL_SETTINGS + "/public-theme";
     public static final String PANEL_SETTINGS_PUBLIC_CSS = PANEL_SETTINGS + "/public-css";
+    public static final String PANEL_SETTINGS_HOMEPAGE = PANEL_SETTINGS + "/homepage";
     public static final String PANEL_SETTINGS_STORAGE = PANEL_SETTINGS + "/storage";
     public static final String PANEL_SETTINGS_DATABASE = PANEL_SETTINGS + "/database";
     public static final String PANEL_SETTINGS_STATUS = PANEL_SETTINGS + "/status";
+    public static final String PANEL_SETTINGS_REPLAYS = PANEL_SETTINGS + "/replays";
     public static final String PANEL_SETTINGS_RETENTION_LIMITS = PANEL_SETTINGS + "/data-retention/limits";
     public static final String MINECRAFT_STATUS = PREFIX_MINECRAFT + "/status";
     public static final String PANEL_STAFF_SECURITY = PREFIX_PANEL + "/staff-security";
@@ -94,8 +96,8 @@ public final class RESTMappingV1 {
     public static final String PANEL_KNOWLEDGEBASE = PREFIX_PANEL + KNOWLEDGEBASE;
     public static final String PUBLIC_KNOWLEDGEBASE = PREFIX_PUBLIC + KNOWLEDGEBASE;
     private static final String HOMEPAGE_CARDS = "/homepage-cards";
-    public static final String PANEL_HOMEPAGE_CARDS = PREFIX_PANEL + HOMEPAGE_CARDS;
     public static final String PUBLIC_HOMEPAGE_CARDS = PREFIX_PUBLIC + HOMEPAGE_CARDS;
+    public static final String PUBLIC_HOMEPAGE = PREFIX_PUBLIC + "/homepage";
     private static final String APPEALS = "/appeals";
     public static final String PANEL_APPEALS = PREFIX_PANEL + APPEALS;
     public static final String PUBLIC_APPEALS = PREFIX_PUBLIC + APPEALS;
@@ -130,8 +132,8 @@ public final class RESTMappingV1 {
     public static final String REALTIME_WS = V1 + REALTIME + "/ws";
     private static final String REPLAYS = "/replays";
     public static final String MINECRAFT_REPLAYS = PREFIX_MINECRAFT + REPLAYS;
-    public static final String PUBLIC_REPLAYS = PREFIX_PUBLIC + REPLAYS;
     public static final String PANEL_REPLAYS = PREFIX_PANEL + REPLAYS;
+    public static final String PUBLIC_SHARED_REPLAYS = PREFIX_PUBLIC + REPLAYS + "/shared";
 
     private RESTMappingV1() {
     }

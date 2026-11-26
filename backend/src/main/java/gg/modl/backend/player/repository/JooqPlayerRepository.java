@@ -404,12 +404,12 @@ public class JooqPlayerRepository implements PlayerRepository {
     }
 
     @Override
-    public Set<String> findActiveBanHolders(Collection<String> playerIds, Instant now) {
+    public Set<String> findEnforcedBanHolders(Collection<String> playerIds, Instant now) {
         return Set.copyOf(InClauseChunks.collect(playerIds, chunk -> dsl.selectDistinct(PUNISHMENTS.PLAYER_ID)
             .from(PUNISHMENTS)
             .where(PUNISHMENTS.PLAYER_ID.in(chunk))
             .and(PUNISHMENTS.ENFORCEMENT_CATEGORY.eq(ResolvedCategory.BAN.name()))
-            .and(PUNISHMENTS.ACTIVE_UNTIL_AT.ge(now))
+            .and(PunishmentConditions.notEnded(now))
             .fetch(PUNISHMENTS.PLAYER_ID)));
     }
 
@@ -421,7 +421,7 @@ public class JooqPlayerRepository implements PlayerRepository {
             dsl.select(PUNISHMENTS.PLAYER_ID, PUNISHMENTS.ENFORCEMENT_CATEGORY, active)
                 .from(PUNISHMENTS)
                 .where(PUNISHMENTS.PLAYER_ID.in(chunk))
-                .and(PUNISHMENTS.ACTIVE_UNTIL_AT.ge(now))
+                .and(PunishmentConditions.notEnded(now))
                 .and(PUNISHMENTS.ENFORCEMENT_CATEGORY.in(ResolvedCategory.BAN.name(), ResolvedCategory.MUTE.name()))
                 .groupBy(PUNISHMENTS.PLAYER_ID, PUNISHMENTS.ENFORCEMENT_CATEGORY)
                 .fetch()

@@ -115,7 +115,7 @@ public enum ClientKind
   }
   public static com.google.protobuf.Descriptors.EnumDescriptor
       getDescriptor() {
-    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(5);
+    return gg.modl.proto.modl.v1.RealtimeProto.getDescriptor().getEnumType(7);
   }
 
   private static final ClientKind[] VALUES = values();

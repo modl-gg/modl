@@ -9,6 +9,7 @@ import static org.mockito.Mockito.same;
 import static org.mockito.Mockito.when;
 import static org.springframework.test.web.servlet.request.MockMvcRequestBuilders.post;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.content;
+import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.header;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.jsonPath;
 import static org.springframework.test.web.servlet.result.MockMvcResultMatchers.status;
 
@@ -19,11 +20,14 @@ import gg.modl.backend.infrastructure.proto.ProtobufMediaTypes;
 import gg.modl.backend.infrastructure.rest.RESTMappingV1;
 import gg.modl.backend.infrastructure.rest.RequestAttribute;
 import gg.modl.backend.replay.dto.InitReplayUploadResponse;
+import gg.modl.backend.replay.service.ReplayConfirmation;
+import gg.modl.backend.replay.service.ReplayConfirmationService;
 import gg.modl.backend.replay.service.ReplayService;
 import gg.modl.backend.server.data.Server;
 import java.util.Map;
 import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
+import org.springframework.http.HttpHeaders;
 import org.springframework.http.MediaType;
 import org.springframework.test.web.servlet.MockMvc;
 import org.springframework.test.web.servlet.MvcResult;
@@ -34,15 +38,17 @@ import static org.junit.jupiter.api.Assertions.assertTrue;
 
 class MinecraftReplayControllerTest {
     private ReplayService replayService;
+    private ReplayConfirmationService confirmations;
     private MockMvc mockMvc;
     private Server server;
 
     @BeforeEach
     void setUp() {
         replayService = mock(ReplayService.class);
+        confirmations = mock(ReplayConfirmationService.class);
         server = TestServers.server("Demo", "admin@example.com");
 
-        mockMvc = MockMvcBuilders.standaloneSetup(new MinecraftReplayController(replayService))
+        mockMvc = MockMvcBuilders.standaloneSetup(new MinecraftReplayController(replayService, confirmations))
             .setControllerAdvice(new GlobalExceptionHandler(new ProtobufErrorResponseWriter()))
             .defaultRequest(post("/").requestAttr(RequestAttribute.SERVER, server))
             .build();
@@ -98,7 +104,7 @@ class MinecraftReplayControllerTest {
 
     @Test
     void v1ConfirmReturnsJsonContract() throws Exception {
-        when(replayService.confirmUpload(same(server), eq("replay-1"))).thenReturn(true);
+        when(confirmations.confirmUpload(same(server), eq("replay-1"))).thenReturn(ReplayConfirmation.CONFIRMED);
 
         mockMvc.perform(post(RESTMappingV1.MINECRAFT_REPLAYS + "/confirm/replay-1")
                 .accept(MediaType.APPLICATION_JSON))
@@ -106,12 +112,36 @@ class MinecraftReplayControllerTest {
             .andExpect(jsonPath("$.success").value(true))
             .andExpect(jsonPath("$.message").value("Upload confirmed"));
 
-        when(replayService.confirmUpload(same(server), eq("replay-1"))).thenReturn(false);
+        when(confirmations.confirmUpload(same(server), eq("replay-1"))).thenReturn(ReplayConfirmation.FILE_INVALID);
 
         mockMvc.perform(post(RESTMappingV1.MINECRAFT_REPLAYS + "/confirm/replay-1")
                 .accept(MediaType.APPLICATION_JSON))
             .andExpect(status().isBadRequest())
-            .andExpect(jsonPath("$.success").value(false))
-            .andExpect(jsonPath("$.message").value("Upload verification failed"));
+            .andExpect(jsonPath("$.code").value("REPLAY_FILE_INVALID"));
+
+        when(confirmations.confirmUpload(same(server), eq("replay-1"))).thenReturn(ReplayConfirmation.NOT_FOUND);
+
+        mockMvc.perform(post(RESTMappingV1.MINECRAFT_REPLAYS + "/confirm/replay-1")
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isNotFound())
+            .andExpect(jsonPath("$.code").value("REPLAY_NOT_FOUND"));
+    }
+
+    @Test
+    void aConfirmThatCannotBeCheckedNowAsksThePluginToRetry() throws Exception {
+        when(confirmations.confirmUpload(same(server), eq("replay-1"))).thenReturn(ReplayConfirmation.TRY_AGAIN);
+
+        mockMvc.perform(post(RESTMappingV1.MINECRAFT_REPLAYS + "/confirm/replay-1")
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isServiceUnavailable())
+            .andExpect(header().string(HttpHeaders.RETRY_AFTER, "5"))
+            .andExpect(jsonPath("$.code").value("REPLAY_VALIDATION_UNAVAILABLE"));
+
+        when(confirmations.confirmUpload(same(server), eq("replay-1"))).thenReturn(ReplayConfirmation.ALREADY_FAILED);
+
+        mockMvc.perform(post(RESTMappingV1.MINECRAFT_REPLAYS + "/confirm/replay-1")
+                .accept(MediaType.APPLICATION_JSON))
+            .andExpect(status().isConflict())
+            .andExpect(jsonPath("$.code").value("REPLAY_UPLOAD_FAILED"));
     }
 }

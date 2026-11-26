@@ -3,22 +3,21 @@ package gg.modl.backend.homepage.service;
 import gg.modl.backend.database.EntityIds;
 import gg.modl.backend.database.UnitOfWork;
 import gg.modl.backend.homepage.data.HomepageCard;
+import gg.modl.backend.homepage.data.HomepageCardEdit;
 import gg.modl.backend.homepage.repository.HomepageCardPatch;
 import gg.modl.backend.homepage.repository.HomepageCardRepository;
-import gg.modl.backend.infrastructure.validation.RequiredText;
 import gg.modl.backend.knowledgebase.data.KnowledgebaseArticle;
 import gg.modl.backend.knowledgebase.data.KnowledgebaseCategory;
 import gg.modl.backend.knowledgebase.service.KnowledgebaseArticleService;
 import gg.modl.backend.knowledgebase.service.KnowledgebaseCategoryService;
-import gg.modl.backend.infrastructure.validation.SafeUrls;
 import gg.modl.backend.server.data.Server;
-import gg.modl.proto.modl.v1.CreateCardRequest;
-import gg.modl.proto.modl.v1.UpdateCardRequest;
 import java.time.Clock;
 import java.time.Instant;
+import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 import java.util.Map;
-import java.util.Optional;
+import java.util.Set;
 import java.util.function.Function;
 import java.util.function.Predicate;
 import java.util.stream.Collectors;
@@ -71,63 +70,61 @@ public class HomepageCardService {
             .toList();
     }
 
-    public Optional<HomepageCard> getCardById(Server server, String id) {
-        return homepageCardRepository.findById(id);
-    }
-
-    public HomepageCard createCard(Server server, CreateCardRequest request) {
-        String actionUrl = request.hasActionUrl() ? request.getActionUrl() : null;
-        SafeUrls.requireSafe(actionUrl, "Invalid card URL");
-        return unitOfWork.write(() -> insertCard(request, actionUrl));
-    }
-
-    private HomepageCard insertCard(CreateCardRequest request, @Nullable String actionUrl) {
-        String id = EntityIds.next();
+    public boolean replaceWith(List<HomepageCardEdit> edits) {
+        List<HomepageCard> before = homepageCardRepository.findAllOrdered();
+        Set<String> existingIds = before.stream().map(HomepageCard::getId).collect(Collectors.toSet());
+        Set<String> keptIds = edits.stream().map(HomepageCardEdit::id).filter(existingIds::contains).collect(Collectors.toSet());
+        before.stream().map(HomepageCard::getId).filter(id -> !keptIds.contains(id)).forEach(homepageCardRepository::deleteById);
         Instant now = clock.instant();
-        homepageCardRepository.insert(HomepageCard.builder()
+        List<String> order = new ArrayList<>();
+        for (HomepageCardEdit edit : edits) {
+            if (edit.id() != null && keptIds.contains(edit.id())) {
+                homepageCardRepository.update(edit.id(), patchOf(edit, now));
+                order.add(edit.id());
+            } else {
+                String id = EntityIds.next();
+                homepageCardRepository.insert(newCard(id, edit, order.size(), now));
+                order.add(id);
+            }
+        }
+        homepageCardRepository.reorder(order);
+        return !contentOf(before).equals(contentOf(homepageCardRepository.findAllOrdered()));
+    }
+
+    private static HomepageCardPatch patchOf(HomepageCardEdit edit, Instant now) {
+        return HomepageCardPatch.builder()
+            .title(edit.title())
+            .description(edit.description())
+            .icon(edit.icon())
+            .actionType(edit.action().storedType())
+            .actionUrl(edit.actionUrl())
+            .categoryId(edit.categoryId())
+            .enabled(edit.enabled())
+            .updatedAt(now)
+            .build();
+    }
+
+    private static HomepageCard newCard(String id, HomepageCardEdit edit, int ordinal, Instant now) {
+        return HomepageCard.builder()
             .id(id)
-            .title(request.getTitle())
-            .description(request.hasDescription() ? request.getDescription() : null)
-            .icon(request.hasIcon() ? request.getIcon() : null)
-            .iconColor(request.hasIconColor() ? request.getIconColor() : null)
-            .actionType(request.hasActionType() ? request.getActionType() : null)
-            .actionUrl(actionUrl)
-            .actionButtonText(request.hasActionButtonText() ? request.getActionButtonText() : null)
-            .categoryId(request.hasCategoryId() ? request.getCategoryId() : null)
-            .backgroundColor(request.hasBackgroundColor() ? request.getBackgroundColor() : null)
-            .ordinal(homepageCardRepository.findMaxOrdinal() + 1)
-            .isEnabled(!request.hasIsEnabled() || request.getIsEnabled())
+            .title(edit.title())
+            .description(edit.description())
+            .icon(edit.icon())
+            .actionType(edit.action().storedType())
+            .actionUrl(edit.actionUrl())
+            .categoryId(edit.categoryId())
+            .ordinal(ordinal)
+            .isEnabled(edit.enabled())
             .createdAt(now)
             .updatedAt(now)
-            .build());
-        return homepageCardRepository.findById(id).orElseThrow();
-    }
-
-    public Optional<HomepageCard> updateCard(Server server, String id, UpdateCardRequest request) {
-        String actionUrl = request.hasActionUrl() ? request.getActionUrl() : null;
-        SafeUrls.requireSafe(actionUrl, "Invalid card URL");
-        HomepageCardPatch patch = HomepageCardPatch.builder()
-            .title(RequiredText.notBlankIfPresent(request.hasTitle() ? request.getTitle() : null, "The card title"))
-            .description(request.hasDescription() ? request.getDescription() : null)
-            .icon(request.hasIcon() ? request.getIcon() : null)
-            .iconColor(request.hasIconColor() ? request.getIconColor() : null)
-            .actionType(request.hasActionType() ? request.getActionType() : null)
-            .actionUrl(actionUrl)
-            .actionButtonText(request.hasActionButtonText() ? request.getActionButtonText() : null)
-            .categoryId(request.hasCategoryId() ? request.getCategoryId() : null)
-            .backgroundColor(request.hasBackgroundColor() ? request.getBackgroundColor() : null)
-            .enabled(request.hasIsEnabled() ? request.getIsEnabled() : null)
-            .updatedAt(clock.instant())
             .build();
-        return unitOfWork.write(() -> homepageCardRepository.update(id, patch));
     }
 
-    public boolean deleteCard(Server server, String id) {
-        return unitOfWork.write(() -> homepageCardRepository.deleteById(id));
-    }
-
-    public void reorderCards(Server server, List<String> ids) {
-        unitOfWork.write(() -> homepageCardRepository.reorder(ids));
+    private static List<List<Object>> contentOf(List<HomepageCard> cards) {
+        return cards.stream()
+            .map(card -> Arrays.<Object>asList(card.getId(), card.getTitle(), card.getDescription(), card.getIcon(), card.getActionType(),
+                card.getActionUrl(), card.getCategoryId(), card.isEnabled()))
+            .toList();
     }
 
     public List<EnrichedCard> getAllCardsEnriched(Server server) {

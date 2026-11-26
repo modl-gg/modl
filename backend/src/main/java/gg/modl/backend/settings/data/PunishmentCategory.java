@@ -1,5 +1,6 @@
 package gg.modl.backend.settings.data;
 
+import gg.modl.backend.player.data.punishment.Punishment;
 import org.jspecify.annotations.Nullable;
 
 public enum PunishmentCategory {
@@ -19,7 +20,7 @@ public enum PunishmentCategory {
         if (ordinal == null || !isCoreOrdinal(ordinal)) {
             return null;
         }
-        if (ordinal == 0) {
+        if (ordinal == Punishment.KICK_TYPE_ORDINAL) {
             return KICK;
         }
         if (ordinal == 1) {

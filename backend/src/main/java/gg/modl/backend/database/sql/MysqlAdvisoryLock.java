@@ -25,7 +25,7 @@ final class MysqlAdvisoryLock implements AdvisoryLockStatements {
     @Override
     public void prepareSession(Connection connection) throws SQLException {
         try (Statement statement = connection.createStatement()) {
-            statement.execute("SET SESSION wait_timeout = " + SESSION_TIMEOUT_SECONDS);
+            statement.execute("SET SESSION wait_timeout = " + SESSION_TIMEOUT.toSeconds());
         }
     }
 

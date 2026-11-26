@@ -78,14 +78,14 @@ final class CopyDatabaseCommand implements CliCommand {
             return new SqlDatabaseProperties(url, username, password, SqlDatabaseProperties.DEFAULT_POOL_SIZE,
                 settings.database().sqlite());
         } catch (IllegalArgumentException e) {
-            throw new CliUsageException("--" + TO + " must be " + BUILT_IN + " or a jdbc:mysql://, jdbc:mariadb:// or jdbc:postgresql://"
+            throw new CliUsageException("--" + TO + " must be " + BUILT_IN + " or a jdbc:mysql://, jdbc:mariadb://, or jdbc:postgresql://"
                 + " URL without a user name or password (pass those with --" + USERNAME + " and --" + PASSWORD_VARIABLE + ")");
         }
     }
 
     private static String nextStep(SqlDatabaseProperties target) {
         return target.dialect().isExternal()
-            ? "Done. Set MODL_DATABASE_URL, MODL_DATABASE_USERNAME and MODL_DATABASE_PASSWORD to the copy's values to run modl on it."
+            ? "Done. Set MODL_DATABASE_URL, MODL_DATABASE_USERNAME, and MODL_DATABASE_PASSWORD to the copy's values to run modl on it."
             : "Done. Remove MODL_DATABASE_URL to run modl on the built-in database.";
     }
 }

@@ -128,7 +128,6 @@ public final class ContentMapper {
                 .iconColor(fit.columnIfPresent(HOMEPAGE_CARDS.ICON_COLOR, source.text("iconColor")))
                 .actionType(fit.columnIfPresent(HOMEPAGE_CARDS.ACTION_TYPE, source.text("actionType")))
                 .actionUrl(context.urls().safeUrl(source.string("actionUrl")))
-                .actionButtonText(fit.columnIfPresent(HOMEPAGE_CARDS.ACTION_BUTTON_TEXT, source.text("actionButtonText")))
                 .categoryId(categoryId)
                 .backgroundColor(fit.columnIfPresent(HOMEPAGE_CARDS.BACKGROUND_COLOR, source.text("backgroundColor")))
                 .ordinal(Objects.requireNonNullElse(source.intValue("ordinal"), 0))

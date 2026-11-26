@@ -1,12 +1,11 @@
 package gg.modl.minecraft.core.imports.sql;
 
+import gg.modl.minecraft.core.imports.support.FileTrees;
+import gg.modl.minecraft.core.util.OwnerOnlyFiles;
 import org.jspecify.annotations.Nullable;
 
 import java.io.IOException;
-import java.nio.file.Files;
 import java.nio.file.Path;
-import java.nio.file.attribute.PosixFileAttributeView;
-import java.nio.file.attribute.PosixFilePermissions;
 import java.sql.Connection;
 import java.sql.Driver;
 import java.sql.SQLException;
@@ -22,12 +21,10 @@ import java.util.concurrent.atomic.AtomicInteger;
 
 public final class JdbcConnections implements AutoCloseable {
     private static final String LOADER_PREFIX = "modl-import-";
-    private static final String OWNER_ONLY = "rwx------";
-    private static final AtomicInteger GENERATIONS = new AtomicInteger();
+    private static final AtomicInteger LOADS = new AtomicInteger();
 
     private final DriverLibraries libraries;
     private final Path nativeFolder;
-    private final String generation = Integer.toString(GENERATIONS.incrementAndGet());
     private final Map<JdbcDriver, Driver> loaded = new EnumMap<>(JdbcDriver.class);
     private final Set<String> loaders = new LinkedHashSet<>();
     private int open;
@@ -84,9 +81,14 @@ public final class JdbcConnections implements AutoCloseable {
         List<String> released;
         synchronized (this) {
             open--;
-            released = closed && open == 0 ? takeLoaders() : new ArrayList<>();
+            released = open == 0 ? takeLoaders() : new ArrayList<>();
         }
         release(released);
+        if (!released.isEmpty()) discardNativeFiles();
+    }
+
+    private synchronized void discardNativeFiles() {
+        if (open == 0) FileTrees.deleteQuietly(nativeFolder);
     }
 
     private List<String> takeLoaders() {
@@ -135,14 +137,11 @@ public final class JdbcConnections implements AutoCloseable {
     }
 
     private void createNativeFolder() throws IOException {
-        Files.createDirectories(nativeFolder);
-        if (Files.getFileStore(nativeFolder).supportsFileAttributeView(PosixFileAttributeView.class)) {
-            Files.setPosixFilePermissions(nativeFolder, PosixFilePermissions.fromString(OWNER_ONLY));
-        }
+        OwnerOnlyFiles.createDirectories(nativeFolder);
     }
 
     private Driver load(JdbcDriver kind) throws SQLException {
-        String loaderId = LOADER_PREFIX + kind.name() + "-" + generation;
+        String loaderId = LOADER_PREFIX + kind.name() + "-" + LOADS.incrementAndGet();
         synchronized (this) {
             loaders.add(loaderId);
         }

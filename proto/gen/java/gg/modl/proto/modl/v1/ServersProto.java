@@ -32,6 +32,11 @@ public final class ServersProto extends com.google.protobuf.GeneratedFile {
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_modl_v1_ConnectedServer_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_ServerFeatureStatus_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_ServerFeatureStatus_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
     internal_static_modl_v1_ConnectedServersResponse_descriptor;
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
@@ -46,6 +51,16 @@ public final class ServersProto extends com.google.protobuf.GeneratedFile {
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_modl_v1_ServerKeysResponse_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_ProxiedServer_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_ProxiedServer_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_ProxiedServerStatus_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_ProxiedServerStatus_fieldAccessorTable;
   static final com.google.protobuf.Descriptors.Descriptor
     internal_static_modl_v1_CreateServerKeyRequest_descriptor;
   static final 
@@ -72,7 +87,7 @@ public final class ServersProto extends com.google.protobuf.GeneratedFile {
     java.lang.String[] descriptorData = {
       "\n\025modl/v1/servers.proto\022\007modl.v1\032\033buf/va" +
       "lidate/validate.proto\032\037google/protobuf/t" +
-      "imestamp.proto\032\024modl/v1/common.proto\"\370\003\n" +
+      "imestamp.proto\032\024modl/v1/common.proto\"\304\004\n" +
       "\017ConnectedServer\022\037\n\013instance_id\030\001 \001(\tR\ni" +
       "nstanceId\022\022\n\004name\030\002 \001(\tR\004name\022\032\n\010platfor" +
       "m\030\003 \001(\tR\010platform\022%\n\016plugin_version\030\004 \001(" +
@@ -84,23 +99,41 @@ public final class ServersProto extends com.google.protobuf.GeneratedFile {
       "name\030\013 \001(\tH\000R\007keyName\210\001\001\022#\n\rhub_connecte" +
       "d\030\014 \001(\010R\014hubConnected\022B\n\rcompatibility\030\r" +
       " \001(\0162\034.modl.v1.ServerCompatibilityR\rcomp" +
-      "atibilityB\013\n\t_key_nameJ\004\010\010\020\tJ\004\010\t\020\nR\016brid" +
-      "ge_serversR\013bridge_port\"q\n\030ConnectedServ" +
-      "ersResponse\0222\n\007servers\030\001 \003(\0132\030.modl.v1.C" +
-      "onnectedServerR\007servers\022!\n\014modl_version\030" +
-      "\002 \001(\tR\013modlVersion\"\213\003\n\tServerKey\022\016\n\002id\030\001" +
-      " \001(\tR\002id\022\022\n\004name\030\002 \001(\tR\004name\022-\n\005scope\030\003 " +
-      "\001(\0162\027.modl.v1.ServerKeyScopeR\005scope\022\031\n\010k" +
-      "ey_hint\030\004 \001(\tR\007keyHint\0229\n\ncreated_at\030\005 \001" +
-      "(\0132\032.google.protobuf.TimestampR\tcreatedA" +
-      "t\022A\n\014last_seen_at\030\006 \001(\0132\032.google.protobu" +
-      "f.TimestampH\000R\nlastSeenAt\210\001\001\022\"\n\ncreated_" +
-      "by\030\007 \001(\tH\001R\tcreatedBy\210\001\001\022\034\n\tconnected\030\010 " +
-      "\001(\010R\tconnected\0220\n\024allow_proxy_commands\030\t" +
-      " \001(\010R\022allowProxyCommandsB\017\n\r_last_seen_a" +
-      "tB\r\n\013_created_by\"R\n\022ServerKeysResponse\022&" +
-      "\n\004keys\030\001 \003(\0132\022.modl.v1.ServerKeyR\004keys\022\024" +
-      "\n\005limit\030\002 \001(\005R\005limit\"\270\001\n\026CreateServerKey" +
+      "atibility\022=\n\010features\030\016 \001(\0132\034.modl.v1.Se" +
+      "rverFeatureStatusH\001R\010features\210\001\001B\013\n\t_key" +
+      "_nameB\013\n\t_featuresJ\004\010\010\020\tJ\004\010\t\020\nR\016bridge_s" +
+      "erversR\013bridge_port\"\257\002\n\023ServerFeatureSta" +
+      "tus\022+\n\021replays_supported\030\001 \001(\010R\020replaysS" +
+      "upported\022%\n\016replays_active\030\002 \001(\010R\rreplay" +
+      "sActive\022@\n\034anticheat_integration_active\030" +
+      "\003 \001(\010R\032anticheatIntegrationActive\022A\n\023det" +
+      "ected_anticheats\030\004 \003(\tB\020\272H\r\222\001\n\020\010\"\006r\004\020\001\030 " +
+      "R\022detectedAnticheats\022?\n\027replay_memory_bu" +
+      "dget_mb\030\005 \001(\rB\010\272H\005*\003\030\200\010R\024replayMemoryBud" +
+      "getMb\"q\n\030ConnectedServersResponse\0222\n\007ser" +
+      "vers\030\001 \003(\0132\030.modl.v1.ConnectedServerR\007se" +
+      "rvers\022!\n\014modl_version\030\002 \001(\tR\013modlVersion" +
+      "\"\213\003\n\tServerKey\022\016\n\002id\030\001 \001(\tR\002id\022\022\n\004name\030\002" +
+      " \001(\tR\004name\022-\n\005scope\030\003 \001(\0162\027.modl.v1.Serv" +
+      "erKeyScopeR\005scope\022\031\n\010key_hint\030\004 \001(\tR\007key" +
+      "Hint\0229\n\ncreated_at\030\005 \001(\0132\032.google.protob" +
+      "uf.TimestampR\tcreatedAt\022A\n\014last_seen_at\030" +
+      "\006 \001(\0132\032.google.protobuf.TimestampH\000R\nlas" +
+      "tSeenAt\210\001\001\022\"\n\ncreated_by\030\007 \001(\tH\001R\tcreate" +
+      "dBy\210\001\001\022\034\n\tconnected\030\010 \001(\010R\tconnected\0220\n\024" +
+      "allow_proxy_commands\030\t \001(\010R\022allowProxyCo" +
+      "mmandsB\017\n\r_last_seen_atB\r\n\013_created_by\"\231" +
+      "\001\n\022ServerKeysResponse\022&\n\004keys\030\001 \003(\0132\022.mo" +
+      "dl.v1.ServerKeyR\004keys\022\024\n\005limit\030\002 \001(\005R\005li" +
+      "mit\022E\n\017proxied_servers\030\003 \003(\0132\034.modl.v1.P" +
+      "roxiedServerStatusR\016proxiedServers\"f\n\rPr" +
+      "oxiedServer\0221\n\004name\030\001 \001(\tB\035\272H\032r\0302\026^[A-Za" +
+      "-z0-9_.-]{1,64}$R\004name\022\"\n\007address\030\002 \001(\tB" +
+      "\010\272H\005r\003(\200\001R\007address\"\237\001\n\023ProxiedServerStat" +
+      "us\022.\n\006server\030\001 \001(\0132\026.modl.v1.ProxiedServ" +
+      "erR\006server\0221\n\005state\030\002 \001(\0162\033.modl.v1.Prox" +
+      "iedServerStateR\005state\022\032\n\006key_id\030\003 \001(\tH\000R" +
+      "\005keyId\210\001\001B\t\n\007_key_id\"\270\001\n\026CreateServerKey" +
       "Request\0221\n\004name\030\001 \001(\tB\035\272H\032r\0302\026^[A-Za-z0-" +
       "9_.-]{1,64}$R\004name\0229\n\005scope\030\002 \001(\0162\027.modl" +
       ".v1.ServerKeyScopeB\n\272H\007\202\001\004\020\001 \000R\005scope\0220\n" +
@@ -118,9 +151,14 @@ public final class ServersProto extends com.google.protobuf.GeneratedFile {
       "TY_UNKNOWN\020\004*p\n\016ServerKeyScope\022 \n\034SERVER" +
       "_KEY_SCOPE_UNSPECIFIED\020\000\022\031\n\025SERVER_KEY_S" +
       "COPE_FULL\020\001\022!\n\035SERVER_KEY_SCOPE_BEHIND_P" +
-      "ROXY\020\002Bb\n\025gg.modl.proto.modl.v1B\014Servers" +
-      "ProtoP\001\242\002\003MXX\252\002\007Modl.V1\312\002\007Modl\\V1\342\002\023Modl" +
-      "\\V1\\GPBMetadata\352\002\010Modl::V1b\006proto3"
+      "ROXY\020\002*\247\001\n\022ProxiedServerState\022$\n PROXIED" +
+      "_SERVER_STATE_UNSPECIFIED\020\000\022\037\n\033PROXIED_S" +
+      "ERVER_STATE_NO_KEY\020\001\022&\n\"PROXIED_SERVER_S" +
+      "TATE_NOT_CONNECTED\020\002\022\"\n\036PROXIED_SERVER_S" +
+      "TATE_CONNECTED\020\003Bb\n\025gg.modl.proto.modl.v" +
+      "1B\014ServersProtoP\001\242\002\003MXX\252\002\007Modl.V1\312\002\007Modl" +
+      "\\V1\342\002\023Modl\\V1\\GPBMetadata\352\002\010Modl::V1b\006pr" +
+      "oto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -134,39 +172,57 @@ public final class ServersProto extends com.google.protobuf.GeneratedFile {
     internal_static_modl_v1_ConnectedServer_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_ConnectedServer_descriptor,
-        new java.lang.String[] { "InstanceId", "Name", "Platform", "PluginVersion", "ServerVersion", "OnlinePlayers", "LastSeen", "Role", "KeyName", "HubConnected", "Compatibility", });
-    internal_static_modl_v1_ConnectedServersResponse_descriptor =
+        new java.lang.String[] { "InstanceId", "Name", "Platform", "PluginVersion", "ServerVersion", "OnlinePlayers", "LastSeen", "Role", "KeyName", "HubConnected", "Compatibility", "Features", });
+    internal_static_modl_v1_ServerFeatureStatus_descriptor =
       getDescriptor().getMessageType(1);
+    internal_static_modl_v1_ServerFeatureStatus_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_ServerFeatureStatus_descriptor,
+        new java.lang.String[] { "ReplaysSupported", "ReplaysActive", "AnticheatIntegrationActive", "DetectedAnticheats", "ReplayMemoryBudgetMb", });
+    internal_static_modl_v1_ConnectedServersResponse_descriptor =
+      getDescriptor().getMessageType(2);
     internal_static_modl_v1_ConnectedServersResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_ConnectedServersResponse_descriptor,
         new java.lang.String[] { "Servers", "ModlVersion", });
     internal_static_modl_v1_ServerKey_descriptor =
-      getDescriptor().getMessageType(2);
+      getDescriptor().getMessageType(3);
     internal_static_modl_v1_ServerKey_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_ServerKey_descriptor,
         new java.lang.String[] { "Id", "Name", "Scope", "KeyHint", "CreatedAt", "LastSeenAt", "CreatedBy", "Connected", "AllowProxyCommands", });
     internal_static_modl_v1_ServerKeysResponse_descriptor =
-      getDescriptor().getMessageType(3);
+      getDescriptor().getMessageType(4);
     internal_static_modl_v1_ServerKeysResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_ServerKeysResponse_descriptor,
-        new java.lang.String[] { "Keys", "Limit", });
+        new java.lang.String[] { "Keys", "Limit", "ProxiedServers", });
+    internal_static_modl_v1_ProxiedServer_descriptor =
+      getDescriptor().getMessageType(5);
+    internal_static_modl_v1_ProxiedServer_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_ProxiedServer_descriptor,
+        new java.lang.String[] { "Name", "Address", });
+    internal_static_modl_v1_ProxiedServerStatus_descriptor =
+      getDescriptor().getMessageType(6);
+    internal_static_modl_v1_ProxiedServerStatus_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_ProxiedServerStatus_descriptor,
+        new java.lang.String[] { "Server", "State", "KeyId", });
     internal_static_modl_v1_CreateServerKeyRequest_descriptor =
-      getDescriptor().getMessageType(4);
+      getDescriptor().getMessageType(7);
     internal_static_modl_v1_CreateServerKeyRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_CreateServerKeyRequest_descriptor,
         new java.lang.String[] { "Name", "Scope", "AllowProxyCommands", });
     internal_static_modl_v1_UpdateServerKeyRequest_descriptor =
-      getDescriptor().getMessageType(5);
+      getDescriptor().getMessageType(8);
     internal_static_modl_v1_UpdateServerKeyRequest_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_UpdateServerKeyRequest_descriptor,
         new java.lang.String[] { "AllowProxyCommands", });
     internal_static_modl_v1_CreateServerKeyResponse_descriptor =
-      getDescriptor().getMessageType(6);
+      getDescriptor().getMessageType(9);
     internal_static_modl_v1_CreateServerKeyResponse_fieldAccessorTable = new
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_CreateServerKeyResponse_descriptor,

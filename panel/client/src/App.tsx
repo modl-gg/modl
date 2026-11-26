@@ -19,6 +19,7 @@ import { SecondFactorGate } from "@/components/auth/SecondFactorGate";
 import { PageEndSourceCodeLink } from "@/components/layout/SourceCodeLink";
 import { PublicMain } from "@/components/layout/PublicMain";
 import { RouteErrorBoundary } from "@/components/layout/RouteErrorBoundary";
+import { ReplayDialogHost } from "@/components/replays/ReplayDialogHost";
 import { LoadingSpinner } from "@/components/ui/loading-spinner";
 import { Button } from "@/components/ui/button";
 import { isNavPathActive } from "@/lib/nav-active";
@@ -44,6 +45,7 @@ const UploadEvidencePage = lazy(async () => import("@/pages/upload-evidence-page
 const ResetPasswordPage = lazy(async () => import("@/pages/ResetPasswordPage"));
 const VerifyPage = lazy(async () => import("@/pages/VerifyPage"));
 const ReplayPage = lazy(async () => import("@/pages/replay-page"));
+const SharedReplayPage = lazy(async () => import("@/pages/shared-replay-page"));
 const KnowledgebasePage = lazy(async () => import("@/pages/KnowledgebasePage"));
 const ArticleDetailPage = lazy(async () => import("@/pages/ArticleDetailPage"));
 const HomePage = lazy(async () => import("@/pages/HomePage"));
@@ -52,6 +54,10 @@ const STANDALONE_PATHS = ['/auth', '/panel/auth', '/auth/link', '/appeal'];
 const STANDALONE_PATH_PREFIXES = ['/ticket/', '/submit-ticket', '/accept-invitation', '/upload-evidence', '/verify/', '/replay', '/rate-limit', '/setup', '/reset-password'];
 const ALWAYS_REACHABLE_PATH_PREFIXES = ['/verify/', '/replay', '/setup', '/auth/link', '/reset-password'];
 const SECOND_FACTOR_GATED_PATH_PREFIXES = ['/panel', '/setup', '/verify/'];
+
+const SHARED_REPLAY_PATH_PREFIX = '/replay/';
+
+const isSharedReplayPage = (location: string) => location.startsWith(SHARED_REPLAY_PATH_PREFIX);
 
 const isStandalonePage = (location: string) =>
   STANDALONE_PATHS.includes(location) || STANDALONE_PATH_PREFIXES.some((prefix) => location.startsWith(prefix));
@@ -98,12 +104,28 @@ function PanelRoutes() {
   );
 }
 
+function SharedReplayRoute() {
+  const [location] = useLocation();
+  return (
+    <RouteErrorBoundary resetKey={location}>
+      <Suspense fallback={<div className="h-dvh bg-black" />}>
+        <Switch>
+          <Route path="/replay/:token" component={SharedReplayPage} />
+          <Route component={NotFound} />
+        </Switch>
+      </Suspense>
+    </RouteErrorBoundary>
+  );
+}
+
 function Router() {
   const [location] = useLocation();
 
+  if (isSharedReplayPage(location)) return <SharedReplayRoute />;
+
   if (isStandalonePage(location)) {
     return (
-      <PublicMain withSourceLink={!location.startsWith('/replay')}>
+      <PublicMain withSourceLink>
         <RouteErrorBoundary resetKey={location}>
           <Suspense fallback={<PageLoader />}>
             <Switch>
@@ -158,6 +180,7 @@ function PanelShell() {
 
   return (
     <PlayerWindowProvider key={user?.id ?? SIGNED_OUT_WINDOW_SCOPE}>
+      {user !== null && <ReplayDialogHost />}
       {isMobile ? (
         <div className="flex min-h-dvh flex-col bg-background">
           <main className="flex-1 bg-background pb-16">

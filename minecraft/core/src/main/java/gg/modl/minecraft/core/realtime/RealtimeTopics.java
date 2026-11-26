@@ -26,6 +26,9 @@ public final class RealtimeTopics {
         Topic.TOPIC_NETWORK_MODERATION,
         Topic.TOPIC_NETWORK_REPLAY_CAPTURE));
 
+    private static final Set<Topic> FEATURE_TOPICS = Collections.unmodifiableSet(EnumSet.of(
+        Topic.TOPIC_MINECRAFT_FEATURE_SETTINGS));
+
     private RealtimeTopics() {
     }
 
@@ -40,6 +43,10 @@ public final class RealtimeTopics {
 
     public static Set<Topic> memberNetworkTopicsGrantedBy(StartupResponse startup) {
         return networkTopicsGrantedBy(startup, MEMBER_NETWORK_TOPICS);
+    }
+
+    public static Set<Topic> featureTopicsGrantedBy(StartupResponse startup) {
+        return networkTopicsGrantedBy(startup, FEATURE_TOPICS);
     }
 
     public static Set<Topic> union(Set<Topic> first, Set<Topic> second) {

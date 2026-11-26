@@ -18,7 +18,7 @@ public class DatabaseSelectionConfiguration {
     @Bean
     DatabaseSelection databaseSelection(Environment environment, DataDirectoryProperties dataDirectory, OperatorNotice notice) {
         return DatabaseSelection.resolve(configured(Binder.get(environment)), dataDirectory,
-            (target, moveToken) -> PendingTargetCheck.check(target, dataDirectory, moveToken), DatabaseSelection.REACH_BUDGET, notice);
+            (target, moveToken) -> PendingTargetCheck.check(target, dataDirectory, moveToken), ArrivalWait.atStart(), notice);
     }
 
     @Bean

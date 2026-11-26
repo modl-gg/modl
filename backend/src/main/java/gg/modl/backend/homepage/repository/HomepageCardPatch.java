@@ -12,7 +12,6 @@ public record HomepageCardPatch(
     @Nullable String iconColor,
     @Nullable String actionType,
     @Nullable String actionUrl,
-    @Nullable String actionButtonText,
     @Nullable String categoryId,
     @Nullable String backgroundColor,
     @Nullable Boolean enabled,

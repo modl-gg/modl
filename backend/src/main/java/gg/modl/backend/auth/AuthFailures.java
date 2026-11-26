@@ -62,7 +62,7 @@ public final class AuthFailures {
     }
 
     public static ValidationException resetLinkInvalid() {
-        return new ValidationException("This reset link is invalid, used or expired", RESET_LINK_INVALID);
+        return new ValidationException("This reset link is invalid, used, or expired", RESET_LINK_INVALID);
     }
 
     public static ValidationException passwordPolicy(String message) {

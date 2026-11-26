@@ -15,6 +15,7 @@ public class ReplayDocument {
     private @Nullable String targetUuid;
     private @Nullable String targetName;
     private long fileSize;
+    private @Nullable Integer formatVersion;
     private @Nullable String storageKey;
     private String status;
     private Instant createdAt;

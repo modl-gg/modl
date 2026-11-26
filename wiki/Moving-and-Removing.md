@@ -15,7 +15,7 @@ S3 uploads stay in the bucket; point the new installation at the same bucket.
 
 1. Stop the Minecraft server.
 2. Copy `plugins/modl/data/` to the new data folder (`./data`, `MODL_DATA_DIR`, or restore a backup into the Docker volume).
-3. Move what you set in `embedded` to the environment: `port` to `MODL_PORT`, `bind-address` to `MODL_BIND_ADDRESS`, `public-url` to `MODL_PUBLIC_URL`, `admin-email` to `MODL_ADMIN_EMAIL`, `trust-proxy-headers` and `trusted-proxy` to `MODL_TRUST_PROXY_HEADERS` and `MODL_TRUSTED_PROXY`, `database` to `MODL_DATABASE_*`, `smtp` to `MODL_SMTP_*`, `ai` to `MODL_AI_*`. Panel settings move with the data.
+3. Move what you set in `embedded` to the environment: `port` to `MODL_PORT`, `bind-address` to `MODL_BIND_ADDRESS`, `public-url` to `MODL_PUBLIC_URL`, `admin-email` to `MODL_ADMIN_EMAIL`, `trust-proxy-headers` and `trusted-proxy` to `MODL_TRUST_PROXY_HEADERS` and `MODL_TRUSTED_PROXY`, `database` to `MODL_DATABASE_*`, `smtp` to `MODL_SMTP_*`, `ai` to `MODL_AI_*`, `tunnel` to `MODL_TUNNEL` and `MODL_TUNNEL_TOKEN`. Panel settings move with the data.
 4. Start the separate panel.
 5. On the server, set `mode: remote` with `remote.url` and the API key (unchanged, Settings > General > Minecraft servers), and start it. `plugins/modl/server/` (the built-in panel and its libraries) can then be deleted.
 
@@ -55,4 +55,4 @@ Everything:
 
 Bans and mutes stop being enforced once modl is gone.
 
-To start over instead: stop modl, back up, delete the data folder (or the Docker volume) and start again.
+To start over instead: stop modl, back up, delete the data folder (or the Docker volume), and start again.

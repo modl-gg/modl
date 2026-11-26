@@ -54,11 +54,11 @@ class PermissionServiceTest {
     }
 
     @Test
-    void thePlayerCategoryHoldsTwoIndependentPermissions() {
+    void thePlayerCategoryHoldsThreeIndependentPermissions() {
         PermissionService service = newService(mock(StaffRoleRepository.class));
 
         assertEquals("Player Permissions", service.getPermissionCategories().get("player"));
-        assertEquals(List.of("player.note", "player.warn"), service.getBasePermissions().stream()
+        assertEquals(List.of("player.note", "player.warn", "replay.share"), service.getBasePermissions().stream()
             .filter(permission -> "player".equals(permission.category()))
             .map(permission -> permission.id())
             .toList());

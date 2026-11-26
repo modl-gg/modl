@@ -1,15 +1,9 @@
-# Paper server features of modl (staff mode, freeze, anticheat reports, replays, stat wipes)
-# The panel connection is set in connection.yml.
+# Paper server features of modl (staff mode, freeze, anticheat reports, stat wipes)
+# The panel connection is set in connection.yml. Replays and the anticheat integration are set in the panel.
 
 # Console commands run on a stat wipe. Placeholders: {player}, {uuid}
 stat-wipe-commands:
   - "clearstats {player}"
-
-# Anticheat name shown in auto reports.
-anticheat-name: "Anti-cheat"
-
-# File reports when GrimAC, Vulcan or Polar flags a player. Manual reports are unaffected.
-anticheat-hook-enabled: true
 
 # This server's name in the proxy config. Leave empty on a standalone server.
 server-name: ""
@@ -23,20 +17,3 @@ report-cooldown: 60
 # Violations before an auto report, per check name or "default".
 report-violation-threshold:
   default: 10
-
-# Record replays.
-replay-enabled: false
-# Record every player from join. Needs replay-enabled.
-replay-auto-record: false
-# Seconds of history kept in memory.
-replay-buffer-duration: 60
-# Longest capture, in seconds.
-replay-max-duration: 300
-# Block snapshot radius.
-replay-radius: 64
-# Milliseconds between movement samples.
-replay-move-throttle: 50
-# Keep a local copy of each replay.
-replay-save-local: true
-# Minutes local copies are kept, including those whose upload failed. Default 7 days.
-replay-local-ttl: 10080

@@ -1,6 +1,8 @@
+import { useState } from 'react';
 import { useTranslation } from 'react-i18next';
-import { Loader2, Trash2 } from 'lucide-react';
+import { KeyRound, Loader2, Trash2 } from 'lucide-react';
 import { Badge } from '@/components/ui/badge';
+import { Button } from '@/components/ui/button';
 import { IconAction } from '@/components/ui/icon-action';
 import { Label } from '@/components/ui/label';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
@@ -12,13 +14,16 @@ import { usePermissions } from '@/hooks/use-permissions';
 import { useToast } from '@/hooks/use-toast';
 import { useConnectedServers, type ConnectedServer, type ServerVersionCompatibility } from '@/hooks/data/servers';
 import {
+  useCreateServerKey,
   useRevokeServerKey,
   useServerKeys,
   useSetProxyCommandsAllowed,
+  type IssuedServerKey,
   type ServerKey,
   type ServerKeyRole,
 } from '@/hooks/data/server-keys';
-import { isRowConnected, lastUsedAt, serverRows, type ServerRow } from '@/lib/server-rows';
+import { isRowConnected, lastUsedAt, needsServerKey, serverRows, type ServerRow } from '@/lib/server-rows';
+import { createKeyErrorKey, IssuedServerKeyDialog } from './IssuedServerKey';
 
 const KEY_ROLE_KEYS: Record<ServerKeyRole, string> = {
   'behind-proxy': 'settings.servers.roleBehindProxy',
@@ -123,10 +128,15 @@ function LastUsed({ at }: { at: string }) {
   return <p className="text-xs text-muted-foreground">{t('settings.servers.keyLastSeen', { time: formatDateTime(at, i18n.language) })}</p>;
 }
 
-function ServerRowItem({ row }: { row: ServerRow }) {
+interface KeyCreation {
+  pending: boolean;
+  create: (name: string) => void;
+}
+
+function ServerRowItem({ row, keyCreation }: { row: ServerRow; keyCreation: KeyCreation }) {
   const { t } = useTranslation();
-  const { serverKey, connections } = row;
-  const name = serverKey?.name ?? connections[0]?.name ?? '';
+  const { serverKey, proxied, connections } = row;
+  const name = serverKey?.name ?? proxied?.name ?? connections[0]?.name ?? '';
   const connected = isRowConnected(row);
   const lastUsed = lastUsedAt(row);
   const hasDetails = connections.length > 0 || lastUsed !== null || serverKey?.role === 'behind-proxy';
@@ -136,10 +146,24 @@ function ServerRowItem({ row }: { row: ServerRow }) {
       <div className="flex min-h-8 flex-wrap items-center gap-x-3 gap-y-1">
         <span className="break-all text-sm font-medium">{name || t('settings.servers.unnamed')}</span>
         {serverKey !== null && <span className="text-xs text-muted-foreground">{t(KEY_ROLE_KEYS[serverKey.role])}</span>}
+        {proxied !== null && proxied.address !== '' && (
+          <span className="break-all font-mono text-xs text-muted-foreground">{proxied.address}</span>
+        )}
         <div className="ml-auto flex items-center gap-2">
-          <StatusBadge intent={connected ? 'success' : 'neutral'}>
-            {t(connected ? 'settings.servers.connected' : 'settings.servers.notConnected')}
-          </StatusBadge>
+          {needsServerKey(row) ? (
+            <Button
+              size="sm"
+              disabled={keyCreation.pending}
+              onClick={() => { keyCreation.create(row.proxied.name); }}
+            >
+              <KeyRound aria-hidden="true" />
+              {t('settings.servers.create')}
+            </Button>
+          ) : (
+            <StatusBadge intent={connected ? 'success' : 'neutral'}>
+              {t(connected ? 'settings.servers.connected' : 'settings.servers.notConnected')}
+            </StatusBadge>
+          )}
           {serverKey !== null && <RevokeKeyButton serverKey={serverKey} />}
         </div>
       </div>
@@ -158,9 +182,27 @@ function ServerRowItem({ row }: { row: ServerRow }) {
 
 export default function ServersList() {
   const { t } = useTranslation();
+  const { toast } = useToast();
   const { isSuperAdmin } = usePermissions();
   const keys = useServerKeys({ enabled: isSuperAdmin });
   const connections = useConnectedServers({ enabled: isSuperAdmin });
+  const createKey = useCreateServerKey();
+  const [issued, setIssued] = useState<IssuedServerKey | null>(null);
+  const [issuedOpen, setIssuedOpen] = useState(false);
+  const keyCreation: KeyCreation = {
+    pending: createKey.isPending,
+    create: (name) => {
+      createKey.mutate({ name, role: 'behind-proxy', allowProxyCommands: false }, {
+        onSuccess: (created) => {
+          setIssued(created);
+          setIssuedOpen(true);
+        },
+        onError: (error) => {
+          toast({ title: t('toast.error'), description: t(createKeyErrorKey(error)), variant: 'destructive' });
+        },
+      });
+    },
+  };
 
   if (!isSuperAdmin) return null;
 
@@ -185,15 +227,19 @@ export default function ServersList() {
       );
     }
     return (
-      <ul className="divide-y rounded-md border">
-        {rows.map((row) => <ServerRowItem key={row.id} row={row} />)}
-      </ul>
+      <div className="space-y-3">
+        {rows.some(needsServerKey) && <Notice variant="warning">{t('settings.servers.proxyServersNeedKeys')}</Notice>}
+        <ul className="divide-y rounded-md border">
+          {rows.map((row) => <ServerRowItem key={row.id} row={row} keyCreation={keyCreation} />)}
+        </ul>
+      </div>
     );
   };
 
   return (
     <section aria-label={t('settings.servers.listTitle')}>
       {renderBody()}
+      <IssuedServerKeyDialog issued={issued} open={issuedOpen} onClose={() => { setIssuedOpen(false); }} onClosed={() => { setIssued(null); }} />
     </section>
   );
 }

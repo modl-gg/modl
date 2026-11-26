@@ -106,17 +106,20 @@ class PunishmentAuditQueryServiceTest {
     }
 
     @Test
-    void punishmentTypesListConfiguredTypesAndActiveOrdinalsWithTheirActiveCounts() {
+    void punishmentTypesListConfiguredTypesAndCountedOrdinalsWithTheirActiveAndUnstartedCounts() {
         PunishmentType configured = new PunishmentType();
         configured.setOrdinal(2);
         when(types.getPunishmentTypes(server)).thenReturn(List.of(configured));
         when(types.getPunishmentTypeName(server, 2)).thenReturn("Chat abuse");
         when(types.getPunishmentTypeName(server, 18)).thenReturn("Cheating (deleted)");
-        when(punishments.countActiveByType(NOW)).thenReturn(Map.of(18, 3L));
+        when(types.getPunishmentTypeName(server, 21)).thenReturn("Spam (deleted)");
+        when(punishments.countByType(PunishmentPhase.ACTIVE, NOW)).thenReturn(Map.of(18, 3L));
+        when(punishments.countByType(PunishmentPhase.UNSTARTED, NOW)).thenReturn(Map.of(18, 1L, 21, 2L));
 
         assertThat(service.getPunishmentTypes(server)).containsExactly(
-            new AuditPunishmentTypeResponse(2, "Chat abuse", 0),
-            new AuditPunishmentTypeResponse(18, "Cheating (deleted)", 3));
+            new AuditPunishmentTypeResponse(2, "Chat abuse", 0, 0),
+            new AuditPunishmentTypeResponse(18, "Cheating (deleted)", 3, 1),
+            new AuditPunishmentTypeResponse(21, "Spam (deleted)", 0, 2));
     }
 
     @ParameterizedTest

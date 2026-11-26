@@ -193,7 +193,7 @@ export interface StaffDetailPunishment {
   banLike: boolean;
   durationMs: number | null;
   issued: Date | null;
-  active: boolean;
+  phase: AuditPunishmentPhase;
   rolledBack: boolean;
 }
 
@@ -247,7 +247,7 @@ export function useStaffDetails(username: string, period: string, { enabled = tr
           banLike: isBanCategory(punishment.effectiveCategory),
           durationMs: parseDurationMs(punishment.duration),
           issued: tsToDate(punishment.issued),
-          active: punishment.active,
+          phase: phaseOf(punishment.phase),
           rolledBack: punishment.rolledBack,
         })),
         tickets: res.tickets.map((ticket) => ({
@@ -403,6 +403,7 @@ export interface AuditPunishmentType {
   ordinal: number;
   name: string;
   activeCount: number;
+  unstartedCount: number;
 }
 
 export function useAuditPunishmentTypes({ enabled = true }: QueryGate = {}) {
@@ -411,7 +412,7 @@ export function useAuditPunishmentTypes({ enabled = true }: QueryGate = {}) {
     enabled,
     queryFn: async (): Promise<AuditPunishmentType[]> => {
       const res = await protoFetch(AuditPunishmentTypesResponseSchema, '/v1/panel/audit/punishments/types');
-      return res.types.map(({ ordinal, name, activeCount }) => ({ ordinal, name, activeCount }));
+      return res.types.map(({ ordinal, name, activeCount, unstartedCount }) => ({ ordinal, name, activeCount, unstartedCount }));
     },
     staleTime: AUDIT_STALE_TIME_MS,
   });

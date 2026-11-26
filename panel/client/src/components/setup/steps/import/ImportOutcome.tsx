@@ -3,7 +3,14 @@ import { useTranslation } from 'react-i18next';
 import { Button } from '@/components/ui/button';
 import { LoadingSpinner } from '@/components/ui/loading-spinner';
 import { Notice } from '@/components/ui/notice';
-import { useAbandonImport, useFinishImport, useHostedImportReport, useResumeImport, type ImportState } from '@/hooks/data/hosted-import';
+import {
+  issueCodeName,
+  useAbandonImport,
+  useFinishImport,
+  useHostedImportReport,
+  useResumeImport,
+  type ImportState,
+} from '@/hooks/data/hosted-import';
 import { ImportCounts, ImportIssues } from './ImportIssues';
 import { ImportProgress } from './ImportTransfer';
 import { reasonKey } from './import-labels';
@@ -83,7 +90,8 @@ export function ImportReport() {
   const followUps = knownFollowUps(view.followUps);
 
   const download = () => {
-    const blob = new Blob([JSON.stringify(view, null, 2)], { type: 'application/json' });
+    const record = { ...view, issues: view.issues.map((issue) => ({ ...issue, code: issueCodeName(issue.code) })) };
+    const blob = new Blob([JSON.stringify(record, null, 2)], { type: 'application/json' });
     const link = document.createElement('a');
     link.href = URL.createObjectURL(blob);
     link.download = `modl-import-report-${view.exportId}.json`;
@@ -98,11 +106,6 @@ export function ImportReport() {
       </Notice>
       <ImportCounts counts={view.counts} />
       <ImportIssues issues={view.issues} />
-      {view.excluded.length > 0 && (
-        <p className="text-xs text-muted-foreground">
-          {t('pages.setup.import.report.excluded', { names: view.excluded.map((excluded) => excluded.name).join(', ') })}
-        </p>
-      )}
       {followUps.length > 0 && (
         <div className="space-y-1">
           <h3 className="text-sm font-medium">{t('pages.setup.import.report.actions')}</h3>

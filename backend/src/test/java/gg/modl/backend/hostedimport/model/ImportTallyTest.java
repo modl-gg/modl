@@ -2,6 +2,7 @@ package gg.modl.backend.hostedimport.model;
 
 import static org.assertj.core.api.Assertions.assertThat;
 
+import gg.modl.backend.database.JsonColumns;
 import java.time.Instant;
 import org.junit.jupiter.api.Test;
 
@@ -11,13 +12,13 @@ class ImportTallyTest {
         IssueLog analysis = new IssueLog();
         analysis.seen(ImportSubject.PUNISHMENTS, 10);
         analysis.report(IssueCode.PUNISHMENT_ROLLBACK_ENDS, "p1");
-        analysis.report(IssueCode.COLLECTION_EXCLUDED, "sessions");
+        analysis.report(IssueCode.COLLECTION_UNKNOWN, "future");
         analysis.report(IssueCode.FILE_KEY_RENAMED, "k");
 
         ImportTally carried = analysis.tally().carriedIntoApply();
 
         assertThat(carried.count(ImportSubject.PUNISHMENTS)).isEqualTo(new SubjectCount(10, 0, 0, 0));
-        assertThat(carried.issues()).containsKeys(IssueCode.COLLECTION_EXCLUDED, IssueCode.FILE_KEY_RENAMED)
+        assertThat(carried.issues()).containsKeys(IssueCode.COLLECTION_UNKNOWN, IssueCode.FILE_KEY_RENAMED)
             .doesNotContainKey(IssueCode.PUNISHMENT_ROLLBACK_ENDS);
 
         IssueLog apply = new IssueLog();
@@ -27,6 +28,27 @@ class ImportTallyTest {
 
         assertThat(finished.issues().get(IssueCode.PUNISHMENT_ROLLBACK_ENDS).count()).isEqualTo(1);
         assertThat(finished.count(ImportSubject.PUNISHMENTS)).isEqualTo(new SubjectCount(10, 1, 0, 0));
+    }
+
+    @Test
+    void aStoredTallyStaysReadableWhenALaterVersionRetiresAnIssueCode() {
+        String stored = "{\"counts\":{\"ROLES\":{\"total\":2,\"imported\":2,\"changed\":0,\"skipped\":0}},"
+            + "\"issues\":{\"RETIRED_CODE\":{\"count\":10,\"samples\":[\"sessions\"]},"
+            + "\"ROLE_RENAMED\":{\"count\":1,\"samples\":[\"Super Admin (imported)\"]}}}";
+
+        ImportTally tally = new JsonColumns().read(stored, ImportTally.class);
+
+        assertThat(tally.count(ImportSubject.ROLES)).isEqualTo(new SubjectCount(2, 2, 0, 0));
+        assertThat(tally.issues()).containsOnlyKeys(IssueCode.ROLE_RENAMED);
+    }
+
+    @Test
+    void aSubjectWithNothingSeenGetsNoCount() {
+        IssueLog log = new IssueLog();
+        log.seen(ImportSubject.STAFF, 0);
+        log.imported(ImportSubject.ROLES, 0);
+
+        assertThat(log.tally().counts()).isEmpty();
     }
 
     @Test

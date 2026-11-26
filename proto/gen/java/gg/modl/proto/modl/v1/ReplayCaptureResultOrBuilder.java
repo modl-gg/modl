@@ -49,4 +49,34 @@ public interface ReplayCaptureResultOrBuilder extends
    */
   com.google.protobuf.ByteString
       getReplayIdBytes();
+
+  /**
+   * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+   * @return Whether the recording field is set.
+   */
+  boolean hasRecording();
+  /**
+   * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+   * @return The recording.
+   */
+  gg.modl.proto.modl.v1.ReplayRecordingState getRecording();
+  /**
+   * <code>optional .modl.v1.ReplayRecordingState recording = 4 [json_name = "recording"];</code>
+   */
+  gg.modl.proto.modl.v1.ReplayRecordingStateOrBuilder getRecordingOrBuilder();
+
+  /**
+   * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+   * @return Whether the memory field is set.
+   */
+  boolean hasMemory();
+  /**
+   * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+   * @return The memory.
+   */
+  gg.modl.proto.modl.v1.ReplayMemoryUse getMemory();
+  /**
+   * <code>optional .modl.v1.ReplayMemoryUse memory = 5 [json_name = "memory"];</code>
+   */
+  gg.modl.proto.modl.v1.ReplayMemoryUseOrBuilder getMemoryOrBuilder();
 }

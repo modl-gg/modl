@@ -46,6 +46,7 @@ const PAGE_TITLE_KEYS: Record<SettingsPageId, string> = {
   'punishment-types': 'settings.pages.punishmentTypes',
   escalation: 'settings.pages.escalation',
   'player-addresses': 'settings.pages.playerAddresses',
+  replays: 'settings.pages.replays',
   forms: 'settings.pages.forms',
   labels: 'settings.pages.labels',
   'quick-replies': 'settings.pages.quickReplies',

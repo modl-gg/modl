@@ -355,7 +355,8 @@ public class RoleService {
             PermissionService.TICKET_MANAGE,
             PermissionService.STAFF_CHAT_TOGGLE, PermissionService.STAFF_CHAT_CLEAR, PermissionService.STAFF_CHAT_SLOW,
             PermissionService.STAFF_MODACTIONS,
-            PermissionService.STAFF_INTERCEPT, PermissionService.STAFF_CHATLOGS, PermissionService.STAFF_COMMANDLOGS
+            PermissionService.STAFF_INTERCEPT, PermissionService.STAFF_CHATLOGS, PermissionService.STAFF_COMMANDLOGS,
+            PermissionService.REPLAY_SHARE
         ));
         adminPerms.addAll(PermissionService.PLAYER_PERMISSIONS);
         adminPerms.addAll(allPunishmentPerms);

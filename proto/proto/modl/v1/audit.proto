@@ -51,9 +51,11 @@ message StaffDetailsResponse {
     string reason = 5;
     string duration = 6;
     google.protobuf.Timestamp issued = 7;
-    bool active = 8;
+    reserved 8;
+    reserved "active";
     bool rolled_back = 9;
     optional string effective_category = 10;
+    AuditPunishmentPhase phase = 11;
   }
 
   message TicketDetail {
@@ -140,6 +142,7 @@ message AuditPunishmentTypesResponse {
     int32 ordinal = 1;
     string name = 2;
     int32 active_count = 3;
+    int32 unstarted_count = 4;
   }
 }
 

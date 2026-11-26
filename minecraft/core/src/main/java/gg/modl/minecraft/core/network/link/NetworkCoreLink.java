@@ -44,6 +44,7 @@ public final class NetworkCoreLink implements ModerationStateSink, ConnectionLis
     private final NetworkRoster roster = new NetworkRoster();
     private final ScheduledExecutorService scheduler;
     private final HostedPlayersReporter hostedPlayers;
+    private final ProxyServersReporter proxyServers;
     private final PluginLogger logger;
     private volatile @Nullable NetworkReplayService replayService;
     private volatile @Nullable ModerationSnapshot latest;
@@ -57,7 +58,7 @@ public final class NetworkCoreLink implements ModerationStateSink, ConnectionLis
         this.availability = availability;
         this.platform = platform;
         this.logger = logger;
-        this.serverNames = new ProxyServerNames(platform::knownServerNames, logger);
+        this.serverNames = new ProxyServerNames(platform::proxyBackends, logger);
         ScheduledThreadPoolExecutor networkThread = new ScheduledThreadPoolExecutor(1, task -> {
             Thread thread = new Thread(task, THREAD_NAME);
             thread.setDaemon(true);
@@ -66,6 +67,7 @@ public final class NetworkCoreLink implements ModerationStateSink, ConnectionLis
         networkThread.setRemoveOnCancelPolicy(true);
         this.scheduler = networkThread;
         this.hostedPlayers = new HostedPlayersReporter(this::onlinePlayers, connection::send, logger);
+        this.proxyServers = new ProxyServersReporter(platform::proxyBackends, connection::send, logger);
         connection.register(PayloadCase.MEMBER_ACTION, envelope -> onMemberAction(envelope.getMemberAction()));
         connection.register(PayloadCase.NETWORK_ROSTER, envelope -> onRoster(envelope.getNetworkRoster()));
         connection.register(PayloadCase.REPLAY_CAPTURE_RESULT, envelope -> {
@@ -84,6 +86,8 @@ public final class NetworkCoreLink implements ModerationStateSink, ConnectionLis
         publisher.addSink(this);
         Scheduling.withFixedDelay(scheduler, hostedPlayers::flush, HostedPlayersReporter.FLUSH_INTERVAL_MILLIS,
                 HostedPlayersReporter.FLUSH_INTERVAL_MILLIS, TimeUnit.MILLISECONDS, logger);
+        Scheduling.withFixedDelay(scheduler, proxyServers::check, ProxyServersReporter.CHECK_INTERVAL_SECONDS,
+                ProxyServersReporter.CHECK_INTERVAL_SECONDS, TimeUnit.SECONDS, logger);
         return () -> {
             publisher.removeSink(this);
             stopUsingRoster.run();
@@ -105,11 +109,13 @@ public final class NetworkCoreLink implements ModerationStateSink, ConnectionLis
         ModerationSnapshot snapshot = latest;
         if (snapshot != null) sendModeration(snapshot);
         submit(hostedPlayers::connected);
+        submit(proxyServers::connected);
     }
 
     @Override
     public void onDisconnected() {
         submit(hostedPlayers::disconnected);
+        submit(proxyServers::disconnected);
         roster.clear();
         NetworkReplayService replays = replayService;
         if (replays != null) replays.disconnected();
@@ -136,7 +142,7 @@ public final class NetworkCoreLink implements ModerationStateSink, ConnectionLis
 
     void onRoster(NetworkRosterEvent event) {
         roster.replace(event);
-        for (String name : roster.memberNames()) serverNames.warnOnceIfUnknown(name);
+        serverNames.warnOnceAboutUnknown(roster.memberNames());
     }
 
     NetworkRoster roster() {

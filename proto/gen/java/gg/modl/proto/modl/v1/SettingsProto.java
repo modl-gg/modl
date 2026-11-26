@@ -406,6 +406,36 @@ public final class SettingsProto extends com.google.protobuf.GeneratedFile {
   static final 
     com.google.protobuf.GeneratedMessage.FieldAccessorTable
       internal_static_modl_v1_UpdatePublicCustomCssRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_HomepageFooterLink_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_HomepageFooterLink_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_HomepageSettings_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_HomepageSettings_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_HomepageCardDraft_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_HomepageCardDraft_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_HomepageSettingsEnvelope_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_HomepageSettingsEnvelope_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_UpdateHomepageSettingsRequest_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_UpdateHomepageSettingsRequest_fieldAccessorTable;
+  static final com.google.protobuf.Descriptors.Descriptor
+    internal_static_modl_v1_PublicHomepageResponse_descriptor;
+  static final 
+    com.google.protobuf.GeneratedMessage.FieldAccessorTable
+      internal_static_modl_v1_PublicHomepageResponse_fieldAccessorTable;
 
   public static com.google.protobuf.Descriptors.FileDescriptor
       getDescriptor() {
@@ -813,33 +843,74 @@ public final class SettingsProto extends com.google.protobuf.GeneratedFile {
       ".modl.v1.SettingsMetaR\005_meta\"o\n\034UpdatePu" +
       "blicCustomCssRequest\0222\n\020expected_version" +
       "\030\001 \001(\003B\007\272H\004\"\002(\000R\017expectedVersion\022\033\n\003css\030" +
-      "\002 \001(\tB\t\272H\006r\004(\200\200\004R\003css*n\n\nMailSource\022\033\n\027M" +
-      "AIL_SOURCE_UNSPECIFIED\020\000\022\024\n\020MAIL_SOURCE_",
-      "NONE\020\001\022\026\n\022MAIL_SOURCE_CONFIG\020\002\022\025\n\021MAIL_S" +
-      "OURCE_PANEL\020\003*\201\002\n\017MailTestOutcome\022!\n\035MAI" +
-      "L_TEST_OUTCOME_UNSPECIFIED\020\000\022\037\n\033MAIL_TES" +
-      "T_OUTCOME_DELIVERED\020\001\022$\n MAIL_TEST_OUTCO" +
-      "ME_CONNECT_FAILED\020\002\022 \n\034MAIL_TEST_OUTCOME" +
-      "_TLS_FAILED\020\003\022!\n\035MAIL_TEST_OUTCOME_AUTH_" +
-      "FAILED\020\004\022\036\n\032MAIL_TEST_OUTCOME_REJECTED\020\005" +
-      "\022\037\n\033MAIL_TEST_OUTCOME_TIMED_OUT\020\006*\316\001\n\017Pu" +
-      "blicThemeFont\022!\n\035PUBLIC_THEME_FONT_UNSPE" +
-      "CIFIED\020\000\022\034\n\030PUBLIC_THEME_FONT_SYSTEM\020\001\022\033" +
-      "\n\027PUBLIC_THEME_FONT_INTER\020\002\022\034\n\030PUBLIC_TH" +
-      "EME_FONT_NUNITO\020\003\022\032\n\026PUBLIC_THEME_FONT_L" +
-      "ORA\020\004\022#\n\037PUBLIC_THEME_FONT_SPACE_GROTESK" +
-      "\020\005*\264\001\n\021PublicThemeRadius\022#\n\037PUBLIC_THEME" +
-      "_RADIUS_UNSPECIFIED\020\000\022\034\n\030PUBLIC_THEME_RA" +
-      "DIUS_NONE\020\001\022\035\n\031PUBLIC_THEME_RADIUS_SMALL" +
-      "\020\002\022\036\n\032PUBLIC_THEME_RADIUS_MEDIUM\020\003\022\035\n\031PU" +
-      "BLIC_THEME_RADIUS_LARGE\020\004*\225\001\n\021PublicColo" +
-      "rScheme\022#\n\037PUBLIC_COLOR_SCHEME_UNSPECIFI" +
-      "ED\020\000\022\036\n\032PUBLIC_COLOR_SCHEME_SYSTEM\020\001\022\035\n\031" +
-      "PUBLIC_COLOR_SCHEME_LIGHT\020\002\022\034\n\030PUBLIC_CO" +
-      "LOR_SCHEME_DARK\020\003Bc\n\025gg.modl.proto.modl." +
-      "v1B\rSettingsProtoP\001\242\002\003MXX\252\002\007Modl.V1\312\002\007Mo" +
-      "dl\\V1\342\002\023Modl\\V1\\GPBMetadata\352\002\010Modl::V1b\006" +
-      "proto3"
+      "\002 \001(\tB\t\272H\006r\004(\200\200@R\003css\"}\n\022HomepageFooterL" +
+      "ink\022\024\n\005label\030\001 \001(\tR\005label\022\020\n\003url\030\002 \001(\tR\003",
+      "url\022?\n\004kind\030\003 \001(\0162\037.modl.v1.HomepageFoot" +
+      "erLinkKindB\n\272H\007\202\001\004\020\001 \000R\004kind\"\373\001\n\020Homepag" +
+      "eSettings\022\030\n\007tagline\030\001 \001(\tR\007tagline\022%\n\016s" +
+      "erver_address\030\002 \001(\tR\rserverAddress\022*\n\021sh" +
+      "ow_player_count\030\003 \001(\010R\017showPlayerCount\022>" +
+      "\n\014footer_links\030\004 \003(\0132\033.modl.v1.HomepageF" +
+      "ooterLinkR\013footerLinks\022:\n\005cards\030\005 \003(\0132\032." +
+      "modl.v1.HomepageCardDraftB\010\272H\005\222\001\002\0202R\005car" +
+      "ds\"\204\003\n\021HomepageCardDraft\022\027\n\002id\030\001 \001(\tB\007\272H" +
+      "\004r\002\030$R\002id\022,\n\005title\030\002 \001(\tB\026\272H\023r\021\020\001\030\200\0012\n(?" +
+      "s).*\\S.*R\005title\022*\n\013description\030\003 \001(\tB\010\272H" +
+      "\005r\003\030\364\003R\013description\022\034\n\004icon\030\004 \001(\tB\010\272H\005r\003" +
+      "\030\200\001R\004icon\022L\n\013action_type\030\005 \001(\0162\037.modl.v1" +
+      ".HomepageCardActionTypeB\n\272H\007\202\001\004\020\001 \000R\nact" +
+      "ionType\022\'\n\naction_url\030\006 \001(\tB\010\272H\005r\003\030\200\020R\ta" +
+      "ctionUrl\022(\n\013category_id\030\007 \001(\tB\007\272H\004r\002\030$R\n" +
+      "categoryId\022\030\n\007enabled\030\010 \001(\010R\007enabled\022#\n\r" +
+      "category_name\030\t \001(\tR\014categoryName\"u\n\030Hom" +
+      "epageSettingsEnvelope\022-\n\004data\030\001 \001(\0132\031.mo" +
+      "dl.v1.HomepageSettingsR\004data\022*\n\004meta\030\002 \001" +
+      "(\0132\025.modl.v1.SettingsMetaR\005_meta\"\222\001\n\035Upd" +
+      "ateHomepageSettingsRequest\0222\n\020expected_v" +
+      "ersion\030\001 \001(\003B\007\272H\004\"\002(\000R\017expectedVersion\022=" +
+      "\n\010settings\030\002 \001(\0132\031.modl.v1.HomepageSetti" +
+      "ngsB\006\272H\003\310\001\001R\010settings\"\330\001\n\026PublicHomepage" +
+      "Response\022\030\n\007tagline\030\001 \001(\tR\007tagline\022%\n\016se" +
+      "rver_address\030\002 \001(\tR\rserverAddress\022*\n\016onl" +
+      "ine_players\030\003 \001(\005H\000R\ronlinePlayers\210\001\001\022>\n" +
+      "\014footer_links\030\004 \003(\0132\033.modl.v1.HomepageFo" +
+      "oterLinkR\013footerLinksB\021\n\017_online_players" +
+      "*n\n\nMailSource\022\033\n\027MAIL_SOURCE_UNSPECIFIE" +
+      "D\020\000\022\024\n\020MAIL_SOURCE_NONE\020\001\022\026\n\022MAIL_SOURCE" +
+      "_CONFIG\020\002\022\025\n\021MAIL_SOURCE_PANEL\020\003*\201\002\n\017Mai" +
+      "lTestOutcome\022!\n\035MAIL_TEST_OUTCOME_UNSPEC" +
+      "IFIED\020\000\022\037\n\033MAIL_TEST_OUTCOME_DELIVERED\020\001" +
+      "\022$\n MAIL_TEST_OUTCOME_CONNECT_FAILED\020\002\022 " +
+      "\n\034MAIL_TEST_OUTCOME_TLS_FAILED\020\003\022!\n\035MAIL" +
+      "_TEST_OUTCOME_AUTH_FAILED\020\004\022\036\n\032MAIL_TEST" +
+      "_OUTCOME_REJECTED\020\005\022\037\n\033MAIL_TEST_OUTCOME" +
+      "_TIMED_OUT\020\006*\316\001\n\017PublicThemeFont\022!\n\035PUBL" +
+      "IC_THEME_FONT_UNSPECIFIED\020\000\022\034\n\030PUBLIC_TH" +
+      "EME_FONT_SYSTEM\020\001\022\033\n\027PUBLIC_THEME_FONT_I" +
+      "NTER\020\002\022\034\n\030PUBLIC_THEME_FONT_NUNITO\020\003\022\032\n\026" +
+      "PUBLIC_THEME_FONT_LORA\020\004\022#\n\037PUBLIC_THEME" +
+      "_FONT_SPACE_GROTESK\020\005*\264\001\n\021PublicThemeRad" +
+      "ius\022#\n\037PUBLIC_THEME_RADIUS_UNSPECIFIED\020\000" +
+      "\022\034\n\030PUBLIC_THEME_RADIUS_NONE\020\001\022\035\n\031PUBLIC" +
+      "_THEME_RADIUS_SMALL\020\002\022\036\n\032PUBLIC_THEME_RA" +
+      "DIUS_MEDIUM\020\003\022\035\n\031PUBLIC_THEME_RADIUS_LAR" +
+      "GE\020\004*\225\001\n\021PublicColorScheme\022#\n\037PUBLIC_COL" +
+      "OR_SCHEME_UNSPECIFIED\020\000\022\036\n\032PUBLIC_COLOR_" +
+      "SCHEME_SYSTEM\020\001\022\035\n\031PUBLIC_COLOR_SCHEME_L" +
+      "IGHT\020\002\022\034\n\030PUBLIC_COLOR_SCHEME_DARK\020\003*\377\001\n" +
+      "\026HomepageFooterLinkKind\022)\n%HOMEPAGE_FOOT" +
+      "ER_LINK_KIND_UNSPECIFIED\020\000\022%\n!HOMEPAGE_F" +
+      "OOTER_LINK_KIND_DISCORD\020\001\022#\n\037HOMEPAGE_FO" +
+      "OTER_LINK_KIND_STORE\020\002\022%\n!HOMEPAGE_FOOTE" +
+      "R_LINK_KIND_WEBSITE\020\003\022\"\n\036HOMEPAGE_FOOTER" +
+      "_LINK_KIND_VOTE\020\004\022#\n\037HOMEPAGE_FOOTER_LIN" +
+      "K_KIND_OTHER\020\005*\217\001\n\026HomepageCardActionTyp" +
+      "e\022)\n%HOMEPAGE_CARD_ACTION_TYPE_UNSPECIFI" +
+      "ED\020\000\022\"\n\036HOMEPAGE_CARD_ACTION_TYPE_LINK\020\001" +
+      "\022&\n\"HOMEPAGE_CARD_ACTION_TYPE_CATEGORY\020\002" +
+      "Bc\n\025gg.modl.proto.modl.v1B\rSettingsProto" +
+      "P\001\242\002\003MXX\252\002\007Modl.V1\312\002\007Modl\\V1\342\002\023Modl\\V1\\G" +
+      "PBMetadata\352\002\010Modl::V1b\006proto3"
     };
     descriptor = com.google.protobuf.Descriptors.FileDescriptor
       .internalBuildGeneratedFileFrom(descriptorData,
@@ -1305,6 +1376,42 @@ public final class SettingsProto extends com.google.protobuf.GeneratedFile {
       com.google.protobuf.GeneratedMessage.FieldAccessorTable(
         internal_static_modl_v1_UpdatePublicCustomCssRequest_descriptor,
         new java.lang.String[] { "ExpectedVersion", "Css", });
+    internal_static_modl_v1_HomepageFooterLink_descriptor =
+      getDescriptor().getMessageType(72);
+    internal_static_modl_v1_HomepageFooterLink_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_HomepageFooterLink_descriptor,
+        new java.lang.String[] { "Label", "Url", "Kind", });
+    internal_static_modl_v1_HomepageSettings_descriptor =
+      getDescriptor().getMessageType(73);
+    internal_static_modl_v1_HomepageSettings_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_HomepageSettings_descriptor,
+        new java.lang.String[] { "Tagline", "ServerAddress", "ShowPlayerCount", "FooterLinks", "Cards", });
+    internal_static_modl_v1_HomepageCardDraft_descriptor =
+      getDescriptor().getMessageType(74);
+    internal_static_modl_v1_HomepageCardDraft_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_HomepageCardDraft_descriptor,
+        new java.lang.String[] { "Id", "Title", "Description", "Icon", "ActionType", "ActionUrl", "CategoryId", "Enabled", "CategoryName", });
+    internal_static_modl_v1_HomepageSettingsEnvelope_descriptor =
+      getDescriptor().getMessageType(75);
+    internal_static_modl_v1_HomepageSettingsEnvelope_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_HomepageSettingsEnvelope_descriptor,
+        new java.lang.String[] { "Data", "Meta", });
+    internal_static_modl_v1_UpdateHomepageSettingsRequest_descriptor =
+      getDescriptor().getMessageType(76);
+    internal_static_modl_v1_UpdateHomepageSettingsRequest_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_UpdateHomepageSettingsRequest_descriptor,
+        new java.lang.String[] { "ExpectedVersion", "Settings", });
+    internal_static_modl_v1_PublicHomepageResponse_descriptor =
+      getDescriptor().getMessageType(77);
+    internal_static_modl_v1_PublicHomepageResponse_fieldAccessorTable = new
+      com.google.protobuf.GeneratedMessage.FieldAccessorTable(
+        internal_static_modl_v1_PublicHomepageResponse_descriptor,
+        new java.lang.String[] { "Tagline", "ServerAddress", "OnlinePlayers", "FooterLinks", });
     descriptor.resolveAllFeaturesImmutable();
     com.buf.validate.ValidateProto.getDescriptor();
     com.google.protobuf.StructProto.getDescriptor();

@@ -5,6 +5,8 @@ import gg.modl.minecraft.features.reporter.detection.DetectionSource;
 import gg.modl.minecraft.features.reporter.detection.ViolationTracker;
 import gg.modl.minecraft.core.service.ReplayCaptureResult;
 import gg.modl.minecraft.core.service.ReplayCaptureStatus;
+import gg.modl.minecraft.core.service.ReplayRecordingOutcome;
+import gg.modl.minecraft.core.service.ReplayRecordingResult;
 import gg.modl.minecraft.core.service.ReplayService;
 import gg.modl.minecraft.core.util.PluginLogger;
 import org.junit.jupiter.api.Test;
@@ -32,6 +34,7 @@ class AutoReporterTest {
     private static final DetectionSource SOURCE = DetectionSource.GRIM;
     private static final String CHECK_NAME = "speed";
     private static final String PLAYER_NAME = "byteful";
+    private static final String ANTICHEAT_NAME = "TestAC";
 
     @TempDir
     Path tempDir;
@@ -125,7 +128,8 @@ class AutoReporterTest {
         Logger logger = isolatedLogger("ticket-failure-no-replay");
         CapturingHandler handler = attachWarningHandler(logger);
         try {
-            AutoReporter autoReporter = new AutoReporter(PluginLogger.fromJul(logger), config, ticketCreator, violationTracker, config::getServerName);
+            AutoReporter autoReporter = new AutoReporter(PluginLogger.fromJul(logger), config, ticketCreator, violationTracker, config::getServerName,
+                    () -> ANTICHEAT_NAME);
             UUID playerUuid = UUID.randomUUID();
             violationTracker.addViolation(playerUuid, SOURCE, CHECK_NAME, "verbose");
 
@@ -150,7 +154,8 @@ class AutoReporterTest {
         Logger logger = isolatedLogger("ticket-failure-with-replay");
         CapturingHandler handler = attachWarningHandler(logger);
         try {
-            AutoReporter autoReporter = new AutoReporter(PluginLogger.fromJul(logger), config, ticketCreator, violationTracker, config::getServerName);
+            AutoReporter autoReporter = new AutoReporter(PluginLogger.fromJul(logger), config, ticketCreator, violationTracker, config::getServerName,
+                    () -> ANTICHEAT_NAME);
             FakeReplayService replayService = new FakeReplayService();
             replayService.status = ReplayCaptureStatus.OK;
             replayService.captureFuture = CompletableFuture.completedFuture(ReplayCaptureResult.ok("replay-xyz"));
@@ -206,14 +211,14 @@ class AutoReporterTest {
                 config,
                 ticketCreator,
                 violationTracker,
-                config::getServerName
+                config::getServerName,
+                () -> ANTICHEAT_NAME
         );
         return new TestFixture(autoReporter, ticketCreator, violationTracker, new FakeReplayService());
     }
 
     private ServerFeaturesConfig loadConfig() throws IOException {
         Files.write(tempDir.resolve("server-features.yml"), String.join(System.lineSeparator(),
-                "anticheat-name: \"TestAC\"",
                 "server-name: \"TestServer\"",
                 "report-cooldown: 60",
                 "report-violation-threshold:",
@@ -284,6 +289,21 @@ class AutoReporterTest {
         @Override
         public ReplayCaptureStatus getReplayStatus(UUID playerUuid) {
             return status;
+        }
+
+        @Override
+        public CompletableFuture<ReplayRecordingResult> startRecording(UUID targetUuid, String targetName) {
+            return CompletableFuture.completedFuture(ReplayRecordingResult.of(ReplayRecordingOutcome.NOT_AVAILABLE));
+        }
+
+        @Override
+        public CompletableFuture<ReplayRecordingResult> stopRecording(UUID targetUuid, String targetName) {
+            return CompletableFuture.completedFuture(ReplayRecordingResult.of(ReplayRecordingOutcome.NOT_AVAILABLE));
+        }
+
+        @Override
+        public CompletableFuture<ReplayRecordingResult> recordingStatus(UUID targetUuid, String targetName) {
+            return CompletableFuture.completedFuture(ReplayRecordingResult.of(ReplayRecordingOutcome.NOT_AVAILABLE));
         }
     }
 }

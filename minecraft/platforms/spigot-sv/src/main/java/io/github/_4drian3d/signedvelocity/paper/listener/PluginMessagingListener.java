@@ -1,5 +1,10 @@
 package io.github._4drian3d.signedvelocity.paper.listener;
 
+import com.github.retrooper.packetevents.event.PacketListenerAbstract;
+import com.github.retrooper.packetevents.event.PacketListenerPriority;
+import com.github.retrooper.packetevents.event.PacketReceiveEvent;
+import com.github.retrooper.packetevents.protocol.packettype.PacketType;
+import com.github.retrooper.packetevents.wrapper.play.client.WrapperPlayClientPluginMessage;
 import com.google.common.io.ByteArrayDataInput;
 import com.google.common.io.ByteStreams;
 import io.github._4drian3d.signedvelocity.common.queue.SignedQueue;
@@ -8,33 +13,38 @@ import io.github._4drian3d.signedvelocity.shared.SignedConstants;
 import io.github._4drian3d.signedvelocity.shared.logger.DebugLogger;
 import io.github._4drian3d.signedvelocity.shared.types.QueueType;
 import io.github._4drian3d.signedvelocity.shared.types.ResultType;
-import org.bukkit.entity.Player;
-import org.bukkit.plugin.messaging.PluginMessageListener;
 
-import java.util.Objects;
 import java.util.UUID;
 
-public final class PluginMessagingListener implements PluginMessageListener {
+public final class PluginMessagingListener extends PacketListenerAbstract {
     private final SignedQueue chatQueue;
     private final SignedQueue commandQueue;
     private final DebugLogger debugLogger;
 
     public PluginMessagingListener(final SignedQueue chatQueue, final SignedQueue commandQueue,
                                    final DebugLogger debugLogger) {
+        super(PacketListenerPriority.LOWEST);
         this.chatQueue = chatQueue;
         this.commandQueue = commandQueue;
         this.debugLogger = debugLogger;
     }
 
     @Override
-    public void onPluginMessageReceived(
-        final String channel,
-        final Player player,
-        final byte[] message
-    ) {
-        if (!Objects.equals(channel, SignedConstants.SIGNED_PLUGIN_CHANNEL)) {
+    public void onPacketReceive(final PacketReceiveEvent event) {
+        if (event.getPacketType() != PacketType.Play.Client.PLUGIN_MESSAGE) {
             return;
         }
+        final UUID sender = event.getUser().getUUID();
+        if (sender == null) {
+            return;
+        }
+        final WrapperPlayClientPluginMessage message = new WrapperPlayClientPluginMessage(event);
+        if (SignedConstants.SIGNED_PLUGIN_CHANNEL.equals(message.getChannelName())) {
+            accept(sender, message.getData());
+        }
+    }
+
+    void accept(final UUID sender, final byte[] message) {
         debugLogger.debug(() -> "[Plugin Message] Received on: " + System.currentTimeMillis());
         try {
             final ByteArrayDataInput input = ByteStreams.newDataInput(message);
@@ -43,13 +53,7 @@ public final class PluginMessagingListener implements PluginMessageListener {
             final String source = input.readUTF();
             final String result = input.readUTF();
 
-            final QueueType queueType = QueueType.getOrThrow(source);
-            final SignedQueue queue;
-            if (queueType == QueueType.COMMAND) {
-                queue = commandQueue;
-            } else {
-                queue = chatQueue;
-            }
+            final SignedQueue queue = QueueType.getOrThrow(source) == QueueType.COMMAND ? commandQueue : chatQueue;
 
             final ResultType resultType = ResultType.getOrThrow(result);
             final SignedResult resulted;
@@ -61,9 +65,8 @@ public final class PluginMessagingListener implements PluginMessageListener {
                 resulted = SignedResult.allowed();
             }
 
-            if (!playerId.equals(player.getUniqueId())) {
-                debugLogger.debug(() -> "[Plugin Message] Dropping payload: embedded UUID " + playerId
-                        + " != sender " + player.getUniqueId());
+            if (!playerId.equals(sender)) {
+                debugLogger.debug(() -> "[Plugin Message] Dropping payload: embedded UUID " + playerId + " != sender " + sender);
                 return;
             }
 

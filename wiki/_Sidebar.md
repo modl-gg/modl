@@ -15,6 +15,7 @@
 - [Email and Sign-in](Email-and-Sign-in)
 - [Database and Storage](Database-and-Storage)
 - [AI Moderation](AI-Moderation)
+- [Replays](Replays)
 - [Customizing the Public Pages](Customizing-the-Public-Pages)
 
 **Operate**

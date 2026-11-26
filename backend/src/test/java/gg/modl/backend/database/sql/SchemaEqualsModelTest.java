@@ -64,7 +64,8 @@ class SchemaEqualsModelTest {
     private static final Set<String> NON_TIME_BIGINT_COLUMNS = Set.of(
         "modl_settings.version", "modl_players.total_playtime_seconds", "modl_player_ips.login_count",
         "modl_punishments.duration_ms", "modl_punishment_modifications.effective_duration_ms", "modl_punishment_evidence.file_size",
-        "modl_webauthn_credentials.signature_count", "modl_replays.file_size", "modl_storage_files.size_bytes",
+        "modl_webauthn_credentials.signature_count", "modl_replays.file_size", "modl_replay_shares.view_count",
+        "modl_storage_files.size_bytes",
         "modl_storage_reservations.reserved_bytes", "modl_chat_logs.id", "modl_command_logs.id", "modl_audit_logs.id",
         "modl_staff_totp.last_used_step", "modl_storage_transfers.copied_objects", "modl_storage_transfers.copied_bytes",
         "modl_storage_transfers.skipped_objects", "modl_storage_transfers.failed_objects");

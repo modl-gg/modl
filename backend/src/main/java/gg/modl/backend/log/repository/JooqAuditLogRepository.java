@@ -22,7 +22,6 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public class JooqAuditLogRepository implements AuditLogRepository {
-    private static final String CAN_ROLLBACK_KEY = "canRollback";
     private static final String LEVEL_INFO = "info";
     private static final List<String> EVIDENCE_WORDS = List.of("evidence", "upload", "file");
     private static final List<String> INFO_EVIDENCE_WORDS = List.of("uploaded", "attachment");
@@ -47,10 +46,9 @@ public class JooqAuditLogRepository implements AuditLogRepository {
         String level = TextLimits.require(AUDIT_LOGS.LEVEL, auditLog.getLevel());
         String source = TextLimits.require(AUDIT_LOGS.SOURCE, auditLog.getSource());
         String metadataJson = metadata.isEmpty() ? null : jsonColumns.write(metadata);
-        boolean canRollback = !Boolean.FALSE.equals(metadata.get(CAN_ROLLBACK_KEY));
         unitOfWork.write(() -> {
             dsl.insertInto(AUDIT_LOGS)
-                .set(new AuditLogsRecord(sequencer.next(), level, source, auditLog.getDescription(), metadataJson, canRollback,
+                .set(new AuditLogsRecord(sequencer.next(), level, source, auditLog.getDescription(), metadataJson,
                     auditLog.getCreated()))
                 .execute();
         });

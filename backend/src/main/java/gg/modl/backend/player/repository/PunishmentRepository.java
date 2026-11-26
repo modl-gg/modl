@@ -4,6 +4,7 @@ import gg.modl.backend.player.data.punishment.Punishment;
 import gg.modl.backend.player.data.punishment.PunishmentEvidence;
 import gg.modl.backend.player.data.punishment.PunishmentModification;
 import gg.modl.backend.player.data.punishment.PunishmentNote;
+import gg.modl.backend.player.data.punishment.PunishmentPhase;
 import gg.modl.backend.player.data.punishment.ResolvedCategory;
 import org.jspecify.annotations.Nullable;
 import java.time.Instant;
@@ -65,7 +66,8 @@ public interface PunishmentRepository {
     List<String> pageIdsByIssuer(IssuerMatch issuer, @Nullable Instant issuedFrom, @Nullable Instant issuedUntil,
                                  @Nullable String afterId, int limit);
 
-    List<String> pageActiveIdsByTypes(Collection<Integer> typeOrdinals, Instant now, @Nullable String afterId, int limit);
+    List<String> pageIdsByTypes(Collection<Integer> typeOrdinals, Collection<PunishmentPhase> phases, Instant now,
+                                @Nullable String afterId, int limit);
 
     Optional<PunishmentSearchRow> findSearchRow(String id);
 
@@ -73,13 +75,13 @@ public interface PunishmentRepository {
 
     List<PunishmentSearchRow> findRecentSearchRows(int limit);
 
-    Map<ResolvedCategory, Long> countActiveByCategory(Instant now);
+    Map<ResolvedCategory, Long> countByCategory(PunishmentPhase phase, Instant now);
 
     List<IssuerCount> countByIssuer(Instant issuedFrom);
 
-    long countActive(Instant now);
+    long count(PunishmentPhase phase, Instant now);
 
-    Map<Integer, Long> countActiveByType(Instant now);
+    Map<Integer, Long> countByType(PunishmentPhase phase, Instant now);
 
     PunishmentListPage pageListed(PunishmentListQuery query, Instant now, @Nullable PunishmentListCursor after, int limit);
 }

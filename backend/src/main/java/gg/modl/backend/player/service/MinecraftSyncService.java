@@ -196,7 +196,7 @@ public class MinecraftSyncService {
                 endedCategories.add(category);
             }
 
-            if (punishment.getTypeOrdinal() == 0 && punishment.getStarted() == null) {
+            if (punishment.getTypeOrdinal() == Punishment.KICK_TYPE_ORDINAL && punishment.getStarted() == null) {
                 if (!punishment.hasEndedEnforcement()) {
                     pendingPunishments.add(new SyncPunishmentEntry(
                         uuid, username,

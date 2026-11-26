@@ -14,6 +14,7 @@ public enum SettingsType {
     WEBHOOKS("webhookSettings"),
     AI_MODERATION("aiModerationSettings"),
     REPLAY_RETENTION("replayRetention"),
+    REPLAYS("replaySettings"),
     DATA_RETENTION("dataRetention"),
     SIGN_IN("signIn"),
     MAIL("mail"),
@@ -25,6 +26,7 @@ public enum SettingsType {
     STORAGE_BACKEND("storageBackend"),
     PUBLIC_THEME("publicTheme"),
     PUBLIC_CUSTOM_CSS("publicCustomCss"),
+    PUBLIC_HOMEPAGE("publicHomepage"),
     HOSTED_IMPORT("hostedImport"),
     HOSTED_IMPORT_CHOICES("hostedImportChoices"),
     HOSTED_IMPORT_ALIASES("hostedImportAliases");

@@ -7,7 +7,8 @@ import { Button } from '@/components/ui/button';
 import { usePlayerReplays } from '@/hooks/use-data';
 import { formatDateWithTime } from '@/utils/date-utils';
 import { formatFileSize } from '@/utils/file-utils';
-import { replayIdFromReference, replayPagePath } from '@/lib/replay-reference';
+import { replayIdFromReference } from '@/lib/replay-reference';
+import { useOpenReplay } from '@/components/replays/use-replay-dialog';
 
 interface PlayerReplaysListProps {
   playerId: string;
@@ -38,6 +39,7 @@ function ReplayStatusBadge({ status }: { readonly status: string }) {
 const PlayerReplaysList = ({ playerId }: PlayerReplaysListProps) => {
   const { t } = useTranslation();
   const { data: replays, isLoading, error } = usePlayerReplays(playerId);
+  const openReplay = useOpenReplay();
 
   if (isLoading) {
     return (
@@ -88,7 +90,7 @@ const PlayerReplaysList = ({ playerId }: PlayerReplaysListProps) => {
               <Button
                 variant="outline"
                 size="sm"
-                onClick={() => window.open(replayPagePath(replayId), '_blank', 'noopener,noreferrer')}
+                onClick={() => { openReplay(replayId); }}
                 disabled={!canOpenReplay}
               >
                 {t('player.openReplay')}

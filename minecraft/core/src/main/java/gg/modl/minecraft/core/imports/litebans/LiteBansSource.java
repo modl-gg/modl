@@ -1,6 +1,7 @@
 package gg.modl.minecraft.core.imports.litebans;
 
 import gg.modl.minecraft.api.DatabaseProvider;
+import gg.modl.minecraft.core.imports.source.ImportProblem;
 import gg.modl.minecraft.core.imports.source.ImportSource;
 import gg.modl.minecraft.core.imports.source.SourceException;
 import gg.modl.minecraft.core.imports.source.SourceReader;
@@ -12,8 +13,6 @@ import java.util.function.Supplier;
 
 @RequiredArgsConstructor
 public final class LiteBansSource implements ImportSource {
-    private static final String MISSING = "import.litebans_missing";
-
     private final BooleanSupplier enabled;
     private final ProviderFactory providers;
     private final Supplier<String> defaultReason;
@@ -36,7 +35,7 @@ public final class LiteBansSource implements ImportSource {
 
     @Override
     public SourceReader open() throws SourceException {
-        if (!isPresent()) throw SourceException.missing(MISSING, "LiteBans is not running");
+        if (!isPresent()) throw SourceException.missing(ImportProblem.LITEBANS_MISSING, "LiteBans is not running");
         DatabaseProvider database;
         try {
             database = providers.open();

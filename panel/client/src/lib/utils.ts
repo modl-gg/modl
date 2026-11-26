@@ -20,6 +20,13 @@ export function safeExternalHref(url: string | undefined | null): string | undef
   return undefined;
 }
 
+export function absoluteWebHref(url: string | undefined | null): string | undefined {
+  const safe = safeExternalHref(url);
+  if (safe === undefined || safe.startsWith('/') || /\s/.test(safe)) return undefined;
+  const parsed = new URL(safe);
+  return parsed.hostname !== '' && parsed.username === '' && parsed.password === '' ? safe : undefined;
+}
+
 export function openExternalUrl(url: string | undefined | null): boolean {
   const safe = safeExternalHref(url);
   if (!safe) return false;

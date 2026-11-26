@@ -155,20 +155,21 @@ public class DatabaseMoveService implements DatabaseMoves {
 
     public DatabaseSettingsView move(Server server, String actorEmail, DatabaseConnection target, boolean manualRestartAcknowledged) {
         requireUnmanaged();
-        if (restart.mode() == InstanceRestart.Mode.MANUAL && !manualRestartAcknowledged) {
+        InstanceRestart.Mode restartMode = restart.mode();
+        if (restartMode == InstanceRestart.Mode.MANUAL && !manualRestartAcknowledged) {
             throw new ValidationException("Confirm that you will restart modl yourself to finish the move",
                 DatabaseMoveCodes.RESTART_NOT_ACKNOWLEDGED);
         }
-        importExclusion.exclusively(() -> begin(server, actorEmail, target));
+        Reservation reserved = importExclusion.exclusively(() -> reserve(target));
+        begin(server, actorEmail, target, restartMode, reserved);
         return view();
     }
 
-    private DatabaseMove begin(Server server, String actorEmail, DatabaseConnection target) {
-        Reservation reserved = reserve(target);
+    private void begin(Server server, String actorEmail, DatabaseConnection target, InstanceRestart.Mode restartMode,
+                       Reservation reserved) {
         try {
-            auditor.recordStaffAction(server, actorEmail, "Started moving the database to " + target.dialect().displayName());
+            auditor.recordStaffAction(server, actorEmail, startDescription(target, restartMode));
             worker.execute(() -> run(server, actorEmail, target));
-            return reserved.started();
         } catch (RejectedExecutionException e) {
             release(reserved);
             throw new ServiceUnavailableException("modl is stopping, so the database cannot be moved", e);
@@ -176,6 +177,19 @@ public class DatabaseMoveService implements DatabaseMoves {
             release(reserved);
             throw e;
         }
+    }
+
+    private String startDescription(DatabaseConnection target, InstanceRestart.Mode restartMode) {
+        return "Started moving the database from " + selection.currentLocation().dialect().displayName() + " to "
+            + target.dialect().displayName() + "; restart: " + restartName(restartMode);
+    }
+
+    private static String restartName(InstanceRestart.Mode mode) {
+        return switch (mode) {
+            case IN_PLACE -> "automatic";
+            case EXIT -> "container restart";
+            case MANUAL -> "manual";
+        };
     }
 
     private synchronized Reservation reserve(DatabaseConnection target) {

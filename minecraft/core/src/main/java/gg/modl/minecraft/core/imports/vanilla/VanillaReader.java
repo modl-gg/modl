@@ -246,7 +246,7 @@ final class VanillaReader implements SourceReader {
     }
 
     private void requireRunning() throws SourceException {
-        if (cancelled) throw SourceException.failed("Cancelled");
+        if (cancelled) throw SourceException.cancelled();
     }
 
     private @Nullable ConfigFile readUser(Path file) {
@@ -301,6 +301,11 @@ final class VanillaReader implements SourceReader {
         } catch (NumberFormatException notNumber) {
             return fallback;
         }
+    }
+
+    @Override
+    public boolean isReusable() {
+        return !cancelled;
     }
 
     @Override
