@@ -46,6 +46,8 @@ public class IntaveHook extends AbstractAnticheatHook<IntaveViolationEvent> impl
 
     @EventHandler
     public void onFlag(IntaveViolationEvent event) {
-        handle(event);
+        if (event.reaction() != IntaveViolationEvent.Reaction.IGNORE && event.reaction() != IntaveViolationEvent.Reaction.INTERRUPT) {
+            handle(event);
+        }
     }
 }
