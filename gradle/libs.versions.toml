@@ -39,6 +39,7 @@ nullaway = "0.14.3"
 errorprone-gradle = "5.2.0"
 grim-api = "1.2.4.0"
 polar-api = "2.4.4"
+intave = "14.4.2"
 asm = "9.11.1"
 spigot-legacy-gson = "2.2.4"
 spigot-legacy-guava = "17.0"
@@ -132,6 +133,7 @@ velocity-api = { module = "com.velocitypowered:velocity-api", version.ref = "vel
 paper-api = { module = "io.papermc.paper:paper-api", version.ref = "paper" }
 grim-api = { module = "ac.grim.grimac:GrimAPI", version.ref = "grim-api" }
 polar-api = { module = "top.polar:api", version.ref = "polar-api" }
+intave-access = { module = "de.jpx3.intave.access:intave-access", version.ref = "intave" }
 spigot-legacy-gson = { module = "com.google.code.gson:gson", version.ref = "spigot-legacy-gson" }
 spigot-legacy-guava = { module = "com.google.guava:guava", version.ref = "spigot-legacy-guava" }
 spigot-legacy-snakeyaml = { module = "org.yaml:snakeyaml", version.ref = "spigot-legacy-snakeyaml" }

@@ -81,6 +81,16 @@ dependencyResolutionManagement {
                 includeGroup("top.polar")
             }
         }
+        exclusiveContent {
+            forRepository {
+                maven("https://repo.janmm14.de/repository/intave/") {
+                    name = "intave"
+                }
+            }
+            filter {
+                includeGroup("de.jpx3.intave.access")
+            }
+        }
         matching { it != mavenCentral }.configureEach {
             content {
                 notForConfigurations("embeddedRuntimeClasspath")

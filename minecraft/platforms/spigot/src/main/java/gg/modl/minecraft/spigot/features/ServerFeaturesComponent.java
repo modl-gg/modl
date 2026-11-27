@@ -22,6 +22,7 @@ import gg.modl.minecraft.spigot.features.handler.FreezeHandler;
 import gg.modl.minecraft.spigot.features.handler.MemberFreezeChatGuard;
 import gg.modl.minecraft.spigot.features.handler.StaffModeHandler;
 import gg.modl.minecraft.spigot.features.reporter.hook.GrimHook;
+import gg.modl.minecraft.spigot.features.reporter.hook.IntaveHook;
 import gg.modl.minecraft.spigot.features.reporter.hook.PolarHook;
 import gg.modl.minecraft.spigot.features.reporter.hook.VulcanHook;
 import org.bukkit.Bukkit;
@@ -51,7 +52,8 @@ public class ServerFeaturesComponent extends AbstractServerFeatures implements L
 
     private static final String GRIM_PLUGIN = "GrimAC";
     private static final String VULCAN_PLUGIN = "Vulcan";
-    private static final List<String> ANTICHEAT_PLUGINS = Collections.unmodifiableList(Arrays.asList(GRIM_PLUGIN, VULCAN_PLUGIN));
+    private static final String INTAVE_PLUGIN = "Intave";
+    private static final List<String> ANTICHEAT_PLUGINS = Collections.unmodifiableList(Arrays.asList(GRIM_PLUGIN, VULCAN_PLUGIN, INTAVE_PLUGIN));
 
     private static final String PACKET_EVENTS_MISSING =
             "[replay] PacketEvents is not installed or not initialized, so this server records no replays";
@@ -111,10 +113,16 @@ public class ServerFeaturesComponent extends AbstractServerFeatures implements L
             hooks.add(vulcanHook);
         }
 
+        if (Bukkit.getPluginManager().isPluginEnabled(INTAVE_PLUGIN)) {
+            IntaveHook intaveHook = new IntaveHook(plugin, featuresConfig, violationTracker, autoReporter);
+            intaveHook.register();
+            hooks.add(intaveHook);
+        }
+
         attachPolarIfLoaded(hooks, autoReporter);
 
         if (hooks.isEmpty() && !polarLoaderAvailable) {
-            pluginLogger.debug("[anticheat] No anticheat plugins detected. Install GrimAC, Vulcan, or Polar for anticheat reporting.");
+            pluginLogger.debug("[anticheat] No anticheat plugins detected. Install GrimAC, Vulcan, Intave, or Polar for anticheat reporting.");
         }
     }
 
