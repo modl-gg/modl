@@ -119,21 +119,22 @@ class ReplayRecorderTest {
     void aStaffRecordingStopsOnlyForItsStarter() {
         assertNotNull(recorder.startSeeded(target, "Steve", RecordingCause.STAFF));
 
-        assertFalse(recorder.stopIfStartedBy(target, RecordingCause.AUTO_RECORD));
-        assertTrue(recorder.stopIfStartedBy(target, RecordingCause.STAFF));
+        assertFalse(recorder.release(target, RecordingCause.AUTO_RECORD));
+        assertTrue(recorder.release(target, RecordingCause.STAFF));
         assertFalse(recorder.isRecording(target));
         assertFalse(recorder.status(target).isPresent());
     }
 
     @Test
-    void aFlagKeepsAStaffRecordingAsAFlagRecording() {
+    void aFlagKeepsRecordingAfterTheStaffReleasesIt() {
         assertNotNull(recorder.startSeeded(target, "Steve", RecordingCause.STAFF));
 
         assertTrue(recorder.keepForFlag(target));
 
-        assertEquals(RecordingCause.ANTICHEAT_FLAG, recorder.status(target).map(RecordingStatus::getCause).orElse(null));
-        assertFalse(recorder.stopIfStartedBy(target, RecordingCause.STAFF));
+        assertEquals(RecordingCause.STAFF, recorder.status(target).map(RecordingStatus::getCause).orElse(null));
+        assertTrue(recorder.release(target, RecordingCause.STAFF));
         assertTrue(recorder.isRecording(target));
+        assertEquals(RecordingCause.ANTICHEAT_FLAG, recorder.status(target).map(RecordingStatus::getCause).orElse(null));
     }
 
     @Test
@@ -143,25 +144,83 @@ class ReplayRecorderTest {
         assertTrue(recorder.keepForFlag(target));
 
         assertEquals(RecordingCause.ANTICHEAT_FLAG, recorder.status(target).map(RecordingStatus::getCause).orElse(null));
-        assertFalse(recorder.stopIfStartedBy(target, RecordingCause.AUTO_RECORD));
+        recorder.recordEveryPlayer(false);
         assertTrue(recorder.isRecording(target));
+    }
+
+    @Test
+    void aStaffRecordOnAnAutoRecordingSurvivesTurningAutoRecordOff() {
+        assertTrue(recorder.start(target, "Steve"));
+        assertNull(recorder.startSeeded(target, "Steve", RecordingCause.STAFF));
+
+        recorder.recordEveryPlayer(false);
+
+        assertTrue(recorder.isRecording(target));
+        assertEquals(RecordingCause.STAFF, recorder.status(target).map(RecordingStatus::getCause).orElse(null));
+    }
+
+    @Test
+    void releasingTheStaffHoldKeepsTheAutoRecording() {
+        assertTrue(recorder.start(target, "Steve"));
+        assertNull(recorder.startSeeded(target, "Steve", RecordingCause.STAFF));
+
+        assertTrue(recorder.release(target, RecordingCause.STAFF));
+
+        assertTrue(recorder.isRecording(target));
+        assertEquals(RecordingCause.AUTO_RECORD, recorder.status(target).map(RecordingStatus::getCause).orElse(null));
     }
 
     @Test
     void aFlagFindsNothingToKeepOnceTheStaffStopStarted() {
         assertNotNull(recorder.startSeeded(target, "Steve", RecordingCause.STAFF));
-        assertTrue(recorder.stopIfStartedBy(target, RecordingCause.STAFF));
+        assertTrue(recorder.release(target, RecordingCause.STAFF));
 
         assertFalse(recorder.keepForFlag(target));
         assertNotNull(recorder.startSeeded(target, "Steve", RecordingCause.ANTICHEAT_FLAG));
     }
 
     @Test
-    void aSecondStartLeavesTheFirstCause() {
+    void theDisconnectOfAnOlderConnectionLeavesTheNewConnectionRecorded() {
+        EmbeddedChannel older = openChannel();
+        EmbeddedChannel newer = openChannel();
+        assertNotNull(recorder.joining(user(target, older)));
+        assertNotNull(recorder.joining(user(target, newer)));
+
+        recorder.disconnected(target, older);
+        assertTrue(recorder.isRecording(target));
+
+        recorder.disconnected(target, newer);
+        assertFalse(recorder.isRecording(target));
+    }
+
+    @Test
+    void aRecordingStartedBeforeItsJoinPacketFollowsTheLatestConnection() {
+        assertTrue(recorder.start(target, "Steve"));
+        EmbeddedChannel newer = openChannel();
+        assertNotNull(recorder.joining(user(target, newer)));
+
+        recorder.disconnected(target, openChannel());
+        assertTrue(recorder.isRecording(target));
+
+        recorder.disconnected(target, newer);
+        assertFalse(recorder.isRecording(target));
+    }
+
+    @Test
+    void aRecordingNotYetSeenOnAnyConnectionStopsOnDisconnect() {
+        assertTrue(recorder.start(target, "Steve"));
+
+        recorder.disconnected(target, openChannel());
+
+        assertFalse(recorder.isRecording(target));
+    }
+
+    @Test
+    void aSecondStartJoinsTheFirstAndRaisesItsRank() {
         assertTrue(recorder.start(target, "Steve"));
 
         assertNull(recorder.startSeeded(target, "Steve", RecordingCause.STAFF));
-        assertEquals(RecordingCause.AUTO_RECORD, recorder.status(target).map(RecordingStatus::getCause).orElse(null));
+        assertEquals(RecordingCause.STAFF, recorder.status(target).map(RecordingStatus::getCause).orElse(null));
     }
 
     @Test
@@ -257,7 +316,7 @@ class ReplayRecorderTest {
 
         assertTrue(recorder.isRecording(requested));
         assertFalse(recorder.isRecording(other));
-        assertEquals(RecordingCause.AUTO_RECORD, recorder.status(requested).map(RecordingStatus::getCause).orElse(null));
+        assertEquals(RecordingCause.STAFF, recorder.status(requested).map(RecordingStatus::getCause).orElse(null));
     }
 
     @Test

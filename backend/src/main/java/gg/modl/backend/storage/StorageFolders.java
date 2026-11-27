@@ -11,7 +11,7 @@ public final class StorageFolders {
     }
 
     public static boolean servedByStorageUrl(String key) {
-        return !REPLAYS.equals(StorageKeyUtils.folderOf(key));
+        return StorageKeySegments.isCanonical(key) && !REPLAYS.equalsIgnoreCase(StorageKeyUtils.folderOf(key));
     }
 
     public static String icon(String iconName) {

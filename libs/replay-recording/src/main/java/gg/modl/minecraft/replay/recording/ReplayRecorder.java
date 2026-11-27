@@ -89,7 +89,7 @@ public final class ReplayRecorder implements AutoCloseable {
         new TargetPackets(context).register(handlers);
         new PlayerInfoPackets().register(handlers);
         new ChatPackets().register(handlers);
-        this.tap = new PacketTap(recordings, handlers, failures, this::stop, this::joining);
+        this.tap = new PacketTap(recordings, handlers, failures, this::disconnected, this::joining);
     }
 
     public void open() {
@@ -113,7 +113,7 @@ public final class ReplayRecorder implements AutoCloseable {
             Iterator<Recording> active = recordings.values().iterator();
             while (active.hasNext()) {
                 Recording recording = active.next();
-                if (!recording.endIfStartedBy(RecordingCause.AUTO_RECORD)) continue;
+                if (recording.release(RecordingCause.AUTO_RECORD) != Recording.Release.ENDED) continue;
                 active.remove();
                 recording.close();
             }
@@ -122,11 +122,15 @@ public final class ReplayRecorder implements AutoCloseable {
 
     @Nullable Recording joining(User user) {
         UUID target = user.getUUID();
+        if (target == null) return null;
+        Object channel = user.getChannel();
+        if (!ChannelHelper.isOpen(channel)) return recordings.get(target);
         String name = user.getName();
-        if (target == null || name == null || !ChannelHelper.isOpen(user.getChannel())) return null;
         synchronized (admission) {
             Recording existing = recordings.get(target);
-            return existing != null ? existing : startRecording(target, name, RecordingCause.AUTO_RECORD);
+            Recording joined = existing != null || name == null ? existing : startRecording(target, name, RecordingCause.AUTO_RECORD);
+            if (joined != null) joined.connectedThrough(channel);
+            return joined;
         }
     }
 
@@ -145,19 +149,22 @@ public final class ReplayRecorder implements AutoCloseable {
 
     public boolean keepForFlag(UUID target) {
         Recording recording = recordings.get(target);
-        return recording != null && recording.keepForFlag();
+        return recording != null && recording.hold(RecordingCause.ANTICHEAT_FLAG);
     }
 
-    public boolean stopIfStartedBy(UUID target, RecordingCause starter) {
-        Recording recording = recordings.get(target);
-        if (recording == null || !recording.endIfStartedBy(starter)) return false;
-        if (recordings.remove(target, recording)) recording.close();
-        return true;
+    public boolean release(UUID target, RecordingCause holder) {
+        synchronized (admission) {
+            Recording recording = recordings.get(target);
+            if (recording == null) return false;
+            Recording.Release released = recording.release(holder);
+            if (released == Recording.Release.ENDED && recordings.remove(target, recording)) recording.close();
+            return released != Recording.Release.NOT_HELD;
+        }
     }
 
     public Optional<RecordingStatus> status(UUID target) {
         Recording recording = recordings.get(target);
-        return recording == null ? Optional.empty() : Optional.of(new RecordingStatus(recording.cause(), recording.now()));
+        return recording == null ? Optional.empty() : Optional.of(new RecordingStatus(recording.rank(), recording.now()));
     }
 
     public @Nullable RecordingSeed seedIfUnplaced(UUID target) {
@@ -170,7 +177,7 @@ public final class ReplayRecorder implements AutoCloseable {
             if (closed || (cause == RecordingCause.AUTO_RECORD && !recordsEveryPlayer)) return null;
             Recording existing = recordings.get(target);
             if (existing != null) {
-                existing.raise(cause);
+                existing.hold(cause);
                 return null;
             }
             if (!budget.admits(recordings.size() + 1) && !makeRoomFor(cause)) {
@@ -210,6 +217,13 @@ public final class ReplayRecorder implements AutoCloseable {
     public void stop(UUID target) {
         Recording recording = recordings.remove(target);
         if (recording != null) recording.close();
+    }
+
+    void disconnected(UUID target, @Nullable Object channel) {
+        synchronized (admission) {
+            Recording recording = recordings.get(target);
+            if (recording != null && recording.claimedBy(channel) && recordings.remove(target, recording)) recording.close();
+        }
     }
 
     public CompletableFuture<ReplayCapture> capture(UUID target, String reason) {

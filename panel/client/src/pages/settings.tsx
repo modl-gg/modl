@@ -22,6 +22,7 @@ import {
   type SettingsPageId,
 } from '@/lib/settings-access';
 import { cn } from '@/lib/utils';
+import { SETTINGS_PAGE_HELP } from '@/lib/wiki-help';
 
 const GROUP_TITLE_KEYS: Record<SettingsGroupId, string> = {
   account: 'settings.groups.account',
@@ -108,7 +109,7 @@ function SettingsPageView({ pageId, canModify }: { pageId: SettingsPageId; canMo
 
   return (
     <div className="flex min-h-[calc(100dvh-8rem)] min-w-0 flex-1 flex-col">
-      <SettingsPageFrame key={pageId} title={t(PAGE_TITLE_KEYS[pageId])} canModify={canModify}>
+      <SettingsPageFrame key={pageId} title={t(PAGE_TITLE_KEYS[pageId])} help={SETTINGS_PAGE_HELP[pageId]} canModify={canModify}>
         <SettingsSaveScope>
           <Suspense fallback={<SettingsLoading />}>
             <PageContent />

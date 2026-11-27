@@ -143,6 +143,11 @@ public class JooqReplayRepository implements ReplayRepository {
     }
 
     @Override
+    public List<ReplayDocument> findAbandonedUploads(Instant cutoff, @Nullable ReplayCursor after, int limit) {
+        return findPage(abandoned(cutoff), cutoff, after, limit);
+    }
+
+    @Override
     public List<ReplayDocument> findByStorageKeys(Collection<String> storageKeys) {
         return InClauseChunks.<String, ReplayDocument>collect(storageKeys, chunk -> dsl.select(COLUMNS_WITHOUT_LABELS)
             .from(REPLAYS)
@@ -160,15 +165,22 @@ public class JooqReplayRepository implements ReplayRepository {
 
     private List<ReplayDocument> findExpiredPage(Condition storage, Instant cutoff, @Nullable ReplayCursor after, int limit) {
         Condition settled = REPLAYS.STATUS.in(ReplayDocument.STATUS_COMPLETE, ReplayDocument.STATUS_FAILED);
-        Condition abandoned = REPLAYS.STATUS.eq(ReplayDocument.STATUS_PENDING)
+        return findPage(settled.and(storage), cutoff, after, limit);
+    }
+
+    private static Condition abandoned(Instant cutoff) {
+        return REPLAYS.STATUS.eq(ReplayDocument.STATUS_PENDING)
             .and(REPLAYS.VALIDATION_LEASE_EXPIRES_AT.isNull().or(REPLAYS.VALIDATION_LEASE_EXPIRES_AT.le(cutoff)));
-        Condition expired = settled.or(abandoned).and(REPLAYS.CREATED_AT.lt(cutoff));
+    }
+
+    private List<ReplayDocument> findPage(Condition which, Instant cutoff, @Nullable ReplayCursor after, int limit) {
+        Condition expired = which.and(REPLAYS.CREATED_AT.lt(cutoff));
         Condition remaining = after == null
             ? DSL.noCondition()
             : DSL.row(REPLAYS.CREATED_AT, REPLAYS.ID).gt(after.createdAt(), after.id());
         return dsl.select(COLUMNS_WITHOUT_LABELS)
             .from(REPLAYS)
-            .where(expired.and(storage).and(remaining))
+            .where(expired.and(remaining))
             .orderBy(REPLAYS.CREATED_AT, REPLAYS.ID)
             .limit(Math.min(limit, MAX_EXPIRED_PAGE))
             .fetch()

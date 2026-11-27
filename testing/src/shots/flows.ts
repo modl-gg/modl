@@ -2,6 +2,7 @@ import { readFileSync } from "node:fs";
 import { join } from "node:path";
 import type { Locator, Page } from "playwright-core";
 import { z } from "zod";
+import { LOGIN_CODE_LINE, loginCodeIn } from "../lib/contract";
 import { HttpStatus, jsonField, jsonString, type HttpResult, type SessionCredentials } from "../lib/http";
 import type { Logger } from "../lib/log";
 import { REPO_ROOT } from "../lib/paths";
@@ -13,7 +14,6 @@ import { findInJson } from "./json";
 import { VARIANTS } from "./screens";
 
 const STEP_TIMEOUT_MS = 15_000;
-const LOGIN_CODE = /Login code for (\S+): (\d{6})/;
 const DESKTOP_DARK = VARIANTS.find((variant) => variant.id === "dark-desktop");
 const LOCALE_FILE = join(REPO_ROOT, "panel", "client", "src", "locales", "en.json");
 const LOCALE = z.record(z.string(), z.unknown());
@@ -82,10 +82,10 @@ export class FlowContext {
   }
 
   async loginCode(email: string, since: string): Promise<string> {
-    const line = await this.backend.log.waitFor(LOGIN_CODE, { since, timeoutMs: STEP_TIMEOUT_MS });
-    const match = LOGIN_CODE.exec(line.text);
-    if (match?.[1] !== email || match[2] === undefined) throw new Error(`the login code line was for another address: ${match?.[1] ?? "none"}`);
-    return match[2];
+    const line = await this.backend.log.waitFor(LOGIN_CODE_LINE, { since, timeoutMs: STEP_TIMEOUT_MS });
+    const code = loginCodeIn(line.text, email);
+    if (code === null) throw new Error("the login code line was for another address");
+    return code;
   }
 }
 
@@ -215,9 +215,9 @@ const ACCEPT_REPORT: Flow = {
     await page.getByRole("button", { name: "Chat Abuse", exact: true }).click();
     await page.getByRole("tab", { name: context.t("punishment.severityRegular") }).click();
     await page.getByRole("button", { name: /^Apply/ }).click();
-    await page.getByRole("button", { name: context.t("ticket.send") }).click();
-    await eventually(async () => (await context.api(`/v1/panel/tickets/${encodeURIComponent(id)}`)).text.includes("accepted this"), "the accepting reply is not on the ticket");
     await eventually(async () => (await context.playerText(EXAMPLE_PLAYER.uuid)).length > before.length, "no punishment was added to the reported player");
+    await eventually(async () => jsonField((await context.api(`/v1/panel/tickets/${encodeURIComponent(id)}`)).json, "locked") === true, "the report was not closed by the punishment");
+    await visible(page.getByText(context.t("ticket.reopen.locked")));
   },
 };
 

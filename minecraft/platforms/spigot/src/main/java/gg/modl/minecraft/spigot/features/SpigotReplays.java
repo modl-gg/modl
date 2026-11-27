@@ -160,10 +160,9 @@ final class SpigotReplays implements ReplayService, Listener {
     @Override
     public CompletableFuture<ReplayRecordingResult> stopRecording(UUID targetUuid, String targetName) {
         return onPlayerThread(targetUuid, () -> {
-            if (recorder.stopIfStartedBy(targetUuid, RecordingCause.STAFF)) {
-                return ReplayRecordingResult.of(ReplayRecordingOutcome.OK, null, memory());
-            }
+            boolean released = recorder.release(targetUuid, RecordingCause.STAFF);
             ActiveRecording kept = activeRecording(targetUuid);
+            if (released && kept == null) return ReplayRecordingResult.of(ReplayRecordingOutcome.OK, null, memory());
             ReplayRecordingOutcome outcome = kept == null ? ReplayRecordingOutcome.NOT_RECORDING : ReplayRecordingOutcome.NOT_STARTED_BY_STAFF;
             return ReplayRecordingResult.of(outcome, kept, memory());
         });
@@ -251,7 +250,6 @@ final class SpigotReplays implements ReplayService, Listener {
         if (player == null || !player.isOnline()) return ReplayRecordingOutcome.NOT_LOCAL;
         RecordingSeed seed = recorder.startSeeded(uuid, player.getName(), cause);
         if (seed == null) {
-            if (cause == RecordingCause.ANTICHEAT_FLAG) recorder.keepForFlag(uuid);
             return recorder.isRecording(uuid) ? ReplayRecordingOutcome.ALREADY_RECORDING : ReplayRecordingOutcome.NOT_AVAILABLE;
         }
         seedTarget(seed, player);

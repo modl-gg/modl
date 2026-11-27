@@ -7,6 +7,7 @@ import lombok.Getter;
 import org.jspecify.annotations.Nullable;
 
 import java.util.ArrayList;
+import java.util.EnumSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -15,6 +16,7 @@ import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.Executor;
 import java.util.concurrent.atomic.AtomicBoolean;
 import java.util.concurrent.atomic.AtomicLong;
+import java.util.concurrent.atomic.AtomicReference;
 import java.util.function.Consumer;
 import java.util.function.IntSupplier;
 
@@ -57,16 +59,15 @@ final class Recording {
     private volatile long lastTimeOfDay;
     private volatile @Nullable IRegistryHolder registries;
 
-    private RecordingCause cause;
-    private RecordingCause rank;
+    private final Set<RecordingCause> holders = EnumSet.noneOf(RecordingCause.class);
+    private final AtomicReference<@Nullable Object> connection = new AtomicReference<>();
     private boolean ending;
 
     Recording(UUID targetUuid, String targetName, RecordingCause cause, int playerType, MemoryBudget budget, Executor pool,
               IntSupplier radiusChunks, Consumer<RuntimeException> failures) {
         this.targetUuid = targetUuid;
         this.targetName = targetName;
-        this.cause = cause;
-        this.rank = cause;
+        this.holders.add(cause);
         this.startEpochMs = System.currentTimeMillis();
         this.startNanos = System.nanoTime();
         this.memory = new RecordingMemory(budget);
@@ -78,33 +79,52 @@ final class Recording {
         this.baseline = new WorldModel(playerType, targetUuid, -1, 0);
     }
 
-    synchronized RecordingCause cause() {
-        return cause;
-    }
-
     boolean startedBefore(Recording other) {
         return startOrder < other.startOrder;
     }
 
     synchronized RecordingCause rank() {
-        return rank;
+        RecordingCause highest = RecordingCause.AUTO_RECORD;
+        for (RecordingCause holder : holders) {
+            if (holder.outranks(highest)) highest = holder;
+        }
+        return highest;
     }
 
-    synchronized void raise(RecordingCause requested) {
-        if (requested.outranks(rank)) rank = requested;
-    }
-
-    synchronized boolean keepForFlag() {
+    synchronized boolean hold(RecordingCause holder) {
         if (ending) return false;
-        cause = RecordingCause.ANTICHEAT_FLAG;
-        raise(RecordingCause.ANTICHEAT_FLAG);
+        holders.add(holder);
         return true;
     }
 
-    synchronized boolean endIfStartedBy(RecordingCause starter) {
-        if (ending || cause != starter) return false;
-        ending = true;
-        return true;
+    synchronized Release release(RecordingCause holder) {
+        if (ending || !holders.contains(holder)) return Release.NOT_HELD;
+        if (holders.size() == 1) {
+            ending = true;
+            return Release.ENDED;
+        }
+        holders.remove(holder);
+        return Release.RELEASED;
+    }
+
+    void connectedThrough(@Nullable Object channel) {
+        if (channel != null) connection.set(channel);
+    }
+
+    boolean claimedBy(@Nullable Object channel) {
+        Object bound = connection.get();
+        if (bound == null) {
+            if (channel == null) return true;
+            connection.compareAndSet(null, channel);
+            bound = connection.get();
+        }
+        return bound == channel;
+    }
+
+    enum Release {
+        NOT_HELD,
+        RELEASED,
+        ENDED
     }
 
     long now() {

@@ -20,6 +20,7 @@ import java.util.regex.Pattern;
 
 final class ProxyServersReporter {
     static final long CHECK_INTERVAL_SECONDS = 10;
+    static final int RESEND_AFTER_CHECKS = 30;
     static final int MAX_SERVERS = 256;
     static final int MAX_ADDRESS_LENGTH = 128;
     private static final Pattern SERVER_KEY_NAME = Pattern.compile("[A-Za-z0-9_.-]{1,64}");
@@ -28,6 +29,7 @@ final class ProxyServersReporter {
     private final Predicate<RealtimeEnvelope> sender;
     private final PluginLogger logger;
     private @Nullable List<ProxiedServer> reported;
+    private int unchangedChecks;
     private boolean connected;
 
     ProxyServersReporter(Supplier<List<ProxyBackend>> backends, Predicate<RealtimeEnvelope> sender, PluginLogger logger) {
@@ -52,11 +54,17 @@ final class ProxyServersReporter {
         try {
             Set<String> skipped = new HashSet<>();
             List<ProxiedServer> current = current(skipped);
-            if (current.equals(reported)) return;
+            if (current.equals(reported)) {
+                unchangedChecks++;
+                if (unchangedChecks < RESEND_AFTER_CHECKS) return;
+            }
             if (!skipped.isEmpty()) logger.debug("[network] Not listing these proxy servers in the panel: " + skipped);
             if (sender.test(RealtimeEnvelope.newBuilder()
                     .setProxyServers(ProxyServersEvent.newBuilder().addAllServers(current))
-                    .build())) reported = current;
+                    .build())) {
+                reported = current;
+                unchangedChecks = 0;
+            }
         } catch (RuntimeException failure) {
             logger.debug("[network] Could not report the servers of this proxy: " + failure);
         }

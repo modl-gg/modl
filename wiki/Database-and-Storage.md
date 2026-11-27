@@ -104,7 +104,7 @@ In Settings > System > Storage, the owner enters, tests, and saves the S3 connec
 |---|---|---|
 | Chat and command logs | 30 days (1 to 3650) | Settings > System > Data retention |
 | Audit log | 365 days (30 to 3650) | Settings > System > Data retention |
-| Replays | 10 days (1 to 365, or until deleted) | Settings > System > Data retention |
+| Replays | 10 days (1 to 365, or until deleted); an upload that never finished is removed after a day either way, unless something below holds it | Settings > System > Data retention |
 | Player IP addresses | 365 days after last seen (1 to 3650) | Settings > System > Data retention, or `MODL_IP_HISTORY_DAYS` |
 | Undelivered player notifications | 90 days (1 to 3650) | Settings > System > Data retention, or `MODL_NOTIFICATION_EXPIRY_DAYS` |
 | IP lookup results | refreshed after 30 days; at most 100,000 addresses, never longer than IP history | fixed |

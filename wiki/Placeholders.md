@@ -54,7 +54,7 @@ Other messages take the placeholders their default text in `en_US.yml` uses. Sta
 | Discord webhook, audit log | `{{user}}`, `{{action}}`, `{{target}}`, `{{details}}`, `{{auditUrl}}`, `{{panelUrl}}` |
 | Quick responses (Settings > Tickets > Quick replies) | `{reported-player}`, filled in when staff pick the response in the reply box |
 
-Webhook events share one Discord message every 5 seconds, with up to 9 events each. Mentions are limited to the configured role. Staff show by username, the owner without a staff account as `Admin`, never by email. The webhook URL is write-only.
+A placeholder without a value, such as `{{reason}}` for a punishment given without a reason, becomes empty, and an embed field that ends up empty is left out; keep labels like "Reason" in the field name rather than in the value. Webhook events share one Discord message every 5 seconds, with up to 9 events each. Mentions are limited to the configured role. Staff show by username, the owner without a staff account as `Admin`, never by email. The webhook URL is write-only.
 
 ## Not supported
 

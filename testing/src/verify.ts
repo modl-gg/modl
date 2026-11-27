@@ -54,6 +54,7 @@ function docsOnlyMatcher(): (file: string) => boolean {
 
 interface Areas {
   panel: boolean;
+  wiki: boolean;
   panelSource: boolean;
   backend: boolean;
   minecraft: boolean;
@@ -65,11 +66,12 @@ interface Areas {
 }
 
 function areasOf(files: readonly string[]): Areas {
-  const areas: Areas = { panel: false, panelSource: false, backend: false, minecraft: false, libs: new Set(), buildLogic: false, proto: false, harness: false, runtime: false };
+  const areas: Areas = { panel: false, wiki: false, panelSource: false, backend: false, minecraft: false, libs: new Set(), buildLogic: false, proto: false, harness: false, runtime: false };
   const docsOnly = docsOnlyMatcher();
   for (const file of files) {
     if (docsOnly(file)) continue;
-    if (file.startsWith("panel/") || file.startsWith("wiki/") || ["package.json", "package-lock.json", "tsconfig.strict.json", "eslint.strict.mjs"].includes(file)) areas.panel = true;
+    if (file.startsWith("wiki/")) areas.wiki = true;
+    if (file.startsWith("panel/") || ["package.json", "package-lock.json", "tsconfig.strict.json", "eslint.strict.mjs"].includes(file)) areas.panel = true;
     if (["tsconfig.strict.json", "eslint.strict.mjs"].includes(file)) areas.harness = true;
     if (["LICENSE", "THIRD_PARTY_NOTICES.md"].includes(file) || file.startsWith("licenses/")) areas.buildLogic = true;
     if (file.startsWith("panel/client/src/")) areas.panelSource = true;
@@ -97,6 +99,7 @@ function gatesFor(areas: Areas, e2e: boolean): Gate[] {
   const gates: Gate[] = [];
   if (areas.proto) gates.push(npm("proto lint", join(REPO_ROOT, "proto"), "run", "lint"));
   if (areas.panel || areas.proto) gates.push(npm("panel check", REPO_ROOT, "run", "check"), npm("panel build", REPO_ROOT, "run", "build"));
+  else if (areas.wiki) gates.push(npm("panel check", REPO_ROOT, "run", "check"));
   if (areas.buildLogic) gates.push(gradle("build-logic tests", "-p", "build-logic", "test"), gradle("full Java build", "build"));
   else {
     const libs = areas.libs.size > 0;

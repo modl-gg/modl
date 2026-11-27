@@ -1,20 +1,23 @@
 import { useEffect, useRef, type ReactNode } from 'react';
 import { useTranslation } from 'react-i18next';
 import { BrandLogo } from '@/components/brand/BrandLogo';
+import { WikiHelpLink } from '@/components/ui/wiki-help-link';
 import type { SetupScreen } from '@/lib/setup-steps';
+import type { WikiLink } from '@/lib/wiki-links';
 import { SetupPosition } from './SetupPosition';
 import { SETUP_TITLE_ID } from './setup-title';
 
 interface SetupShellProps {
   screen: SetupScreen;
   title: string;
+  help?: WikiLink | undefined;
   intro: readonly string[];
   stepper: ReactNode;
   footer: ReactNode;
   children: ReactNode;
 }
 
-export function SetupShell({ screen, title, intro, stepper, footer, children }: SetupShellProps) {
+export function SetupShell({ screen, title, help, intro, stepper, footer, children }: SetupShellProps) {
   const { t } = useTranslation();
   const headingRef = useRef<HTMLHeadingElement>(null);
 
@@ -36,7 +39,10 @@ export function SetupShell({ screen, title, intro, stepper, footer, children }: 
         <div className="hidden md:block">{stepper}</div>
         <div className="flex min-w-0 flex-col">
           <SetupPosition screen={screen} />
-          <h1 id={SETUP_TITLE_ID} ref={headingRef} tabIndex={-1} className="text-2xl font-semibold tracking-tight focus:outline-hidden">{title}</h1>
+          <div className="flex items-center gap-1">
+            <h1 id={SETUP_TITLE_ID} ref={headingRef} tabIndex={-1} className="text-2xl font-semibold tracking-tight focus:outline-hidden">{title}</h1>
+            {help !== undefined && <WikiHelpLink link={help} />}
+          </div>
           <div className="mt-2 max-w-2xl space-y-3 text-sm text-muted-foreground">
             {intro.map((paragraph) => <p key={paragraph}>{paragraph}</p>)}
           </div>

@@ -17,6 +17,7 @@
 - [AI Moderation](AI-Moderation)
 - [Replays](Replays)
 - [Customizing the Public Pages](Customizing-the-Public-Pages)
+- [Custom CSS](Custom-CSS)
 
 **Operate**
 - [Updating](Updating)

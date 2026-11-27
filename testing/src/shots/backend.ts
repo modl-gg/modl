@@ -139,13 +139,18 @@ export class ShotsBackend {
     await this.instance().waitHealthy(HEALTH_TIMEOUT_MS);
   }
 
+  async advanceClockTo(virtualNow: number): Promise<void> {
+    if (virtualNow > this.virtualNow()) await this.setClock(virtualNow);
+  }
+
   async setClock(virtualNow: number): Promise<void> {
+    if (virtualNow < this.virtualNow()) throw new Error(`the screenshot clock only moves forward; ${new Date(virtualNow).toISOString()} is in its past`);
     this.writeClock(virtualNow);
     await sleep(CLOCK_SETTLE_MS);
   }
 
   async skipRateLimitWindow(waitMs = RATE_LIMIT_WINDOW_MS): Promise<void> {
-    await this.setClock(Date.now() + this.offsetMs + waitMs + RETRY_MARGIN_MS);
+    await this.setClock(this.virtualNow() + waitMs + RETRY_MARGIN_MS);
   }
 
   async warmUp(paths: readonly string[]): Promise<void> {
@@ -226,6 +231,10 @@ export class ShotsBackend {
     await this.instance().waitHealthy(HEALTH_TIMEOUT_MS);
   }
 
+  private virtualNow(): number {
+    return Date.now() + this.offsetMs;
+  }
+
   private writeClock(virtualNow: number): void {
     this.offsetMs = virtualNow - Date.now();
     writeText(join(SHOTS_CLOCK_DIR, CLOCK_FILE), offsetText(this.offsetMs));
@@ -249,7 +258,7 @@ export class ShotsBackend {
             LD_PRELOAD: "/usr/local/lib/libfaketime.so.1",
             FAKETIME_TIMESTAMP_FILE: `/clock/${CLOCK_FILE}`,
             FAKETIME_CACHE_DURATION: String(CLOCK_CACHE_SECONDS),
-            FAKETIME_DONT_FAKE_MONOTONIC: "1",
+            FAKETIME_DONT_FAKE_MONOTONIC: "0",
             MODL_DATA_DIR: CONTAINER_DATA,
             MODL_PORT: "8080",
             MODL_BIND_ADDRESS: "0.0.0.0",

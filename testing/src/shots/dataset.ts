@@ -84,7 +84,7 @@ class StrictTargets implements MinecraftTarget, PanelTarget {
 }
 
 function fakeClock(backend: ShotsBackend): SeedClock {
-  return { advanceTo: async (virtualMs) => backend.setClock(virtualMs) };
+  return { advanceTo: async (virtualMs) => backend.advanceClockTo(virtualMs) };
 }
 
 export function bootTime(): number {

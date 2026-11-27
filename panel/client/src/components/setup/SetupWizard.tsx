@@ -9,6 +9,7 @@ import { useRecordSetupStep, useSetupWizard, type SetupWizard as SetupWizardStat
 import { isImportInProgress, useHostedImport } from '@/hooks/data/hosted-import';
 import { PANEL_HOME_PATH } from '@/lib/return-path';
 import { adjacentStep, landingStep, parseSetupStep, reachableStep, setupPath, type SetupStepId } from '@/lib/setup-steps';
+import { SETUP_STEP_HELP } from '@/lib/wiki-help';
 import { ContinueGateContext, allowContinue, type BeforeContinue, type ContinueGate } from '@/hooks/use-before-continue';
 import { useAuth } from '@/hooks/use-auth';
 import { setupStepDefinition } from './steps/registry';
@@ -88,6 +89,7 @@ function SetupWizardScreen({ wizard, step }: { wizard: SetupWizardState; step: S
     <SetupShell
       screen={step}
       title={t(definition.titleKey)}
+      help={SETUP_STEP_HELP[step]}
       intro={[t(definition.introKey)]}
       stepper={<SetupStepper progress={wizard.steps} current={step} />}
       footer={(

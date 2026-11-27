@@ -57,7 +57,7 @@ public class SwitchableObjectStorage implements ObjectStorage, StorageLocation {
     @Override
     public String publicUrl(String key) {
         if (!StorageFolders.servedByStorageUrl(key)) {
-            throw new IllegalArgumentException("Objects under " + StorageFolders.REPLAYS + " have no public storage URL");
+            throw new IllegalArgumentException("The key " + key + " has no public storage URL");
         }
         return holderOf(key).publicUrl(key);
     }

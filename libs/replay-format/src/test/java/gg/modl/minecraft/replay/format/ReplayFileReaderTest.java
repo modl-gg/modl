@@ -15,6 +15,7 @@ import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.List;
 import java.util.zip.GZIPInputStream;
+import java.util.zip.GZIPOutputStream;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertFalse;
@@ -47,6 +48,69 @@ class ReplayFileReaderTest {
             assertEquals(END, reader.next());
             assertNull(reader.next());
         }
+    }
+
+    @Test
+    void dataAfterTheCompressedFramesIsRefused() throws IOException {
+        byte[] file = file(HEADER, END);
+        for (int extra : new int[] {1, 3, 20, 40}) {
+            byte[] padded = Arrays.copyOf(file, file.length + extra);
+            try (ReplayFileReader reader = ReplayFileReader.open(new ByteArrayInputStream(padded), ReplayLimits.MAX_UNCOMPRESSED_BYTES)) {
+                assertEquals(HEADER, reader.next());
+                assertEquals(END, reader.next());
+                assertThrows(ReplayFormatException.class, reader::next, extra + " trailing bytes");
+            }
+        }
+    }
+
+    @Test
+    void dataAfterTheCompressedFramesIsRefusedWhenTheSourceArrivesInSmallReads() throws IOException {
+        byte[] file = file(HEADER, END);
+        for (int extra : new int[] {0, 1, 3, 20}) {
+            byte[] padded = Arrays.copyOf(file, file.length + extra);
+            try (ReplayFileReader reader = ReplayFileReader.open(smallReads(padded, 7), ReplayLimits.MAX_UNCOMPRESSED_BYTES)) {
+                assertEquals(HEADER, reader.next());
+                assertEquals(END, reader.next());
+                if (extra == 0) assertNull(reader.next());
+                else assertThrows(ReplayFormatException.class, reader::next, extra + " trailing bytes");
+            }
+        }
+    }
+
+    @Test
+    void aDamagedTrailerAHeaderWithExtraFieldsAndASecondMemberAreRefused() throws IOException {
+        byte[] file = file(HEADER, END);
+        byte[] wrongChecksum = file.clone();
+        wrongChecksum[file.length - 8] ^= 1;
+        byte[] wrongSize = file.clone();
+        wrongSize[file.length - 1] ^= 1;
+        byte[] namedHeader = file.clone();
+        namedHeader[ReplayFileFormat.prefixLength() + 3] = 0x08;
+        ByteArrayOutputStream emptyMember = new ByteArrayOutputStream();
+        new GZIPOutputStream(emptyMember).close();
+        byte[] twoMembers = Arrays.copyOf(file, file.length + emptyMember.size());
+        System.arraycopy(emptyMember.toByteArray(), 0, twoMembers, file.length, emptyMember.size());
+        for (byte[] damaged : Arrays.asList(wrongChecksum, wrongSize, namedHeader, twoMembers)) {
+            assertThrows(ReplayFormatException.class, () -> readAll(new ByteArrayInputStream(damaged)));
+            assertThrows(ReplayFormatException.class, () -> readAll(smallReads(damaged, 7)));
+        }
+    }
+
+    private static int readAll(InputStream source) throws IOException {
+        int frames = 0;
+        try (ReplayFileReader reader = ReplayFileReader.open(source, ReplayLimits.MAX_UNCOMPRESSED_BYTES)) {
+            while (reader.next() != null) frames++;
+        }
+        return frames;
+    }
+
+    private static InputStream smallReads(byte[] content, int maxRead) {
+        return new FilterInputStream(new ByteArrayInputStream(content)) {
+            @Override
+            public int read(byte[] buffer, int offset, int length) throws IOException {
+                return super.read(buffer, offset, Math.min(length, maxRead));
+            }
+        };
     }
 
     @Test

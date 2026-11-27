@@ -7,6 +7,7 @@
     "settings": "设置"
   },
   "common": {
+    "help": "帮助",
     "save": "保存",
     "saving": "保存中...",
     "cancel": "取消",
