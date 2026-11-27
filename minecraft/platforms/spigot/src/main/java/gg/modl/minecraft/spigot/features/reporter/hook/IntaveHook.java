@@ -14,12 +14,8 @@ import org.bukkit.plugin.java.JavaPlugin;
 public class IntaveHook extends AbstractAnticheatHook<IntaveViolationEvent> implements Listener {
     private static final String HOOK_NAME = "Intave";
 
-    private final JavaPlugin plugin;
-
     public IntaveHook(JavaPlugin plugin, ServerFeaturesConfig config, ViolationTracker violationTracker, AutoReporter autoReporter) {
         super(plugin, config, violationTracker, autoReporter, HOOK_NAME, HOOK_NAME, DetectionSource.INTAVE);
-
-        this.plugin = plugin;
     }
 
     @Override
