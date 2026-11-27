@@ -4,6 +4,7 @@ import gg.modl.backend.infrastructure.exception.ForbiddenException;
 import gg.modl.backend.infrastructure.util.ByteFormatUtil;
 import gg.modl.backend.server.data.Server;
 import gg.modl.backend.storage.MediaCategory;
+import gg.modl.backend.storage.StorageKeySegments;
 import gg.modl.backend.storage.StorageLimitPolicy;
 import gg.modl.backend.storage.StorageNamespace;
 import java.util.LinkedHashMap;
@@ -87,22 +88,13 @@ public class MediaValidationService {
         if (key == null || !key.startsWith(StorageNamespace.KEY_PREFIX)) {
             return false;
         }
-        return !hasPathTraversal(key);
+        return StorageKeySegments.isCanonical(key);
     }
 
     public void assertKeyOwnedByServer(Server server, String key) {
         if (!isKeyInNamespace(key)) {
             throw new ForbiddenException("Access denied");
         }
-    }
-
-    private boolean hasPathTraversal(String key) {
-        for (String segment : key.split("/")) {
-            if (segment.equals("..")) {
-                return true;
-            }
-        }
-        return false;
     }
 
     public String extractUploadType(String key) {

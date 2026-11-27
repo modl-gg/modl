@@ -49,6 +49,34 @@ class ProxyServersReporterTest {
     }
 
     @Test
+    void anUnchangedListIsSentAgainAfterAWhileInCaseTheHubDroppedIt() {
+        backends.add(new ProxyBackend("lobby", "10.0.0.2:25565"));
+        reporter.connected();
+
+        for (int check = 1; check < ProxyServersReporter.RESEND_AFTER_CHECKS; check++) reporter.check();
+        assertEquals(1, sent.size());
+
+        reporter.check();
+        assertEquals(2, sent.size());
+    }
+
+    @Test
+    void aChangedListStartsTheResendWaitOver() {
+        backends.add(new ProxyBackend("lobby", "10.0.0.2:25565"));
+        reporter.connected();
+        for (int check = 1; check < ProxyServersReporter.RESEND_AFTER_CHECKS; check++) reporter.check();
+
+        backends.add(new ProxyBackend("survival", "10.0.0.3:25565"));
+        reporter.check();
+        assertEquals(2, sent.size());
+
+        for (int check = 1; check < ProxyServersReporter.RESEND_AFTER_CHECKS; check++) reporter.check();
+        assertEquals(2, sent.size());
+        reporter.check();
+        assertEquals(3, sent.size());
+    }
+
+    @Test
     void anUndeliveredListIsSentAtTheNextCheck() {
         backends.add(new ProxyBackend("lobby", "10.0.0.2:25565"));
         deliverable.set(false);

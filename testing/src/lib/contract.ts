@@ -349,16 +349,19 @@ export const ReplayRecordingMessages = {
 export const REPLAY_CAPTURE_FAILED =
   /Failed to capture replay|No active recording|No server is connected to capture a replay|Replay recording is not available/i;
 
-const NUMERIC_CODE = /\b(\d{4,10})\b/;
+export const LOGIN_CODE_LINE = /Login code for (\S+): (\d{6})\b/;
+
+export function loginCodeIn(line: string, email: string): string | null {
+  const match = LOGIN_CODE_LINE.exec(line);
+  return match?.[1]?.toLowerCase() === email.toLowerCase() && match[2] !== undefined ? match[2] : null;
+}
 
 export function findLoginCode(lines: readonly string[], email: string): string | null {
-  const emailLower = email.toLowerCase();
-  const candidates = lines.filter((line) => /code/i.test(line) && NUMERIC_CODE.test(line));
-  const preferred = candidates.filter((line) => line.toLowerCase().includes(emailLower));
-  const line = (preferred.length > 0 ? preferred : candidates).at(-1);
-  if (!line) return null;
-  const afterEmail = line.toLowerCase().includes(emailLower) ? line.slice(line.toLowerCase().indexOf(emailLower) + emailLower.length) : line;
-  return (NUMERIC_CODE.exec(afterEmail) ?? NUMERIC_CODE.exec(line))?.[1] ?? null;
+  for (const line of [...lines].reverse()) {
+    const code = loginCodeIn(line, email);
+    if (code !== null) return code;
+  }
+  return null;
 }
 
 export const PlayerNotices = {

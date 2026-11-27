@@ -32,6 +32,8 @@ public interface ReplayRepository {
 
     List<ReplayDocument> findExpiredWithMissingStorageKey(Instant cutoff, @Nullable ReplayCursor after, int limit);
 
+    List<ReplayDocument> findAbandonedUploads(Instant cutoff, @Nullable ReplayCursor after, int limit);
+
     List<ReplayDocument> findByStorageKeys(Collection<String> storageKeys);
 
     long deleteByIds(Collection<String> replayIds);

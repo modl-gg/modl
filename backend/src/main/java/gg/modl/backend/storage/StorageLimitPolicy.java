@@ -20,7 +20,7 @@ import org.springframework.util.unit.DataSize;
 
 @Component
 public class StorageLimitPolicy {
-    static final Duration CONFIRMATION_GRACE = Duration.ofMinutes(15);
+    public static final Duration CONFIRMATION_GRACE = Duration.ofMinutes(15);
     static final int MAX_PUBLIC_FILES_PER_RECORD = 25;
     static final long MAX_PUBLIC_BYTES_PER_RECORD = 512L * 1024 * 1024;
     static final BucketSpec PUBLIC_CLIENT_BUDGET = new BucketSpec("PUBLIC_UPLOAD_MEGABYTES", 64, Duration.ofHours(6));

@@ -159,7 +159,7 @@ class JooqReplayRepositoryContractTest {
     }
 
     @SqlContractTest
-    void finishedAndAbandonedReplaysBeforeTheCutoffExpireSplitByStoredObject(DialectTarget target) {
+    void finishedReplaysBeforeTheCutoffExpireSplitByStoredObject(DialectTarget target) {
         try (SqlTestDatabase database = SqlTestDatabase.start(target, dataDirectory)) {
             JooqReplayRepository repository = repository(database);
             Instant expired = NOW.minusMillis(1);
@@ -175,9 +175,33 @@ class JooqReplayRepositoryContractTest {
             claim(database, repository, new ReplayUploadClaim("validating", NOW.plusSeconds(120)), NOW);
 
             assertThat(repository.findExpiredWithStorageKey(NOW, null, 10)).extracting(ReplayDocument::getId)
-                .containsExactly("complete", "failed", "pending");
+                .containsExactly("complete", "failed");
             assertThat(repository.findExpiredWithMissingStorageKey(NOW, null, 10)).extracting(ReplayDocument::getId)
                 .containsExactly("empty-key", "no-key");
+        }
+    }
+
+    @SqlContractTest
+    void abandonedUploadsAreThePendingRowsBeforeTheCutoffThatNoValidationHolds(DialectTarget target) {
+        try (SqlTestDatabase database = SqlTestDatabase.start(target, dataDirectory)) {
+            JooqReplayRepository repository = repository(database);
+            Instant cutoff = NOW.minusSeconds(3600);
+            Instant old = NOW.minusSeconds(7200);
+            database.unitOfWork().write(() -> {
+                repository.insert(replay("abandoned", ReplayDocument.STATUS_PENDING, old, "key-abandoned"));
+                repository.insert(replay("abandoned-no-key", ReplayDocument.STATUS_PENDING, old, null));
+                repository.insert(replay("recent", ReplayDocument.STATUS_PENDING, NOW, "key-recent"));
+                repository.insert(replay("complete", ReplayDocument.STATUS_COMPLETE, old, "key-complete"));
+                repository.insert(replay("validating", ReplayDocument.STATUS_PENDING, old, "key-validating"));
+                repository.insert(replay("lease-after-cutoff", ReplayDocument.STATUS_PENDING, old, "key-after"));
+                repository.insert(replay("lease-before-cutoff", ReplayDocument.STATUS_PENDING, old, "key-before"));
+            });
+            claim(database, repository, new ReplayUploadClaim("validating", NOW.plusSeconds(120)), NOW);
+            claim(database, repository, new ReplayUploadClaim("lease-after-cutoff", NOW.minusSeconds(60)), NOW.minusSeconds(180));
+            claim(database, repository, new ReplayUploadClaim("lease-before-cutoff", NOW.minusSeconds(5400)), NOW.minusSeconds(5520));
+
+            assertThat(repository.findAbandonedUploads(cutoff, null, 10)).extracting(ReplayDocument::getId)
+                .containsExactly("abandoned", "abandoned-no-key", "lease-before-cutoff");
         }
     }
 

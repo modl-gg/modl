@@ -9,7 +9,6 @@ import java.io.DataInputStream;
 import java.io.EOFException;
 import java.io.IOException;
 import java.io.InputStream;
-import java.util.zip.GZIPInputStream;
 
 public final class ReplayFileReader implements Closeable {
     private static final int BUFFER_BYTES = 64 * 1024;
@@ -33,7 +32,7 @@ public final class ReplayFileReader implements Closeable {
             if (version != ReplayFileFormat.FORMAT_VERSION) {
                 throw new ReplayFormatException("Unsupported replay format version " + version);
             }
-            return new ReplayFileReader(new BoundedInputStream(new GZIPInputStream(raw, BUFFER_BYTES), maxUncompressedBytes));
+            return new ReplayFileReader(new BoundedInputStream(SingleMemberGzipInputStream.open(raw, BUFFER_BYTES), maxUncompressedBytes));
         } catch (IOException e) {
             throw classified(e);
         }

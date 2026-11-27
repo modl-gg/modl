@@ -22,6 +22,7 @@ import org.springframework.stereotype.Component;
 @RequiredArgsConstructor
 public class ReplayRetentionTask implements RetentionTask {
     static final int PAGE_SIZE = 200;
+    static final Duration ABANDONED_UPLOAD_AGE = Duration.ofDays(1);
     private static final int UNTIL_EXHAUSTED = Integer.MAX_VALUE;
 
     private final ReplayRetentionSettingsService replayRetentionSettingsService;
@@ -36,12 +37,14 @@ public class ReplayRetentionTask implements RetentionTask {
 
     @Override
     public long purge(Server server, Instant now) {
+        long abandoned = drain(server, now.minus(ABANDONED_UPLOAD_AGE), replayRepository::findAbandonedUploads);
         ReplayRetentionSettings settings = replayRetentionSettingsService.getReplayRetentionSettings(server);
         if (!settings.isEnabled()) {
-            return 0L;
+            return abandoned;
         }
         Instant cutoff = now.minus(Duration.ofDays(settings.getDays()));
-        return drain(server, cutoff, replayRepository::findExpiredWithStorageKey)
+        return abandoned
+            + drain(server, cutoff, replayRepository::findExpiredWithStorageKey)
             + drain(server, cutoff, replayRepository::findExpiredWithMissingStorageKey);
     }
 

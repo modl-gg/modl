@@ -3,7 +3,8 @@ import { useTranslation } from 'react-i18next';
 import { useLocation } from 'wouter';
 import { Notice } from '@/components/ui/notice';
 import { useRecordSetupStep } from '@/hooks/data/setup';
-import { UPSTREAM_SOURCE_URL, WIKI_URL } from '@/lib/project-links';
+import { UPSTREAM_SOURCE_URL } from '@/lib/upstream';
+import { WIKI_URL } from '@/lib/wiki-links';
 import { settingsPagePath, type SettingsPageId } from '@/lib/settings-access';
 import { LAST_SETUP_STEP } from '@/lib/setup-steps';
 

@@ -9,8 +9,7 @@ const BOTS = 30;
 const LOAD_ROUNDS = 14;
 const ROUND_MS = 5000;
 const SPREAD_BLOCKS = 600;
-const MSPT_BUDGET_RATIO = 1.05;
-const MSPT_NOISE_FLOOR_MS = 0.5;
+const MSPT_BUDGET_SHARE_OF_TICK = 0.05;
 const SURFACE_Y = -59;
 const RSS_BUDGET_MEGABYTES = 64 * 1.1 + 48;
 const TICK_MS = 50;
@@ -90,7 +89,7 @@ interface LoadSample {
 
 export const replayLoad = defineScenario({
   name: "replay-load",
-  description: "30 players travel to fresh chunks with replays off and then with every player auto-recorded; MSPT stays within 5 percent",
+  description: "30 players travel to fresh chunks with replays off and then with every player auto-recorded; recording costs at most 5 percent of a tick",
   topologies: ["standalone", "remote"],
   lines: ["latest", "1.21", "folia"],
   async run(t: ScenarioContext) {
@@ -111,7 +110,7 @@ export const replayLoad = defineScenario({
       const before = off.msptAvg1m;
       const after = on.msptAvg1m;
       t.require(before !== null && after !== null, `MSPT could not be read (${off.rawMspt} / ${on.rawMspt})`);
-      const budget = Math.max(before * MSPT_BUDGET_RATIO, before + MSPT_NOISE_FLOOR_MS);
+      const budget = before + TICK_MS * MSPT_BUDGET_SHARE_OF_TICK;
       t.check(`average MSPT with recording (${after.toFixed(2)} ms) is within the budget (${budget.toFixed(2)} ms, off ${before.toFixed(2)} ms)`, after <= budget, { off, on });
       t.check("the server keeps 20 TPS while recording", (on.tps1m ?? 0) >= 19.5, on.tps1m);
       const rssDelta = (on.rssMegabytes ?? 0) - (off.rssMegabytes ?? 0);

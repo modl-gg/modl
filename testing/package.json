@@ -26,6 +26,7 @@
     "shots": "tsx src/shots/cli.ts run",
     "review": "tsx src/shots/cli.ts review",
     "flows": "tsx src/shots/cli.ts flows",
+    "serve": "tsx src/shots/cli.ts serve",
     "listing-replay": "MODL_TEST_LANE=listing tsx src/shots/cli.ts replay-gif",
     "verify": "tsx src/verify.ts"
   },

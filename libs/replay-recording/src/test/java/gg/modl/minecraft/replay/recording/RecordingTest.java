@@ -32,6 +32,39 @@ class RecordingTest {
         return recording;
     }
 
+    @Test
+    void anUnboundRecordingTakesPacketsWithoutAChannelAndStaysUnbound() {
+        Recording recording = recording(new MemoryBudget(64L * 1024 * 1024), new AtomicInteger(64));
+        Object channel = new Object();
+
+        assertTrue(recording.claimedBy(null));
+        assertTrue(recording.claimedBy(channel));
+        assertFalse(recording.claimedBy(null));
+    }
+
+    @Test
+    void theFirstChannelBindsTheRecordingAndOthersAreRefused() {
+        Recording recording = recording(new MemoryBudget(64L * 1024 * 1024), new AtomicInteger(64));
+        Object first = new Object();
+
+        assertTrue(recording.claimedBy(first));
+        assertFalse(recording.claimedBy(new Object()));
+        assertTrue(recording.claimedBy(first));
+    }
+
+    @Test
+    void aJoinRebindsTheRecordingToTheNewChannel() {
+        Recording recording = recording(new MemoryBudget(64L * 1024 * 1024), new AtomicInteger(64));
+        Object older = new Object();
+        Object newer = new Object();
+        assertTrue(recording.claimedBy(older));
+
+        recording.connectedThrough(newer);
+
+        assertTrue(recording.claimedBy(newer));
+        assertFalse(recording.claimedBy(older));
+    }
+
     private static void fillJournal(Recording recording, int blocks) {
         long time = recording.now();
         int records = blocks * Journal.BLOCK_BYTES / 8;

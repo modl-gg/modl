@@ -7,6 +7,7 @@
     "settings": "Configurações"
   },
   "common": {
+    "help": "Ajuda",
     "save": "Salvar",
     "saving": "Salvando...",
     "cancel": "Cancelar",

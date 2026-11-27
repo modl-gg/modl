@@ -7,6 +7,7 @@
     "settings": "Settings"
   },
   "common": {
+    "help": "Help",
     "checkPassed": "Passed",
     "checkFailed": "Failed",
     "save": "Save",

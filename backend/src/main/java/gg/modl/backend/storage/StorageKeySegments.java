@@ -1,5 +1,6 @@
 package gg.modl.backend.storage;
 
+import java.util.Arrays;
 import java.util.Locale;
 import java.util.Set;
 
@@ -10,7 +11,15 @@ public final class StorageKeySegments {
         "LPT0", "LPT1", "LPT2", "LPT3", "LPT4", "LPT5", "LPT6", "LPT7", "LPT8", "LPT9"
     );
 
+    private static final String CURRENT_FOLDER = ".";
+    private static final String PARENT_FOLDER = "..";
+
     private StorageKeySegments() {
+    }
+
+    public static boolean isCanonical(String key) {
+        return Arrays.stream(key.split("/", -1))
+            .noneMatch(segment -> segment.isEmpty() || CURRENT_FOLDER.equals(segment) || PARENT_FOLDER.equals(segment));
     }
 
     public static boolean isWindowsDeviceName(String segment) {

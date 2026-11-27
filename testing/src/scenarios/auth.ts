@@ -1,4 +1,4 @@
-import { Endpoints, findLoginCode, SetupPhases, SetupStepStatuses } from "../lib/contract";
+import { Endpoints, SetupPhases, SetupStepStatuses } from "../lib/contract";
 import { HttpStatus, apiErrorCode, jsonArray, jsonField, jsonString, type HttpResult, type HttpSession } from "../lib/http";
 import {
   HARNESS_OWNER_PASSWORD,
@@ -298,7 +298,7 @@ export const setupPasswordClaim = defineScenario({
         });
         t.check("409 SIGN_IN_METHOD_DISABLED", sent.status === HttpStatus.conflict && apiErrorCode(sent) === SignInErrors.methodDisabled, outcome(sent));
         await t.sleep(LOGIN_CODE_PRINT_WINDOW_MS);
-        t.check("no login code is on the console", !findLoginCode(await notices.text(since), t.instance.ownerEmail));
+        t.check("no login code is on the console", !(await notices.text(since)).some((line) => /login code/i.test(line)));
       });
     } finally {
       if (progress.claimed) {

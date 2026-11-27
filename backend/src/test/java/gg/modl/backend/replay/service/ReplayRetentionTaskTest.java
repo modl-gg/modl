@@ -6,8 +6,8 @@ import static org.mockito.ArgumentMatchers.anyInt;
 import static org.mockito.ArgumentMatchers.eq;
 import static org.mockito.ArgumentMatchers.isNull;
 import static org.mockito.Mockito.mock;
+import static org.mockito.Mockito.never;
 import static org.mockito.Mockito.verify;
-import static org.mockito.Mockito.verifyNoInteractions;
 import static org.mockito.Mockito.when;
 
 import gg.modl.backend.replay.data.ReplayDocument;
@@ -16,6 +16,8 @@ import gg.modl.backend.replay.repository.ReplayRepository;
 import gg.modl.backend.server.data.Server;
 import gg.modl.backend.settings.data.ReplayRetentionSettings;
 import gg.modl.backend.settings.service.ReplayRetentionSettingsService;
+import gg.modl.backend.storage.StorageLimitPolicy;
+import gg.modl.backend.storage.UploadTarget;
 import gg.modl.backend.support.TestServers;
 import java.time.Duration;
 import java.time.Instant;
@@ -47,11 +49,23 @@ class ReplayRetentionTaskTest {
     }
 
     @Test
-    void disabledRetentionKeepsEveryReplay() {
-        when(settingsService.getReplayRetentionSettings(server)).thenReturn(new ReplayRetentionSettings(false, 10));
+    void anUploadIsCalledAbandonedOnlyLongAfterItsReservationCouldBeConfirmed() {
+        assertThat(ReplayRetentionTask.ABANDONED_UPLOAD_AGE)
+            .isGreaterThan(UploadTarget.VALIDITY.plus(StorageLimitPolicy.CONFIRMATION_GRACE).multipliedBy(10));
+    }
 
-        assertThat(task.purge(server, NOW)).isZero();
-        verifyNoInteractions(replayRepository, deletionService);
+    @Test
+    void disabledRetentionKeepsEveryReplayButAbandonedUploads() {
+        when(settingsService.getReplayRetentionSettings(server)).thenReturn(new ReplayRetentionSettings(false, 10));
+        ReplayDocument abandoned = replay("abandoned");
+        when(replayRepository.findAbandonedUploads(eq(NOW.minus(ReplayRetentionTask.ABANDONED_UPLOAD_AGE)), isNull(), anyInt()))
+            .thenReturn(List.of(abandoned));
+        when(deletionService.deleteReplaysWithStorage(eq(server), any())).thenReturn(1L);
+
+        assertThat(task.purge(server, NOW)).isEqualTo(1);
+        verify(deletionService).deleteReplaysWithStorage(server, List.of(abandoned));
+        verify(replayRepository, never()).findExpiredWithStorageKey(any(), any(), anyInt());
+        verify(replayRepository, never()).findExpiredWithMissingStorageKey(any(), any(), anyInt());
     }
 
     @Test
