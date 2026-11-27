@@ -20,11 +20,11 @@ const FIGHT_MS = 35_000;
 const ATTACK_RANGE = 8;
 const ATTACK_TICK_MS = 350;
 const VIEWPORT = { width: 1280, height: 720 } as const;
-const GIF_WIDTH = 600;
-const GIF_FPS = 8;
-const GIF_COLORS = 96;
-const PLAY_HOLD_MS = 5500;
-const FIGHT_POSITION = 0.55;
+const WIDTH = 920;
+const FPS = 25;
+const WEBP_QUALITY = 75;
+const PLAY_MS = 5500;
+const END_MARGIN_SECONDS = 2;
 const GEAR = ["minecraft:iron_sword", "minecraft:shield"];
 const ARMOR: Record<string, string> = { head: "minecraft:iron_helmet", chest: "minecraft:iron_chestplate", legs: "minecraft:iron_leggings", feet: "minecraft:iron_boots" };
 
@@ -67,55 +67,67 @@ async function fight(bots: readonly TestBot[]): Promise<void> {
   );
 }
 
-interface ViewerRecording {
-  video: string;
-  startSeconds: number;
-  seconds: number;
-  crop: { x: number; y: number; width: number; height: number };
-}
-
-async function recordViewer(environment: Environment, replayId: string, workDir: string): Promise<ViewerRecording> {
+async function captureViewerFrames(environment: Environment, replayId: string, framesDir: string, logger: Logger): Promise<number> {
   const browser = await chromium.launch();
   try {
-    const context = await browser.newContext({ viewport: VIEWPORT, colorScheme: "dark", recordVideo: { dir: workDir, size: VIEWPORT } });
+    const context = await browser.newContext({ viewport: VIEWPORT, colorScheme: "dark" });
     const credentials = environment.instance.http.credentials();
     const origin = environment.instance.baseUrl;
     await context.addInitScript({ content: `try{localStorage.setItem("modl.sessionKey",${JSON.stringify(credentials.sessionKey ?? "")})}catch(e){}` });
     await context.addCookies(Object.entries(credentials.cookies).map(([name, value]) => ({ name, value, domain: new URL(origin).hostname, path: "/" })));
     const page = await context.newPage();
-    const opened = Date.now();
     await openReplay(page, origin, replayId);
-    const dialog = await page.getByRole("dialog").last().boundingBox();
-    const timeline = await page.getByRole("dialog").getByRole("slider", { name: localeLookup()("replayViewer.timeline") }).boundingBox();
-    if (dialog === null || timeline === null) throw new Error("the replay viewer has no visible dialog or timeline");
-    await page.mouse.click(timeline.x + timeline.width * FIGHT_POSITION, timeline.y + timeline.height / 2);
-    await page.mouse.move(dialog.x + dialog.width / 2, dialog.y - 5);
+    const dialog = page.getByRole("dialog").last();
+    const dialogBox = await dialog.boundingBox();
+    const slider = dialog.getByRole("slider", { name: localeLookup()("replayViewer.timeline") });
+    const timeline = await slider.boundingBox();
+    if (dialogBox === null || timeline === null) throw new Error("the replay viewer has no visible dialog or timeline");
+    const seekTo = async (fraction: number): Promise<number> => {
+      await page.mouse.click(timeline.x + timeline.width * fraction, timeline.y + timeline.height / 2);
+      await sleep(500);
+      return Number(await slider.getAttribute("aria-valuenow"));
+    };
+    const duration = Number(await slider.getAttribute("aria-valuemax"));
+    const target = duration - PLAY_MS / 1000 - END_MARGIN_SECONDS;
+    let fraction = target / duration;
+    for (let attempt = 0; attempt < 3; attempt++) {
+      const reached = await seekTo(fraction);
+      logger.info(`seeked to ${String(reached)} s of ${String(duration)} s (target ${target.toFixed(1)} s)`);
+      if (Math.abs(reached - target) <= 1) break;
+      fraction *= target / Math.max(1, reached);
+    }
+    await page.mouse.move(dialogBox.x + dialogBox.width / 2, dialogBox.y - 5);
     await sleep(1500);
-    const startSeconds = (Date.now() - opened) / 1000;
+    const clockStart = Date.now();
+    await page.clock.install({ time: clockStart });
+    await page.clock.pauseAt(clockStart + 1000);
     await replayControl(page, "Play").click();
-    await sleep(PLAY_HOLD_MS);
-    const seconds = (Date.now() - opened) / 1000 - startSeconds;
-    const video = page.video();
+    const frameMs = 1000 / FPS;
+    const frames = Math.round(PLAY_MS / frameMs);
+    for (let frame = 0; frame < frames; frame++) {
+      await page.clock.runFor(frameMs);
+      await dialog.screenshot({ path: join(framesDir, `frame-${String(frame).padStart(4, "0")}.png`), animations: "allow", caret: "hide" });
+    }
     await context.close();
-    if (video === null) throw new Error("the browser recorded no video");
-    const crop = { x: Math.round(dialog.x), y: Math.round(dialog.y), width: Math.round(dialog.width) - (Math.round(dialog.width) % 2), height: Math.round(dialog.height) - (Math.round(dialog.height) % 2) };
-    return { video: await video.path(), startSeconds, seconds, crop };
+    return frames;
   } finally {
     await browser.close();
   }
 }
 
-async function toGif(recording: ViewerRecording, gif: string): Promise<void> {
-  const { crop } = recording;
-  const filter = [
-    `crop=${String(crop.width)}:${String(crop.height)}:${String(crop.x)}:${String(crop.y)}`,
-    `fps=${String(GIF_FPS)}`,
-    `scale=${String(GIF_WIDTH)}:-1:flags=lanczos,split[a][b];[a]palettegen=max_colors=${String(GIF_COLORS)}:stats_mode=diff[p];[b][p]paletteuse=dither=none:diff_mode=rectangle`,
-  ].join(",");
-  await runProcess("ffmpeg", ["-y", "-ss", recording.startSeconds.toFixed(2), "-t", recording.seconds.toFixed(2), "-i", recording.video, "-vf", filter, "-loop", "0", gif], { timeoutMs: 300_000 });
+async function toGif(framesDir: string, gif: string): Promise<void> {
+  const filter = `scale=${String(WIDTH)}:-2:flags=lanczos,split[a][b];[a]palettegen=stats_mode=full[p];[b][p]paletteuse=dither=bayer:bayer_scale=4:diff_mode=rectangle`;
+  await runProcess("ffmpeg", ["-y", "-framerate", String(FPS), "-i", join(framesDir, "frame-%04d.png"), "-vf", filter, "-loop", "0", gif], { timeoutMs: 300_000 });
 }
 
-export async function recordReplayGif(logger: Logger): Promise<string> {
+async function toWebp(framesDir: string, scaledDir: string, webp: string): Promise<void> {
+  mkdirSync(scaledDir, { recursive: true });
+  await runProcess("ffmpeg", ["-y", "-i", join(framesDir, "frame-%04d.png"), "-vf", `scale=${String(WIDTH)}:-2:flags=lanczos`, join(scaledDir, "frame-%04d.png")], { timeoutMs: 300_000 });
+  const scaled = readdirSync(scaledDir).filter((name) => name.endsWith(".png")).sort().map((name) => join(scaledDir, name));
+  await runProcess("img2webp", ["-loop", "0", "-d", String(Math.round(1000 / FPS)), "-lossy", "-q", String(WEBP_QUALITY), "-m", "6", ...scaled, "-o", webp], { timeoutMs: 600_000 });
+}
+
+export async function recordReplayAnimations(logger: Logger): Promise<readonly string[]> {
   const workDir = join(REVIEW_DIR, "replay-gif");
   rmSync(workDir, { recursive: true, force: true });
   mkdirSync(workDir, { recursive: true });
@@ -147,11 +159,16 @@ export async function recordReplayGif(logger: Logger): Promise<string> {
     await fight(fighters);
     const replayId = await captureReplayOf(environment, server, first.username);
     logger.info(`replay ${replayId} captured; recording the viewer`);
-    const recording = await recordViewer(environment, replayId, workDir);
+    const framesDir = join(workDir, "frames");
+    mkdirSync(framesDir, { recursive: true });
+    const frames = await captureViewerFrames(environment, replayId, framesDir, logger);
+    logger.info(`${String(frames)} frames captured; encoding the GIF and the WebP`);
     const gif = join(workDir, "panel-replay.gif");
-    await toGif(recording, gif);
-    if (!existsSync(gif)) throw new Error("ffmpeg wrote no GIF");
-    return gif;
+    const webp = join(workDir, "panel-replay.webp");
+    await toGif(framesDir, gif);
+    await toWebp(framesDir, join(workDir, "scaled"), webp);
+    for (const file of [gif, webp]) if (!existsSync(file)) throw new Error(`no ${file} was written`);
+    return [gif, webp];
   } finally {
     bots?.quitAll();
     await down({ keepData: false }, logger);

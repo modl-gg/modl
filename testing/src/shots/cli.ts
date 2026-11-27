@@ -3,7 +3,7 @@ import { mkdirSync, rmSync } from "node:fs";
 import { join } from "node:path";
 import { REPORTS_DIR } from "../lib/paths";
 import { runFlows } from "./flows";
-import { recordReplayGif } from "./replay-gif";
+import { recordReplayAnimations } from "./replay-gif";
 import { jsonString, type HttpResult } from "../lib/http";
 import { findInJson } from "./json";
 import { createLogger, type Logger } from "../lib/log";
@@ -202,7 +202,7 @@ async function main(): Promise<void> {
     else if (command === "serve") await serve(logger);
     else if (command === "dataset-key") process.stdout.write(`${datasetKey()}\n`);
     else if (command === "flows") process.exitCode = await flows(args, logger);
-    else if (command === "replay-gif") logger.info(`replay GIF: ${await recordReplayGif(logger)}`);
+    else if (command === "replay-gif") logger.info(`replay animations: ${(await recordReplayAnimations(logger)).join(", ")}`);
     else throw new Error(`unknown command ${command}; use run, review, flows, serve, dataset-key, or replay-gif`);
   } catch (error) {
     logger.error(errorMessage(error));

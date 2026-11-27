@@ -57,7 +57,7 @@ Built to sanction players fairly and consistently while keeping moderator discre
 - Record a player on request or with a report, then watch it in a **3D viewer in the browser**
 - Punish straight from the replay
 
-![Watching a replay in the panel](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-replay.gif)
+![Watching a replay in the panel](https://raw.githubusercontent.com/modl-gg/modl/main/listings/images/panel-replay.webp)
 
 ### AI moderation
 
