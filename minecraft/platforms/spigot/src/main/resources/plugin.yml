@@ -21,6 +21,8 @@ softdepend:
   - LibertyBans
   - BanManager
   - BanSystem
+  - Intave
+  - IntaveLoader # The plugin can be loaded with this plugin, so it just skips it
 commands:
   proxycmd:
     description: Run a modl command on the proxy
