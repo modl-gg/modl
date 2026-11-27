@@ -17,6 +17,7 @@ dependencies {
         }
     }
     compileOnly(libs.polar.api)
+    compileOnly(libs.intave.access)
     compileOnly(project(":minecraft:platforms:vulcan-api-stub"))
 
     compileOnly(libs.adventure.api)

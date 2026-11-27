@@ -22,6 +22,7 @@ import gg.modl.minecraft.spigot.features.handler.FreezeHandler;
 import gg.modl.minecraft.spigot.features.handler.MemberFreezeChatGuard;
 import gg.modl.minecraft.spigot.features.handler.StaffModeHandler;
 import gg.modl.minecraft.spigot.features.reporter.hook.GrimHook;
+import gg.modl.minecraft.spigot.features.reporter.hook.IntaveHook;
 import gg.modl.minecraft.spigot.features.reporter.hook.PolarHook;
 import gg.modl.minecraft.spigot.features.reporter.hook.VulcanHook;
 import org.bukkit.Bukkit;
@@ -111,10 +112,16 @@ public class ServerFeaturesComponent extends AbstractServerFeatures implements L
             hooks.add(vulcanHook);
         }
 
+        if (Bukkit.getPluginManager().isPluginEnabled("Intave")) {
+            IntaveHook intaveHook = new IntaveHook(plugin, featuresConfig, violationTracker, autoReporter);
+            intaveHook.register();
+            hooks.add(intaveHook);
+        }
+
         attachPolarIfLoaded(hooks, autoReporter);
 
         if (hooks.isEmpty() && !polarLoaderAvailable) {
-            pluginLogger.debug("[anticheat] No anticheat plugins detected. Install GrimAC, Vulcan, or Polar for anticheat reporting.");
+            pluginLogger.debug("[anticheat] No anticheat plugins detected. Install GrimAC, Vulcan, Intave, or Polar for anticheat reporting.");
         }
     }
 
