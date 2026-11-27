@@ -52,7 +52,8 @@ public class ServerFeaturesComponent extends AbstractServerFeatures implements L
 
     private static final String GRIM_PLUGIN = "GrimAC";
     private static final String VULCAN_PLUGIN = "Vulcan";
-    private static final List<String> ANTICHEAT_PLUGINS = Collections.unmodifiableList(Arrays.asList(GRIM_PLUGIN, VULCAN_PLUGIN));
+    private static final String INTAVE_PLUGIN = "Intave";
+    private static final List<String> ANTICHEAT_PLUGINS = Collections.unmodifiableList(Arrays.asList(GRIM_PLUGIN, VULCAN_PLUGIN, INTAVE_PLUGIN));
 
     private static final String PACKET_EVENTS_MISSING =
             "[replay] PacketEvents is not installed or not initialized, so this server records no replays";
@@ -112,7 +113,7 @@ public class ServerFeaturesComponent extends AbstractServerFeatures implements L
             hooks.add(vulcanHook);
         }
 
-        if (Bukkit.getPluginManager().isPluginEnabled("Intave")) {
+        if (Bukkit.getPluginManager().isPluginEnabled(INTAVE_PLUGIN)) {
             IntaveHook intaveHook = new IntaveHook(plugin, featuresConfig, violationTracker, autoReporter);
             intaveHook.register();
             hooks.add(intaveHook);
