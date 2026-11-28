@@ -67,12 +67,12 @@ class SpigotListenerRefusedLoginTest {
     @Test
     void aLoginTheServerRefusesLaterKeepsItsRefusalAndLeavesNoPendingResult() throws Exception {
         loginCache.storePreLoginOutcome(PLAYER, PreLoginOutcome.checked(new LoginService.LoginResult.Allowed(null)));
-        PlayerLoginEvent event = loginEvent();
-        event.disallow(PlayerLoginEvent.Result.KICK_FULL, "The server is full");
+        AsyncPlayerPreLoginEvent event = loginEvent();
+        event.disallow(AsyncPlayerPreLoginEvent.Result.KICK_FULL, "The server is full");
 
         loginValidation.onPlayerLogin(event);
 
-        assertEquals(PlayerLoginEvent.Result.KICK_FULL, event.getResult());
+        assertEquals(AsyncPlayerPreLoginEvent.Result.KICK_FULL, event.getLoginResult());
         assertNull(loginCache.takePreLoginOutcome(PLAYER));
     }
 
@@ -80,22 +80,22 @@ class SpigotListenerRefusedLoginTest {
     void aVanillaRefusalThatAnotherPluginOverridesIsDeniedWithItsOwnMessage() throws Exception {
         vanillaRefuses = true;
         listener.onAsyncPlayerPreLogin(new AsyncPlayerPreLoginEvent("Steve", InetAddress.getByName("203.0.113.7"), PLAYER));
-        PlayerLoginEvent event = loginEvent();
+        AsyncPlayerPreLoginEvent event = loginEvent();
 
         loginValidation.onPlayerLogin(event);
 
         verify(loginFlow, never()).begin(any());
-        assertEquals(PlayerLoginEvent.Result.KICK_OTHER, event.getResult());
+        assertEquals(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, event.getLoginResult());
         assertEquals(UNCHECKED, event.getKickMessage());
     }
 
     @Test
     void aLoginWithoutAnyPreLoginStillFailsClosed() throws Exception {
-        PlayerLoginEvent event = loginEvent();
+        AsyncPlayerPreLoginEvent event = loginEvent();
 
         loginValidation.onPlayerLogin(event);
 
-        assertEquals(PlayerLoginEvent.Result.KICK_OTHER, event.getResult());
+        assertEquals(AsyncPlayerPreLoginEvent.Result.KICK_OTHER, event.getLoginResult());
         assertEquals(UNVERIFIABLE, event.getKickMessage());
     }
 
@@ -104,18 +104,15 @@ class SpigotListenerRefusedLoginTest {
         LoginService.LoginResult banned = new LoginService.LoginResult.Denied(BANNED);
         when(loginService.denialMessage(banned)).thenReturn(BANNED);
         loginCache.storePreLoginOutcome(PLAYER, PreLoginOutcome.checked(banned));
-        PlayerLoginEvent event = loginEvent();
+        AsyncPlayerPreLoginEvent event = loginEvent();
 
         loginValidation.onPlayerLogin(event);
 
-        assertEquals(PlayerLoginEvent.Result.KICK_BANNED, event.getResult());
+        assertEquals(AsyncPlayerPreLoginEvent.Result.KICK_BANNED, event.getLoginResult());
         assertEquals(BANNED, event.getKickMessage());
     }
 
-    private static PlayerLoginEvent loginEvent() throws Exception {
-        Player player = mock(Player.class);
-        when(player.getUniqueId()).thenReturn(PLAYER);
-        when(player.getName()).thenReturn("Steve");
-        return new PlayerLoginEvent(player, "localhost", InetAddress.getByName("203.0.113.7"));
+    private static AsyncPlayerPreLoginEvent loginEvent() throws Exception {
+        return new AsyncPlayerPreLoginEvent("Steve", InetAddress.getByName("203.0.113.7"), PLAYER);
     }
 }

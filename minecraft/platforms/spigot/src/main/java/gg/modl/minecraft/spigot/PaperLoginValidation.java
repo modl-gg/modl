@@ -52,14 +52,14 @@ final class PaperLoginValidation implements Listener {
         try {
             eventType = Class.forName(VALIDATE_LOGIN_EVENT).asSubclass(Event.class);
         } catch (ClassNotFoundException serverWithoutConnectionValidation) {
-            logger.debug("This server has no connection validation event; logins are validated on PlayerLoginEvent");
+            logger.debug("This server has no connection validation event; logins are validated on AsyncPlayerPreLoginEvent");
             return Optional.empty();
         }
         try {
             return Optional.of(new PaperLoginValidation(admission, eventType));
         } catch (ReflectiveOperationException | LinkageError changedApi) {
             logger.debug("This server's connection validation event lacks " + changedApi
-                    + "; logins are validated on PlayerLoginEvent");
+                    + "; logins are validated on AsyncPlayerPreLoginEvent");
             return Optional.empty();
         }
     }
